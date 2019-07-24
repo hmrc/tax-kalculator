@@ -1,4 +1,33 @@
 
 # tax-kalculator
 
-This is a placeholder README.md for a new repository
+## Adding to your project
+
+### iOS
+
+Just add the framework to the project. 
+
+### Android
+
+Add `jcenter()` to `allProjects.repository` in the root `build.gradle`
+
+In the app module `build.gradle` add the following line to your `dependencies`
+
+```
+To be updated
+
+
+implementation "com.example:tax-kalc-jvm:0.0.4"
+```
+
+### JVM
+
+Add `jcenter()` to `repositories` in the root `build.gradle`
+
+In the module `build.gradle` add the following line to your `dependencies`
+
+```
+To be updated
+
+implementation "com.example:tax-kalc-jvm:0.0.4"
+```
