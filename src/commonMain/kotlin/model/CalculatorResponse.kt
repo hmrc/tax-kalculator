@@ -1,7 +1,8 @@
 package model
 
-data class CalculatorResponsePayPeriod(val taxToPay: Double, val employeesNI: Double, val employersNI: Double) {
+data class CalculatorResponsePayPeriod(val taxToPay: Double, val employeesNI: Double, val employersNI: Double, val wages: Double) {
     val totalDeductions: Double = taxToPay + employeesNI
+    val takeHome: Double = wages - totalDeductions
 }
 
 data class CalculatorResponse(

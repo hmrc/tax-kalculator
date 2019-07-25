@@ -5,9 +5,7 @@ import model.PayPeriod
 import model.PayPeriod.*
 import model.bands.*
 import model.taxcodes.*
-import utils.WageConverter
-import utils.getDefaultTaxAllowance
-import utils.toTaxCode
+import utils.*
 
 class TaxYear {
     fun currentTaxYear(): Int {
@@ -31,7 +29,7 @@ class Calculator(
     hoursPerWeek: Double = 0.0,
     taxYear: Int = TaxYear().currentTaxYear()
 ) {
-    private val originalWages: Double = WageConverter().convertWageToYearly(payPeriod, hoursPerWeek, userEnteredWages)
+    private val yearlyWages: Double = userEnteredWages.convertWageToYearly(payPeriod, hoursPerWeek)
     private val taxCode: TaxCode = taxCodeString.toTaxCode()
     private val bandAdjuster: Int =
         getDefaultTaxAllowance(taxYear, taxCode.country) //The full tax free amount e.g. 12509
@@ -41,30 +39,14 @@ class Calculator(
 
     private fun taxToPay(): Double {
         return when (taxCode) {
-            is StandardTaxCode -> {
-                getTotalFromBands(adjustTaxBands(taxBands), originalWages)
-            }
-            is NoTaxTaxCode -> {
-                originalWages * taxCode.taxFreeAmount
-            }
-            is SingleBandTax -> {
-                originalWages * taxBands[taxCode.taxAllAtBand].percentageAsDecimal
-            }
-            is AdjustedTaxFreeTCode -> {
-                getTotalFromBands(adjustTaxBands(taxBands), originalWages)
-            }
-            is EmergencyTaxCode -> {
-                getTotalFromBands(adjustTaxBands(taxBands), originalWages)
-            }
-
-            is MarriageTaxCodes -> {
-                getTotalFromBands(adjustTaxBands(taxBands), originalWages)
-            }
-            is KTaxCode -> {
-                getTotalFromBands(adjustTaxBands(taxBands), originalWages + taxCode.amountToAddToWages)
-            }
+            is StandardTaxCode -> getTotalFromBands(adjustTaxBands(taxBands), yearlyWages)
+            is NoTaxTaxCode -> yearlyWages * taxCode.taxFreeAmount
+            is SingleBandTax -> yearlyWages * taxBands[taxCode.taxAllAtBand].percentageAsDecimal
+            is AdjustedTaxFreeTCode -> getTotalFromBands(adjustTaxBands(taxBands), yearlyWages)
+            is EmergencyTaxCode -> getTotalFromBands(adjustTaxBands(taxBands), yearlyWages)
+            is MarriageTaxCodes -> getTotalFromBands(adjustTaxBands(taxBands), yearlyWages)
+            is KTaxCode -> getTotalFromBands(adjustTaxBands(taxBands), yearlyWages + taxCode.amountToAddToWages)
             else -> throw IllegalStateException("Unknown tax code")
-
         }
     }
 
@@ -81,11 +63,11 @@ class Calculator(
     }
 
     private fun employerNIToPay(): Double {
-        return if (pensionAge) 0.0 else getTotalFromBands(employerNIBands, originalWages)
+        return if (pensionAge) 0.0 else getTotalFromBands(employerNIBands, yearlyWages)
     }
 
     private fun employeeNIToPay(): Double {
-        return if (pensionAge) 0.0 else getTotalFromBands(employeeNIBands, originalWages)
+        return if (pensionAge) 0.0 else getTotalFromBands(employeeNIBands, yearlyWages)
     }
 
     private fun getTotalFromBands(bands: List<Band>, wages: Double): Double {
@@ -108,24 +90,28 @@ class Calculator(
 
         return CalculatorResponse(
             weekly = CalculatorResponsePayPeriod(
-                taxToPay = WageConverter().convertAmountFromYearlyToPayPeriod(WEEKLY, amount = taxPayable),
-                employeesNI = WageConverter().convertAmountFromYearlyToPayPeriod(WEEKLY, amount = employeesNI),
-                employersNI = WageConverter().convertAmountFromYearlyToPayPeriod(WEEKLY, amount = employersNI)
+                taxToPay = taxPayable.convertAmountFromYearlyToPayPeriod(WEEKLY),
+                employeesNI = employeesNI.convertAmountFromYearlyToPayPeriod(WEEKLY),
+                employersNI =employersNI.convertAmountFromYearlyToPayPeriod(WEEKLY),
+                wages = yearlyWages.convertAmountFromYearlyToPayPeriod(WEEKLY)
             ),
             fourWeekly = CalculatorResponsePayPeriod(
-                taxToPay = WageConverter().convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY, amount = taxPayable),
-                employeesNI = WageConverter().convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY, amount = employeesNI),
-                employersNI = WageConverter().convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY, amount = employersNI)
+                taxToPay = taxPayable.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
+                employeesNI = employeesNI.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
+                employersNI = employersNI.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
+                wages = yearlyWages.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY)
             ),
             monthly = CalculatorResponsePayPeriod(
-                taxToPay = WageConverter().convertAmountFromYearlyToPayPeriod(MONTHLY, amount = taxPayable),
-                employeesNI = WageConverter().convertAmountFromYearlyToPayPeriod(MONTHLY, amount = employeesNI),
-                employersNI = WageConverter().convertAmountFromYearlyToPayPeriod(MONTHLY, amount = employersNI)
+                taxToPay = taxPayable.convertAmountFromYearlyToPayPeriod(MONTHLY),
+                employeesNI = employeesNI.convertAmountFromYearlyToPayPeriod(MONTHLY),
+                employersNI = employersNI.convertAmountFromYearlyToPayPeriod(MONTHLY),
+                wages = yearlyWages.convertAmountFromYearlyToPayPeriod(MONTHLY)
             ),
             yearly = CalculatorResponsePayPeriod(
-                taxToPay = WageConverter().convertAmountFromYearlyToPayPeriod(YEARLY, amount = taxPayable),
-                employeesNI = WageConverter().convertAmountFromYearlyToPayPeriod(YEARLY, amount = employeesNI),
-                employersNI = WageConverter().convertAmountFromYearlyToPayPeriod(YEARLY, amount = employersNI)
+                taxToPay = taxPayable.convertAmountFromYearlyToPayPeriod(YEARLY),
+                employeesNI = employeesNI.convertAmountFromYearlyToPayPeriod(YEARLY),
+                employersNI = employersNI.convertAmountFromYearlyToPayPeriod(YEARLY),
+                wages = yearlyWages.convertAmountFromYearlyToPayPeriod(YEARLY)
             )
         )
     }

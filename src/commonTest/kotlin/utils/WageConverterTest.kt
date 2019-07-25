@@ -1,20 +1,41 @@
 package utils
 
 import model.PayPeriod
-import org.junit.Rule
 import kotlin.test.Test
-import org.junit.rules.ExpectedException
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 class WageConverterTest {
-    @Rule
-    @JvmField
-    var thrown: ExpectedException = ExpectedException.none()
-
-
     @Test
     fun `Week Invalid When Converting From Year`() {
-        thrown.expect(IllegalArgumentException::class.java)
-        thrown.expectMessage("Amounts are not displayed hour by hour")
-        WageConverter().convertAmountFromYearlyToPayPeriod(PayPeriod.HOURLY, 100.0)
+        assertFailsWith<IllegalArgumentException> {
+            100.0.convertAmountFromYearlyToPayPeriod(PayPeriod.HOURLY)
+        }
     }
+
+    @Test
+    fun `Convert monthly to yearly`() {
+        assertEquals(12000.0, 1000.0.convertWageToYearly(PayPeriod.MONTHLY))
+    }
+
+    @Test
+    fun `Convert FOUR_WEEKLY to yearly`() {
+        assertEquals(13000.0, 1000.0.convertWageToYearly(PayPeriod.FOUR_WEEKLY))
+    }
+
+    @Test
+    fun `Convert WEEKLY to yearly`() {
+        assertEquals(52000.0, 1000.0.convertWageToYearly(PayPeriod.WEEKLY))
+    }
+
+    @Test
+    fun `Convert HOURLY to yearly`() {
+        assertEquals(5200.0, 10.0.convertWageToYearly(PayPeriod.HOURLY, 10.0))
+    }
+
+    @Test
+    fun `Convert YEARLY to yearly`() {
+        assertEquals(5200.0, 5200.0.convertWageToYearly(PayPeriod.YEARLY))
+    }
+
 }
