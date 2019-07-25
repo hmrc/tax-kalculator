@@ -17,7 +17,7 @@ In the app module `build.gradle` add the following line to your `dependencies`
 To be updated
 
 
-implementation "com.example:tax-kalc-jvm:0.0.4"
+implementation "uk.gov.hmrc:tax-kalculator-jvm:0.0.4"
 ```
 
 ### JVM
@@ -29,5 +29,5 @@ In the module `build.gradle` add the following line to your `dependencies`
 ```
 To be updated
 
-implementation "com.example:tax-kalc-jvm:0.0.4"
+implementation "uk.gov.hmrc:tax-kalculator-jvm:0.0.4"
 ```
