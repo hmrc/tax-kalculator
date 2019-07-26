@@ -1,4 +1,6 @@
-import com.soywiz.klock.*
+import com.soywiz.klock.DateTime
+import com.soywiz.klock.DateTimeTz
+import model.BandBreakdown
 import model.CalculatorResponse
 import model.CalculatorResponsePayPeriod
 import model.PayPeriod
@@ -29,6 +31,8 @@ class Calculator(
     hoursPerWeek: Double = 0.0,
     taxYear: Int = TaxYear().currentTaxYear()
 ) {
+
+    private val bandBreakdown: MutableList<BandBreakdown> = mutableListOf()
     private val yearlyWages: Double = userEnteredWages.convertWageToYearly(payPeriod, hoursPerWeek)
     private val taxCode: TaxCode = taxCodeString.toTaxCode()
     private val bandAdjuster: Int =
@@ -74,10 +78,14 @@ class Calculator(
         var amount = 0.0
         bands.map { band: Band ->
             if (band.inBand(wages)) {
-                amount += (wages - band.lower) * band.percentageAsDecimal
+                val taxForBand = (wages - band.lower) * band.percentageAsDecimal
+                if (band is TaxBand) bandBreakdown.add(BandBreakdown(band.percentageAsDecimal, taxForBand))
+                amount += taxForBand
                 return amount
             } else {
-                amount += (band.upper - band.lower) * band.percentageAsDecimal
+                val taxForBand = (band.upper - band.lower) * band.percentageAsDecimal
+                if (band is TaxBand) bandBreakdown.add(BandBreakdown(band.percentageAsDecimal, taxForBand))
+                amount += taxForBand
             }
         }
         throw IllegalStateException("No tax bands were found to be used for the calculation")
@@ -92,26 +100,34 @@ class Calculator(
             weekly = CalculatorResponsePayPeriod(
                 taxToPay = taxPayable.convertAmountFromYearlyToPayPeriod(WEEKLY),
                 employeesNI = employeesNI.convertAmountFromYearlyToPayPeriod(WEEKLY),
-                employersNI =employersNI.convertAmountFromYearlyToPayPeriod(WEEKLY),
-                wages = yearlyWages.convertAmountFromYearlyToPayPeriod(WEEKLY)
+                employersNI = employersNI.convertAmountFromYearlyToPayPeriod(WEEKLY),
+                wages = yearlyWages.convertAmountFromYearlyToPayPeriod(WEEKLY),
+                taxBreakdown = bandBreakdown.convertListOfBandBreakdownForPayPeriod(WEEKLY),
+                taxFree = adjustTaxBands(taxBands)[0].upper.convertAmountFromYearlyToPayPeriod(WEEKLY)
             ),
             fourWeekly = CalculatorResponsePayPeriod(
                 taxToPay = taxPayable.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
                 employeesNI = employeesNI.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
                 employersNI = employersNI.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
-                wages = yearlyWages.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY)
+                wages = yearlyWages.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
+                taxBreakdown = bandBreakdown.convertListOfBandBreakdownForPayPeriod(FOUR_WEEKLY),
+                taxFree = adjustTaxBands(taxBands)[0].upper.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY)
             ),
             monthly = CalculatorResponsePayPeriod(
                 taxToPay = taxPayable.convertAmountFromYearlyToPayPeriod(MONTHLY),
                 employeesNI = employeesNI.convertAmountFromYearlyToPayPeriod(MONTHLY),
                 employersNI = employersNI.convertAmountFromYearlyToPayPeriod(MONTHLY),
-                wages = yearlyWages.convertAmountFromYearlyToPayPeriod(MONTHLY)
+                wages = yearlyWages.convertAmountFromYearlyToPayPeriod(MONTHLY),
+                taxBreakdown = bandBreakdown.convertListOfBandBreakdownForPayPeriod(MONTHLY),
+                taxFree = adjustTaxBands(taxBands)[0].upper.convertAmountFromYearlyToPayPeriod(MONTHLY)
             ),
             yearly = CalculatorResponsePayPeriod(
                 taxToPay = taxPayable.convertAmountFromYearlyToPayPeriod(YEARLY),
                 employeesNI = employeesNI.convertAmountFromYearlyToPayPeriod(YEARLY),
                 employersNI = employersNI.convertAmountFromYearlyToPayPeriod(YEARLY),
-                wages = yearlyWages.convertAmountFromYearlyToPayPeriod(YEARLY)
+                wages = yearlyWages.convertAmountFromYearlyToPayPeriod(YEARLY),
+                taxBreakdown = bandBreakdown,
+                taxFree = adjustTaxBands (taxBands)[0].upper
             )
         )
     }
