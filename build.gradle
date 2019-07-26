@@ -1,13 +1,3 @@
-//buildscript {
-//    repositories {
-//        google()
-//    }
-//    dependencies {
-//        classpath 'com.android.tools.build:gradle:3.4.1'
-//    }
-//}
-
-
 plugins {
     id 'org.jetbrains.kotlin.multiplatform' version '1.3.41'
 }
@@ -23,7 +13,6 @@ repositories {
 group 'uk.gov.hmrc'
 version '0.0.4'
 
-//apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
 String frameworkName = 'TaxKalculator'
 
