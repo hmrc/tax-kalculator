@@ -78,9 +78,9 @@ class Calculator(
     }
 
     fun run(): CalculatorResponse {
-        val taxPayable = this.taxToPay()
-        val employeesNI = this.employeeNIToPay()
-        val employersNI = this.employerNIToPay()
+        val taxPayable = taxToPay()
+        val employeesNI = employeeNIToPay()
+        val employersNI = employerNIToPay()
 
         return CalculatorResponse(
             weekly = CalculatorResponsePayPeriod(

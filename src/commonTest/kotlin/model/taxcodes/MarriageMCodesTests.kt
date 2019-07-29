@@ -5,7 +5,7 @@ import model.PayPeriod
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class MarriageMCodes {
+class MarriageMCodesTests {
 
     @Test
     fun `Wales M Code 20k`() {

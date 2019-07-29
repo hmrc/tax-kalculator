@@ -6,7 +6,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 
-class KTaxCodes {
+class KTaxCodesTests {
 
     @Test
     fun `CK100 Wales 100K`() {

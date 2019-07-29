@@ -1,7 +1,17 @@
 
 # tax-kalculator
 
+##### Code Coverages
+![LINE](https://img.shields.io/badge/line--coverage-97%25-brightgreen.svg)
+![BRANCH](https://img.shields.io/badge/branch--coverage-93%25-brightgreen.svg)
+![COMPLEXITY](https://img.shields.io/badge/complexity-1.37-brightgreen.svg)
+##### Build Status
+
 [![Build Status](https://app.bitrise.io/app/cd7fb52c258b9273/status.svg?token=lntO8o4xz5AUEvLwVzbo3A&branch=master)](https://app.bitrise.io/app/cd7fb52c258b9273)
+
+## Build code locally
+
+The gradle task to run before commit that runs a clean, build, test, coverage and updates the badges on the README is `./gradlew cleanBuildTestCoverage`
 
 ## Adding library to your project
 
