@@ -6,18 +6,18 @@ import model.bands.Band
 import model.bands.TaxBands
 import model.taxcodes.*
 
-fun String.toTaxCode(): TaxCode {
-    //TODO Remove spaces from Tax Codes
+internal fun String.toTaxCode(): TaxCode {
+    val noSpacesTaxCode = this.replace("\\s".toRegex(), "")
 
-    return when (this.country()) {
-        SCOTLAND -> this.matchScottishTaxCode()
-        WALES -> this.matchWelshTaxCode()
-        ENGLAND -> this.matchEnglishTaxCode()
-        NONE -> this.matchGeneralTaxCodes()
+    return when (noSpacesTaxCode.country()) {
+        SCOTLAND -> noSpacesTaxCode.matchScottishTaxCode()
+        WALES -> noSpacesTaxCode.matchWelshTaxCode()
+        ENGLAND -> noSpacesTaxCode.matchEnglishTaxCode()
+        NONE -> noSpacesTaxCode.matchGeneralTaxCodes()
     }
 }
 
-fun String.country(): Country {
+internal fun String.country(): Country {
     return when (this) {
         "NT" -> NONE
         else -> when (this.first().toString()) {
@@ -50,7 +50,8 @@ private fun String.matchScottishTaxCode(): ScottishTaxCode {
                 return SLCode(this.removePrefix("S").removeSuffix("L").toDouble())
             }
             if ("^S[0-9]{1,4}(W1|M1|X)".toRegex().containsMatchIn(this)) {
-                val strippedValue = this.removePrefix("S").removeSuffix("W1").removeSuffix("M1").removeSuffix("X").toDouble()
+                val strippedValue =
+                    this.removePrefix("S").removeSuffix("W1").removeSuffix("M1").removeSuffix("X").toDouble()
                 return ScottishEmergencyCode(strippedValue)
             }
             if ("^S[0-9]{1,4}([MN])".toRegex().containsMatchIn(this)) {
@@ -83,7 +84,8 @@ private fun String.matchWelshTaxCode(): WelshTaxCode {
                 return CLCode(this.removePrefix("C").removeSuffix("L").toDouble())
             }
             if ("^C[0-9]{1,4}(W1|M1|X)".toRegex().containsMatchIn(this)) {
-                val strippedValue = this.removePrefix("C").removeSuffix("W1").removeSuffix("M1").removeSuffix("X").toDouble()
+                val strippedValue =
+                    this.removePrefix("C").removeSuffix("W1").removeSuffix("M1").removeSuffix("X").toDouble()
                 return WelshEmergencyCode(strippedValue)
             }
             if ("^C[0-9]{1,4}([MN])".toRegex().containsMatchIn(this)) {
@@ -136,7 +138,7 @@ private fun String.matchEnglishTaxCode(): EnglishTaxCode {
 
 }
 
-fun List<Band>.whichBandContains(wages: Double): Int {
+internal fun List<Band>.whichBandContains(wages: Double): Int {
     for (i in 0 until this.size) if (this[i].inBand(wages)) {
         return i
     }
@@ -144,7 +146,7 @@ fun List<Band>.whichBandContains(wages: Double): Int {
 }
 
 
-fun getDefaultTaxAllowance(taxYear: Int, country: Country): Int {
+internal fun getDefaultTaxAllowance(taxYear: Int, country: Country): Int {
     return TaxBands(country, taxYear).bands[0].upper.toInt()
 }
 

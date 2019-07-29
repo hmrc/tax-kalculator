@@ -1,6 +1,5 @@
 package model.bands
 
-import model.Country
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -9,7 +8,7 @@ class EmployerNIBandsTest {
 
     @Test
     fun invalidYear() {
-        val exception = assertFailsWith<IllegalArgumentException> { EmployerNIBands( 2017) }
+        val exception = assertFailsWith<IllegalArgumentException> { EmployerNIBands(2017) }
         assertEquals(exception.message, "Unsupported Year")
     }
 

@@ -8,7 +8,7 @@ class EmployeeNIBandsTest {
 
     @Test
     fun invalidYear() {
-        val exception = assertFailsWith<IllegalArgumentException> { EmployeeNIBands( 2017) }
+        val exception = assertFailsWith<IllegalArgumentException> { EmployeeNIBands(2017) }
         assertEquals(exception.message, "Unsupported Year")
     }
 
@@ -34,5 +34,13 @@ class EmployeeNIBandsTest {
         assertEquals(0.12, band.percentageAsDecimal)
         assertEquals(false, band.inBand(1000.0))
         assertEquals(true, band.inBand(10000.0))
+    }
+
+    @Test
+    fun `Employee NI 2019 Wales Massive Wages`() {
+        val band = EmployeeNIBands(2019).bands[3]
+        assertEquals(0.02, band.percentageAsDecimal)
+        assertEquals(false, band.inBand(1000.0))
+        assertEquals(true, band.inBand(100000.0))
     }
 }

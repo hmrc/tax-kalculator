@@ -2,33 +2,33 @@ package model.taxcodes
 
 import model.Country
 
-interface TaxCode {
+internal interface TaxCode {
     val country: Country
     val taxFreeAmount: Double
 }
 
-interface SingleBandTax : TaxCode {
+internal interface SingleBandTax : TaxCode {
     override val taxFreeAmount: Double
         get() = 0.0
     val taxAllAtBand: Int
 }
 
-interface EmergencyTaxCode
+internal interface EmergencyTaxCode
 
-interface AdjustedTaxFreeTCode
+internal interface AdjustedTaxFreeTCode
 
-interface StandardTaxCode
+internal interface StandardTaxCode
 
-interface NoTaxTaxCode : TaxCode {
+internal interface NoTaxTaxCode : TaxCode {
     override val taxFreeAmount: Double
         get() = 0.0
 }
 
-interface MarriageTaxCodes {
+internal interface MarriageTaxCodes {
     val increasedTaxAllowance: Boolean
 }
 
-interface KTaxCode {
+internal interface KTaxCode {
     val amountToAddToWages: Double
 }
 

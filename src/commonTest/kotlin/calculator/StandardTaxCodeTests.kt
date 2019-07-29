@@ -3,15 +3,16 @@ package calculator
 import Calculator
 import model.CalculatorResponse
 import model.PayPeriod
-import kotlin.test.assertEquals
 import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class StandardTaxCodeTestsYearly {
 
     //    1250L @ 100K
     @Test
     fun `1250L WalesYEARLY 100k`() {
-        val calculator: CalculatorResponse = Calculator("C1250L", 100000.0, payPeriod = PayPeriod.YEARLY, taxYear = 2019).run()
+        val calculator: CalculatorResponse =
+            Calculator("C1250L", 100000.0, payPeriod = PayPeriod.YEARLY, taxYear = 2019).run()
         assertEquals(27498.2, calculator.yearly.taxToPay)
         assertEquals(12608.784000000001, calculator.yearly.employersNI)
         assertEquals(5964.16, calculator.yearly.employeesNI)
@@ -94,7 +95,8 @@ class StandardTaxCodeTestsOtherTimePeriods {
 
     @Test
     fun `1250L England HOURLY 20 pounds`() {
-        val calculator = Calculator("1250L", 20.0, payPeriod = PayPeriod.HOURLY, hoursPerWeek = 37.5, taxYear = 2019).run()
+        val calculator =
+            Calculator("1250L", 20.0, payPeriod = PayPeriod.HOURLY, hoursPerWeek = 37.5, taxYear = 2019).run()
         assertEquals(3644.16, calculator.yearly.employeesNI)
         assertEquals(4190.784000000001, calculator.yearly.employersNI)
         assertEquals(5298.200000000001, calculator.yearly.taxToPay)

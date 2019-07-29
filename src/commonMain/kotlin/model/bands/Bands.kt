@@ -1,28 +1,32 @@
 package model.bands
 
-interface Band {
+internal interface Band {
     var lower: Double
     var upper: Double
     val percentageAsDecimal: Double
 
     fun inBand(amount: Double): Boolean {
-        return amount > lower && amount <= upper
+        return if (upper == -1.0 && amount > lower) {
+            true
+        } else {
+            amount > lower && amount <= upper
+        }
     }
 }
 
-data class TaxBand(
+internal data class TaxBand(
     override var lower: Double,
     override var upper: Double,
     override val percentageAsDecimal: Double
 ) : Band
 
-data class EmployerNIBand(
+internal data class EmployerNIBand(
     override var lower: Double,
     override var upper: Double,
     override val percentageAsDecimal: Double
 ) : Band
 
-data class EmployeeNIBand(
+internal data class EmployeeNIBand(
     override var lower: Double,
     override var upper: Double,
     override val percentageAsDecimal: Double
