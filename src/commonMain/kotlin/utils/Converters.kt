@@ -3,7 +3,7 @@ package utils
 import model.BandBreakdown
 import model.PayPeriod
 
-fun Double.convertWageToYearly(
+internal fun Double.convertWageToYearly(
     payPeriod: PayPeriod,
     hoursPerWeek: Double = 0.0
 ): Double {
@@ -16,7 +16,7 @@ fun Double.convertWageToYearly(
     }
 }
 
-fun List<BandBreakdown>.convertListOfBandBreakdownForPayPeriod(payPeriod: PayPeriod): List<BandBreakdown> =
+internal fun List<BandBreakdown>.convertListOfBandBreakdownForPayPeriod(payPeriod: PayPeriod): List<BandBreakdown> =
     this.map { bandBreakdown ->
         BandBreakdown(
             percentage = bandBreakdown.percentage,
@@ -25,7 +25,7 @@ fun List<BandBreakdown>.convertListOfBandBreakdownForPayPeriod(payPeriod: PayPer
     }
 
 
-fun Double.convertAmountFromYearlyToPayPeriod(
+internal fun Double.convertAmountFromYearlyToPayPeriod(
     payPeriod: PayPeriod
 ): Double {
     return when (payPeriod) {

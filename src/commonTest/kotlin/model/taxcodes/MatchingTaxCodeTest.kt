@@ -12,6 +12,10 @@ class MatchScotlandTaxCode {
     fun `Scotland no allowance`() {
         assertTrue("S0T".toTaxCode() is S0T)
     }
+    @Test
+    fun `Scotland no allowance but with space`() {
+        assertTrue("S 0T".toTaxCode() is S0T)
+    }
 
     @Test
     fun `Scotland basic rate`() {

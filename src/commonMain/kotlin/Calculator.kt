@@ -1,5 +1,3 @@
-import com.soywiz.klock.DateTime
-import com.soywiz.klock.DateTimeTz
 import model.BandBreakdown
 import model.CalculatorResponse
 import model.CalculatorResponsePayPeriod
@@ -8,20 +6,6 @@ import model.PayPeriod.*
 import model.bands.*
 import model.taxcodes.*
 import utils.*
-
-class TaxYear {
-    fun currentTaxYear(): Int {
-        val date = DateTime.nowLocal()
-        return if (date < firstDayOfTaxYear(date.yearInt))
-            date.yearInt - 1
-        else
-            date.yearInt
-    }
-
-    private fun firstDayOfTaxYear(year: Int): DateTimeTz {
-        return DateTime(year = year, month = 4, day = 6).local //TODO check library for details about the `.local`
-    }
-}
 
 class Calculator(
     taxCodeString: String,
@@ -61,7 +45,9 @@ class Calculator(
 
         for (bandNumber in 2 until taxBands.size) {
             taxBands[bandNumber].lower = taxBands[bandNumber].lower + taxCode.taxFreeAmount - bandAdjuster
-            taxBands[bandNumber].upper = taxBands[bandNumber].upper + taxCode.taxFreeAmount - bandAdjuster
+            if (taxBands[bandNumber].upper != -1.0){
+                taxBands[bandNumber].upper = taxBands[bandNumber].upper + taxCode.taxFreeAmount - bandAdjuster
+            }
         }
         return taxBands
     }

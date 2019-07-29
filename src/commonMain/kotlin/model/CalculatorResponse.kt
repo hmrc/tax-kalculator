@@ -13,4 +13,3 @@ data class CalculatorResponse(
     val monthly: CalculatorResponsePayPeriod,
     val yearly: CalculatorResponsePayPeriod
 )
-
