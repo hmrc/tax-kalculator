@@ -45,7 +45,7 @@ class Calculator(
 
         for (bandNumber in 2 until taxBands.size) {
             taxBands[bandNumber].lower = taxBands[bandNumber].lower + taxCode.taxFreeAmount - bandAdjuster
-            if (taxBands[bandNumber].upper != -1.0){
+            if (taxBands[bandNumber].upper != -1.0) {
                 taxBands[bandNumber].upper = taxBands[bandNumber].upper + taxCode.taxFreeAmount - bandAdjuster
             }
         }
@@ -113,7 +113,7 @@ class Calculator(
                 employersNI = employersNI.convertAmountFromYearlyToPayPeriod(YEARLY),
                 wages = yearlyWages.convertAmountFromYearlyToPayPeriod(YEARLY),
                 taxBreakdown = bandBreakdown,
-                taxFree = adjustTaxBands (taxBands)[0].upper
+                taxFree = adjustTaxBands(taxBands)[0].upper
             )
         )
     }

@@ -8,7 +8,7 @@ class EmployeeNIBandsTest {
 
     @Test
     fun invalidYear() {
-        val exception = assertFailsWith<IllegalArgumentException> { EmployeeNIBands( 2017) }
+        val exception = assertFailsWith<IllegalArgumentException> { EmployeeNIBands(2017) }
         assertEquals(exception.message, "Unsupported Year")
     }
 

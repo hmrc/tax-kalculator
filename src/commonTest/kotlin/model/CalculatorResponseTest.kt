@@ -40,7 +40,12 @@ class CalculatorResponseTest {
         assertEquals(4142.360000000001, response.yearly.totalDeductions)
         assertEquals(19857.64, response.yearly.takeHome)
         assertEquals(12509.0, response.yearly.taxFree)
-        assertEquals(listOf(BandBreakdown(percentage=0.0, amount=0.0), BandBreakdown(percentage=0.2, amount=2298.2000000000003)), response.yearly.taxBreakdown)
+        assertEquals(
+            listOf(
+                BandBreakdown(percentage = 0.0, amount = 0.0),
+                BandBreakdown(percentage = 0.2, amount = 2298.2000000000003)
+            ), response.yearly.taxBreakdown
+        )
 
         assertEquals(191.51666666666668, response.monthly.taxToPay)
         assertEquals(153.67999999999998, response.monthly.employeesNI)
@@ -48,7 +53,12 @@ class CalculatorResponseTest {
         assertEquals(345.19666666666666, response.monthly.totalDeductions)
         assertEquals(1654.8033333333333, response.monthly.takeHome)
         assertEquals(1042.4166666666667, response.monthly.taxFree)
-        assertEquals(listOf(BandBreakdown(percentage=0.0, amount=0.0), BandBreakdown(percentage=0.2, amount=191.51666666666668)), response.monthly.taxBreakdown)
+        assertEquals(
+            listOf(
+                BandBreakdown(percentage = 0.0, amount = 0.0),
+                BandBreakdown(percentage = 0.2, amount = 191.51666666666668)
+            ), response.monthly.taxBreakdown
+        )
 
         assertEquals(176.7846153846154, response.fourWeekly.taxToPay)
         assertEquals(141.85846153846154, response.fourWeekly.employeesNI)
@@ -56,7 +66,12 @@ class CalculatorResponseTest {
         assertEquals(318.64307692307693, response.fourWeekly.totalDeductions)
         assertEquals(1527.5107692307693, response.fourWeekly.takeHome)
         assertEquals(962.2307692307693, response.fourWeekly.taxFree)
-        assertEquals(listOf(BandBreakdown(percentage=0.0, amount=0.0), BandBreakdown(percentage=0.2, amount=176.7846153846154)), response.fourWeekly.taxBreakdown)
+        assertEquals(
+            listOf(
+                BandBreakdown(percentage = 0.0, amount = 0.0),
+                BandBreakdown(percentage = 0.2, amount = 176.7846153846154)
+            ), response.fourWeekly.taxBreakdown
+        )
 
         assertEquals(44.19615384615385, response.weekly.taxToPay)
         assertEquals(35.464615384615385, response.weekly.employeesNI)
@@ -64,6 +79,11 @@ class CalculatorResponseTest {
         assertEquals(79.66076923076923, response.weekly.totalDeductions)
         assertEquals(381.8776923076923, response.weekly.takeHome)
         assertEquals(240.55769230769232, response.weekly.taxFree)
-        assertEquals(listOf(BandBreakdown(percentage=0.0, amount=0.0), BandBreakdown(percentage=0.2, amount=44.19615384615385)), response.weekly.taxBreakdown)
+        assertEquals(
+            listOf(
+                BandBreakdown(percentage = 0.0, amount = 0.0),
+                BandBreakdown(percentage = 0.2, amount = 44.19615384615385)
+            ), response.weekly.taxBreakdown
+        )
     }
 }

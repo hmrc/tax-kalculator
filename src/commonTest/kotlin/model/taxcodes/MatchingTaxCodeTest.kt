@@ -1,8 +1,8 @@
 package model.taxcodes
 
 import model.Country
-import kotlin.test.Test
 import utils.toTaxCode
+import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
@@ -12,6 +12,7 @@ class MatchScotlandTaxCode {
     fun `Scotland no allowance`() {
         assertTrue("S0T".toTaxCode() is S0T)
     }
+
     @Test
     fun `Scotland no allowance but with space`() {
         assertTrue("S 0T".toTaxCode() is S0T)
@@ -71,7 +72,7 @@ class MatchScotlandTaxCode {
 
     @Test
     fun `Scotland invalid`() {
-        assertFailsWith<IllegalArgumentException>{
+        assertFailsWith<IllegalArgumentException> {
             "SD3".toTaxCode()
         }
     }
@@ -127,9 +128,9 @@ class MatchWelshTaxCode {
 
     @Test
     fun `Welsh invalid`() {
-            assertFailsWith<IllegalArgumentException> {
-                "CD2".toTaxCode()
-            }
+        assertFailsWith<IllegalArgumentException> {
+            "CD2".toTaxCode()
+        }
     }
 }
 

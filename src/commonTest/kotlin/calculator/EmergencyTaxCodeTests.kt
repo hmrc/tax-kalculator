@@ -2,8 +2,8 @@ package calculator
 
 import Calculator
 import model.PayPeriod
-import kotlin.test.assertEquals
 import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class EmergencyTaxCodeTests {
 

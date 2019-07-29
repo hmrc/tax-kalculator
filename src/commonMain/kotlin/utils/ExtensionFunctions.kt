@@ -50,7 +50,8 @@ private fun String.matchScottishTaxCode(): ScottishTaxCode {
                 return SLCode(this.removePrefix("S").removeSuffix("L").toDouble())
             }
             if ("^S[0-9]{1,4}(W1|M1|X)".toRegex().containsMatchIn(this)) {
-                val strippedValue = this.removePrefix("S").removeSuffix("W1").removeSuffix("M1").removeSuffix("X").toDouble()
+                val strippedValue =
+                    this.removePrefix("S").removeSuffix("W1").removeSuffix("M1").removeSuffix("X").toDouble()
                 return ScottishEmergencyCode(strippedValue)
             }
             if ("^S[0-9]{1,4}([MN])".toRegex().containsMatchIn(this)) {
@@ -83,7 +84,8 @@ private fun String.matchWelshTaxCode(): WelshTaxCode {
                 return CLCode(this.removePrefix("C").removeSuffix("L").toDouble())
             }
             if ("^C[0-9]{1,4}(W1|M1|X)".toRegex().containsMatchIn(this)) {
-                val strippedValue = this.removePrefix("C").removeSuffix("W1").removeSuffix("M1").removeSuffix("X").toDouble()
+                val strippedValue =
+                    this.removePrefix("C").removeSuffix("W1").removeSuffix("M1").removeSuffix("X").toDouble()
                 return WelshEmergencyCode(strippedValue)
             }
             if ("^C[0-9]{1,4}([MN])".toRegex().containsMatchIn(this)) {

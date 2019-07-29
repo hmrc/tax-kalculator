@@ -6,9 +6,9 @@ internal interface Band {
     val percentageAsDecimal: Double
 
     fun inBand(amount: Double): Boolean {
-        return if(upper == -1.0 && amount > lower){
+        return if (upper == -1.0 && amount > lower) {
             true
-        } else{
+        } else {
             amount > lower && amount <= upper
         }
     }
