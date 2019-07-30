@@ -10,6 +10,33 @@ jacocoBadgeGenSetting {
     jacocoReportPath  "$buildDir/reports/jacoco/testCommonUnitTestCoverage/testCommonUnitTestCoverage.xml"
 }
 
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.95
+            }
+        }
+    }
+
+    def excludes = [
+            '**/*Test*.*'
+    ]
+    classDirectories = fileTree(
+            dir: "${project.buildDir}/classes/kotlin/jvm/",
+            excludes: excludes
+    )
+
+    def coverageSourceDirs = [
+            "src/commonMain/kotlin"
+    ]
+    additionalSourceDirs = files(coverageSourceDirs)
+    sourceDirectories = files(coverageSourceDirs)
+    executionData = files("${project.buildDir}/jacoco/jvmTest.exec")
+}
+check.dependsOn jacocoTestCoverageVerification
+
+
 repositories {
     mavenCentral()
     jcenter()
@@ -151,9 +178,10 @@ project.afterEvaluate {
 
 task cleanBuildTestCoverage{
     dependsOn 'cleanAllTests'
-    dependsOn 'build'
     dependsOn 'allTests'
+    dependsOn 'build'
     dependsOn 'testCommonUnitTestCoverage'
     dependsOn 'generateJacocoBadge'
+    dependsOn 'jacocoTestCoverageVerification'
 }
 
