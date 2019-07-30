@@ -22,17 +22,16 @@ jacocoTestCoverageVerification {
     def excludes = [
             '**/*Test*.*'
     ]
-    classDirectories = fileTree(
-            dir: "${project.buildDir}/classes/kotlin/jvm/",
-            excludes: excludes
-    )
-
     def coverageSourceDirs = [
             "src/commonMain/kotlin"
     ]
-    additionalSourceDirs = files(coverageSourceDirs)
-    sourceDirectories = files(coverageSourceDirs)
-    executionData = files("${project.buildDir}/jacoco/jvmTest.exec")
+
+    getSourceDirectories().setFrom(files(coverageSourceDirs))
+    getExecutionData().setFrom(files("${project.buildDir}/jacoco/jvmTest.exec"))
+    getClassDirectories().setFrom(fileTree(
+            dir: "${project.buildDir}/classes/kotlin/jvm/",
+            excludes: excludes
+    ))
 }
 check.dependsOn jacocoTestCoverageVerification
 
@@ -155,20 +154,16 @@ project.afterEvaluate {
         def excludes = [
                 '**/*Test*.*'
         ]
-
-        classDirectories = fileTree(
-                dir: "${project.buildDir}/classes/kotlin/jvm/",
-                excludes: excludes
-        )
-
         def coverageSourceDirs = [
                 "src/commonMain/kotlin"
         ]
 
-        additionalSourceDirs = files(coverageSourceDirs)
-        sourceDirectories = files(coverageSourceDirs)
-        executionData = files("${project.buildDir}/jacoco/jvmTest.exec")
-
+        getSourceDirectories().setFrom(files(coverageSourceDirs))
+        getExecutionData().setFrom(files("${project.buildDir}/jacoco/jvmTest.exec"))
+        getClassDirectories().setFrom(fileTree(
+                dir: "${project.buildDir}/classes/kotlin/jvm/",
+                excludes: excludes
+        ))
         reports {
             xml.enabled = true
             html.enabled = true
@@ -177,9 +172,10 @@ project.afterEvaluate {
 }
 
 task cleanBuildTestCoverage{
+    dependsOn 'clean'
     dependsOn 'cleanAllTests'
-    dependsOn 'allTests'
     dependsOn 'build'
+    dependsOn 'allTests'
     dependsOn 'testCommonUnitTestCoverage'
     dependsOn 'generateJacocoBadge'
     dependsOn 'jacocoTestCoverageVerification'
