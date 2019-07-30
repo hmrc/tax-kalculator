@@ -26,7 +26,6 @@ version '0.0.1'
 
 apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
-
 String frameworkName = 'TaxKalculator'
 
 kotlin {
