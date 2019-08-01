@@ -53,7 +53,7 @@ Calculator(
     userEnteredWages = 20000.0,     // Required
     payPeriod = PayPeriod.YEARLY,   // Required
     pensionAge = false,             // Optional (Default: false)
-    hoursPerWeek = 0.0,             // Optional (Default: 0.0)
+    hoursPerWeek = null,            // Optional (Default: null)
     taxYear = 2019                  // Optional (Default: Current Tax Year)
 )
 ```

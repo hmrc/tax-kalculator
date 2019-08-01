@@ -16,6 +16,12 @@ class CalculatorTest {
             Calculator("1250L", 20.0, payPeriod = HOURLY, hoursPerWeek = 0.0, taxYear = 2019)
         }
     }
+    @Test
+    fun `Error When Hours=null And PayPeriod Is HOURLY`() {
+        assertFailsWith<InvalidHours> {
+            Calculator("1250L", 20.0, payPeriod = HOURLY, taxYear = 2019)
+        }
+    }
 }
 
 class CalculatorHelperTest{

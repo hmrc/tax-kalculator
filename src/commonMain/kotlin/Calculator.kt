@@ -19,7 +19,7 @@ class Calculator(
     userEnteredWages: Double,
     payPeriod: PayPeriod,
     private val pensionAge: Boolean = false,
-    hoursPerWeek: Double = 0.0,
+    hoursPerWeek: Double? = null,
     taxYear: Int = TaxYear().currentTaxYear()
 ) {
     private val bandBreakdown: MutableList<BandBreakdown> = mutableListOf()

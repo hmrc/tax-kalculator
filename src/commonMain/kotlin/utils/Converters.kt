@@ -5,10 +5,10 @@ import model.PayPeriod
 
 internal fun Double.convertWageToYearly(
     payPeriod: PayPeriod,
-    hoursPerWeek: Double = 0.0
+    hoursPerWeek: Double? = null
 ): Double {
     return when (payPeriod) {
-        PayPeriod.HOURLY -> if (hoursPerWeek > 0) this * hoursPerWeek * 52 else throw InvalidHours("The number of hours must be greater than 0 when PayPeriod is HOURLY")
+        PayPeriod.HOURLY -> if (hoursPerWeek != null && hoursPerWeek > 0) this * hoursPerWeek * 52 else throw InvalidHours("The number of hours must be greater than 0 when PayPeriod is HOURLY")
         PayPeriod.WEEKLY -> this * 52
         PayPeriod.FOUR_WEEKLY -> this * 13
         PayPeriod.MONTHLY -> this * 12
