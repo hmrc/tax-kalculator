@@ -8,7 +8,7 @@ import kotlin.test.assertFailsWith
 class WageConverterTest {
     @Test
     fun `Week Invalid When Converting From Year`() {
-        assertFailsWith<IllegalArgumentException> {
+        assertFailsWith<InvalidPayPeriod> {
             100.0.convertAmountFromYearlyToPayPeriod(PayPeriod.HOURLY)
         }
     }

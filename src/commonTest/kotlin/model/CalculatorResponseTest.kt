@@ -9,6 +9,7 @@ class CalculatorResponseTest {
     @Test
     fun `Check Summation Of Total Deductions`() {
         val response = CalculatorResponsePayPeriod(
+            payPeriod = PayPeriod.YEARLY,
             taxToPay = 100.0,
             employeesNI = 200.0,
             employersNI = 300.0,
@@ -42,10 +43,11 @@ class CalculatorResponseTest {
         assertEquals(12509.0, response.yearly.taxFree)
         assertEquals(
             listOf(
-                BandBreakdown(percentage = 0.0, amount = 0.0),
                 BandBreakdown(percentage = 0.2, amount = 2298.2000000000003)
             ), response.yearly.taxBreakdown
         )
+        assertEquals(response.yearly.taxBreakdown[0].bandDescription, "Income taxed at 20%")
+
 
         assertEquals(191.51666666666668, response.monthly.taxToPay)
         assertEquals(153.67999999999998, response.monthly.employeesNI)
@@ -55,7 +57,6 @@ class CalculatorResponseTest {
         assertEquals(1042.4166666666667, response.monthly.taxFree)
         assertEquals(
             listOf(
-                BandBreakdown(percentage = 0.0, amount = 0.0),
                 BandBreakdown(percentage = 0.2, amount = 191.51666666666668)
             ), response.monthly.taxBreakdown
         )
@@ -68,7 +69,6 @@ class CalculatorResponseTest {
         assertEquals(962.2307692307693, response.fourWeekly.taxFree)
         assertEquals(
             listOf(
-                BandBreakdown(percentage = 0.0, amount = 0.0),
                 BandBreakdown(percentage = 0.2, amount = 176.7846153846154)
             ), response.fourWeekly.taxBreakdown
         )
@@ -81,7 +81,6 @@ class CalculatorResponseTest {
         assertEquals(240.55769230769232, response.weekly.taxFree)
         assertEquals(
             listOf(
-                BandBreakdown(percentage = 0.0, amount = 0.0),
                 BandBreakdown(percentage = 0.2, amount = 44.19615384615385)
             ), response.weekly.taxBreakdown
         )

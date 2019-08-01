@@ -31,7 +31,7 @@ internal fun String.country(): Country {
 private fun String.matchGeneralTaxCodes(): TaxCode {
     return when (this) {
         "NT" -> NTCode()
-        else -> throw IllegalArgumentException("Invalid General Tax Code")
+        else -> throw InvalidTaxCode("${this} is an invalid tax code")
     }
 }
 
@@ -59,13 +59,13 @@ private fun String.matchScottishTaxCode(): ScottishTaxCode {
                 return when {
                     this.endsWith("N") -> ScottishNCode(strippedValue)
                     this.endsWith("M") -> ScottishMCode(strippedValue)
-                    else -> throw IllegalStateException("Invalid welsh marriage tax code")
+                    else -> throw InvalidTaxCode("${this} is an invalid scottish marriage tax code")
                 }
             }
             if ("^SK[0-9]{1,4}".toRegex().containsMatchIn(this)) {
                 return SKCode(this.removePrefix("SK").toDouble())
             }
-            throw IllegalArgumentException("Invalid Scottish Tax Code")
+            throw InvalidTaxCode("${this} is an invalid Scottish tax code")
         }
     }
 }
@@ -93,13 +93,13 @@ private fun String.matchWelshTaxCode(): WelshTaxCode {
                 return when {
                     this.endsWith("N") -> WelshNCode(strippedValue)
                     this.endsWith("M") -> WelshMCode(strippedValue)
-                    else -> throw IllegalStateException("Invalid welsh marriage tax code")
+                    else -> throw InvalidTaxCode("${this} is an invalid scottish marriage tax code")
                 }
             }
             if ("^CK[0-9]{1,4}".toRegex().containsMatchIn(this)) {
                 return CKCode(this.removePrefix("CK").toDouble())
             }
-            throw IllegalArgumentException("Invalid Welsh Tax Code")
+            throw InvalidTaxCode("${this} is an invalid Welsh tax code")
         }
     }
 }
@@ -126,13 +126,13 @@ private fun String.matchEnglishTaxCode(): EnglishTaxCode {
                 return when {
                     this.endsWith("N") -> EnglishNCode(strippedValue)
                     this.endsWith("M") -> EnglishMCode(strippedValue)
-                    else -> throw IllegalStateException("Invalid english marriage tax code")
+                    else -> throw InvalidTaxCode("${this} is an invalid England marriage tax code")
                 }
             }
             if ("^K[0-9]{1,4}".toRegex().containsMatchIn(this)) {
                 return KCode(this.removePrefix("K").toDouble())
             }
-            throw IllegalArgumentException("Invalid English Tax Code")
+            throw InvalidTaxCode("${this} is an invalid Welsh tax code")
         }
     }
 
@@ -142,11 +142,11 @@ internal fun List<Band>.whichBandContains(wages: Double): Int {
     for (i in 0 until this.size) if (this[i].inBand(wages)) {
         return i
     }
-    throw IllegalArgumentException("$wages are not in any band!")
+    throw ConfigurationError("$wages are not in any band!")
 }
 
 
-internal fun getDefaultTaxAllowance(taxYear: Int, country: Country): Int {
+internal fun getDefaultTaxAllowance(taxYear: Int, country: Country = ENGLAND): Int {
     return TaxBands(country, taxYear).bands[0].upper.toInt()
 }
 

@@ -8,7 +8,7 @@ internal fun Double.convertWageToYearly(
     hoursPerWeek: Double = 0.0
 ): Double {
     return when (payPeriod) {
-        PayPeriod.HOURLY -> if (hoursPerWeek > 0) this * hoursPerWeek * 52 else throw IllegalArgumentException("Hours must be greater than 0 for PayPeriod = HOURLY")
+        PayPeriod.HOURLY -> if (hoursPerWeek > 0) this * hoursPerWeek * 52 else throw InvalidHours("The number of hours must be greater than 0 when PayPeriod is HOURLY")
         PayPeriod.WEEKLY -> this * 52
         PayPeriod.FOUR_WEEKLY -> this * 13
         PayPeriod.MONTHLY -> this * 12
@@ -33,6 +33,6 @@ internal fun Double.convertAmountFromYearlyToPayPeriod(
         PayPeriod.FOUR_WEEKLY -> this / 13
         PayPeriod.MONTHLY -> this / 12
         PayPeriod.YEARLY -> this
-        PayPeriod.HOURLY -> throw IllegalArgumentException("Amounts are not displayed hour by hour")
+        else -> throw InvalidPayPeriod("$payPeriod is not supported")
     }
 }

@@ -1,5 +1,7 @@
 package model.bands
 
+import utils.UnsupportedTaxYear
+
 
 internal class EmployeeNIBands(taxYear: Int) {
 
@@ -12,6 +14,6 @@ internal class EmployeeNIBands(taxYear: Int) {
 
     internal val bands: List<EmployeeNIBand> = when (taxYear) {
         2019 -> employeeNIBands2019
-        else -> throw IllegalArgumentException("Unsupported Year")
+        else -> throw UnsupportedTaxYear("$taxYear")
     }
 }

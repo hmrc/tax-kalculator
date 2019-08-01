@@ -1,6 +1,7 @@
 package model.bands
 
 import model.Country.*
+import utils.UnsupportedTaxYear
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -9,8 +10,8 @@ class TaxBandsTest {
 
     @Test
     fun invalidYear() {
-        val exception = assertFailsWith<IllegalArgumentException> { TaxBands(ENGLAND, 2017) }
-        assertEquals(exception.message, "Unsupported Year")
+        val exception = assertFailsWith<UnsupportedTaxYear> { TaxBands(ENGLAND, 2017) }
+        assertEquals(exception.message, "2017")
     }
 
     @Test
