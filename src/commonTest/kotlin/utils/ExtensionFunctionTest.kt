@@ -35,7 +35,7 @@ class ExtensionFunctionTest {
 
     @Test
     fun `Invalid Wage For Which Band Contains`() {
-        val exception = assertFailsWith<IllegalArgumentException> {
+        val exception = assertFailsWith<ConfigurationError> {
             TaxBands(ENGLAND, 2019).bands.whichBandContains(-1.0)
         }
         assertEquals("-1.0 are not in any band!", exception.message)

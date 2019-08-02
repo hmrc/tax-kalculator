@@ -1,5 +1,5 @@
 package model
 
-internal enum class Country {
+enum class Country {
     ENGLAND, SCOTLAND, WALES, NONE
 }

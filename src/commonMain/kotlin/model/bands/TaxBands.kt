@@ -3,6 +3,7 @@ package model.bands
 import model.Country
 import model.Country.SCOTLAND
 import model.Country.WALES
+import utils.UnsupportedTaxYear
 
 internal class TaxBands(country: Country, taxYear: Int) {
 
@@ -37,6 +38,6 @@ internal class TaxBands(country: Country, taxYear: Int) {
             SCOTLAND -> scotland2019
             else -> other2019
         }
-        else -> throw IllegalArgumentException("Unsupported Year")
+        else -> throw UnsupportedTaxYear("$taxYear")
     }
 }
