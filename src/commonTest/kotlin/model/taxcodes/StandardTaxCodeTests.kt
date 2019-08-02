@@ -1,4 +1,4 @@
-package calculator
+package model.taxcodes
 
 import Calculator
 import model.CalculatorResponse

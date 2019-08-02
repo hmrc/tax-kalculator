@@ -9,9 +9,6 @@ import kotlin.test.assertFailsWith
 import CalculatorHelper
 import utils.InvalidHours
 
-import kotlin.test.assertFailsWith
-
-
 
 class CalculatorTest {
 

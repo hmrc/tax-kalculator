@@ -3,7 +3,7 @@
 
 ##### Code Coverages
 ![LINE](https://img.shields.io/badge/line--coverage-97%25-brightgreen.svg)
-![BRANCH](https://img.shields.io/badge/branch--coverage-93%25-brightgreen.svg)
+![BRANCH](https://img.shields.io/badge/branch--coverage-94%25-brightgreen.svg)
 ![COMPLEXITY](https://img.shields.io/badge/complexity-1.37-brightgreen.svg)
 ##### Build Status
 
@@ -41,7 +41,7 @@ implementation "uk.gov.hmrc:tax-kalculator-jvm:0.0.4" //Update Version
 
 ## Using library
 
-To use this library you need to call the `Calculator` contstructor and pass in the values as per the following example:
+To use this library you need to call the `Calculator` constructor and pass in the values as per the following example:
 
 > The default values are working in Android (and other JVM) but currently do not seem to be present in iOS, so pass in the default values for now.
 >
