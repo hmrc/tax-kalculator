@@ -16,8 +16,6 @@
 package calculator.utils
 
 import calculator.model.Country
-import calculator.model.bands.Band
-import calculator.model.bands.TaxBands
 import calculator.model.taxcodes.BR
 import calculator.model.taxcodes.C0T
 import calculator.model.taxcodes.CBR
@@ -58,29 +56,16 @@ import calculator.model.taxcodes.ZeroT
 internal fun String.toTaxCode(): TaxCode {
     val noSpacesTaxCode = this.replace("\\s".toRegex(), "")
 
-    return when (noSpacesTaxCode.country()) {
+    return when (noSpacesTaxCode.toCountry()) {
         Country.SCOTLAND -> noSpacesTaxCode.matchScottishTaxCode()
         Country.WALES -> noSpacesTaxCode.matchWelshTaxCode()
         Country.ENGLAND -> noSpacesTaxCode.matchEnglishTaxCode()
-        Country.NONE -> noSpacesTaxCode.matchGeneralTaxCodes()
-    }
-}
-
-internal fun String.country(): Country {
-    return when (this) {
-        "NT" -> Country.NONE
-        else -> when (this.first().toString()) {
-            "S" -> Country.SCOTLAND
-            "C" -> Country.WALES
-            else -> Country.ENGLAND
+        Country.NONE -> {
+            when (this) {
+                "NT" -> NTCode()
+                else -> throw InvalidTaxCode("$this is an invalid tax code")
+            }
         }
-    }
-}
-
-private fun String.matchGeneralTaxCodes(): TaxCode {
-    return when (this) {
-        "NT" -> NTCode()
-        else -> throw InvalidTaxCode("$this is an invalid tax code")
     }
 }
 
@@ -106,16 +91,18 @@ private fun String.matchOtherScottishTaxCode(): ScottishTaxCode {
                 .removeSuffix("X").toDouble()
             ScottishEmergencyCode(strippedValue)
         }
-        "^S[0-9]{1,4}([MN])".toRegex().containsMatchIn(this) -> {
-            val strippedValue = removePrefix("S").removeSuffix("M").removeSuffix("N").toDouble()
-            when {
-                endsWith("N") -> ScottishNCode(strippedValue)
-                endsWith("M") -> ScottishMCode(strippedValue)
-                else -> throw InvalidTaxCode("$this is an invalid scottish marriage tax code")
-            }
-        }
+        "^S[0-9]{1,4}([MN])".toRegex().containsMatchIn(this) -> matchScottishMNCode()
         "^SK[0-9]{1,4}".toRegex().containsMatchIn(this) -> SKCode(removePrefix("SK").toDouble())
         else -> throw InvalidTaxCode("$this is an invalid Scottish tax code")
+    }
+}
+
+private fun String.matchScottishMNCode(): ScottishTaxCode {
+    val strippedValue = removePrefix("S").removeSuffix("M").removeSuffix("N").toDouble()
+    return when {
+        endsWith("N") -> ScottishNCode(strippedValue)
+        endsWith("M") -> ScottishMCode(strippedValue)
+        else -> throw InvalidTaxCode("$this is an invalid scottish marriage tax code")
     }
 }
 
@@ -141,16 +128,18 @@ private fun String.matchOtherWelshTaxCode(): WelshTaxCode {
                     .removeSuffix("X").toDouble()
             WelshEmergencyCode(strippedValue)
         }
-        "^C[0-9]{1,4}([MN])".toRegex().containsMatchIn(this) -> {
-            val strippedValue = removePrefix("C").removeSuffix("M").removeSuffix("N").toDouble()
-            when {
-                endsWith("N") -> WelshNCode(strippedValue)
-                endsWith("M") -> WelshMCode(strippedValue)
-                else -> throw InvalidTaxCode("$this is an invalid scottish marriage tax code")
-            }
-        }
+        "^C[0-9]{1,4}([MN])".toRegex().containsMatchIn(this) -> matchWelshMNCode()
         "^CK[0-9]{1,4}".toRegex().containsMatchIn(this) -> CKCode(removePrefix("CK").toDouble())
         else -> throw InvalidTaxCode("$this is an invalid Welsh tax code")
+    }
+}
+
+private fun String.matchWelshMNCode(): WelshTaxCode {
+    val strippedValue = removePrefix("C").removeSuffix("M").removeSuffix("N").toDouble()
+    return when {
+        endsWith("N") -> WelshNCode(strippedValue)
+        endsWith("M") -> WelshMCode(strippedValue)
+        else -> throw InvalidTaxCode("$this is an invalid scottish marriage tax code")
     }
 }
 
@@ -172,26 +161,17 @@ private fun String.matchOtherEnglishTaxCode(): EnglishTaxCode {
             val strippedValue = removeSuffix("W1").removeSuffix("M1").removeSuffix("X").toDouble()
             EnglishEmergencyCode(strippedValue)
         }
-        "^[0-9]{1,4}([MN])".toRegex().containsMatchIn(this) -> {
-            val strippedValue = removeSuffix("M").removeSuffix("N").toDouble()
-            when {
-                endsWith("N") -> EnglishNCode(strippedValue)
-                endsWith("M") -> EnglishMCode(strippedValue)
-                else -> throw InvalidTaxCode("$this is an invalid England marriage tax code")
-            }
-        }
+        "^[0-9]{1,4}([MN])".toRegex().containsMatchIn(this) -> matcEnglishMNCode()
         "^K[0-9]{1,4}".toRegex().containsMatchIn(this) -> KCode(removePrefix("K").toDouble())
         else -> throw InvalidTaxCode("$this is an invalid Welsh tax code")
     }
 }
 
-internal fun List<Band>.whichBandContains(wages: Double): Int {
-    for (i in 0 until this.size) if (this[i].inBand(wages)) {
-        return i
+private fun String.matcEnglishMNCode(): EnglishTaxCode {
+    val strippedValue = removeSuffix("M").removeSuffix("N").toDouble()
+    return when {
+        endsWith("N") -> EnglishNCode(strippedValue)
+        endsWith("M") -> EnglishMCode(strippedValue)
+        else -> throw InvalidTaxCode("$this is an invalid England marriage tax code")
     }
-    throw ConfigurationError("$wages are not in any band!")
-}
-
-internal fun getDefaultTaxAllowance(taxYear: Int, country: Country = Country.ENGLAND): Int {
-    return TaxBands(country, taxYear).bands[0].upper.toInt()
 }

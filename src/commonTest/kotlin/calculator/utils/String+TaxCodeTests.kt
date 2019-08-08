@@ -13,17 +13,48 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package calculator.model.taxcodes
+package calculator.utils
 
 import calculator.model.Country
-import calculator.utils.InvalidTaxCode
-import calculator.utils.toTaxCode
+import calculator.model.taxcodes.BR
+import calculator.model.taxcodes.C0T
+import calculator.model.taxcodes.CBR
+import calculator.model.taxcodes.CD0
+import calculator.model.taxcodes.CD1
+import calculator.model.taxcodes.CKCode
+import calculator.model.taxcodes.CLCode
+import calculator.model.taxcodes.CTCode
+import calculator.model.taxcodes.D0
+import calculator.model.taxcodes.D1
+import calculator.model.taxcodes.EnglishEmergencyCode
+import calculator.model.taxcodes.EnglishMCode
+import calculator.model.taxcodes.EnglishNCode
+import calculator.model.taxcodes.KCode
+import calculator.model.taxcodes.LCode
+import calculator.model.taxcodes.NoTaxTaxCode
+import calculator.model.taxcodes.S0T
+import calculator.model.taxcodes.SBR
+import calculator.model.taxcodes.SD0
+import calculator.model.taxcodes.SD1
+import calculator.model.taxcodes.SD2
+import calculator.model.taxcodes.SKCode
+import calculator.model.taxcodes.SLCode
+import calculator.model.taxcodes.STCode
+import calculator.model.taxcodes.ScottishEmergencyCode
+import calculator.model.taxcodes.ScottishMCode
+import calculator.model.taxcodes.ScottishNCode
+import calculator.model.taxcodes.TCode
+import calculator.model.taxcodes.WelshEmergencyCode
+import calculator.model.taxcodes.WelshMCode
+import calculator.model.taxcodes.WelshNCode
+import calculator.model.taxcodes.ZeroT
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 
-class MatchScotlandTaxCode {
+class StringTaxCodeTests {
+
     @Test
     fun `Scotland no allowance`() {
         assertTrue("S0T".toTaxCode() is S0T)
@@ -90,9 +121,7 @@ class MatchScotlandTaxCode {
             "SD3".toTaxCode()
         }
     }
-}
 
-class MatchWelshTaxCode {
     @Test
     fun `Welsh no allowance`() {
         assertTrue("C0T".toTaxCode() is C0T)
@@ -146,9 +175,7 @@ class MatchWelshTaxCode {
             "CD2".toTaxCode()
         }
     }
-}
 
-class MatchEnglishTaxCode {
     @Test
     fun `English no allowance`() {
         assertTrue("0T".toTaxCode() is ZeroT)

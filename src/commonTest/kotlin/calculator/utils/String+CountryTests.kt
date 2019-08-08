@@ -13,35 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package calculator
+package calculator.utils
 
-import calculator.model.PayPeriod.HOURLY
+import calculator.model.Country
 import kotlin.test.Test
-
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
-import calculator.utils.InvalidHours
 
-class CalculatorTest {
+class StringCountryTests {
 
     @Test
-    fun `Error When Hours=0 And PayPeriod Is HOURLY`() {
-        assertFailsWith<InvalidHours> {
-            Calculator("1250L", 20.0, payPeriod = HOURLY, hoursPerWeek = 0.0, taxYear = 2019)
-        }
+    fun `Scotland Type When Prefix Is S`() {
+        assertEquals(Country.SCOTLAND, "S1250L".toCountry())
     }
+
     @Test
-    fun `Error When Hours=null And PayPeriod Is HOURLY`() {
-        assertFailsWith<InvalidHours> {
-            Calculator("1250L", 20.0, payPeriod = HOURLY, taxYear = 2019)
-        }
+    fun `Wales TypeWhen Prefix Is C`() {
+        assertEquals(Country.WALES, "C1250L".toCountry())
     }
-}
-
-class CalculatorHelperTest {
 
     @Test
-    fun `Get Default Tax code for year`() {
-        assertEquals(CalculatorHelper().getDefaultTaxCode(), "1250L")
+    fun `England Type When No Prefix`() {
+        assertEquals(Country.ENGLAND, "1250L".toCountry())
+    }
+
+    @Test
+    fun `NT Country None`() {
+        assertEquals(Country.NONE, "NT".toCountry())
+    }
+
+    @Test
+    fun `Other Tax Codes default to English`() {
+        assertEquals(Country.ENGLAND, "XX".toCountry())
     }
 }

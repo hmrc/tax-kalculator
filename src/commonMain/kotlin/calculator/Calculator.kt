@@ -18,6 +18,7 @@ package calculator
 import calculator.model.BandBreakdown
 import calculator.model.CalculatorResponse
 import calculator.model.CalculatorResponsePayPeriod
+import calculator.model.Country
 import calculator.model.PayPeriod
 import calculator.model.PayPeriod.MONTHLY
 import calculator.model.bands.Band
@@ -38,12 +39,7 @@ import calculator.utils.TaxYear
 import calculator.utils.convertAmountFromYearlyToPayPeriod
 import calculator.utils.convertListOfBandBreakdownForPayPeriod
 import calculator.utils.convertWageToYearly
-import calculator.utils.getDefaultTaxAllowance
 import calculator.utils.toTaxCode
-
-class CalculatorHelper {
-    fun getDefaultTaxCode() = "${(getDefaultTaxAllowance(TaxYear().currentTaxYear()) / 10)}L"
-}
 
 class Calculator(
     private val taxCodeString: String,
@@ -178,5 +174,12 @@ class Calculator(
                 kCodeAdjustment = if (taxCode is KTaxCode) taxCode.amountToAddToWages else null
             )
         )
+    }
+
+    companion object {
+        fun getDefaultTaxCode() = "${(getDefaultTaxAllowance(TaxYear().currentTaxYear()) / 10)}L"
+
+        internal fun getDefaultTaxAllowance(taxYear: Int, country: Country = Country.ENGLAND) =
+            TaxBands(country, taxYear).bands[0].upper.toInt()
     }
 }

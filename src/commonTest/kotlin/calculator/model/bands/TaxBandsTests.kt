@@ -21,7 +21,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
-class TaxBandsTest {
+class TaxBandsTests {
 
     @Test
     fun invalidYear() {

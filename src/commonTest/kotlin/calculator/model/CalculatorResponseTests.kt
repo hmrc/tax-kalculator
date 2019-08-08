@@ -19,7 +19,7 @@ import calculator.Calculator
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class CalculatorResponseTest {
+class CalculatorResponseTests {
 
     @Test
     fun `Check Summation Of Total Deductions`() {
