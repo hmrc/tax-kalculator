@@ -23,7 +23,7 @@ Just add the framework to the project all dependencies are bundled
 
 Add `jcenter()` to `allProjects.repository` in the root `build.gradle`
 
-In the app module `build.gradle` add the following line to your `dependencies`
+In the app module `build.gradle` add the following line to your `dependencies`:
 
 ```groovy
 implementation "uk.gov.hmrc:tax-kalculator-jvm:0.0.4" //Update Version
@@ -33,7 +33,7 @@ implementation "uk.gov.hmrc:tax-kalculator-jvm:0.0.4" //Update Version
 
 Add `jcenter()` to `repositories` in the root `build.gradle`
 
-In the module `build.gradle` add the following line to your `dependencies`
+In the module `build.gradle` add the following line to your `dependencies`:
 
 ```groovy
 implementation "uk.gov.hmrc:tax-kalculator-jvm:0.0.4" //Update Version
@@ -41,12 +41,12 @@ implementation "uk.gov.hmrc:tax-kalculator-jvm:0.0.4" //Update Version
 
 ## Using library
 
-To use this library you need to call the `Calculator` constructor and pass in the values as per the following example:
+To use this library you need to create an instance of `Calculator`, passing in the values as per the following example:
 
 > The default values are working in Android (and other JVM) but currently do not seem to be present in iOS, so pass in the default values for now.
->
+
 ```kotlin
-Calculator(
+val calculator = Calculator(
     taxCodeString = "1250L",        // Required
     userEnteredWages = 20000.0,     // Required
     payPeriod = PayPeriod.YEARLY,   // Required
@@ -56,9 +56,13 @@ Calculator(
 )
 ```
 
-To run calculations and get the results be sure to call the `run()` function on the constructor.
+To run calculations and get the results call `run()`:
 
-This will returns an object of type `CalculatorResponse`. This class is broken up in to weekly, four_weekly, monthly amd yearly. Each of these members is of type `CalculatorResponsePayPeriod` and the members of this class are what will return the values (relative to their PayPeriod) needed for the app, they are:
+```kotlin
+val response = calculator.run()
+```
+
+This will returns an object of type `CalculatorResponse`. This class is broken up into weekly, four_weekly, monthly and yearly. Each of these members is of type `CalculatorResponsePayPeriod` and the members of this class are what will return the values (relative to their PayPeriod) needed for the app, they are:
 
 - `taxToPay: Double`
 - `employeesNI: Double`
@@ -69,7 +73,7 @@ This will returns an object of type `CalculatorResponse`. This class is broken u
 - `totalDeductions: Double`
 - `takeHome: Double`
 
-> For tax breakdown this is the amount of tax per tax band which has two members `percentage: Double` and `amount: Double`
+> For tax breakdown this is the amount of tax per tax band which has two members, `percentage: Double` and `amount: Double`.
 
 
 
