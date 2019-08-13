@@ -161,13 +161,13 @@ private fun String.matchOtherEnglishTaxCode(): EnglishTaxCode {
             val strippedValue = removeSuffix("W1").removeSuffix("M1").removeSuffix("X").toDouble()
             EnglishEmergencyCode(strippedValue)
         }
-        "^[0-9]{1,4}([MN])".toRegex().containsMatchIn(this) -> matcEnglishMNCode()
+        "^[0-9]{1,4}([MN])".toRegex().containsMatchIn(this) -> matchEnglishMNCode()
         "^K[0-9]{1,4}".toRegex().containsMatchIn(this) -> KCode(removePrefix("K").toDouble())
         else -> throw InvalidTaxCode("$this is an invalid Welsh tax code")
     }
 }
 
-private fun String.matcEnglishMNCode(): EnglishTaxCode {
+private fun String.matchEnglishMNCode(): EnglishTaxCode {
     val strippedValue = removeSuffix("M").removeSuffix("N").toDouble()
     return when {
         endsWith("N") -> EnglishNCode(strippedValue)

@@ -31,8 +31,8 @@ data class CalculatorResponsePayPeriod(
     val taxFree: Double,
     val kCodeAdjustment: Double? = null
 ) {
-    val totalDeductions: Double = taxToPay + employeesNI
-    val takeHome: Double = wages - totalDeductions
+    val totalDeductions = taxToPay + employeesNI
+    val takeHome = wages - totalDeductions
 }
 
 data class CalculatorResponse(
