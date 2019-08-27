@@ -3,6 +3,7 @@ plugins {
     id 'jacoco'
     id 'java'
     id 'com.github.dawnwords.jacoco.badge' version "0.1.0"
+    id "com.jfrog.bintray" version "1.8.4"
 }
 
 jacocoBadgeGenSetting {
@@ -46,7 +47,9 @@ repositories {
 }
 
 group 'uk.gov.hmrc'
-version '0.0.1'
+description='Multiplatform Tax Calculator library'
+version='0.0.2'
+
 
 apply plugin: 'maven-publish'
 String frameworkName = 'TaxKalculator'
@@ -165,8 +168,28 @@ task "testCommonUnitTestCoverage"(type: JacocoReport, dependsOn: "allTests") {
     }
 }
 
-
 task cleanBuildTestCoverage(type: GradleBuild) {
     tasks = ['clean', 'cleanAllTests', 'build','testCommonUnitTestCoverage', 'generateJacocoBadge', 'jacocoTestCoverageVerification']
 }
 
+Properties credentials = new Properties()
+rootProject.file("credentials.properties").withInputStream { credentials.load(it) }
+
+bintray {
+    user = credentials.getProperty('bintray.user')
+    key = credentials.getProperty('bintray.apikey')
+
+    publications = ['jvm', 'metadata']
+
+    pkg {
+        repo = 'mobile-releases'
+        name = project.name
+        userOrg = 'hmrc'
+        desc = project.description
+        licenses = ['Apache-2.0']
+        version {
+            name = project.version
+            released = new Date()
+        }
+    }
+}

@@ -5,6 +5,7 @@
 ![LINE](https://img.shields.io/badge/line--coverage-97%25-brightgreen.svg)
 ![BRANCH](https://img.shields.io/badge/branch--coverage-94%25-brightgreen.svg)
 ![COMPLEXITY](https://img.shields.io/badge/complexity-1.37-brightgreen.svg)
+
 ##### Build Status
 
 [![Build Status](https://app.bitrise.io/app/cd7fb52c258b9273/status.svg?token=lntO8o4xz5AUEvLwVzbo3A&branch=master)](https://app.bitrise.io/app/cd7fb52c258b9273)
