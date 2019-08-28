@@ -204,7 +204,7 @@ bintray {
             released = new Date()
         }
 
-def license = '''\
+        def license = '''\
 /*
  * Copyright $YEAR HM Revenue & Customs
  *
@@ -222,11 +222,13 @@ def license = '''\
  */
 '''
 
-spotless {
-    kotlin {
-        target "**/*.kt"
-        ktlint()
-        licenseHeader license
+        spotless {
+            kotlin {
+                target "**/*.kt"
+                ktlint()
+                licenseHeader license
 
+            }
+        }
     }
 }
