@@ -46,9 +46,15 @@ repositories {
     }
 }
 
+static def getDate() {
+    def date = new Date()
+    def formattedDate = date.format('yyyyMMddHHmm')
+    return formattedDate
+}
+
 group 'uk.gov.hmrc'
 description='Multiplatform Tax Calculator library'
-version='0.0.2'
+version=System.getenv('BITRISE_GIT_TAG') ?: ("SNAPSHOT-" + getDate() )
 
 
 apply plugin: 'maven-publish'
