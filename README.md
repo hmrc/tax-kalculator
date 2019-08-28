@@ -1,10 +1,14 @@
 
 # tax-kalculator
 
+#### Version
+[ ![Download](https://api.bintray.com/packages/hmrc/mobile-releases/tax-kalculator/images/download.svg) ](https://bintray.com/hmrc/mobile-releases/tax-kalculator/_latestVersion)
+
 ##### Code Coverages
-![LINE](https://img.shields.io/badge/line--coverage-97%25-brightgreen.svg)
+![LINE](https://img.shields.io/badge/line--coverage-98%25-brightgreen.svg)
 ![BRANCH](https://img.shields.io/badge/branch--coverage-94%25-brightgreen.svg)
-![COMPLEXITY](https://img.shields.io/badge/complexity-1.37-brightgreen.svg)
+![COMPLEXITY](https://img.shields.io/badge/complexity-1.46-brightgreen.svg)
+
 ##### Build Status
 
 [![Build Status](https://app.bitrise.io/app/cd7fb52c258b9273/status.svg?token=lntO8o4xz5AUEvLwVzbo3A&branch=master)](https://app.bitrise.io/app/cd7fb52c258b9273)
@@ -19,25 +23,16 @@ The gradle task to run before commit that runs a clean, build, test, coverage an
 
 Just add the framework to the project all dependencies are bundled
 
-### Android
+### Android or JVM
 
-Add `jcenter()` to `allProjects.repository` in the root `build.gradle`
+Add the following to `repositories` in your modules `build.gradle`
+```groovy
+maven {
+        url  "https://hmrc.bintray.com/mobile-releases" 
+    }
+```
 
 In the app module `build.gradle` add the following line to your `dependencies`:
-
-```groovy
-implementation "uk.gov.hmrc:tax-kalculator-jvm:0.0.4" //Update Version
-```
-
-### JVM
-
-Add `jcenter()` to `repositories` in the root `build.gradle`
-
-In the module `build.gradle` add the following line to your `dependencies`:
-
-```groovy
-implementation "uk.gov.hmrc:tax-kalculator-jvm:0.0.4" //Update Version
-```
 
 ## Using library
 

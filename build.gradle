@@ -5,6 +5,7 @@ plugins {
     id 'com.github.dawnwords.jacoco.badge' version '0.1.0'
     id 'io.gitlab.arturbosch.detekt' version '1.0.0-RC16'
     id 'com.diffplug.gradle.spotless' version '3.24.0'
+    id "com.jfrog.bintray" version "1.8.4"
 }
 
 jacocoBadgeGenSetting {
@@ -47,8 +48,16 @@ repositories {
     }
 }
 
+static def getDate() {
+    def date = new Date()
+    def formattedDate = date.format('yyyyMMddHHmm')
+    return formattedDate
+}
+
 group 'uk.gov.hmrc'
-version '0.0.1'
+description='Multiplatform Tax Calculator library'
+version=System.getenv('BITRISE_GIT_TAG') ?: ("SNAPSHOT-" + getDate() )
+
 
 apply plugin: 'maven-publish'
 String frameworkName = 'TaxKalculator'
@@ -171,12 +180,31 @@ task "testCommonUnitTestCoverage"(type: JacocoReport, dependsOn: "allTests") {
     }
 }
 
-
 task cleanBuildTestCoverage(type: GradleBuild) {
     tasks = ['clean', 'cleanAllTests', 'build','testCommonUnitTestCoverage', 'generateJacocoBadge', 'jacocoTestCoverageVerification']
 }
 
-def license = '''\
+Properties credentials = new Properties()
+rootProject.file("credentials.properties").withInputStream { credentials.load(it) }
+
+bintray {
+    user = credentials.getProperty('bintray.user')
+    key = credentials.getProperty('bintray.apikey')
+
+    publications = ['jvm', 'metadata']
+
+    pkg {
+        repo = 'mobile-releases'
+        name = project.name
+        userOrg = 'hmrc'
+        desc = project.description
+        licenses = ['Apache-2.0']
+        version {
+            name = project.version
+            released = new Date()
+        }
+
+        def license = '''\
 /*
  * Copyright $YEAR HM Revenue & Customs
  *
@@ -194,10 +222,13 @@ def license = '''\
  */
 '''
 
-spotless {
-    kotlin {
-        target "**/*.kt"
-        ktlint()
-        licenseHeader license
+        spotless {
+            kotlin {
+                target "**/*.kt"
+                ktlint()
+                licenseHeader license
+
+            }
+        }
     }
 }
