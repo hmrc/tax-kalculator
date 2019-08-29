@@ -16,7 +16,7 @@
 package calculator.model.taxcodes
 
 import calculator.Calculator
-import calculator.model.PayPeriod
+import calculator.model.PayPeriod.YEARLY
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -24,7 +24,7 @@ class D1TaxCodesTests {
 
     @Test
     fun `D1 Wales 100K`() {
-        val calculator = Calculator("CD1", 100000.0, payPeriod = PayPeriod.YEARLY, taxYear = 2019).run()
+        val calculator = Calculator("CD1", 100000.0, payPeriod = YEARLY, taxYear = 2019).run()
         assertEquals(45000.00, calculator.yearly.taxToPay)
         assertEquals(12608.784000000001, calculator.yearly.employersNI)
         assertEquals(5964.16, calculator.yearly.employeesNI)
@@ -32,7 +32,7 @@ class D1TaxCodesTests {
 
     @Test
     fun `D1 England 100K`() {
-        val calculator = Calculator("D1", 100000.0, payPeriod = PayPeriod.YEARLY, taxYear = 2019).run()
+        val calculator = Calculator("D1", 100000.0, payPeriod = YEARLY, taxYear = 2019).run()
         assertEquals(45000.00, calculator.yearly.taxToPay)
         assertEquals(12608.784000000001, calculator.yearly.employersNI)
         assertEquals(5964.16, calculator.yearly.employeesNI)
@@ -40,7 +40,7 @@ class D1TaxCodesTests {
 
     @Test
     fun `D1 Scotland 100K`() {
-        val calculator = Calculator("SD1", 100000.0, payPeriod = PayPeriod.YEARLY, taxYear = 2019).run()
+        val calculator = Calculator("SD1", 100000.0, payPeriod = YEARLY, taxYear = 2019).run()
         assertEquals(41000.00, calculator.yearly.taxToPay)
         assertEquals(12608.784000000001, calculator.yearly.employersNI)
         assertEquals(5964.16, calculator.yearly.employeesNI)

@@ -15,7 +15,10 @@
  */
 package calculator.utils
 
-import calculator.model.Country
+import calculator.model.Country.ENGLAND
+import calculator.model.Country.NONE
+import calculator.model.Country.SCOTLAND
+import calculator.model.Country.WALES
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -23,26 +26,26 @@ class StringCountryTests {
 
     @Test
     fun `Scotland Type When Prefix Is S`() {
-        assertEquals(Country.SCOTLAND, "S1250L".toCountry())
+        assertEquals(SCOTLAND, "S1250L".toCountry())
     }
 
     @Test
-    fun `Wales TypeWhen Prefix Is C`() {
-        assertEquals(Country.WALES, "C1250L".toCountry())
+    fun `Wales Type When Prefix Is C`() {
+        assertEquals(WALES, "C1250L".toCountry())
     }
 
     @Test
     fun `England Type When No Prefix`() {
-        assertEquals(Country.ENGLAND, "1250L".toCountry())
+        assertEquals(ENGLAND, "1250L".toCountry())
     }
 
     @Test
     fun `NT Country None`() {
-        assertEquals(Country.NONE, "NT".toCountry())
+        assertEquals(NONE, "NT".toCountry())
     }
 
     @Test
     fun `Other Tax Codes default to English`() {
-        assertEquals(Country.ENGLAND, "XX".toCountry())
+        assertEquals(ENGLAND, "XX".toCountry())
     }
 }

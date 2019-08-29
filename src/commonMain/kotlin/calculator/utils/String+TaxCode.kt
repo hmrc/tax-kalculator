@@ -15,7 +15,10 @@
  */
 package calculator.utils
 
-import calculator.model.Country
+import calculator.model.Country.ENGLAND
+import calculator.model.Country.NONE
+import calculator.model.Country.SCOTLAND
+import calculator.model.Country.WALES
 import calculator.model.taxcodes.BR
 import calculator.model.taxcodes.C0T
 import calculator.model.taxcodes.CBR
@@ -57,10 +60,10 @@ internal fun String.toTaxCode(): TaxCode {
     val noSpacesTaxCode = this.replace("\\s".toRegex(), "")
 
     return when (noSpacesTaxCode.toCountry()) {
-        Country.SCOTLAND -> noSpacesTaxCode.matchScottishTaxCode()
-        Country.WALES -> noSpacesTaxCode.matchWelshTaxCode()
-        Country.ENGLAND -> noSpacesTaxCode.matchEnglishTaxCode()
-        Country.NONE -> {
+        SCOTLAND -> noSpacesTaxCode.matchScottishTaxCode()
+        WALES -> noSpacesTaxCode.matchWelshTaxCode()
+        ENGLAND -> noSpacesTaxCode.matchEnglishTaxCode()
+        NONE -> {
             when (this) {
                 "NT" -> NTCode()
                 else -> throw InvalidTaxCode("$this is an invalid tax code")

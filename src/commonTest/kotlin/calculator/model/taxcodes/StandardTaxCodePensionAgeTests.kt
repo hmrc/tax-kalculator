@@ -17,7 +17,11 @@ package calculator.model.taxcodes
 
 import calculator.Calculator
 import calculator.model.CalculatorResponse
-import calculator.model.PayPeriod
+import calculator.model.PayPeriod.FOUR_WEEKLY
+import calculator.model.PayPeriod.HOURLY
+import calculator.model.PayPeriod.MONTHLY
+import calculator.model.PayPeriod.WEEKLY
+import calculator.model.PayPeriod.YEARLY
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -27,7 +31,7 @@ class StandardPensionAgeTaxCodeTestsYearly {
     @Test
     fun `1250L Pension Age Wales YEARLY 100k`() {
         val calculator: CalculatorResponse =
-            Calculator("C1250L", 100000.0, pensionAge = true, payPeriod = PayPeriod.YEARLY, taxYear = 2019).run()
+            Calculator("C1250L", 100000.0, pensionAge = true, payPeriod = YEARLY, taxYear = 2019).run()
         assertEquals(27498.2, calculator.yearly.taxToPay)
         assertEquals(0.0, calculator.yearly.employersNI)
         assertEquals(0.0, calculator.yearly.employeesNI)
@@ -36,7 +40,7 @@ class StandardPensionAgeTaxCodeTestsYearly {
     @Test
     fun `1250L Pension Age England YEARLY 100k`() {
         val calculator =
-            Calculator("1250L", 100000.0, pensionAge = true, payPeriod = PayPeriod.YEARLY, taxYear = 2019).run()
+            Calculator("1250L", 100000.0, pensionAge = true, payPeriod = YEARLY, taxYear = 2019).run()
         assertEquals(27498.2, calculator.yearly.taxToPay)
         assertEquals(0.0, calculator.yearly.employersNI)
         assertEquals(0.0, calculator.yearly.employeesNI)
@@ -45,7 +49,7 @@ class StandardPensionAgeTaxCodeTestsYearly {
     @Test
     fun `1185L Pension Age England YEARLY 100k`() {
         val calculator =
-            Calculator("1185L", 100000.0, pensionAge = true, payPeriod = PayPeriod.YEARLY, taxYear = 2019).run()
+            Calculator("1185L", 100000.0, pensionAge = true, payPeriod = YEARLY, taxYear = 2019).run()
         assertEquals(27758.2, calculator.yearly.taxToPay)
         assertEquals(0.0, calculator.yearly.employersNI)
         assertEquals(0.0, calculator.yearly.employeesNI)
@@ -54,7 +58,7 @@ class StandardPensionAgeTaxCodeTestsYearly {
     @Test
     fun `1250L Pension Age Scotland YEARLY 100k`() {
         val calculator =
-            Calculator("S1250L", 100000.0, pensionAge = true, payPeriod = PayPeriod.YEARLY, taxYear = 2019).run()
+            Calculator("S1250L", 100000.0, pensionAge = true, payPeriod = YEARLY, taxYear = 2019).run()
         assertEquals(29542.359999999997, calculator.yearly.taxToPay)
         assertEquals(0.0, calculator.yearly.employersNI)
         assertEquals(0.0, calculator.yearly.employeesNI)
@@ -64,7 +68,7 @@ class StandardPensionAgeTaxCodeTestsYearly {
     @Test
     fun `1250L Pension Age England YEARLY 20k`() {
         val calculator =
-            Calculator("1250L", 20000.0, pensionAge = true, payPeriod = PayPeriod.YEARLY, taxYear = 2019).run()
+            Calculator("1250L", 20000.0, pensionAge = true, payPeriod = YEARLY, taxYear = 2019).run()
         assertEquals(1498.2, calculator.yearly.taxToPay)
         assertEquals(0.0, calculator.yearly.employersNI)
         assertEquals(0.0, calculator.yearly.employeesNI)
@@ -73,7 +77,7 @@ class StandardPensionAgeTaxCodeTestsYearly {
     @Test
     fun `1250L Pension Age Wales YEARLY 20k`() {
         val calculator =
-            Calculator("C1250L", 20000.0, pensionAge = true, payPeriod = PayPeriod.YEARLY, taxYear = 2019).run()
+            Calculator("C1250L", 20000.0, pensionAge = true, payPeriod = YEARLY, taxYear = 2019).run()
         assertEquals(1498.2, calculator.yearly.taxToPay)
         assertEquals(0.0, calculator.yearly.employersNI)
         assertEquals(0.0, calculator.yearly.employeesNI)
@@ -82,7 +86,7 @@ class StandardPensionAgeTaxCodeTestsYearly {
     @Test
     fun `1250L Pension Age Scotland YEARLY 20k`() {
         val calculator =
-            Calculator("S1250L", 20000.0, pensionAge = true, payPeriod = PayPeriod.YEARLY, taxYear = 2019).run()
+            Calculator("S1250L", 20000.0, pensionAge = true, payPeriod = YEARLY, taxYear = 2019).run()
         assertEquals(1477.8000000000002, calculator.yearly.taxToPay)
         assertEquals(0.0, calculator.yearly.employersNI)
         assertEquals(0.0, calculator.yearly.employeesNI)
@@ -93,7 +97,7 @@ class StandardTaxCodeTestsOtherTimePensionAgePeriods {
     @Test
     fun `1250L Pension Age England MONTHLY 2k`() {
         val calculator =
-            Calculator("1250L", 2000.0, pensionAge = true, payPeriod = PayPeriod.MONTHLY, taxYear = 2019).run()
+            Calculator("1250L", 2000.0, pensionAge = true, payPeriod = MONTHLY, taxYear = 2019).run()
         assertEquals(0.0, calculator.yearly.employersNI)
         assertEquals(0.0, calculator.yearly.employeesNI)
         assertEquals(2298.2000000000003, calculator.yearly.taxToPay)
@@ -102,7 +106,7 @@ class StandardTaxCodeTestsOtherTimePensionAgePeriods {
     @Test
     fun `1250L Pension Age England FOURWEEKLY 2k`() {
         val calculator =
-            Calculator("1250L", 2000.0, pensionAge = true, payPeriod = PayPeriod.FOUR_WEEKLY, taxYear = 2019).run()
+            Calculator("1250L", 2000.0, pensionAge = true, payPeriod = FOUR_WEEKLY, taxYear = 2019).run()
         assertEquals(0.0, calculator.yearly.employersNI)
         assertEquals(0.0, calculator.yearly.employeesNI)
         assertEquals(2698.2000000000003, calculator.yearly.taxToPay)
@@ -111,7 +115,7 @@ class StandardTaxCodeTestsOtherTimePensionAgePeriods {
     @Test
     fun `1250L Pension Age England WEEKLY 500 pounds`() {
         val calculator =
-            Calculator("1250L", 500.0, pensionAge = true, payPeriod = PayPeriod.WEEKLY, taxYear = 2019).run()
+            Calculator("1250L", 500.0, pensionAge = true, payPeriod = WEEKLY, taxYear = 2019).run()
         assertEquals(0.0, calculator.yearly.employersNI)
         assertEquals(0.0, calculator.yearly.employeesNI)
         assertEquals(2698.2000000000003, calculator.yearly.taxToPay)
@@ -124,7 +128,7 @@ class StandardTaxCodeTestsOtherTimePensionAgePeriods {
                 "1250L",
                 20.0,
                 pensionAge = true,
-                payPeriod = PayPeriod.HOURLY,
+                payPeriod = HOURLY,
                 hoursPerWeek = 37.5,
                 taxYear = 2019
             ).run()

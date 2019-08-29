@@ -16,14 +16,14 @@
 package calculator.model.taxcodes
 
 import calculator.Calculator
-import calculator.model.PayPeriod
+import calculator.model.PayPeriod.YEARLY
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class BRCodeTests {
     @Test
     fun `BR England 100K`() {
-        val calculator = Calculator("BR", 100000.0, payPeriod = PayPeriod.YEARLY, taxYear = 2019).run()
+        val calculator = Calculator("BR", 100000.0, payPeriod = YEARLY, taxYear = 2019).run()
         assertEquals(20000.0, calculator.yearly.taxToPay)
         assertEquals(12608.784000000001, calculator.yearly.employersNI)
         assertEquals(5964.16, calculator.yearly.employeesNI)
@@ -31,7 +31,7 @@ class BRCodeTests {
 
     @Test
     fun `BR Wales 100K`() {
-        val calculator = Calculator("CBR", 100000.0, payPeriod = PayPeriod.YEARLY, taxYear = 2019).run()
+        val calculator = Calculator("CBR", 100000.0, payPeriod = YEARLY, taxYear = 2019).run()
         assertEquals(20000.0, calculator.yearly.taxToPay)
         assertEquals(12608.784000000001, calculator.yearly.employersNI)
         assertEquals(5964.16, calculator.yearly.employeesNI)
@@ -39,7 +39,7 @@ class BRCodeTests {
 
     @Test
     fun `BR Scotland 100K`() {
-        val calculator = Calculator("SBR", 100000.0, payPeriod = PayPeriod.YEARLY, taxYear = 2019).run()
+        val calculator = Calculator("SBR", 100000.0, payPeriod = YEARLY, taxYear = 2019).run()
         assertEquals(20000.0, calculator.yearly.taxToPay)
         assertEquals(12608.784000000001, calculator.yearly.employersNI)
         assertEquals(5964.16, calculator.yearly.employeesNI)

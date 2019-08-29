@@ -16,14 +16,18 @@
 package calculator.utils
 
 import calculator.model.Country
+import calculator.model.Country.ENGLAND
+import calculator.model.Country.NONE
+import calculator.model.Country.SCOTLAND
+import calculator.model.Country.WALES
 
 internal fun String.toCountry(): Country {
     return when (this) {
-        "NT" -> Country.NONE
+        "NT" -> NONE
         else -> when (this.first().toString()) {
-            "S" -> Country.SCOTLAND
-            "C" -> Country.WALES
-            else -> Country.ENGLAND
+            "S" -> SCOTLAND
+            "C" -> WALES
+            else -> ENGLAND
         }
     }
 }

@@ -44,7 +44,7 @@ To use this library you need to create an instance of `Calculator`, passing in t
 val calculator = Calculator(
     taxCodeString = "1250L",        // Required
     userEnteredWages = 20000.0,     // Required
-    payPeriod = PayPeriod.YEARLY,   // Required
+    payPeriod = YEARLY,   // Required
     pensionAge = false,             // Optional (Default: false)
     hoursPerWeek = null,            // Optional (Default: null)
     taxYear = 2019                  // Optional (Default: Current Tax Year)

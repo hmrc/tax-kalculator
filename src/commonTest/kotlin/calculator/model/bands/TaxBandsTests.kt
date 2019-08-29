@@ -15,7 +15,9 @@
  */
 package calculator.model.bands
 
-import calculator.model.Country
+import calculator.model.Country.ENGLAND
+import calculator.model.Country.SCOTLAND
+import calculator.model.Country.WALES
 import calculator.utils.UnsupportedTaxYear
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -25,13 +27,13 @@ class TaxBandsTests {
 
     @Test
     fun invalidYear() {
-        val exception = assertFailsWith<UnsupportedTaxYear> { TaxBands(Country.ENGLAND, 2017) }
+        val exception = assertFailsWith<UnsupportedTaxYear> { TaxBands(ENGLAND, 2017) }
         assertEquals(exception.message, "2017")
     }
 
     @Test
     fun bandsForEngland2019() {
-        val taxBand = TaxBands(Country.ENGLAND, 2019).bands[1]
+        val taxBand = TaxBands(ENGLAND, 2019).bands[1]
         assertEquals(50000.00, taxBand.upper)
         assertEquals(12509.00, taxBand.lower)
         assertEquals(0.20, taxBand.percentageAsDecimal)
@@ -45,7 +47,7 @@ class TaxBandsTests {
 
     @Test
     fun bandsForWales2019() {
-        val taxBand = TaxBands(Country.WALES, 2019).bands[1]
+        val taxBand = TaxBands(WALES, 2019).bands[1]
         assertEquals(50000.00, taxBand.upper)
         assertEquals(12509.00, taxBand.lower)
         assertEquals(0.20, taxBand.percentageAsDecimal)
@@ -59,7 +61,7 @@ class TaxBandsTests {
 
     @Test
     fun bandsForScotland2019() {
-        val taxBand = TaxBands(Country.SCOTLAND, 2019).bands[1]
+        val taxBand = TaxBands(SCOTLAND, 2019).bands[1]
         assertEquals(14549.00, taxBand.upper)
         assertEquals(12509.00, taxBand.lower)
         assertEquals(0.19, taxBand.percentageAsDecimal)
@@ -74,7 +76,7 @@ class TaxBandsTests {
 
     @Test
     fun bandsForWales2020() {
-        val taxBand = TaxBands(Country.WALES, 2020).bands[0]
+        val taxBand = TaxBands(WALES, 2020).bands[0]
         assertEquals(20000.00, taxBand.upper)
         assertEquals(0.00, taxBand.lower)
         assertEquals(0.10, taxBand.percentageAsDecimal)
@@ -82,7 +84,7 @@ class TaxBandsTests {
 
     @Test
     fun bandsForScotland2020() {
-        val taxBand = TaxBands(Country.SCOTLAND, 2020).bands[0]
+        val taxBand = TaxBands(SCOTLAND, 2020).bands[0]
         assertEquals(21000.00, taxBand.upper)
         assertEquals(0.00, taxBand.lower)
         assertEquals(0.15, taxBand.percentageAsDecimal)
@@ -90,7 +92,7 @@ class TaxBandsTests {
 
     @Test
     fun bandsForEngland2020() {
-        val taxBand = TaxBands(Country.ENGLAND, 2020).bands[0]
+        val taxBand = TaxBands(ENGLAND, 2020).bands[0]
         assertEquals(22000.00, taxBand.upper)
         assertEquals(0.00, taxBand.lower)
         assertEquals(0.20, taxBand.percentageAsDecimal)

@@ -16,11 +16,10 @@
 package calculator
 
 import calculator.model.PayPeriod.HOURLY
+import calculator.utils.InvalidHours
 import kotlin.test.Test
-
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
-import calculator.utils.InvalidHours
 
 class CalculatorTests {
 

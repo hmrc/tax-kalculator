@@ -227,7 +227,6 @@ bintray {
                 target "**/*.kt"
                 ktlint()
                 licenseHeader license
-
             }
         }
     }

@@ -15,7 +15,11 @@
  */
 package calculator.utils
 
-import calculator.model.PayPeriod
+import calculator.model.PayPeriod.FOUR_WEEKLY
+import calculator.model.PayPeriod.HOURLY
+import calculator.model.PayPeriod.MONTHLY
+import calculator.model.PayPeriod.WEEKLY
+import calculator.model.PayPeriod.YEARLY
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -24,32 +28,32 @@ class WageConverterTest {
     @Test
     fun `Week Invalid When Converting From Year`() {
         assertFailsWith<InvalidPayPeriod> {
-            100.0.convertAmountFromYearlyToPayPeriod(PayPeriod.HOURLY)
+            100.0.convertAmountFromYearlyToPayPeriod(HOURLY)
         }
     }
 
     @Test
     fun `Convert monthly to yearly`() {
-        assertEquals(12000.0, 1000.0.convertWageToYearly(PayPeriod.MONTHLY))
+        assertEquals(12000.0, 1000.0.convertWageToYearly(MONTHLY))
     }
 
     @Test
     fun `Convert FOUR_WEEKLY to yearly`() {
-        assertEquals(13000.0, 1000.0.convertWageToYearly(PayPeriod.FOUR_WEEKLY))
+        assertEquals(13000.0, 1000.0.convertWageToYearly(FOUR_WEEKLY))
     }
 
     @Test
     fun `Convert WEEKLY to yearly`() {
-        assertEquals(52000.0, 1000.0.convertWageToYearly(PayPeriod.WEEKLY))
+        assertEquals(52000.0, 1000.0.convertWageToYearly(WEEKLY))
     }
 
     @Test
     fun `Convert HOURLY to yearly`() {
-        assertEquals(5200.0, 10.0.convertWageToYearly(PayPeriod.HOURLY, 10.0))
+        assertEquals(5200.0, 10.0.convertWageToYearly(HOURLY, 10.0))
     }
 
     @Test
     fun `Convert YEARLY to yearly`() {
-        assertEquals(5200.0, 5200.0.convertWageToYearly(PayPeriod.YEARLY))
+        assertEquals(5200.0, 5200.0.convertWageToYearly(YEARLY))
     }
 }

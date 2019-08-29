@@ -19,8 +19,12 @@ import calculator.model.BandBreakdown
 import calculator.model.CalculatorResponse
 import calculator.model.CalculatorResponsePayPeriod
 import calculator.model.Country
+import calculator.model.Country.ENGLAND
 import calculator.model.PayPeriod
+import calculator.model.PayPeriod.FOUR_WEEKLY
 import calculator.model.PayPeriod.MONTHLY
+import calculator.model.PayPeriod.WEEKLY
+import calculator.model.PayPeriod.YEARLY
 import calculator.model.bands.Band
 import calculator.model.bands.EmployeeNIBands
 import calculator.model.bands.EmployerNIBands
@@ -128,27 +132,27 @@ class Calculator(
             country = taxCode.country,
             isKCode = taxCode is KTaxCode,
             weekly = CalculatorResponsePayPeriod(
-                payPeriod = PayPeriod.WEEKLY,
-                taxToPay = taxPayable.convertAmountFromYearlyToPayPeriod(PayPeriod.WEEKLY),
-                employeesNI = employeesNI.convertAmountFromYearlyToPayPeriod(PayPeriod.WEEKLY),
-                employersNI = employersNI.convertAmountFromYearlyToPayPeriod(PayPeriod.WEEKLY),
-                wages = yearlyWages.convertAmountFromYearlyToPayPeriod(PayPeriod.WEEKLY),
-                taxBreakdown = bandBreakdown.convertListOfBandBreakdownForPayPeriod(PayPeriod.WEEKLY),
-                taxFree = adjustTaxBands(taxBands)[0].upper.convertAmountFromYearlyToPayPeriod(PayPeriod.WEEKLY),
+                payPeriod = WEEKLY,
+                taxToPay = taxPayable.convertAmountFromYearlyToPayPeriod(WEEKLY),
+                employeesNI = employeesNI.convertAmountFromYearlyToPayPeriod(WEEKLY),
+                employersNI = employersNI.convertAmountFromYearlyToPayPeriod(WEEKLY),
+                wages = yearlyWages.convertAmountFromYearlyToPayPeriod(WEEKLY),
+                taxBreakdown = bandBreakdown.convertListOfBandBreakdownForPayPeriod(WEEKLY),
+                taxFree = adjustTaxBands(taxBands)[0].upper.convertAmountFromYearlyToPayPeriod(WEEKLY),
                 kCodeAdjustment = if (taxCode is KTaxCode) {
-                    taxCode.amountToAddToWages.convertAmountFromYearlyToPayPeriod(PayPeriod.WEEKLY)
+                    taxCode.amountToAddToWages.convertAmountFromYearlyToPayPeriod(WEEKLY)
                 } else null
             ),
             fourWeekly = CalculatorResponsePayPeriod(
-                payPeriod = PayPeriod.FOUR_WEEKLY,
-                taxToPay = taxPayable.convertAmountFromYearlyToPayPeriod(PayPeriod.FOUR_WEEKLY),
-                employeesNI = employeesNI.convertAmountFromYearlyToPayPeriod(PayPeriod.FOUR_WEEKLY),
-                employersNI = employersNI.convertAmountFromYearlyToPayPeriod(PayPeriod.FOUR_WEEKLY),
-                wages = yearlyWages.convertAmountFromYearlyToPayPeriod(PayPeriod.FOUR_WEEKLY),
-                taxBreakdown = bandBreakdown.convertListOfBandBreakdownForPayPeriod(PayPeriod.FOUR_WEEKLY),
-                taxFree = adjustTaxBands(taxBands)[0].upper.convertAmountFromYearlyToPayPeriod(PayPeriod.FOUR_WEEKLY),
+                payPeriod = FOUR_WEEKLY,
+                taxToPay = taxPayable.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
+                employeesNI = employeesNI.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
+                employersNI = employersNI.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
+                wages = yearlyWages.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
+                taxBreakdown = bandBreakdown.convertListOfBandBreakdownForPayPeriod(FOUR_WEEKLY),
+                taxFree = adjustTaxBands(taxBands)[0].upper.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
                 kCodeAdjustment = if (taxCode is KTaxCode) {
-                    taxCode.amountToAddToWages.convertAmountFromYearlyToPayPeriod(PayPeriod.FOUR_WEEKLY)
+                    taxCode.amountToAddToWages.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY)
                 } else null
             ),
             monthly = CalculatorResponsePayPeriod(
@@ -164,11 +168,11 @@ class Calculator(
                 } else null
             ),
             yearly = CalculatorResponsePayPeriod(
-                payPeriod = PayPeriod.YEARLY,
-                taxToPay = taxPayable.convertAmountFromYearlyToPayPeriod(PayPeriod.YEARLY),
-                employeesNI = employeesNI.convertAmountFromYearlyToPayPeriod(PayPeriod.YEARLY),
-                employersNI = employersNI.convertAmountFromYearlyToPayPeriod(PayPeriod.YEARLY),
-                wages = yearlyWages.convertAmountFromYearlyToPayPeriod(PayPeriod.YEARLY),
+                payPeriod = YEARLY,
+                taxToPay = taxPayable.convertAmountFromYearlyToPayPeriod(YEARLY),
+                employeesNI = employeesNI.convertAmountFromYearlyToPayPeriod(YEARLY),
+                employersNI = employersNI.convertAmountFromYearlyToPayPeriod(YEARLY),
+                wages = yearlyWages.convertAmountFromYearlyToPayPeriod(YEARLY),
                 taxBreakdown = bandBreakdown,
                 taxFree = adjustTaxBands(taxBands)[0].upper,
                 kCodeAdjustment = if (taxCode is KTaxCode) taxCode.amountToAddToWages else null
@@ -179,7 +183,7 @@ class Calculator(
     companion object {
         fun getDefaultTaxCode() = "${(getDefaultTaxAllowance(TaxYear().currentTaxYear()) / 10)}L"
 
-        internal fun getDefaultTaxAllowance(taxYear: Int, country: Country = Country.ENGLAND) =
+        internal fun getDefaultTaxAllowance(taxYear: Int, country: Country = ENGLAND) =
             TaxBands(country, taxYear).bands[0].upper.toInt()
     }
 }

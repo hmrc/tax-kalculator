@@ -17,20 +17,25 @@ package calculator.utils
 
 import calculator.model.BandBreakdown
 import calculator.model.PayPeriod
+import calculator.model.PayPeriod.FOUR_WEEKLY
+import calculator.model.PayPeriod.HOURLY
+import calculator.model.PayPeriod.MONTHLY
+import calculator.model.PayPeriod.WEEKLY
+import calculator.model.PayPeriod.YEARLY
 
 internal fun Double.convertWageToYearly(
     payPeriod: PayPeriod,
     hoursPerWeek: Double? = null
 ): Double {
     return when (payPeriod) {
-        PayPeriod.HOURLY -> {
+        HOURLY -> {
             if (hoursPerWeek != null && hoursPerWeek > 0) this * hoursPerWeek * 52
             else throw InvalidHours("The number of hours must be greater than 0 when PayPeriod is HOURLY")
         }
-        PayPeriod.WEEKLY -> this * 52
-        PayPeriod.FOUR_WEEKLY -> this * 13
-        PayPeriod.MONTHLY -> this * 12
-        PayPeriod.YEARLY -> this
+        WEEKLY -> this * 52
+        FOUR_WEEKLY -> this * 13
+        MONTHLY -> this * 12
+        YEARLY -> this
     }
 }
 
@@ -46,10 +51,10 @@ internal fun Double.convertAmountFromYearlyToPayPeriod(
     payPeriod: PayPeriod
 ): Double {
     return when (payPeriod) {
-        PayPeriod.WEEKLY -> this / 52
-        PayPeriod.FOUR_WEEKLY -> this / 13
-        PayPeriod.MONTHLY -> this / 12
-        PayPeriod.YEARLY -> this
+        WEEKLY -> this / 52
+        FOUR_WEEKLY -> this / 13
+        MONTHLY -> this / 12
+        YEARLY -> this
         else -> throw InvalidPayPeriod("$payPeriod is not supported")
     }
 }

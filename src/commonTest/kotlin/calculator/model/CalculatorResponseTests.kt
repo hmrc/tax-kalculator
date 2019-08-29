@@ -16,6 +16,9 @@
 package calculator.model
 
 import calculator.Calculator
+import calculator.model.Country.ENGLAND
+import calculator.model.PayPeriod.MONTHLY
+import calculator.model.PayPeriod.YEARLY
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -24,7 +27,7 @@ class CalculatorResponseTests {
     @Test
     fun `Check Summation Of Total Deductions`() {
         val response = CalculatorResponsePayPeriod(
-            payPeriod = PayPeriod.YEARLY,
+            payPeriod = YEARLY,
             taxToPay = 100.0,
             employeesNI = 200.0,
             employersNI = 300.0,
@@ -46,14 +49,14 @@ class CalculatorResponseTests {
     fun `Check Full Calculator Response`() {
         val taxCode = "1250L"
         val wages = 2000.00
-        val response = Calculator(taxCode, wages, payPeriod = PayPeriod.MONTHLY).run()
+        val response = Calculator(taxCode, wages, payPeriod = MONTHLY).run()
 
-        assertEquals(Country.ENGLAND, response.country)
+        assertEquals(ENGLAND, response.country)
         assertEquals(false, response.isKCode)
         assertEquals("1250L", response.taxCode)
         // Year
 
-        assertEquals(PayPeriod.YEARLY, response.yearly.payPeriod)
+        assertEquals(YEARLY, response.yearly.payPeriod)
         assertEquals(2298.2000000000003, response.yearly.taxToPay)
         assertEquals(1844.1599999999999, response.yearly.employeesNI)
         assertEquals(2120.784, response.yearly.employersNI)
