@@ -46,7 +46,7 @@ class CalculatorResponseTests {
     }
 
     @Test
-    fun `Check Full Calculator Response`() {
+    fun `Check Full Calculator Response Small Amount`() {
         val taxCode = "1250L"
         val wages = 2000.00
         val response = Calculator(taxCode, wages, payPeriod = MONTHLY).run()
@@ -106,6 +106,78 @@ class CalculatorResponseTests {
         assertEquals(
             listOf(
                 BandBreakdown(percentage = 0.2, amount = 44.19615384615385)
+            ), response.weekly.taxBreakdown
+        )
+    }
+
+    @Test
+    fun `Check Full Calculator Response Large Amount`() {
+        val taxCode = "250T"
+        val wages = 10000.00
+        val response = Calculator(taxCode, wages, payPeriod = MONTHLY).run()
+
+        assertEquals(ENGLAND, response.country)
+        assertEquals(false, response.isKCode)
+        assertEquals("250T", response.taxCode)
+        // Year
+
+        assertEquals(YEARLY, response.yearly.payPeriod)
+        assertEquals(39498.20, response.yearly.taxToPay)
+        assertEquals(6364.16, response.yearly.employeesNI)
+        assertEquals(15368.784, response.yearly.employersNI)
+        assertEquals(45862.36, response.yearly.totalDeductions)
+        assertEquals(74137.64, response.yearly.takeHome)
+        assertEquals(2509.0, response.yearly.taxFree)
+        assertEquals(120000.0, response.yearly.wages)
+        assertEquals(null, response.yearly.kCodeAdjustment)
+        assertEquals(
+            listOf(
+                BandBreakdown(percentage = 0.2, amount = 7498.200000000001),
+                BandBreakdown(percentage = 0.4, amount = 32000.00)
+            ), response.yearly.taxBreakdown
+        )
+        assertEquals(response.yearly.taxBreakdown[0].bandDescription, "Income taxed at 20%")
+        assertEquals(response.yearly.taxBreakdown[1].bandDescription, "Income taxed at 40%")
+
+        assertEquals(3291.5166666666664, response.monthly.taxToPay)
+        assertEquals(530.3466666666667, response.monthly.employeesNI)
+        assertEquals(1280.732, response.monthly.employersNI)
+        assertEquals(3821.8633333333332, response.monthly.totalDeductions)
+        assertEquals(6178.136666666667, response.monthly.takeHome)
+        assertEquals(209.08333333333334, response.monthly.taxFree)
+        assertEquals(10000.0, response.monthly.wages)
+        assertEquals(
+            listOf(
+                BandBreakdown(percentage = 0.2, amount = 624.85),
+                BandBreakdown(percentage = 0.4, amount = 2666.6666666666665)
+            ), response.monthly.taxBreakdown
+        )
+
+        assertEquals(3038.3230769230768, response.fourWeekly.taxToPay)
+        assertEquals(489.5507692307692, response.fourWeekly.employeesNI)
+        assertEquals(1182.2141538461537, response.fourWeekly.employersNI)
+        assertEquals(3527.873846153846, response.fourWeekly.totalDeductions)
+        assertEquals(5702.8953846153845, response.fourWeekly.takeHome)
+        assertEquals(193.0, response.fourWeekly.taxFree)
+        assertEquals(9230.76923076923, response.fourWeekly.wages)
+        assertEquals(
+            listOf(
+                BandBreakdown(percentage = 0.2, amount = 576.7846153846154),
+                BandBreakdown(percentage = 0.4, amount = 2461.5384615384614)
+            ), response.fourWeekly.taxBreakdown
+        )
+
+        assertEquals(759.5807692307692, response.weekly.taxToPay)
+        assertEquals(122.3876923076923, response.weekly.employeesNI)
+        assertEquals(295.55353846153844, response.weekly.employersNI)
+        assertEquals(881.9684615384615, response.weekly.totalDeductions)
+        assertEquals(1425.7238461538461, response.weekly.takeHome)
+        assertEquals(48.25, response.weekly.taxFree)
+        assertEquals(2307.6923076923076, response.weekly.wages)
+        assertEquals(
+            listOf(
+                BandBreakdown(percentage = 0.2, amount = 144.19615384615385),
+                BandBreakdown(percentage = 0.4, amount = 615.3846153846154)
             ), response.weekly.taxBreakdown
         )
     }
