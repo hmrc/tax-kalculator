@@ -24,24 +24,24 @@ class MarriageMCodesTests {
 
     @Test
     fun `Wales M Code 20k`() {
-        val calculator = Calculator("C1250M", 20000.0, payPeriod = YEARLY, taxYear = 2019).run()
-        assertEquals(1498.2, calculator.yearly.taxToPay)
+        val calculator = Calculator("C1450M", 20000.0, payPeriod = YEARLY, taxYear = 2019).run()
+        assertEquals(1098.20, calculator.yearly.taxToPay)
         assertEquals(1568.784, calculator.yearly.employersNI)
         assertEquals(1364.1599999999999, calculator.yearly.employeesNI)
     }
 
     @Test
     fun `Scotland M Code 20k`() {
-        val calculator = Calculator("S1250M", 20000.0, payPeriod = YEARLY, taxYear = 2019).run()
-        assertEquals(1477.8000000000002, calculator.yearly.taxToPay)
+        val calculator = Calculator("S1450M", 20000.0, payPeriod = YEARLY, taxYear = 2019).run()
+        assertEquals(1077.8000000000002, calculator.yearly.taxToPay)
         assertEquals(1568.784, calculator.yearly.employersNI)
         assertEquals(1364.1599999999999, calculator.yearly.employeesNI)
     }
 
     @Test
     fun `England M Code 20k`() {
-        val calculator = Calculator("1250M", 20000.0, payPeriod = YEARLY, taxYear = 2019).run()
-        assertEquals(1498.2, calculator.yearly.taxToPay)
+        val calculator = Calculator("1450M", 20000.0, payPeriod = YEARLY, taxYear = 2019).run()
+        assertEquals(1098.20, calculator.yearly.taxToPay)
         assertEquals(1568.784, calculator.yearly.employersNI)
         assertEquals(1364.1599999999999, calculator.yearly.employeesNI)
     }
