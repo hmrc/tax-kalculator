@@ -17,6 +17,7 @@ package calculator.model
 
 import calculator.Calculator
 import calculator.model.Country.ENGLAND
+import calculator.model.Country.SCOTLAND
 import calculator.model.PayPeriod.MONTHLY
 import calculator.model.PayPeriod.YEARLY
 import kotlin.test.Test
@@ -178,6 +179,88 @@ class CalculatorResponseTests {
             listOf(
                 BandBreakdown(percentage = 0.2, amount = 144.19615384615385),
                 BandBreakdown(percentage = 0.4, amount = 615.3846153846154)
+            ), response.weekly.taxBreakdown
+        )
+    }
+
+    @Test
+    fun `Check Full Calculator Response Scotland Large Amount`() {
+        val taxCode = "S250T"
+        val wages = 10000.00
+        val response = Calculator(taxCode, wages, payPeriod = MONTHLY).run()
+
+        assertEquals(SCOTLAND, response.country)
+        assertEquals(false, response.isKCode)
+        assertEquals("S250T", response.taxCode)
+        // Year
+
+        assertEquals(YEARLY, response.yearly.payPeriod)
+        assertEquals(41842.36, response.yearly.taxToPay)
+        assertEquals(6364.16, response.yearly.employeesNI)
+        assertEquals(15368.784, response.yearly.employersNI)
+        assertEquals(48206.520000000004, response.yearly.totalDeductions)
+        assertEquals(71793.48, response.yearly.takeHome)
+        assertEquals(2509.0, response.yearly.taxFree)
+        assertEquals(120000.0, response.yearly.wages)
+        assertEquals(null, response.yearly.kCodeAdjustment)
+        assertEquals(
+            listOf(
+                BandBreakdown(percentage = 0.19, amount = 387.60),
+                BandBreakdown(percentage = 0.2, amount = 2079.0),
+                BandBreakdown(percentage = 0.21, amount = 3882.06),
+                BandBreakdown(percentage = 0.41, amount = 35493.70)
+            ), response.yearly.taxBreakdown
+        )
+        assertEquals(response.yearly.taxBreakdown[0].bandDescription, "Income taxed at 19%")
+        assertEquals(response.yearly.taxBreakdown[1].bandDescription, "Income taxed at 20%")
+        assertEquals(response.yearly.taxBreakdown[2].bandDescription, "Income taxed at 21%")
+        assertEquals(response.yearly.taxBreakdown[3].bandDescription, "Income taxed at 41%")
+
+        assertEquals(3486.8633333333332, response.monthly.taxToPay)
+        assertEquals(530.3466666666667, response.monthly.employeesNI)
+        assertEquals(1280.732, response.monthly.employersNI)
+        assertEquals(4017.21, response.monthly.totalDeductions)
+        assertEquals(5982.79, response.monthly.takeHome)
+        assertEquals(209.08333333333334, response.monthly.taxFree)
+        assertEquals(10000.0, response.monthly.wages)
+        assertEquals(
+            listOf(
+                BandBreakdown(percentage = 0.19, amount = 32.300000000000004),
+                BandBreakdown(percentage = 0.2, amount = 173.25),
+                BandBreakdown(percentage = 0.21, amount = 323.505),
+                BandBreakdown(percentage = 0.41, amount = 2957.808333333333)
+            ), response.monthly.taxBreakdown
+        )
+
+        assertEquals(3218.643076923077, response.fourWeekly.taxToPay)
+        assertEquals(489.5507692307692, response.fourWeekly.employeesNI)
+        assertEquals(1182.2141538461537, response.fourWeekly.employersNI)
+        assertEquals(3708.193846153846, response.fourWeekly.totalDeductions)
+        assertEquals(5522.575384615384, response.fourWeekly.takeHome)
+        assertEquals(193.0, response.fourWeekly.taxFree)
+        assertEquals(9230.76923076923, response.fourWeekly.wages)
+        assertEquals(
+            listOf(
+                BandBreakdown(percentage = 0.19, amount = 29.815384615384616),
+                BandBreakdown(percentage = 0.2, amount = 159.92307692307693),
+                BandBreakdown(percentage = 0.21, amount = 298.62),
+                BandBreakdown(percentage = 0.41, amount = 2730.2846153846153)
+            ), response.fourWeekly.taxBreakdown
+        )
+
+        assertEquals(804.6607692307692, response.weekly.taxToPay)
+        assertEquals(122.3876923076923, response.weekly.employeesNI)
+        assertEquals(295.55353846153844, response.weekly.employersNI)
+        assertEquals(927.0484615384615, response.weekly.totalDeductions)
+        assertEquals(1380.643846153846, response.weekly.takeHome)
+        assertEquals(48.25, response.weekly.taxFree)
+        assertEquals(2307.6923076923076, response.weekly.wages)
+        assertEquals(
+            listOf(
+                BandBreakdown(percentage = 0.19, amount = 7.453846153846154),
+                BandBreakdown(percentage = 0.2, amount = 39.98076923076923),
+                BandBreakdown(percentage = 0.21, amount = 74.655),
+                BandBreakdown(percentage = 0.41, amount = 682.5711538461538)
             ), response.weekly.taxBreakdown
         )
     }
