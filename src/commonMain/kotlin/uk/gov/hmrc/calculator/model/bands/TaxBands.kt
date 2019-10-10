@@ -18,7 +18,7 @@ package uk.gov.hmrc.calculator.model.bands
 import uk.gov.hmrc.calculator.model.Country
 import uk.gov.hmrc.calculator.model.Country.SCOTLAND
 import uk.gov.hmrc.calculator.model.Country.WALES
-import uk.gov.hmrc.calculator.utils.UnsupportedTaxYear
+import uk.gov.hmrc.calculator.exception.InvalidTaxYearException
 
 internal class TaxBands(country: Country, taxYear: Int) {
 
@@ -59,6 +59,6 @@ internal class TaxBands(country: Country, taxYear: Int) {
             SCOTLAND -> scotland2019
             else -> other2019
         }
-        else -> throw UnsupportedTaxYear("$taxYear")
+        else -> throw InvalidTaxYearException("$taxYear")
     }
 }

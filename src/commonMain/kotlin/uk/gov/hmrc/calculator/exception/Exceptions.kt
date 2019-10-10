@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.gov.hmrc.calculator.utils
+package uk.gov.hmrc.calculator.exception
 
-class InvalidTaxCode(message: String) : Exception(message)
+class InvalidTaxCodeException(message: String) : Exception(message)
 
-class UnsupportedTaxYear(message: String) : Exception(message)
+class InvalidTaxYearException(message: String) : Exception(message)
 
-class InvalidPayPeriod(message: String) : Exception(message)
+class InvalidPayPeriodException(message: String) : Exception(message)
 
-class InvalidHours(message: String) : Exception(message)
+class InvalidHoursException(message: String) : Exception(message)
 
-class ConfigurationError(message: String) : Exception(message)
+class InvalidTaxBandException(message: String) : Exception(message)

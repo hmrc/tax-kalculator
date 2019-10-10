@@ -15,6 +15,7 @@
  */
 package uk.gov.hmrc.calculator.utils
 
+import uk.gov.hmrc.calculator.exception.InvalidTaxCodeException
 import uk.gov.hmrc.calculator.model.Country.ENGLAND
 import uk.gov.hmrc.calculator.model.Country.NONE
 import uk.gov.hmrc.calculator.model.Country.SCOTLAND
@@ -120,7 +121,7 @@ class StringTaxCodeTests {
 
     @Test
     fun `Scotland invalid`() {
-        assertFailsWith<InvalidTaxCode> {
+        assertFailsWith<InvalidTaxCodeException> {
             "SD3".toTaxCode()
         }
     }
@@ -174,7 +175,7 @@ class StringTaxCodeTests {
 
     @Test
     fun `Welsh invalid`() {
-        assertFailsWith<InvalidTaxCode> {
+        assertFailsWith<InvalidTaxCodeException> {
             "CD2".toTaxCode()
         }
     }
@@ -427,7 +428,7 @@ class StringTaxCodeTests {
 
     @Test
     fun `English Invalid`() {
-        assertFailsWith<InvalidTaxCode> {
+        assertFailsWith<InvalidTaxCodeException> {
             "D2".toTaxCode()
         }
     }

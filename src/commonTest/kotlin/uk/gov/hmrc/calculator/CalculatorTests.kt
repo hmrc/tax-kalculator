@@ -16,7 +16,7 @@
 package uk.gov.hmrc.calculator
 
 import uk.gov.hmrc.calculator.model.PayPeriod.HOURLY
-import uk.gov.hmrc.calculator.utils.InvalidHours
+import uk.gov.hmrc.calculator.exception.InvalidHoursException
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -25,13 +25,13 @@ class CalculatorTests {
 
     @Test
     fun `Error When Hours=0 And PayPeriod Is HOURLY`() {
-        assertFailsWith<InvalidHours> {
+        assertFailsWith<InvalidHoursException> {
             Calculator("1250L", 20.0, payPeriod = HOURLY, hoursPerWeek = 0.0, taxYear = 2019)
         }
     }
     @Test
     fun `Error When Hours=null And PayPeriod Is HOURLY`() {
-        assertFailsWith<InvalidHours> {
+        assertFailsWith<InvalidHoursException> {
             Calculator("1250L", 20.0, payPeriod = HOURLY, taxYear = 2019)
         }
     }
