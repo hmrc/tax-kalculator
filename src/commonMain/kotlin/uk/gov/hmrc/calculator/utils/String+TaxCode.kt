@@ -15,6 +15,7 @@
  */
 package uk.gov.hmrc.calculator.utils
 
+import uk.gov.hmrc.calculator.exception.InvalidTaxCodeException
 import uk.gov.hmrc.calculator.model.Country.ENGLAND
 import uk.gov.hmrc.calculator.model.Country.NONE
 import uk.gov.hmrc.calculator.model.Country.SCOTLAND
@@ -66,7 +67,7 @@ internal fun String.toTaxCode(): TaxCode {
         NONE -> {
             when (this) {
                 "NT" -> NTCode()
-                else -> throw InvalidTaxCode("$this is an invalid tax code")
+                else -> throw InvalidTaxCodeException("$this is an invalid tax code")
             }
         }
     }
@@ -98,7 +99,7 @@ private fun String.matchOtherScottishTaxCode(): ScottishTaxCode {
         "^SK[0-9]{1,4}".toRegex().containsMatchIn(this) -> SKCode(
             removePrefix("SK").toDouble()
         )
-        else -> throw InvalidTaxCode("$this is an invalid Scottish tax code")
+        else -> throw InvalidTaxCodeException("$this is an invalid Scottish tax code")
     }
 }
 
@@ -107,7 +108,7 @@ private fun String.matchScottishMNCode(): ScottishTaxCode {
     return when {
         endsWith("N") -> ScottishNCode(strippedValue)
         endsWith("M") -> ScottishMCode(strippedValue)
-        else -> throw InvalidTaxCode("$this is an invalid scottish marriage tax code")
+        else -> throw InvalidTaxCodeException("$this is an invalid scottish marriage tax code")
     }
 }
 
@@ -137,7 +138,7 @@ private fun String.matchOtherWelshTaxCode(): WelshTaxCode {
         "^CK[0-9]{1,4}".toRegex().containsMatchIn(this) -> CKCode(
             removePrefix("CK").toDouble()
         )
-        else -> throw InvalidTaxCode("$this is an invalid Welsh tax code")
+        else -> throw InvalidTaxCodeException("$this is an invalid Welsh tax code")
     }
 }
 
@@ -146,7 +147,7 @@ private fun String.matchWelshMNCode(): WelshTaxCode {
     return when {
         endsWith("N") -> WelshNCode(strippedValue)
         endsWith("M") -> WelshMCode(strippedValue)
-        else -> throw InvalidTaxCode("$this is an invalid scottish marriage tax code")
+        else -> throw InvalidTaxCodeException("$this is an invalid scottish marriage tax code")
     }
 }
 
@@ -170,7 +171,7 @@ private fun String.matchOtherEnglishTaxCode(): EnglishTaxCode {
         }
         "^[0-9]{1,4}([MN])".toRegex().containsMatchIn(this) -> matchEnglishMNCode()
         "^K[0-9]{1,4}".toRegex().containsMatchIn(this) -> KCode(removePrefix("K").toDouble())
-        else -> throw InvalidTaxCode("$this is an invalid Welsh tax code")
+        else -> throw InvalidTaxCodeException("$this is an invalid Welsh tax code")
     }
 }
 
@@ -179,6 +180,6 @@ private fun String.matchEnglishMNCode(): EnglishTaxCode {
     return when {
         endsWith("N") -> EnglishNCode(strippedValue)
         endsWith("M") -> EnglishMCode(strippedValue)
-        else -> throw InvalidTaxCode("$this is an invalid England marriage tax code")
+        else -> throw InvalidTaxCodeException("$this is an invalid England marriage tax code")
     }
 }

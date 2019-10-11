@@ -37,8 +37,8 @@ import uk.gov.hmrc.calculator.model.taxcodes.MarriageTaxCodes
 import uk.gov.hmrc.calculator.model.taxcodes.NoTaxTaxCode
 import uk.gov.hmrc.calculator.model.taxcodes.SingleBandTax
 import uk.gov.hmrc.calculator.model.taxcodes.StandardTaxCode
-import uk.gov.hmrc.calculator.utils.ConfigurationError
-import uk.gov.hmrc.calculator.utils.InvalidTaxCode
+import uk.gov.hmrc.calculator.exception.InvalidTaxBandException
+import uk.gov.hmrc.calculator.exception.InvalidTaxCodeException
 import uk.gov.hmrc.calculator.utils.TaxYear
 import uk.gov.hmrc.calculator.utils.convertAmountFromYearlyToPayPeriod
 import uk.gov.hmrc.calculator.utils.convertListOfBandBreakdownForPayPeriod
@@ -77,7 +77,7 @@ class Calculator(
             is EmergencyTaxCode -> getTotalFromBands(adjustTaxBands(taxBands), yearlyWages)
             is MarriageTaxCodes -> getTotalFromBands(adjustTaxBands(taxBands), yearlyWages)
             is KTaxCode -> getTotalFromBands(adjustTaxBands(taxBands), yearlyWages + taxCode.amountToAddToWages)
-            else -> throw InvalidTaxCode("$this is an invalid tax code")
+            else -> throw InvalidTaxCodeException("$this is an invalid tax code")
         }
     }
 
@@ -117,7 +117,7 @@ class Calculator(
                 amount += taxForBand
             }
         }
-        throw ConfigurationError("No tax bands were found to be used for the calculation")
+        throw InvalidTaxBandException("No tax bands were found to be used for the calculation")
     }
 
     private fun shouldAddBand(band: Band, percentage: Double) = band is TaxBand && percentage > 0.0

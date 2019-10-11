@@ -18,7 +18,7 @@ package uk.gov.hmrc.calculator.model.bands
 import uk.gov.hmrc.calculator.model.Country.ENGLAND
 import uk.gov.hmrc.calculator.model.Country.SCOTLAND
 import uk.gov.hmrc.calculator.model.Country.WALES
-import uk.gov.hmrc.calculator.utils.UnsupportedTaxYear
+import uk.gov.hmrc.calculator.exception.InvalidTaxYearException
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -27,7 +27,7 @@ class TaxBandsTests {
 
     @Test
     fun invalidYear() {
-        val exception = assertFailsWith<UnsupportedTaxYear> {
+        val exception = assertFailsWith<InvalidTaxYearException> {
             TaxBands(
                 ENGLAND,
                 2017

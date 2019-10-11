@@ -15,6 +15,7 @@
  */
 package uk.gov.hmrc.calculator.utils
 
+import uk.gov.hmrc.calculator.exception.InvalidPayPeriodException
 import uk.gov.hmrc.calculator.model.PayPeriod.FOUR_WEEKLY
 import uk.gov.hmrc.calculator.model.PayPeriod.HOURLY
 import uk.gov.hmrc.calculator.model.PayPeriod.MONTHLY
@@ -27,7 +28,7 @@ import kotlin.test.assertFailsWith
 class WageConverterTest {
     @Test
     fun `Week Invalid When Converting From Year`() {
-        assertFailsWith<InvalidPayPeriod> {
+        assertFailsWith<InvalidPayPeriodException> {
             100.0.convertAmountFromYearlyToPayPeriod(HOURLY)
         }
     }
