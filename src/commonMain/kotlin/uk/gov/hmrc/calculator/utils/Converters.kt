@@ -31,8 +31,8 @@ internal fun Double.convertWageToYearly(
 ): Double {
     return when (payPeriod) {
         HOURLY -> {
-            if (hoursPerWeek != null && hoursPerWeek > 0) this * hoursPerWeek * 52
-            else throw InvalidHoursException("The number of hours must be greater than 0 when PayPeriod is HOURLY")
+            if (hoursPerWeek != null && hoursPerWeek > 0 && hoursPerWeek <= 168) this * hoursPerWeek * 52
+            else throw InvalidHoursException("The number of hours must be > 0 and <= 168 when PayPeriod is HOURLY")
         }
         WEEKLY -> this * 52
         FOUR_WEEKLY -> this * 13

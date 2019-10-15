@@ -432,4 +432,11 @@ class StringTaxCodeTests {
             "D2".toTaxCode()
         }
     }
+
+    @Test
+    fun `Empty Invalid`() {
+        assertFailsWith<InvalidTaxCodeException> {
+            "".toTaxCode()
+        }
+    }
 }

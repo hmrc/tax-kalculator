@@ -19,6 +19,8 @@ class InvalidTaxCodeException(message: String) : Exception(message)
 
 class InvalidTaxYearException(message: String) : Exception(message)
 
+class InvalidWagesException(message: String) : Exception(message)
+
 class InvalidPayPeriodException(message: String) : Exception(message)
 
 class InvalidHoursException(message: String) : Exception(message)
