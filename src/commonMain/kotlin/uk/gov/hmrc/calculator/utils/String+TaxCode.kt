@@ -58,6 +58,8 @@ import uk.gov.hmrc.calculator.model.taxcodes.WelshTaxCode
 import uk.gov.hmrc.calculator.model.taxcodes.ZeroT
 
 internal fun String.toTaxCode(): TaxCode {
+    if (isEmpty()) throw InvalidTaxCodeException("Tax code cannot be empty")
+
     val noSpacesTaxCode = this.replace("\\s".toRegex(), "")
 
     return when (noSpacesTaxCode.toCountry()) {

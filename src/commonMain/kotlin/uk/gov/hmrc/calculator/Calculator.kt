@@ -39,6 +39,8 @@ import uk.gov.hmrc.calculator.model.taxcodes.SingleBandTax
 import uk.gov.hmrc.calculator.model.taxcodes.StandardTaxCode
 import uk.gov.hmrc.calculator.exception.InvalidTaxBandException
 import uk.gov.hmrc.calculator.exception.InvalidTaxCodeException
+import uk.gov.hmrc.calculator.exception.InvalidWagesException
+import uk.gov.hmrc.calculator.model.taxcodes.TaxCode
 import uk.gov.hmrc.calculator.utils.TaxYear
 import uk.gov.hmrc.calculator.utils.convertAmountFromYearlyToPayPeriod
 import uk.gov.hmrc.calculator.utils.convertListOfBandBreakdownForPayPeriod
@@ -46,42 +48,97 @@ import uk.gov.hmrc.calculator.utils.convertWageToYearly
 import uk.gov.hmrc.calculator.utils.toTaxCode
 
 class Calculator(
-    private val taxCodeString: String,
-    userEnteredWages: Double,
-    payPeriod: PayPeriod,
+    private val taxCode: String,
+    private val wages: Double,
+    private val payPeriod: PayPeriod,
     private val pensionAge: Boolean = false,
-    hoursPerWeek: Double? = null,
-    taxYear: Int = TaxYear().currentTaxYear()
+    private val hoursPerWeek: Double? = null,
+    private val taxYear: Int = TaxYear().currentTaxYear()
 ) {
+
     private val bandBreakdown: MutableList<BandBreakdown> = mutableListOf()
 
-    private val yearlyWages = userEnteredWages.convertWageToYearly(payPeriod, hoursPerWeek)
+    fun run(): CalculatorResponse {
+        if (wages <= 0) throw InvalidWagesException("Wages must be >= 0")
 
-    private val taxCode = taxCodeString.toTaxCode()
+        val yearlyWages = wages.convertWageToYearly(payPeriod, hoursPerWeek)
 
-    // The full tax free amount e.g. 12509
-    private val bandAdjuster = getDefaultTaxAllowance(taxYear, taxCode.country)
+        val taxCode = this.taxCode.toTaxCode()
 
-    private val taxBands = TaxBands(taxCode.country, taxYear).bands
+        val taxBands = TaxBands(taxCode.country, taxYear).bands
 
-    private val employeeNIBands = EmployeeNIBands(taxYear).bands
+        val taxPayable = taxToPay(yearlyWages, taxCode)
+        val employeesNI = employeeNIToPay(yearlyWages)
+        val employersNI = employerNIToPay(yearlyWages)
 
-    private val employerNIBands = EmployerNIBands(taxYear).bands
+        val taxFreeAmount = adjustTaxBands(taxBands, taxCode)[0].upper
+        val amountToAddToWages = if (taxCode is KTaxCode) taxCode.amountToAddToWages else null
 
-    private fun taxToPay(): Double {
+        return CalculatorResponse(
+            taxCode = this.taxCode,
+            country = taxCode.country,
+            isKCode = taxCode is KTaxCode,
+            weekly = CalculatorResponsePayPeriod(
+                payPeriod = WEEKLY,
+                taxToPay = taxPayable.convertAmountFromYearlyToPayPeriod(WEEKLY),
+                employeesNI = employeesNI.convertAmountFromYearlyToPayPeriod(WEEKLY),
+                employersNI = employersNI.convertAmountFromYearlyToPayPeriod(WEEKLY),
+                wages = yearlyWages.convertAmountFromYearlyToPayPeriod(WEEKLY),
+                taxBreakdown = bandBreakdown.convertListOfBandBreakdownForPayPeriod(WEEKLY),
+                taxFree = taxFreeAmount.convertAmountFromYearlyToPayPeriod(WEEKLY),
+                kCodeAdjustment = amountToAddToWages?.convertAmountFromYearlyToPayPeriod(WEEKLY)
+            ),
+            fourWeekly = CalculatorResponsePayPeriod(
+                payPeriod = FOUR_WEEKLY,
+                taxToPay = taxPayable.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
+                employeesNI = employeesNI.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
+                employersNI = employersNI.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
+                wages = yearlyWages.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
+                taxBreakdown = bandBreakdown.convertListOfBandBreakdownForPayPeriod(FOUR_WEEKLY),
+                taxFree = taxFreeAmount.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
+                kCodeAdjustment = amountToAddToWages?.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY)
+            ),
+            monthly = CalculatorResponsePayPeriod(
+                payPeriod = MONTHLY,
+                taxToPay = taxPayable.convertAmountFromYearlyToPayPeriod(MONTHLY),
+                employeesNI = employeesNI.convertAmountFromYearlyToPayPeriod(MONTHLY),
+                employersNI = employersNI.convertAmountFromYearlyToPayPeriod(MONTHLY),
+                wages = yearlyWages.convertAmountFromYearlyToPayPeriod(MONTHLY),
+                taxBreakdown = bandBreakdown.convertListOfBandBreakdownForPayPeriod(MONTHLY),
+                taxFree = taxFreeAmount.convertAmountFromYearlyToPayPeriod(MONTHLY),
+                kCodeAdjustment = amountToAddToWages?.convertAmountFromYearlyToPayPeriod(MONTHLY)
+            ),
+            yearly = CalculatorResponsePayPeriod(
+                payPeriod = YEARLY,
+                taxToPay = taxPayable.convertAmountFromYearlyToPayPeriod(YEARLY),
+                employeesNI = employeesNI.convertAmountFromYearlyToPayPeriod(YEARLY),
+                employersNI = employersNI.convertAmountFromYearlyToPayPeriod(YEARLY),
+                wages = yearlyWages.convertAmountFromYearlyToPayPeriod(YEARLY),
+                taxBreakdown = bandBreakdown,
+                taxFree = taxFreeAmount,
+                kCodeAdjustment = amountToAddToWages
+            )
+        )
+    }
+
+    private fun taxToPay(yearlyWages: Double, taxCode: TaxCode): Double {
+        val taxBands = TaxBands(taxCode.country, taxYear).bands
+
         return when (taxCode) {
-            is StandardTaxCode -> getTotalFromBands(adjustTaxBands(taxBands), yearlyWages)
+            is StandardTaxCode, is AdjustedTaxFreeTCode, is EmergencyTaxCode, is MarriageTaxCodes ->
+                getTotalFromBands(adjustTaxBands(taxBands, taxCode), yearlyWages)
             is NoTaxTaxCode -> yearlyWages * taxCode.taxFreeAmount
             is SingleBandTax -> yearlyWages * taxBands[taxCode.taxAllAtBand].percentageAsDecimal
-            is AdjustedTaxFreeTCode -> getTotalFromBands(adjustTaxBands(taxBands), yearlyWages)
-            is EmergencyTaxCode -> getTotalFromBands(adjustTaxBands(taxBands), yearlyWages)
-            is MarriageTaxCodes -> getTotalFromBands(adjustTaxBands(taxBands), yearlyWages)
-            is KTaxCode -> getTotalFromBands(adjustTaxBands(taxBands), yearlyWages + taxCode.amountToAddToWages)
+            is KTaxCode ->
+                getTotalFromBands(adjustTaxBands(taxBands, taxCode), yearlyWages + taxCode.amountToAddToWages)
             else -> throw InvalidTaxCodeException("$this is an invalid tax code")
         }
     }
 
-    private fun adjustTaxBands(taxBands: List<Band>): List<Band> {
+    private fun adjustTaxBands(taxBands: List<Band>, taxCode: TaxCode): List<Band> {
+        // The full tax free amount e.g. 12509
+        val bandAdjuster = getDefaultTaxAllowance(taxYear, taxCode.country)
+
         taxBands[0].upper = taxCode.taxFreeAmount
         taxBands[1].lower = taxCode.taxFreeAmount
         taxBands[1].upper = taxBands[1].upper + taxCode.taxFreeAmount - bandAdjuster
@@ -95,9 +152,11 @@ class Calculator(
         return taxBands
     }
 
-    private fun employerNIToPay() = if (pensionAge) 0.0 else getTotalFromBands(employerNIBands, yearlyWages)
+    private fun employerNIToPay(yearlyWages: Double) =
+        if (pensionAge) 0.0 else getTotalFromBands(EmployerNIBands(taxYear).bands, yearlyWages)
 
-    private fun employeeNIToPay() = if (pensionAge) 0.0 else getTotalFromBands(employeeNIBands, yearlyWages)
+    private fun employeeNIToPay(yearlyWages: Double) =
+        if (pensionAge) 0.0 else getTotalFromBands(EmployeeNIBands(taxYear).bands, yearlyWages)
 
     private fun getTotalFromBands(bands: List<Band>, wages: Double): Double {
         var amount = 0.0
@@ -121,64 +180,6 @@ class Calculator(
     }
 
     private fun shouldAddBand(band: Band, percentage: Double) = band is TaxBand && percentage > 0.0
-
-    fun run(): CalculatorResponse {
-        val taxPayable = taxToPay()
-        val employeesNI = employeeNIToPay()
-        val employersNI = employerNIToPay()
-
-        return CalculatorResponse(
-            taxCode = taxCodeString,
-            country = taxCode.country,
-            isKCode = taxCode is KTaxCode,
-            weekly = CalculatorResponsePayPeriod(
-                payPeriod = WEEKLY,
-                taxToPay = taxPayable.convertAmountFromYearlyToPayPeriod(WEEKLY),
-                employeesNI = employeesNI.convertAmountFromYearlyToPayPeriod(WEEKLY),
-                employersNI = employersNI.convertAmountFromYearlyToPayPeriod(WEEKLY),
-                wages = yearlyWages.convertAmountFromYearlyToPayPeriod(WEEKLY),
-                taxBreakdown = bandBreakdown.convertListOfBandBreakdownForPayPeriod(WEEKLY),
-                taxFree = adjustTaxBands(taxBands)[0].upper.convertAmountFromYearlyToPayPeriod(WEEKLY),
-                kCodeAdjustment = if (taxCode is KTaxCode) {
-                    taxCode.amountToAddToWages.convertAmountFromYearlyToPayPeriod(WEEKLY)
-                } else null
-            ),
-            fourWeekly = CalculatorResponsePayPeriod(
-                payPeriod = FOUR_WEEKLY,
-                taxToPay = taxPayable.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
-                employeesNI = employeesNI.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
-                employersNI = employersNI.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
-                wages = yearlyWages.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
-                taxBreakdown = bandBreakdown.convertListOfBandBreakdownForPayPeriod(FOUR_WEEKLY),
-                taxFree = adjustTaxBands(taxBands)[0].upper.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
-                kCodeAdjustment = if (taxCode is KTaxCode) {
-                    taxCode.amountToAddToWages.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY)
-                } else null
-            ),
-            monthly = CalculatorResponsePayPeriod(
-                payPeriod = MONTHLY,
-                taxToPay = taxPayable.convertAmountFromYearlyToPayPeriod(MONTHLY),
-                employeesNI = employeesNI.convertAmountFromYearlyToPayPeriod(MONTHLY),
-                employersNI = employersNI.convertAmountFromYearlyToPayPeriod(MONTHLY),
-                wages = yearlyWages.convertAmountFromYearlyToPayPeriod(MONTHLY),
-                taxBreakdown = bandBreakdown.convertListOfBandBreakdownForPayPeriod(MONTHLY),
-                taxFree = adjustTaxBands(taxBands)[0].upper.convertAmountFromYearlyToPayPeriod(MONTHLY),
-                kCodeAdjustment = if (taxCode is KTaxCode) {
-                    taxCode.amountToAddToWages.convertAmountFromYearlyToPayPeriod(MONTHLY)
-                } else null
-            ),
-            yearly = CalculatorResponsePayPeriod(
-                payPeriod = YEARLY,
-                taxToPay = taxPayable.convertAmountFromYearlyToPayPeriod(YEARLY),
-                employeesNI = employeesNI.convertAmountFromYearlyToPayPeriod(YEARLY),
-                employersNI = employersNI.convertAmountFromYearlyToPayPeriod(YEARLY),
-                wages = yearlyWages.convertAmountFromYearlyToPayPeriod(YEARLY),
-                taxBreakdown = bandBreakdown,
-                taxFree = adjustTaxBands(taxBands)[0].upper,
-                kCodeAdjustment = if (taxCode is KTaxCode) taxCode.amountToAddToWages else null
-            )
-        )
-    }
 
     companion object {
         fun getDefaultTaxCode() = "${(getDefaultTaxAllowance(TaxYear().currentTaxYear()) / 10)}L"

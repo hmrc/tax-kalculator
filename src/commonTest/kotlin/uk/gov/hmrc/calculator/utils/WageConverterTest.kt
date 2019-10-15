@@ -15,6 +15,7 @@
  */
 package uk.gov.hmrc.calculator.utils
 
+import uk.gov.hmrc.calculator.exception.InvalidHoursException
 import uk.gov.hmrc.calculator.exception.InvalidPayPeriodException
 import uk.gov.hmrc.calculator.model.PayPeriod.FOUR_WEEKLY
 import uk.gov.hmrc.calculator.model.PayPeriod.HOURLY
@@ -26,6 +27,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 class WageConverterTest {
+
     @Test
     fun `Week Invalid When Converting From Year`() {
         assertFailsWith<InvalidPayPeriodException> {
@@ -56,5 +58,26 @@ class WageConverterTest {
     @Test
     fun `Convert YEARLY to yearly`() {
         assertEquals(5200.0, 5200.0.convertWageToYearly(YEARLY))
+    }
+
+    @Test
+    fun `Convert to HOURLY invalid when hours per week null`() {
+        assertFailsWith<InvalidHoursException> {
+            10.0.convertWageToYearly(HOURLY, null)
+        }
+    }
+
+    @Test
+    fun `Convert to HOURLY invalid when hours per week zero`() {
+        assertFailsWith<InvalidHoursException> {
+            10.0.convertWageToYearly(HOURLY, 0.0)
+        }
+    }
+
+    @Test
+    fun `Convert to HOURLY invalid when hours per week too high`() {
+        assertFailsWith<InvalidHoursException> {
+            10.0.convertWageToYearly(HOURLY, 169.0)
+        }
     }
 }
