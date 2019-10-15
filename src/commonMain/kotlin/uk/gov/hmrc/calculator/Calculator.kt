@@ -59,7 +59,9 @@ class Calculator(
     private val bandBreakdown: MutableList<BandBreakdown> = mutableListOf()
 
     fun run(): CalculatorResponse {
-        if (wages <= 0) throw InvalidWagesException("Wages must be >= 0")
+        if (!isAboveMinimumWages(wages) || !isBelowMaximumWages(wages)) {
+            throw InvalidWagesException("Wages must be between 0 and 9999999.99")
+        }
 
         val yearlyWages = wages.convertWageToYearly(payPeriod, hoursPerWeek)
 
@@ -192,6 +194,14 @@ class Calculator(
                 false
             }
         }
+
+        fun isAboveMinimumWages(wages: Double) = wages > 0
+
+        fun isBelowMaximumWages(wages: Double) = wages < 9999999.99
+
+        fun isAboveMinimumHoursPerWeek(hours: Double) = hours > 0
+
+        fun isBelowMaximumHoursPerWeek(hours: Double) = hours <= 168
 
         internal fun getDefaultTaxAllowance(taxYear: Int, country: Country = ENGLAND) =
             TaxBands(country, taxYear).bands[0].upper.toInt()

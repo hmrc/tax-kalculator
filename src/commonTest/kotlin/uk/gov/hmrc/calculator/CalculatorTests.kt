@@ -42,7 +42,7 @@ class CalculatorTests {
     }
 
     @Test
-    fun `Error When Wages=0 `() {
+    fun `Error when wages zero`() {
         assertFailsWith<InvalidWagesException> {
             Calculator("1250L", 0.0, payPeriod = YEARLY, taxYear = 2019).run()
         }
@@ -61,5 +61,45 @@ class CalculatorTests {
     @Test
     fun `Validate invalid tax code`() {
         assertFalse(Calculator.isValidTaxCode("HELLO"))
+    }
+
+    @Test
+    fun `Validate wages below zero`() {
+        assertFalse(Calculator.isAboveMinimumWages(-1.0))
+    }
+
+    @Test
+    fun `Validate wages above zero`() {
+        assertTrue(Calculator.isAboveMinimumWages(12000.0))
+    }
+
+    @Test
+    fun `Validate wages below max`() {
+        assertTrue(Calculator.isBelowMaximumWages(9999999.0))
+    }
+
+    @Test
+    fun `Validate wages above max`() {
+        assertFalse(Calculator.isBelowMaximumWages(10000000.0))
+    }
+
+    @Test
+    fun `Validate hours below zero`() {
+        assertFalse(Calculator.isAboveMinimumHoursPerWeek(-1.0))
+    }
+
+    @Test
+    fun `Validate hours above zero`() {
+        assertTrue(Calculator.isAboveMinimumHoursPerWeek(26.0))
+    }
+
+    @Test
+    fun `Validate hours below max`() {
+        assertTrue(Calculator.isBelowMaximumHoursPerWeek(168.0))
+    }
+
+    @Test
+    fun `Validate hours above max`() {
+        assertFalse(Calculator.isBelowMaximumHoursPerWeek(168.1))
     }
 }

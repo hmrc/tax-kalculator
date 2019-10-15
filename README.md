@@ -43,12 +43,26 @@ This will returns an object of type `CalculatorResponse`. This class is broken u
 
 > For tax breakdown this is the amount of tax per tax band which has two members, `percentage: Double` and `amount: Double`.
 
-## Validate tax code
+## Validation
 
 To validate a tax code:
 
 ```kotlin
-val isValid = Calculator.isValidTaxCode("1250L")
+val isValid = Calculator.isValidTaxCode("1250L") // true
+```
+
+To validate wages:
+
+```kotlin
+val isAboveMinimumWages = Calculator.isAboveMinimumWages(0.0) // false
+val isBelowMaximumWages = Calculator.isBelowMaximumWages(120000.0) // true
+```
+
+To validate hours worked per week:
+
+```kotlin
+val isAboveMinimumHoursPerWeek = Calculator.isAboveMinimumHoursPerWeek(1.0) // true
+val isBelowMaximumHoursPerWeek = Calculator.isBelowMaximumHoursPerWeek(170.0) // false
 ```
 
 ## Development
