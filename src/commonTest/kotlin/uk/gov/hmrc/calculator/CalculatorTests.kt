@@ -22,6 +22,8 @@ import uk.gov.hmrc.calculator.model.PayPeriod.YEARLY
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class CalculatorTests {
 
@@ -49,5 +51,15 @@ class CalculatorTests {
     @Test
     fun `Get Default Tax code for year`() {
         assertEquals(Calculator.getDefaultTaxCode(), "1250L")
+    }
+
+    @Test
+    fun `Validate valid tax code`() {
+        assertTrue(Calculator.isValidTaxCode("1250L"))
+    }
+
+    @Test
+    fun `Validate invalid tax code`() {
+        assertFalse(Calculator.isValidTaxCode("HELLO"))
     }
 }

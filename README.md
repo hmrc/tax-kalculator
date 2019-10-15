@@ -7,6 +7,8 @@
 ![COMPLEXITY](https://img.shields.io/badge/complexity-1.47-brightgreen.svg)
 [ ![Download](https://api.bintray.com/packages/hmrc/mobile-releases/tax-kalculator/images/download.svg) ](https://bintray.com/hmrc/mobile-releases/tax-kalculator/_latestVersion)
 
+## Calculate take-home pay
+
 First create an instance of `Calculator`, passing in the values as per the following example:
 
 ```kotlin
@@ -40,6 +42,14 @@ This will returns an object of type `CalculatorResponse`. This class is broken u
 - `takeHome: Double`
 
 > For tax breakdown this is the amount of tax per tax band which has two members, `percentage: Double` and `amount: Double`.
+
+## Validate tax code
+
+To validate a tax code:
+
+```kotlin
+val isValid = Calculator.isValidTaxCode("1250L")
+```
 
 ## Development
 

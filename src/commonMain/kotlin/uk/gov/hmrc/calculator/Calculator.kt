@@ -184,6 +184,15 @@ class Calculator(
     companion object {
         fun getDefaultTaxCode() = "${(getDefaultTaxAllowance(TaxYear().currentTaxYear()) / 10)}L"
 
+        fun isValidTaxCode(taxCode: String): Boolean {
+            return try {
+                taxCode.toTaxCode()
+                true
+            } catch (e: InvalidTaxCodeException) {
+                false
+            }
+        }
+
         internal fun getDefaultTaxAllowance(taxYear: Int, country: Country = ENGLAND) =
             TaxBands(country, taxYear).bands[0].upper.toInt()
     }
