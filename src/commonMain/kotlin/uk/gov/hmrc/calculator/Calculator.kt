@@ -48,7 +48,7 @@ import uk.gov.hmrc.calculator.utils.convertWageToYearly
 import uk.gov.hmrc.calculator.utils.toTaxCode
 
 class Calculator(
-    private val taxCodeString: String,
+    private val taxCode: String,
     private val wages: Double,
     private val payPeriod: PayPeriod,
     private val pensionAge: Boolean = false,
@@ -63,7 +63,7 @@ class Calculator(
 
         val yearlyWages = wages.convertWageToYearly(payPeriod, hoursPerWeek)
 
-        val taxCode = taxCodeString.toTaxCode()
+        val taxCode = this.taxCode.toTaxCode()
 
         val taxBands = TaxBands(taxCode.country, taxYear).bands
 
@@ -75,7 +75,7 @@ class Calculator(
         val amountToAddToWages = if (taxCode is KTaxCode) taxCode.amountToAddToWages else null
 
         return CalculatorResponse(
-            taxCode = taxCodeString,
+            taxCode = this.taxCode,
             country = taxCode.country,
             isKCode = taxCode is KTaxCode,
             weekly = CalculatorResponsePayPeriod(
