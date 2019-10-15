@@ -193,6 +193,8 @@ bintray {
 
     publications = ['jvm', 'metadata']
 
+    publish = true
+    
     pkg {
         repo = 'mobile-releases'
         name = project.name
