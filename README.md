@@ -4,8 +4,10 @@
 [![Build Status](https://app.bitrise.io/app/cd7fb52c258b9273/status.svg?token=lntO8o4xz5AUEvLwVzbo3A&branch=master)](https://app.bitrise.io/app/cd7fb52c258b9273)
 ![LINE](https://img.shields.io/badge/line--coverage-98%25-brightgreen.svg)
 ![BRANCH](https://img.shields.io/badge/branch--coverage-94%25-brightgreen.svg)
-![COMPLEXITY](https://img.shields.io/badge/complexity-1.47-brightgreen.svg)
+![COMPLEXITY](https://img.shields.io/badge/complexity-1.49-brightgreen.svg)
 [ ![Download](https://api.bintray.com/packages/hmrc/mobile-releases/tax-kalculator/images/download.svg) ](https://bintray.com/hmrc/mobile-releases/tax-kalculator/_latestVersion)
+
+## Calculate take-home pay
 
 First create an instance of `Calculator`, passing in the values as per the following example:
 
@@ -40,6 +42,28 @@ This will returns an object of type `CalculatorResponse`. This class is broken u
 - `takeHome: Double`
 
 > For tax breakdown this is the amount of tax per tax band which has two members, `percentage: Double` and `amount: Double`.
+
+## Validation
+
+To validate a tax code:
+
+```kotlin
+val isValid = Calculator.isValidTaxCode("1250L") // true
+```
+
+To validate wages:
+
+```kotlin
+val isAboveMinimumWages = Calculator.isAboveMinimumWages(0.0) // false
+val isBelowMaximumWages = Calculator.isBelowMaximumWages(120000.0) // true
+```
+
+To validate hours worked per week:
+
+```kotlin
+val isAboveMinimumHoursPerWeek = Calculator.isAboveMinimumHoursPerWeek(1.0) // true
+val isBelowMaximumHoursPerWeek = Calculator.isBelowMaximumHoursPerWeek(170.0) // false
+```
 
 ## Development
 

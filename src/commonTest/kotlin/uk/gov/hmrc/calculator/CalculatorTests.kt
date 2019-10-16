@@ -22,6 +22,8 @@ import uk.gov.hmrc.calculator.model.PayPeriod.YEARLY
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class CalculatorTests {
 
@@ -40,7 +42,7 @@ class CalculatorTests {
     }
 
     @Test
-    fun `Error When Wages=0 `() {
+    fun `Error when wages zero`() {
         assertFailsWith<InvalidWagesException> {
             Calculator("1250L", 0.0, payPeriod = YEARLY, taxYear = 2019).run()
         }
@@ -49,5 +51,55 @@ class CalculatorTests {
     @Test
     fun `Get Default Tax code for year`() {
         assertEquals(Calculator.getDefaultTaxCode(), "1250L")
+    }
+
+    @Test
+    fun `Validate valid tax code`() {
+        assertTrue(Calculator.isValidTaxCode("1250L"))
+    }
+
+    @Test
+    fun `Validate invalid tax code`() {
+        assertFalse(Calculator.isValidTaxCode("HELLO"))
+    }
+
+    @Test
+    fun `Validate wages below zero`() {
+        assertFalse(Calculator.isAboveMinimumWages(-1.0))
+    }
+
+    @Test
+    fun `Validate wages above zero`() {
+        assertTrue(Calculator.isAboveMinimumWages(12000.0))
+    }
+
+    @Test
+    fun `Validate wages below max`() {
+        assertTrue(Calculator.isBelowMaximumWages(9999999.0))
+    }
+
+    @Test
+    fun `Validate wages above max`() {
+        assertFalse(Calculator.isBelowMaximumWages(10000000.0))
+    }
+
+    @Test
+    fun `Validate hours below zero`() {
+        assertFalse(Calculator.isAboveMinimumHoursPerWeek(-1.0))
+    }
+
+    @Test
+    fun `Validate hours above zero`() {
+        assertTrue(Calculator.isAboveMinimumHoursPerWeek(26.0))
+    }
+
+    @Test
+    fun `Validate hours below max`() {
+        assertTrue(Calculator.isBelowMaximumHoursPerWeek(168.0))
+    }
+
+    @Test
+    fun `Validate hours above max`() {
+        assertFalse(Calculator.isBelowMaximumHoursPerWeek(168.1))
     }
 }

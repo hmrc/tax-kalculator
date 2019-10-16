@@ -15,6 +15,7 @@
  */
 package uk.gov.hmrc.calculator.utils
 
+import uk.gov.hmrc.calculator.Calculator
 import uk.gov.hmrc.calculator.exception.InvalidHoursException
 import uk.gov.hmrc.calculator.exception.InvalidPayPeriodException
 import uk.gov.hmrc.calculator.model.BandBreakdown
@@ -31,8 +32,9 @@ internal fun Double.convertWageToYearly(
 ): Double {
     return when (payPeriod) {
         HOURLY -> {
-            if (hoursPerWeek != null && hoursPerWeek > 0 && hoursPerWeek <= 168) this * hoursPerWeek * 52
-            else throw InvalidHoursException("The number of hours must be > 0 and <= 168 when PayPeriod is HOURLY")
+            if (hoursPerWeek != null && Calculator.isAboveMinimumHoursPerWeek(hoursPerWeek) &&
+                Calculator.isBelowMaximumHoursPerWeek(hoursPerWeek)) this * hoursPerWeek * 52
+            else throw InvalidHoursException("The number of hours must be between 0 and 168 when PayPeriod is HOURLY")
         }
         WEEKLY -> this * 52
         FOUR_WEEKLY -> this * 13
