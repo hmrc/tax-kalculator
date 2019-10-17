@@ -58,14 +58,14 @@ import uk.gov.hmrc.calculator.model.taxcodes.WelshTaxCode
 import uk.gov.hmrc.calculator.model.taxcodes.ZeroT
 
 internal fun String.toTaxCode(): TaxCode {
-    if (isEmpty()) throw InvalidTaxCodeException("Tax code cannot be empty")
+    if (isBlank()) throw InvalidTaxCodeException("Tax code cannot be empty")
 
-    val noSpacesTaxCode = this.replace("\\s".toRegex(), "")
+    val formattedTaxCode = this.replace("\\s".toRegex(), "").toUpperCase()
 
-    return when (noSpacesTaxCode.toCountry()) {
-        SCOTLAND -> noSpacesTaxCode.matchScottishTaxCode()
-        WALES -> noSpacesTaxCode.matchWelshTaxCode()
-        ENGLAND -> noSpacesTaxCode.matchEnglishTaxCode()
+    return when (formattedTaxCode.toCountry()) {
+        SCOTLAND -> formattedTaxCode.matchScottishTaxCode()
+        WALES -> formattedTaxCode.matchWelshTaxCode()
+        ENGLAND -> formattedTaxCode.matchEnglishTaxCode()
         NONE -> {
             when (this) {
                 "NT" -> NTCode()
