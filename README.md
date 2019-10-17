@@ -87,9 +87,9 @@ Add the mobile-releases bintray repository to your top-level `build.gradle`:
 
 ```groovy
 repositories {
-	maven {
-		url  "https://hmrc.bintray.com/mobile-releases" 
-	}
+    maven {
+        url  "https://hmrc.bintray.com/mobile-releases" 
+    }
 }
 ```
 
@@ -97,7 +97,7 @@ Add the dependency in the `build.gradle` of the module:
 
 ```groovy
 dependencies {
-	implementation "uk.gov.hmrc:tax-kalculator-jvm:x.y.z"
+    implementation "uk.gov.hmrc:tax-kalculator-jvm:x.y.z"
 }
 ```
 
