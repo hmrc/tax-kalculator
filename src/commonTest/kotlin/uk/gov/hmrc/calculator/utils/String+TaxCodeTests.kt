@@ -434,6 +434,20 @@ class StringTaxCodeTests {
     }
 
     @Test
+    fun `Scottish invalid emergency K code`() {
+        assertFailsWith<InvalidTaxCodeException> {
+            "SK100X".toTaxCode()
+        }
+    }
+
+    @Test
+    fun `Scottish K code with invalid char`() {
+        assertFailsWith<InvalidTaxCodeException> {
+            "SK100-".toTaxCode()
+        }
+    }
+
+    @Test
     fun `England K100`() {
         assertTrue("K100".toTaxCode() is KCode)
         val taxCode: KCode = "K100".toTaxCode() as KCode
