@@ -332,6 +332,22 @@ class StringTaxCodeTests {
     }
 
     @Test
+    fun `Scottish Emergency 1150M1 with space`() {
+        val taxCode = "S1150 M1".toTaxCode()
+        assertTrue(taxCode is ScottishEmergencyCode)
+        assertEquals(11509.0, taxCode.taxFreeAmount)
+        assertEquals(SCOTLAND, taxCode.country)
+    }
+
+    @Test
+    fun `Scottish Emergency 1150M1 lowercase`() {
+        val taxCode = "s1150m1".toTaxCode()
+        assertTrue(taxCode is ScottishEmergencyCode)
+        assertEquals(11509.0, taxCode.taxFreeAmount)
+        assertEquals(SCOTLAND, taxCode.country)
+    }
+
+    @Test
     fun `Scottish 1250M`() {
         assertTrue("S1250M".toTaxCode() is ScottishMCode)
         val taxCode: ScottishMCode = "S1250M".toTaxCode() as ScottishMCode
@@ -418,9 +434,32 @@ class StringTaxCodeTests {
     }
 
     @Test
+    fun `Scottish invalid emergency K code`() {
+        assertFailsWith<InvalidTaxCodeException> {
+            "SK100X".toTaxCode()
+        }
+    }
+
+    @Test
+    fun `Scottish K code with invalid char`() {
+        assertFailsWith<InvalidTaxCodeException> {
+            "SK100-".toTaxCode()
+        }
+    }
+
+    @Test
     fun `England K100`() {
         assertTrue("K100".toTaxCode() is KCode)
         val taxCode: KCode = "K100".toTaxCode() as KCode
+        assertEquals(0.0, taxCode.taxFreeAmount)
+        assertEquals(ENGLAND, taxCode.country)
+        assertEquals(1009.0, taxCode.amountToAddToWages)
+    }
+
+    @Test
+    fun `England K100 lowercase with spaces`() {
+        val taxCode = "k 100 ".toTaxCode()
+        assertTrue(taxCode is KCode)
         assertEquals(0.0, taxCode.taxFreeAmount)
         assertEquals(ENGLAND, taxCode.country)
         assertEquals(1009.0, taxCode.amountToAddToWages)
@@ -437,6 +476,13 @@ class StringTaxCodeTests {
     fun `Empty Invalid`() {
         assertFailsWith<InvalidTaxCodeException> {
             "".toTaxCode()
+        }
+    }
+
+    @Test
+    fun `Blank Invalid`() {
+        assertFailsWith<InvalidTaxCodeException> {
+            "    ".toTaxCode()
         }
     }
 }

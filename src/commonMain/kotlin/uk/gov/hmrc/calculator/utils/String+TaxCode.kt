@@ -58,14 +58,14 @@ import uk.gov.hmrc.calculator.model.taxcodes.WelshTaxCode
 import uk.gov.hmrc.calculator.model.taxcodes.ZeroT
 
 internal fun String.toTaxCode(): TaxCode {
-    if (isEmpty()) throw InvalidTaxCodeException("Tax code cannot be empty")
+    if (isBlank()) throw InvalidTaxCodeException("Tax code cannot be empty")
 
-    val noSpacesTaxCode = this.replace("\\s".toRegex(), "")
+    val formattedTaxCode = this.replace("\\s".toRegex(), "").toUpperCase()
 
-    return when (noSpacesTaxCode.toCountry()) {
-        SCOTLAND -> noSpacesTaxCode.matchScottishTaxCode()
-        WALES -> noSpacesTaxCode.matchWelshTaxCode()
-        ENGLAND -> noSpacesTaxCode.matchEnglishTaxCode()
+    return when (formattedTaxCode.toCountry()) {
+        SCOTLAND -> formattedTaxCode.matchScottishTaxCode()
+        WALES -> formattedTaxCode.matchWelshTaxCode()
+        ENGLAND -> formattedTaxCode.matchEnglishTaxCode()
         NONE -> {
             when (this) {
                 "NT" -> NTCode()
@@ -88,17 +88,17 @@ private fun String.matchScottishTaxCode(): ScottishTaxCode {
 
 private fun String.matchOtherScottishTaxCode(): ScottishTaxCode {
     return when {
-        "^S[0-9]{1,4}T".toRegex().containsMatchIn(this) ->
+        "^S[0-9]{1,4}T".toRegex().matches(this) ->
             STCode(removePrefix("S").removeSuffix("T").toDouble())
-        "^S[0-9]{1,4}L".toRegex().containsMatchIn(this) ->
+        "^S[0-9]{1,4}L".toRegex().matches(this) ->
             SLCode(removePrefix("S").removeSuffix("L").toDouble())
-        "^S[0-9]{1,4}(W1|M1|X)".toRegex().containsMatchIn(this) -> {
+        "^S[0-9]{1,4}(W1|M1|X)".toRegex().matches(this) -> {
             val strippedValue = removePrefix("S").removeSuffix("W1").removeSuffix("M1")
                 .removeSuffix("X").toDouble()
             ScottishEmergencyCode(strippedValue)
         }
-        "^S[0-9]{1,4}([MN])".toRegex().containsMatchIn(this) -> matchScottishMNCode()
-        "^SK[0-9]{1,4}".toRegex().containsMatchIn(this) -> SKCode(
+        "S[0-9]{1,4}([MN])".toRegex().matches(this) -> matchScottishMNCode()
+        "SK[0-9]{1,4}".toRegex().matches(this) -> SKCode(
             removePrefix("SK").toDouble()
         )
         else -> throw InvalidTaxCodeException("$this is an invalid Scottish tax code")
@@ -126,18 +126,18 @@ private fun String.matchWelshTaxCode(): WelshTaxCode {
 
 private fun String.matchOtherWelshTaxCode(): WelshTaxCode {
     return when {
-        "^C[0-9]{1,4}T".toRegex().containsMatchIn(this) ->
+        "C[0-9]{1,4}T".toRegex().matches(this) ->
             CTCode(removePrefix("C").removeSuffix("T").toDouble())
-        "^C[0-9]{1,4}L".toRegex().containsMatchIn(this) ->
+        "C[0-9]{1,4}L".toRegex().matches(this) ->
             CLCode(removePrefix("C").removeSuffix("L").toDouble())
-        "^C[0-9]{1,4}(W1|M1|X)".toRegex().containsMatchIn(this) -> {
+        "C[0-9]{1,4}(W1|M1|X)".toRegex().matches(this) -> {
             val strippedValue =
                 removePrefix("C").removeSuffix("W1").removeSuffix("M1")
                     .removeSuffix("X").toDouble()
             WelshEmergencyCode(strippedValue)
         }
-        "^C[0-9]{1,4}([MN])".toRegex().containsMatchIn(this) -> matchWelshMNCode()
-        "^CK[0-9]{1,4}".toRegex().containsMatchIn(this) -> CKCode(
+        "C[0-9]{1,4}([MN])".toRegex().matches(this) -> matchWelshMNCode()
+        "CK[0-9]{1,4}".toRegex().matches(this) -> CKCode(
             removePrefix("CK").toDouble()
         )
         else -> throw InvalidTaxCodeException("$this is an invalid Welsh tax code")
@@ -165,14 +165,14 @@ private fun String.matchEnglishTaxCode(): EnglishTaxCode {
 
 private fun String.matchOtherEnglishTaxCode(): EnglishTaxCode {
     return when {
-        "^[0-9]{1,4}T".toRegex().containsMatchIn(this) -> TCode(removeSuffix("T").toDouble())
-        "^[0-9]{1,4}L".toRegex().containsMatchIn(this) -> LCode(removeSuffix("L").toDouble())
-        "^[0-9]{1,4}(W1|M1|X)".toRegex().containsMatchIn(this) -> {
+        "[0-9]{1,4}T".toRegex().matches(this) -> TCode(removeSuffix("T").toDouble())
+        "[0-9]{1,4}L".toRegex().matches(this) -> LCode(removeSuffix("L").toDouble())
+        "[0-9]{1,4}(W1|M1|X)".toRegex().matches(this) -> {
             val strippedValue = removeSuffix("W1").removeSuffix("M1").removeSuffix("X").toDouble()
             EnglishEmergencyCode(strippedValue)
         }
-        "^[0-9]{1,4}([MN])".toRegex().containsMatchIn(this) -> matchEnglishMNCode()
-        "^K[0-9]{1,4}".toRegex().containsMatchIn(this) -> KCode(removePrefix("K").toDouble())
+        "[0-9]{1,4}([MN])".toRegex().matches(this) -> matchEnglishMNCode()
+        "K[0-9]{1,4}".toRegex().matches(this) -> KCode(removePrefix("K").toDouble())
         else -> throw InvalidTaxCodeException("$this is an invalid Welsh tax code")
     }
 }
