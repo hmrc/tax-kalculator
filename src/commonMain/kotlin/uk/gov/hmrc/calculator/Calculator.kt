@@ -51,7 +51,7 @@ class Calculator(
     private val taxCode: String,
     private val wages: Double,
     private val payPeriod: PayPeriod,
-    private val pensionAge: Boolean = false,
+    private val isPensionAge: Boolean = false,
     private val hoursPerWeek: Double? = null,
     private val taxYear: Int = TaxYear().currentTaxYear()
 ) {
@@ -155,10 +155,10 @@ class Calculator(
     }
 
     private fun employerNIToPay(yearlyWages: Double) =
-        if (pensionAge) 0.0 else getTotalFromBands(EmployerNIBands(taxYear).bands, yearlyWages)
+        if (isPensionAge) 0.0 else getTotalFromBands(EmployerNIBands(taxYear).bands, yearlyWages)
 
     private fun employeeNIToPay(yearlyWages: Double) =
-        if (pensionAge) 0.0 else getTotalFromBands(EmployeeNIBands(taxYear).bands, yearlyWages)
+        if (isPensionAge) 0.0 else getTotalFromBands(EmployeeNIBands(taxYear).bands, yearlyWages)
 
     private fun getTotalFromBands(bands: List<Band>, wages: Double): Double {
         var amount = 0.0

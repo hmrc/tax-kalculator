@@ -34,7 +34,7 @@ class StandardPensionAgeTaxCodeTestsYearly {
             Calculator(
                 "C1250L",
                 100000.0,
-                pensionAge = true,
+                isPensionAge = true,
                 payPeriod = YEARLY,
                 taxYear = 2019
             ).run()
@@ -49,7 +49,7 @@ class StandardPensionAgeTaxCodeTestsYearly {
             Calculator(
                 "1250L",
                 100000.0,
-                pensionAge = true,
+                isPensionAge = true,
                 payPeriod = YEARLY,
                 taxYear = 2019
             ).run()
@@ -64,7 +64,7 @@ class StandardPensionAgeTaxCodeTestsYearly {
             Calculator(
                 "1185L",
                 100000.0,
-                pensionAge = true,
+                isPensionAge = true,
                 payPeriod = YEARLY,
                 taxYear = 2019
             ).run()
@@ -79,7 +79,7 @@ class StandardPensionAgeTaxCodeTestsYearly {
             Calculator(
                 "S1250L",
                 100000.0,
-                pensionAge = true,
+                isPensionAge = true,
                 payPeriod = YEARLY,
                 taxYear = 2019
             ).run()
@@ -95,7 +95,7 @@ class StandardPensionAgeTaxCodeTestsYearly {
             Calculator(
                 "1250L",
                 20000.0,
-                pensionAge = true,
+                isPensionAge = true,
                 payPeriod = YEARLY,
                 taxYear = 2019
             ).run()
@@ -110,7 +110,7 @@ class StandardPensionAgeTaxCodeTestsYearly {
             Calculator(
                 "C1250L",
                 20000.0,
-                pensionAge = true,
+                isPensionAge = true,
                 payPeriod = YEARLY,
                 taxYear = 2019
             ).run()
@@ -125,7 +125,7 @@ class StandardPensionAgeTaxCodeTestsYearly {
             Calculator(
                 "S1250L",
                 20000.0,
-                pensionAge = true,
+                isPensionAge = true,
                 payPeriod = YEARLY,
                 taxYear = 2019
             ).run()
@@ -142,7 +142,7 @@ class StandardTaxCodeTestsOtherTimePensionAgePeriods {
             Calculator(
                 "1250L",
                 2000.0,
-                pensionAge = true,
+                isPensionAge = true,
                 payPeriod = MONTHLY,
                 taxYear = 2019
             ).run()
@@ -157,7 +157,7 @@ class StandardTaxCodeTestsOtherTimePensionAgePeriods {
             Calculator(
                 "1250L",
                 2000.0,
-                pensionAge = true,
+                isPensionAge = true,
                 payPeriod = FOUR_WEEKLY,
                 taxYear = 2019
             ).run()
@@ -172,7 +172,7 @@ class StandardTaxCodeTestsOtherTimePensionAgePeriods {
             Calculator(
                 "1250L",
                 500.0,
-                pensionAge = true,
+                isPensionAge = true,
                 payPeriod = WEEKLY,
                 taxYear = 2019
             ).run()
@@ -187,7 +187,7 @@ class StandardTaxCodeTestsOtherTimePensionAgePeriods {
             Calculator(
                 "1250L",
                 20.0,
-                pensionAge = true,
+                isPensionAge = true,
                 payPeriod = HOURLY,
                 hoursPerWeek = 37.5,
                 taxYear = 2019

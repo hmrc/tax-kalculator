@@ -16,7 +16,7 @@ val calculator = Calculator(
     taxCode = "1250L",        // Required
     wages = 20000.0,          // Required
     payPeriod = YEARLY,       // Required
-    pensionAge = false,       // Optional (Default: false)
+    isPensionAge = false,     // Optional (Default: false)
     hoursPerWeek = null,      // Optional (Default: null)
     taxYear = 2019            // Optional (Default: Current Tax Year)
 )
