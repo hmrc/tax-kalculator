@@ -36,3 +36,4 @@ build
 .gradle
 /credentials.properties
 local.properties
+.DS_Store
