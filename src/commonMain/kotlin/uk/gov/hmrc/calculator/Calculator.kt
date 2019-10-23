@@ -16,7 +16,12 @@
 package uk.gov.hmrc.calculator
 
 import uk.gov.hmrc.calculator.annotations.Throws
-import uk.gov.hmrc.calculator.exception.*
+import uk.gov.hmrc.calculator.exception.InvalidTaxCodeException
+import uk.gov.hmrc.calculator.exception.InvalidTaxYearException
+import uk.gov.hmrc.calculator.exception.InvalidWagesException
+import uk.gov.hmrc.calculator.exception.InvalidPayPeriodException
+import uk.gov.hmrc.calculator.exception.InvalidHoursException
+import uk.gov.hmrc.calculator.exception.InvalidTaxBandException
 import uk.gov.hmrc.calculator.model.BandBreakdown
 import uk.gov.hmrc.calculator.model.CalculatorResponse
 import uk.gov.hmrc.calculator.model.CalculatorResponsePayPeriod
@@ -57,9 +62,8 @@ class Calculator(
 
     private val bandBreakdown: MutableList<BandBreakdown> = mutableListOf()
 
-    @Throws(InvalidTaxCodeException::class, InvalidTaxYearException::class,
-            InvalidWagesException::class, InvalidPayPeriodException::class,
-            InvalidHoursException::class, InvalidTaxBandException::class)
+    @Throws(InvalidTaxCodeException::class, InvalidTaxYearException::class, InvalidWagesException::class,
+        InvalidPayPeriodException::class, InvalidHoursException::class, InvalidTaxBandException::class)
     fun run(): CalculatorResponse {
         if (!isAboveMinimumWages(wages) || !isBelowMaximumWages(wages)) {
             throw InvalidWagesException("Wages must be between 0 and 9999999.99")
@@ -71,13 +75,25 @@ class Calculator(
 
         val taxBands = TaxBands(taxCode.country, taxYear).bands
 
-        val taxPayable = taxToPay(yearlyWages, taxCode)
-        val employeesNI = employeeNIToPay(yearlyWages)
-        val employersNI = employerNIToPay(yearlyWages)
-
         val taxFreeAmount = adjustTaxBands(taxBands, taxCode)[0].upper
         val amountToAddToWages = if (taxCode is KTaxCode) taxCode.amountToAddToWages else null
 
+        return createResponse(
+            yearlyWages,
+            taxFreeAmount,
+            amountToAddToWages
+        )
+    }
+
+    private fun createResponse(
+        yearlyWages: Double,
+        taxFreeAmount: Double,
+        amountToAddToWages: Double?
+    ): CalculatorResponse {
+        val taxCode = this.taxCode.toTaxCode()
+        val taxPayable = taxToPay(yearlyWages, taxCode)
+        val employeesNI = employeeNIToPay(yearlyWages)
+        val employersNI = employerNIToPay(yearlyWages)
         return CalculatorResponse(
             taxCode = this.taxCode,
             country = taxCode.country,
