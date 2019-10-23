@@ -147,7 +147,6 @@ class Calculator(
         return when (taxCode) {
             is StandardTaxCode, is AdjustedTaxFreeTCode, is EmergencyTaxCode, is MarriageTaxCodes ->
                 getTotalFromBands(adjustTaxBands(taxBands, taxCode), yearlyWages)
-            //TODO confirm if this is needed for NT as this will result ina Tax Breakdown when there is none...
             is NoTaxTaxCode -> getTotalFromSingleBand(yearlyWages , taxCode.taxFreeAmount)
             is SingleBandTax -> getTotalFromSingleBand(yearlyWages, taxBands[taxCode.taxAllAtBand].percentageAsDecimal)
             is KTaxCode ->
