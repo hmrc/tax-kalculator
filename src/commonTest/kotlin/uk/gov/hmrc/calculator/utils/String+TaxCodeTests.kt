@@ -15,6 +15,10 @@
  */
 package uk.gov.hmrc.calculator.utils
 
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertTrue
 import uk.gov.hmrc.calculator.exception.InvalidTaxCodeException
 import uk.gov.hmrc.calculator.model.Country.ENGLAND
 import uk.gov.hmrc.calculator.model.Country.NONE
@@ -52,10 +56,6 @@ import uk.gov.hmrc.calculator.model.taxcodes.WelshEmergencyCode
 import uk.gov.hmrc.calculator.model.taxcodes.WelshMCode
 import uk.gov.hmrc.calculator.model.taxcodes.WelshNCode
 import uk.gov.hmrc.calculator.model.taxcodes.ZeroT
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
-import kotlin.test.assertTrue
 
 class StringTaxCodeTests {
 

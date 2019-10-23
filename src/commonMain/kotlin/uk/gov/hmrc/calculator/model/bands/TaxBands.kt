@@ -15,10 +15,10 @@
  */
 package uk.gov.hmrc.calculator.model.bands
 
+import uk.gov.hmrc.calculator.exception.InvalidTaxYearException
 import uk.gov.hmrc.calculator.model.Country
 import uk.gov.hmrc.calculator.model.Country.SCOTLAND
 import uk.gov.hmrc.calculator.model.Country.WALES
-import uk.gov.hmrc.calculator.exception.InvalidTaxYearException
 
 internal class TaxBands(country: Country, taxYear: Int) {
 

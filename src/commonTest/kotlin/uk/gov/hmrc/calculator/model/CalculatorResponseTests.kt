@@ -15,13 +15,13 @@
  */
 package uk.gov.hmrc.calculator.model
 
+import kotlin.test.Test
+import kotlin.test.assertEquals
 import uk.gov.hmrc.calculator.Calculator
 import uk.gov.hmrc.calculator.model.Country.ENGLAND
 import uk.gov.hmrc.calculator.model.Country.SCOTLAND
 import uk.gov.hmrc.calculator.model.PayPeriod.MONTHLY
 import uk.gov.hmrc.calculator.model.PayPeriod.YEARLY
-import kotlin.test.Test
-import kotlin.test.assertEquals
 
 class CalculatorResponseTests {
 

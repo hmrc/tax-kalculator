@@ -16,12 +16,12 @@
 package uk.gov.hmrc.calculator
 
 import uk.gov.hmrc.calculator.annotations.Throws
+import uk.gov.hmrc.calculator.exception.InvalidHoursException
+import uk.gov.hmrc.calculator.exception.InvalidPayPeriodException
+import uk.gov.hmrc.calculator.exception.InvalidTaxBandException
 import uk.gov.hmrc.calculator.exception.InvalidTaxCodeException
 import uk.gov.hmrc.calculator.exception.InvalidTaxYearException
 import uk.gov.hmrc.calculator.exception.InvalidWagesException
-import uk.gov.hmrc.calculator.exception.InvalidPayPeriodException
-import uk.gov.hmrc.calculator.exception.InvalidHoursException
-import uk.gov.hmrc.calculator.exception.InvalidTaxBandException
 import uk.gov.hmrc.calculator.model.BandBreakdown
 import uk.gov.hmrc.calculator.model.CalculatorResponse
 import uk.gov.hmrc.calculator.model.CalculatorResponsePayPeriod

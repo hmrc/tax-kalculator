@@ -15,12 +15,12 @@
  */
 package uk.gov.hmrc.calculator.utils
 
+import kotlin.test.Test
+import kotlin.test.assertEquals
 import uk.gov.hmrc.calculator.model.Country.ENGLAND
 import uk.gov.hmrc.calculator.model.Country.NONE
 import uk.gov.hmrc.calculator.model.Country.SCOTLAND
 import uk.gov.hmrc.calculator.model.Country.WALES
-import kotlin.test.Test
-import kotlin.test.assertEquals
 
 class StringCountryTests {
 
