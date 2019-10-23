@@ -15,15 +15,15 @@
  */
 package uk.gov.hmrc.calculator
 
-import uk.gov.hmrc.calculator.model.PayPeriod.HOURLY
-import uk.gov.hmrc.calculator.exception.InvalidHoursException
-import uk.gov.hmrc.calculator.exception.InvalidWagesException
-import uk.gov.hmrc.calculator.model.PayPeriod.YEARLY
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
+import uk.gov.hmrc.calculator.exception.InvalidHoursException
+import uk.gov.hmrc.calculator.exception.InvalidWagesException
+import uk.gov.hmrc.calculator.model.PayPeriod.HOURLY
+import uk.gov.hmrc.calculator.model.PayPeriod.YEARLY
 
 class CalculatorTests {
 
