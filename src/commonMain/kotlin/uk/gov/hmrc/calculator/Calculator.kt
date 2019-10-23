@@ -147,12 +147,19 @@ class Calculator(
         return when (taxCode) {
             is StandardTaxCode, is AdjustedTaxFreeTCode, is EmergencyTaxCode, is MarriageTaxCodes ->
                 getTotalFromBands(adjustTaxBands(taxBands, taxCode), yearlyWages)
-            is NoTaxTaxCode -> yearlyWages * taxCode.taxFreeAmount
-            is SingleBandTax -> yearlyWages * taxBands[taxCode.taxAllAtBand].percentageAsDecimal
+            //TODO confirm if this is needed for NT as this will result ina Tax Breakdown when there is none...
+            is NoTaxTaxCode -> getTotalFromSingleBand(yearlyWages , taxCode.taxFreeAmount)
+            is SingleBandTax -> getTotalFromSingleBand(yearlyWages, taxBands[taxCode.taxAllAtBand].percentageAsDecimal)
             is KTaxCode ->
                 getTotalFromBands(adjustTaxBands(taxBands, taxCode), yearlyWages + taxCode.amountToAddToWages)
             else -> throw InvalidTaxCodeException("$this is an invalid tax code")
         }
+    }
+
+    private fun getTotalFromSingleBand(yearlyWage: Double, percentageForSingleBand: Double): Double {
+        val taxToPayForSingleBand: Double = yearlyWage * percentageForSingleBand
+        bandBreakdown.add(BandBreakdown(percentageForSingleBand, taxToPayForSingleBand))
+        return taxToPayForSingleBand
     }
 
     private fun adjustTaxBands(taxBands: List<Band>, taxCode: TaxCode): List<Band> {
