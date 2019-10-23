@@ -398,10 +398,17 @@ class StringTaxCodeTests {
     }
 
     @Test
-    fun `NT (not tax) tax code`() {
-        assertTrue("NT".toTaxCode() is NoTaxTaxCode)
-        val taxCode: NoTaxTaxCode = "NT".toTaxCode() as NoTaxTaxCode
+    fun `NT (no tax) tax code`() {
+        val taxCode = "NT".toTaxCode()
+        assertTrue(taxCode is NoTaxTaxCode)
+        assertEquals(0.0, taxCode.taxFreeAmount)
+        assertEquals(NONE, taxCode.country)
+    }
 
+    @Test
+    fun `Lowercase NT tax code`() {
+        val taxCode = "nt".toTaxCode()
+        assertTrue(taxCode is NoTaxTaxCode)
         assertEquals(0.0, taxCode.taxFreeAmount)
         assertEquals(NONE, taxCode.country)
     }

@@ -67,7 +67,7 @@ internal fun String.toTaxCode(): TaxCode {
         WALES -> formattedTaxCode.matchWelshTaxCode()
         ENGLAND -> formattedTaxCode.matchEnglishTaxCode()
         NONE -> {
-            when (this) {
+            when (formattedTaxCode) {
                 "NT" -> NTCode()
                 else -> throw InvalidTaxCodeException("$this is an invalid tax code")
             }
