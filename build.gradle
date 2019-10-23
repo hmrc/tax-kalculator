@@ -62,10 +62,6 @@ version=System.getenv('BITRISE_GIT_TAG') ?: ("SNAPSHOT-" + getDate() )
 apply plugin: 'maven-publish'
 String frameworkName = 'TaxKalculator'
 
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
-    kotlinOptions.freeCompilerArgs += ["-Xuse-experimental=kotlin.ExperimentalMultiplatform"]
-}
-
 kotlin {
     targets {
         final def iOSTarget = System.getenv('SDK_NAME')?.startsWith("iphoneos")    \
@@ -80,6 +76,11 @@ kotlin {
     }
 
     sourceSets {
+        all {
+            languageSettings {
+                useExperimentalAnnotation('kotlin.Experimental')
+            }
+        }
         def klockVersion = "1.7.5"
         commonMain {
             dependencies {
