@@ -345,7 +345,7 @@ class CalculatorResponseTests {
     }
     @Test
     fun `NT`() {
-        val taxCode = "SD2"
+        val taxCode = "NT"
         val wages = 130000.00
         val response = Calculator(taxCode, wages, payPeriod = YEARLY).run()
 
