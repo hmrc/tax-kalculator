@@ -333,7 +333,7 @@ class CalculatorResponseTests {
         val wages = 130000.00
         val response = Calculator(taxCode, wages, payPeriod = YEARLY).run()
 
-        assertEquals(66364.16, response.yearly.totalDeductions )
+        assertEquals(66364.16, response.yearly.totalDeductions)
         assertEquals(
             listOf(
                 BandBreakdown(
@@ -349,7 +349,7 @@ class CalculatorResponseTests {
         val wages = 130000.00
         val response = Calculator(taxCode, wages, payPeriod = YEARLY).run()
 
-        assertEquals( 6564.16, response.yearly.totalDeductions )
+        assertEquals(6564.16, response.yearly.totalDeductions)
         assertEquals(
             listOf(
                 BandBreakdown(
