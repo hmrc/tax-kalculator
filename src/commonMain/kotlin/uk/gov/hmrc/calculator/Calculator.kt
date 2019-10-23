@@ -15,6 +15,7 @@
  */
 package uk.gov.hmrc.calculator
 
+import uk.gov.hmrc.calculator.annotations.Throws
 import uk.gov.hmrc.calculator.model.BandBreakdown
 import uk.gov.hmrc.calculator.model.CalculatorResponse
 import uk.gov.hmrc.calculator.model.CalculatorResponsePayPeriod
@@ -58,6 +59,7 @@ class Calculator(
 
     private val bandBreakdown: MutableList<BandBreakdown> = mutableListOf()
 
+    @Throws(InvalidWagesException::class)
     fun run(): CalculatorResponse {
         if (!isAboveMinimumWages(wages) || !isBelowMaximumWages(wages)) {
             throw InvalidWagesException("Wages must be between 0 and 9999999.99")
