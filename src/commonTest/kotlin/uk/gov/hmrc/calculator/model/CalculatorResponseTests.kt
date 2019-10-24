@@ -45,10 +45,12 @@ class CalculatorResponseTests {
         assertEquals(300.0, response.employersNI)
         assertEquals(300.0, response.totalDeductions)
         assertEquals(700.0, response.takeHome)
-        assertEquals(listOf(
-            BandBreakdown(0.0, 0.0),
-            BandBreakdown(0.2, 2000.0)
-        ), response.taxBreakdown)
+        assertEquals(
+            listOf(
+                BandBreakdown(0.0, 0.0),
+                BandBreakdown(0.2, 2000.0)
+            ), response.taxBreakdown
+        )
         assertEquals(12509.0, response.taxFree)
     }
 
@@ -322,6 +324,39 @@ class CalculatorResponseTests {
                     amount = 682.5711538461538
                 )
             ), response.weekly.taxBreakdown
+        )
+    }
+
+    @Test
+    fun `SD2`() {
+        val taxCode = "SD2"
+        val wages = 130000.00
+        val response = Calculator(taxCode, wages, payPeriod = YEARLY).run()
+
+        assertEquals(66364.16, response.yearly.totalDeductions)
+        assertEquals(
+            listOf(
+                BandBreakdown(
+                    percentage = 0.46,
+                    amount = 59800.00
+                )
+            ), response.yearly.taxBreakdown
+        )
+    }
+    @Test
+    fun `NT`() {
+        val taxCode = "NT"
+        val wages = 130000.00
+        val response = Calculator(taxCode, wages, payPeriod = YEARLY).run()
+
+        assertEquals(6564.16, response.yearly.totalDeductions)
+        assertEquals(
+            listOf(
+                BandBreakdown(
+                    percentage = 0.00,
+                    amount = 0.00
+                )
+            ), response.yearly.taxBreakdown
         )
     }
 }
