@@ -42,5 +42,8 @@ object Validator {
 
     fun isBelowMaximumHoursPerWeek(hours: Double) = hours <= 168
 
-    private fun Double.isTwoDecimalPlacesOrFewer() = times(100) == times(100).toInt().toDouble()
+    private fun Double.isTwoDecimalPlacesOrFewer(): Boolean {
+        val splitByDecimalPoint = toString().split(".")
+        return splitByDecimalPoint.size == 2 && splitByDecimalPoint.last().length <= 2
+    }
 }
