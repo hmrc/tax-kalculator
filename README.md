@@ -54,15 +54,17 @@ val isValid = Calculator.isValidTaxCode("1250L") // true
 To validate wages:
 
 ```kotlin
-val isAboveMinimumWages = Calculator.isAboveMinimumWages(0.0) // false
-val isBelowMaximumWages = Calculator.isBelowMaximumWages(120000.0) // true
+val isValidWages = Validator.isValidWages(1000) // true
+val isAboveMinimumWages = Validator.isAboveMinimumWages(0.0) // false
+val isBelowMaximumWages = Validator.isBelowMaximumWages(120000.0) // true
 ```
 
 To validate hours worked per week:
 
 ```kotlin
-val isAboveMinimumHoursPerWeek = Calculator.isAboveMinimumHoursPerWeek(1.0) // true
-val isBelowMaximumHoursPerWeek = Calculator.isBelowMaximumHoursPerWeek(170.0) // false
+val isValidHoursPerWeek = Validator.isValidHoursPerWeek(20) // true
+val isAboveMinimumHoursPerWeek = Validator.isAboveMinimumHoursPerWeek(1.0) // true
+val isBelowMaximumHoursPerWeek = Validator.isBelowMaximumHoursPerWeek(170.0) // false
 ```
 
 ## Development
