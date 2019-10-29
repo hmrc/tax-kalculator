@@ -65,7 +65,7 @@ class Calculator(
     @Throws(InvalidTaxCodeException::class, InvalidTaxYearException::class, InvalidWagesException::class,
         InvalidPayPeriodException::class, InvalidHoursException::class, InvalidTaxBandException::class)
     fun run(): CalculatorResponse {
-        if (!isAboveMinimumWages(wages) || !isBelowMaximumWages(wages)) {
+        if (!Validator.isAboveMinimumWages(wages) || !Validator.isBelowMaximumWages(wages)) {
             throw InvalidWagesException("Wages must be between 0 and 9999999.99")
         }
 
@@ -209,23 +209,6 @@ class Calculator(
 
     companion object {
         fun getDefaultTaxCode() = "${(getDefaultTaxAllowance(TaxYear().currentTaxYear()) / 10)}L"
-
-        fun isValidTaxCode(taxCode: String): Boolean {
-            return try {
-                taxCode.toTaxCode()
-                true
-            } catch (e: InvalidTaxCodeException) {
-                false
-            }
-        }
-
-        fun isAboveMinimumWages(wages: Double) = wages > 0
-
-        fun isBelowMaximumWages(wages: Double) = wages < 9999999.99
-
-        fun isAboveMinimumHoursPerWeek(hours: Double) = hours > 0
-
-        fun isBelowMaximumHoursPerWeek(hours: Double) = hours <= 168
 
         internal fun getDefaultTaxAllowance(taxYear: Int, country: Country = ENGLAND) =
             TaxBands(country, taxYear).bands[0].upper.toInt()
