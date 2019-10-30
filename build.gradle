@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.FatFrameworkTask
+
 plugins {
     id 'org.jetbrains.kotlin.multiplatform' version '1.3.50'
     id 'jacoco'
@@ -63,14 +65,14 @@ apply plugin: 'maven-publish'
 String frameworkName = 'TaxKalculator'
 
 kotlin {
-    targets {
-        final def iOSTarget = System.getenv('SDK_NAME')?.startsWith("iphoneos")    \
-                             ? presets.iosArm64 : presets.iosX64
 
-        fromPreset(iOSTarget, 'ios') {
-            binaries {
-                framework(frameworkName)
-            }
+    targets {
+        iosArm32("ios32")
+        iosArm64("ios64")
+        iosX64("iosSimulator")
+
+        configure([ios32, ios64, iosSimulator]) {
+            binaries.framework(frameworkName)
         }
         fromPreset(presets.jvm, 'jvm')
     }
@@ -111,12 +113,21 @@ kotlin {
             }
         }
         iosTest {}
+
+        ios32Main.dependsOn iosMain
+        ios32Test.dependsOn iosTest
+
+        ios64Main.dependsOn iosMain
+        ios64Test.dependsOn iosTest
+
+        iosSimulatorMain.dependsOn iosMain
+        iosSimulatorTest.dependsOn iosTest
     }
 }
 
 task iosTest {
     def device = project.findProperty("iosDevice")?.toString() ?: "iPhone 8"
-    dependsOn kotlin.targets.ios.binaries.getTest('DEBUG').linkTaskName
+    dependsOn kotlin.targets.ios64.binaries.getTest('DEBUG').linkTaskName
     group = JavaBasePlugin.VERIFICATION_GROUP
     description = "Runs tests for target 'ios' on an iOS simulator"
 
@@ -128,16 +139,23 @@ task iosTest {
     }
 }
 
-task packForXCode(type: Sync) {
+task fatFramework(type: FatFrameworkTask) {
     final File frameworkDir = new File(buildDir, "xcode-frameworks")
-    final String mode = project.findProperty("XCODE_CONFIGURATION")?.toUpperCase() ?: 'DEBUG'
-    final def framework = kotlin.targets.ios.binaries.getFramework(frameworkName, mode)
+    destinationDir = frameworkDir
 
-    inputs.property "mode", mode
-    dependsOn framework.linkTask
+    def ios32Framework = kotlin.targets.ios32.binaries.getFramework(frameworkName, 'DEBUG')
+    def ios64Framework = kotlin.targets.ios64.binaries.getFramework(frameworkName, 'DEBUG')
+    def iosSimulatorFramework = kotlin.targets.iosSimulator.binaries.getFramework(frameworkName, 'DEBUG')
 
-    from { framework.outputFile.parentFile }
-    into frameworkDir
+    dependsOn ios32Framework.linkTask
+    dependsOn ios64Framework.linkTask
+    dependsOn iosSimulatorFramework.linkTask
+
+    from(
+            ios32Framework,
+            ios64Framework,
+            iosSimulatorFramework
+    )
 
     doLast {
         new File(frameworkDir, 'gradlew').with {
@@ -146,7 +164,8 @@ task packForXCode(type: Sync) {
         }
     }
 }
-tasks.build.dependsOn packForXCode
+
+tasks.build.dependsOn fatFramework
 
 configurations {
     compileClasspath
