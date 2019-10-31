@@ -140,6 +140,7 @@ task iosTest {
 }
 
 task fatFramework(type: FatFrameworkTask) {
+    baseName = frameworkName
     final File frameworkDir = new File(buildDir, "xcode-frameworks")
     destinationDir = frameworkDir
 
