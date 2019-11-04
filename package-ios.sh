@@ -17,6 +17,10 @@ else
         fi
         echo "INFO: Creating Carthage folder structure"
         mkdir $DIRECTORY && mkdir $DIRECTORY/Build && mkdir $DIRECTORY/Build/iOS
+        echo "INFO: Remove simulator supported platform from Info.plist"
+        plutil -remove "CFBundleSupportedPlatforms" build/xcode-frameworks/TaxKalculator.framework/Info.plist
+        plutil -insert "CFBundleSupportedPlatforms" -xml '<array/>' build/xcode-frameworks/TaxKalculator.framework/Info.plist
+        plutil -insert CFBundleSupportedPlatforms.0 -string 'iPhoneOS' build/xcode-frameworks/TaxKalculator.framework/Info.plist
         echo "INFO: Copying artifact"
         cp -r build/xcode-frameworks/TaxKalculator* $DIRECTORY/Build/iOS
         echo "INFO: Zipping"
