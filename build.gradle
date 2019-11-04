@@ -72,7 +72,9 @@ kotlin {
         iosX64("iosSimulator")
 
         configure([ios32, ios64, iosSimulator]) {
-            binaries.framework(frameworkName)
+            binaries.framework(frameworkName) {
+                embedBitcode("bitcode")
+            }
         }
         fromPreset(presets.jvm, 'jvm')
     }
@@ -145,16 +147,16 @@ task fatFramework(type: FatFrameworkTask) {
     destinationDir = frameworkDir
 
     def ios32Framework = kotlin.targets.ios32.binaries.getFramework(frameworkName, 'RELEASE')
-    def ios64Framework = kotlin.targets.ios64.binaries.getFramework(frameworkName, 'RELEASE')
+//    def ios64Framework = kotlin.targets.ios64.binaries.getFramework(frameworkName, 'RELEASE')
     def iosSimulatorFramework = kotlin.targets.iosSimulator.binaries.getFramework(frameworkName, 'RELEASE')
 
     dependsOn ios32Framework.linkTask
-    dependsOn ios64Framework.linkTask
+//    dependsOn ios64Framework.linkTask
     dependsOn iosSimulatorFramework.linkTask
 
     from(
             ios32Framework,
-            ios64Framework,
+//            ios64Framework,
             iosSimulatorFramework
     )
 
