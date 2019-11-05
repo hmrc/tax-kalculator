@@ -73,7 +73,7 @@ kotlin {
 
         configure([ios32, ios64, iosSimulator]) {
             binaries.framework(frameworkName) {
-                embedBitcode("bitcode")
+                embedBitcode("disable")
             }
         }
         fromPreset(presets.jvm, 'jvm')
