@@ -48,7 +48,7 @@ This will returns an object of type `CalculatorResponse`. This class is broken u
 To validate a tax code:
 
 ```kotlin
-val isValid = Calculator.isValidTaxCode("1250L") // true
+val isValid = Validator.isValidTaxCode("1250L") // true
 ```
 
 To validate wages:
