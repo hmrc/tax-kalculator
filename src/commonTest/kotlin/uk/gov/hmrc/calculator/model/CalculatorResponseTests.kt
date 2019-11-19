@@ -29,11 +29,11 @@ class CalculatorResponseTests {
     fun `Check Summation Of Total Deductions`() {
         val response = CalculatorResponsePayPeriod(
             payPeriod = YEARLY,
-            taxToPay = 100.0,
+            taxToPayForPayPeriod = 100.0,
             employeesNI = 200.0,
             employersNI = 300.0,
             wages = 1000.0,
-            taxBreakdown = listOf(
+            taxBreakdownForPayPeriod = listOf(
                 BandBreakdown(0.0, 0.0),
                 BandBreakdown(0.2, 2000.0)
             ),
@@ -82,7 +82,7 @@ class CalculatorResponseTests {
                 )
             ), response.yearly.taxBreakdown
         )
-        assertEquals(response.yearly.taxBreakdown[0].bandDescription, "Income taxed at 20%")
+        assertEquals(response.yearly.taxBreakdown?.get(0)?.bandDescription, "Income taxed at 20%")
 
         assertEquals(191.51666666666668, response.monthly.taxToPay)
         assertEquals(153.67999999999998, response.monthly.employeesNI)
@@ -160,8 +160,8 @@ class CalculatorResponseTests {
                 BandBreakdown(percentage = 0.4, amount = 32000.00)
             ), response.yearly.taxBreakdown
         )
-        assertEquals(response.yearly.taxBreakdown[0].bandDescription, "Income taxed at 20%")
-        assertEquals(response.yearly.taxBreakdown[1].bandDescription, "Income taxed at 40%")
+        assertEquals(response.monthly.taxBreakdown?.get(0)?.bandDescription, "Income taxed at 20%")
+        assertEquals(response.monthly.taxBreakdown?.get(1)?.bandDescription, "Income taxed at 40%")
 
         assertEquals(3291.5166666666664, response.monthly.taxToPay)
         assertEquals(530.3466666666667, response.monthly.employeesNI)
@@ -249,10 +249,10 @@ class CalculatorResponseTests {
                 BandBreakdown(percentage = 0.41, amount = 35493.70)
             ), response.yearly.taxBreakdown
         )
-        assertEquals(response.yearly.taxBreakdown[0].bandDescription, "Income taxed at 19%")
-        assertEquals(response.yearly.taxBreakdown[1].bandDescription, "Income taxed at 20%")
-        assertEquals(response.yearly.taxBreakdown[2].bandDescription, "Income taxed at 21%")
-        assertEquals(response.yearly.taxBreakdown[3].bandDescription, "Income taxed at 41%")
+        assertEquals(response.monthly.taxBreakdown?.get(0)?.bandDescription, "Income taxed at 19%")
+        assertEquals(response.monthly.taxBreakdown?.get(1)?.bandDescription, "Income taxed at 20%")
+        assertEquals(response.monthly.taxBreakdown?.get(2)?.bandDescription, "Income taxed at 21%")
+        assertEquals(response.monthly.taxBreakdown?.get(3)?.bandDescription, "Income taxed at 41%")
 
         assertEquals(3486.8633333333332, response.monthly.taxToPay)
         assertEquals(530.3466666666667, response.monthly.employeesNI)
@@ -343,12 +343,13 @@ class CalculatorResponseTests {
             ), response.yearly.taxBreakdown
         )
     }
+
     @Test
-    fun `NT`() {
+    fun NT() {
         val taxCode = "NT"
         val wages = 130000.00
         val response = Calculator(taxCode, wages, payPeriod = YEARLY).run()
-
+        assertEquals(false, response.yearly.maxTaxAmountExceeded)
         assertEquals(6564.16, response.yearly.totalDeductions)
         assertEquals(
             listOf(
@@ -358,5 +359,28 @@ class CalculatorResponseTests {
                 )
             ), response.yearly.taxBreakdown
         )
+    }
+
+    @Test
+    fun `Check K9999 (Ensure HMRC does not tax you more than 50%)`() {
+        val taxCode = "K9999"
+        val wages = 400.00
+        val response = Calculator(taxCode, wages, payPeriod = PayPeriod.WEEKLY).run()
+
+        assertEquals(ENGLAND, response.country)
+        assertEquals(true, response.isKCode)
+        assertEquals("K9999", response.taxCode)
+
+        // Year
+        assertEquals(YEARLY, response.yearly.payPeriod)
+        assertEquals(10400.0, response.yearly.taxToPay)
+        assertEquals(1460.1599999999999, response.yearly.employeesNI)
+        assertEquals(true, response.yearly.maxTaxAmountExceeded)
+        assertEquals(11860.16, response.yearly.totalDeductions)
+        assertEquals(8939.84, response.yearly.takeHome)
+        assertEquals(0.0, response.yearly.taxFree)
+        assertEquals(20800.0, response.yearly.wages)
+        assertEquals(99999.0, response.yearly.kCodeAdjustment)
+        assertEquals(null, response.yearly.taxBreakdown)
     }
 }
