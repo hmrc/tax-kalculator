@@ -3,8 +3,8 @@
 
 [![Build Status](https://app.bitrise.io/app/cd7fb52c258b9273/status.svg?token=lntO8o4xz5AUEvLwVzbo3A&branch=master)](https://app.bitrise.io/app/cd7fb52c258b9273)
 ![LINE](https://img.shields.io/badge/line--coverage-98%25-brightgreen.svg)
-![BRANCH](https://img.shields.io/badge/branch--coverage-94%25-brightgreen.svg)
-![COMPLEXITY](https://img.shields.io/badge/complexity-1.48-brightgreen.svg)
+![BRANCH](https://img.shields.io/badge/branch--coverage-92%25-brightgreen.svg)
+![COMPLEXITY](https://img.shields.io/badge/complexity-1.52-brightgreen.svg)
 [ ![Download](https://api.bintray.com/packages/hmrc/mobile-releases/tax-kalculator/images/download.svg) ](https://bintray.com/hmrc/mobile-releases/tax-kalculator/_latestVersion)
 
 ## Calculate take-home pay
@@ -32,7 +32,8 @@ val response = calculator.run()
 
 This will returns an object of type `CalculatorResponse`. This class is broken up into weekly, four_weekly, monthly and yearly. Each of these members is of type `CalculatorResponsePayPeriod` and the members of this class are what will return the values (relative to their PayPeriod) needed for the app, they are:
 
-- `taxToPay: Double`
+- `taxToPay: Double` -> This will capped at a maximum of 50% of their wages
+- `maxTaxAmountExceeded: Boolean` -> This will always be false unless taxToPay is adjusted for 50%
 - `employeesNI: Double`
 - `employersNI: Double`
 - `wages: Double`
@@ -48,7 +49,7 @@ This will returns an object of type `CalculatorResponse`. This class is broken u
 To validate a tax code:
 
 ```kotlin
-val isValid = Calculator.isValidTaxCode("1250L") // true
+val isValid = Validator.isValidTaxCode("1250L") // true
 ```
 
 To validate wages:

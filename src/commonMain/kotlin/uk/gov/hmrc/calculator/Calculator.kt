@@ -15,6 +15,7 @@
  */
 package uk.gov.hmrc.calculator
 
+import kotlin.jvm.JvmOverloads
 import uk.gov.hmrc.calculator.annotations.Throws
 import uk.gov.hmrc.calculator.exception.InvalidHoursException
 import uk.gov.hmrc.calculator.exception.InvalidPayPeriodException
@@ -51,7 +52,7 @@ import uk.gov.hmrc.calculator.utils.convertListOfBandBreakdownForPayPeriod
 import uk.gov.hmrc.calculator.utils.convertWageToYearly
 import uk.gov.hmrc.calculator.utils.toTaxCode
 
-class Calculator(
+class Calculator @JvmOverloads constructor(
     private val taxCode: String,
     private val wages: Double,
     private val payPeriod: PayPeriod,
@@ -100,41 +101,41 @@ class Calculator(
             isKCode = taxCode is KTaxCode,
             weekly = CalculatorResponsePayPeriod(
                 payPeriod = WEEKLY,
-                taxToPay = taxPayable.convertAmountFromYearlyToPayPeriod(WEEKLY),
+                taxToPayForPayPeriod = taxPayable.convertAmountFromYearlyToPayPeriod(WEEKLY),
                 employeesNI = employeesNI.convertAmountFromYearlyToPayPeriod(WEEKLY),
                 employersNI = employersNI.convertAmountFromYearlyToPayPeriod(WEEKLY),
                 wages = yearlyWages.convertAmountFromYearlyToPayPeriod(WEEKLY),
-                taxBreakdown = bandBreakdown.convertListOfBandBreakdownForPayPeriod(WEEKLY),
+                taxBreakdownForPayPeriod = bandBreakdown.convertListOfBandBreakdownForPayPeriod(WEEKLY),
                 taxFree = taxFreeAmount.convertAmountFromYearlyToPayPeriod(WEEKLY),
                 kCodeAdjustment = amountToAddToWages?.convertAmountFromYearlyToPayPeriod(WEEKLY)
             ),
             fourWeekly = CalculatorResponsePayPeriod(
                 payPeriod = FOUR_WEEKLY,
-                taxToPay = taxPayable.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
+                taxToPayForPayPeriod = taxPayable.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
                 employeesNI = employeesNI.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
                 employersNI = employersNI.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
                 wages = yearlyWages.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
-                taxBreakdown = bandBreakdown.convertListOfBandBreakdownForPayPeriod(FOUR_WEEKLY),
+                taxBreakdownForPayPeriod = bandBreakdown.convertListOfBandBreakdownForPayPeriod(FOUR_WEEKLY),
                 taxFree = taxFreeAmount.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
                 kCodeAdjustment = amountToAddToWages?.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY)
             ),
             monthly = CalculatorResponsePayPeriod(
                 payPeriod = MONTHLY,
-                taxToPay = taxPayable.convertAmountFromYearlyToPayPeriod(MONTHLY),
+                taxToPayForPayPeriod = taxPayable.convertAmountFromYearlyToPayPeriod(MONTHLY),
                 employeesNI = employeesNI.convertAmountFromYearlyToPayPeriod(MONTHLY),
                 employersNI = employersNI.convertAmountFromYearlyToPayPeriod(MONTHLY),
                 wages = yearlyWages.convertAmountFromYearlyToPayPeriod(MONTHLY),
-                taxBreakdown = bandBreakdown.convertListOfBandBreakdownForPayPeriod(MONTHLY),
+                taxBreakdownForPayPeriod = bandBreakdown.convertListOfBandBreakdownForPayPeriod(MONTHLY),
                 taxFree = taxFreeAmount.convertAmountFromYearlyToPayPeriod(MONTHLY),
                 kCodeAdjustment = amountToAddToWages?.convertAmountFromYearlyToPayPeriod(MONTHLY)
             ),
             yearly = CalculatorResponsePayPeriod(
                 payPeriod = YEARLY,
-                taxToPay = taxPayable.convertAmountFromYearlyToPayPeriod(YEARLY),
+                taxToPayForPayPeriod = taxPayable.convertAmountFromYearlyToPayPeriod(YEARLY),
                 employeesNI = employeesNI.convertAmountFromYearlyToPayPeriod(YEARLY),
                 employersNI = employersNI.convertAmountFromYearlyToPayPeriod(YEARLY),
                 wages = yearlyWages.convertAmountFromYearlyToPayPeriod(YEARLY),
-                taxBreakdown = bandBreakdown,
+                taxBreakdownForPayPeriod = bandBreakdown,
                 taxFree = taxFreeAmount,
                 kCodeAdjustment = amountToAddToWages
             )

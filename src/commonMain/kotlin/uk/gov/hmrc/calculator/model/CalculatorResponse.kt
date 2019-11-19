@@ -21,18 +21,22 @@ data class BandBreakdown(val percentage: Double, val amount: Double) {
     val bandDescription: String = "Income taxed at $percentageFormatted%"
 }
 
-data class CalculatorResponsePayPeriod(
+class CalculatorResponsePayPeriod(
     val payPeriod: PayPeriod,
-    val taxToPay: Double,
+    taxToPayForPayPeriod: Double,
     val employeesNI: Double,
     val employersNI: Double,
     val wages: Double,
-    val taxBreakdown: List<BandBreakdown>,
+    taxBreakdownForPayPeriod: List<BandBreakdown>?,
     val taxFree: Double,
     val kCodeAdjustment: Double? = null
 ) {
+    private val maxTaxAmount = wages / 2
+    val taxToPay = if (taxToPayForPayPeriod > maxTaxAmount) maxTaxAmount else taxToPayForPayPeriod
+    val maxTaxAmountExceeded = (taxToPayForPayPeriod > maxTaxAmount)
     val totalDeductions = taxToPay + employeesNI
     val takeHome = wages - totalDeductions
+    val taxBreakdown = if (maxTaxAmountExceeded) null else taxBreakdownForPayPeriod
 }
 
 data class CalculatorResponse(
