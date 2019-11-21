@@ -16,5 +16,5 @@
 package uk.gov.hmrc.calculator.model
 
 enum class PayPeriod {
-    HOURLY, WEEKLY, FOUR_WEEKLY, MONTHLY, YEARLY
+    HOURLY, DAILY, WEEKLY, FOUR_WEEKLY, MONTHLY, YEARLY
 }

@@ -189,7 +189,7 @@ class StandardTaxCodeTestsOtherTimePensionAgePeriods {
                 20.0,
                 isPensionAge = true,
                 payPeriod = HOURLY,
-                hoursPerWeek = 37.5,
+                howManyAWeek = 37.5,
                 taxYear = 2019
             ).run()
         assertEquals(0.0, calculator.yearly.employersNI)

@@ -42,6 +42,13 @@ object Validator {
 
     fun isBelowMaximumHoursPerWeek(hours: Double) = hours <= 168
 
+    fun isValidDaysPerWeek(days: Double) =
+        isAboveMinimumDaysPerWeek(days) && isBelowMaximumDaysPerWeek(days) && days.isTwoDecimalPlacesOrFewer()
+
+    fun isAboveMinimumDaysPerWeek(days: Double) = days >= 1
+
+    fun isBelowMaximumDaysPerWeek(days: Double) = days <= 7
+
     private fun Double.isTwoDecimalPlacesOrFewer(): Boolean {
         val splitByDecimalPoint = toString().split(".")
         return splitByDecimalPoint.size == 2 && splitByDecimalPoint.last().length <= 2

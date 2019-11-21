@@ -104,9 +104,28 @@ class ValidatorTests {
     fun `Validate hours below max`() {
         assertTrue(Validator.isBelowMaximumHoursPerWeek(168.0))
     }
-
     @Test
     fun `Validate hours above max`() {
         assertFalse(Validator.isBelowMaximumHoursPerWeek(168.1))
+    }
+
+    @Test
+    fun validate_days_below_zero() {
+        assertFalse(Validator.isAboveMinimumDaysPerWeek(-1.0))
+    }
+
+    @Test
+    fun `Validate days above zero`() {
+        assertTrue(Validator.isAboveMinimumDaysPerWeek(5.0))
+    }
+
+    @Test
+    fun `Validate days below max`() {
+        assertTrue(Validator.isBelowMaximumDaysPerWeek(6.0))
+    }
+
+    @Test
+    fun `Validate days above max`() {
+        assertFalse(Validator.isBelowMaximumDaysPerWeek(8.0))
     }
 }

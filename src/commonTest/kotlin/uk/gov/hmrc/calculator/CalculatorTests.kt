@@ -28,7 +28,7 @@ class CalculatorTests {
     @Test
     fun `Error When Hours=0 And PayPeriod Is HOURLY`() {
         assertFailsWith<InvalidHoursException> {
-            Calculator("1250L", 20.0, payPeriod = HOURLY, hoursPerWeek = 0.0, taxYear = 2019).run()
+            Calculator("1250L", 20.0, payPeriod = HOURLY, howManyAWeek = 0.0, taxYear = 2019).run()
         }
     }
 

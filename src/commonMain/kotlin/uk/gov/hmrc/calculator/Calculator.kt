@@ -57,7 +57,7 @@ class Calculator @JvmOverloads constructor(
     private val wages: Double,
     private val payPeriod: PayPeriod,
     private val isPensionAge: Boolean = false,
-    private val hoursPerWeek: Double? = null,
+    private val howManyAWeek: Double? = null,
     private val taxYear: Int = TaxYear().currentTaxYear()
 ) {
 
@@ -70,7 +70,7 @@ class Calculator @JvmOverloads constructor(
             throw InvalidWagesException("Wages must be between 0 and 9999999.99")
         }
 
-        val yearlyWages = wages.convertWageToYearly(payPeriod, hoursPerWeek)
+        val yearlyWages = wages.convertWageToYearly(payPeriod, howManyAWeek)
 
         val taxCode = this.taxCode.toTaxCode()
 

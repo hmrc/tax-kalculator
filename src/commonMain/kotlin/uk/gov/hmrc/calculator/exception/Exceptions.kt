@@ -25,4 +25,6 @@ class InvalidPayPeriodException(message: String) : Exception(message)
 
 class InvalidHoursException(message: String) : Exception(message)
 
+class InvalidDaysException(message: String) : Exception(message)
+
 class InvalidTaxBandException(message: String) : Exception(message)
