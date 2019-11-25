@@ -169,7 +169,7 @@ class StandardTaxCodeTestsOtherTimePeriods {
                 "1250L",
                 20.0,
                 payPeriod = HOURLY,
-                hoursPerWeek = 37.5,
+                howManyAWeek = 37.5,
                 taxYear = 2019
             ).run()
         assertEquals(3644.16, calculator.yearly.employeesNI)

@@ -16,10 +16,12 @@
 package uk.gov.hmrc.calculator.utils
 
 import uk.gov.hmrc.calculator.Validator
+import uk.gov.hmrc.calculator.exception.InvalidDaysException
 import uk.gov.hmrc.calculator.exception.InvalidHoursException
 import uk.gov.hmrc.calculator.exception.InvalidPayPeriodException
 import uk.gov.hmrc.calculator.model.BandBreakdown
 import uk.gov.hmrc.calculator.model.PayPeriod
+import uk.gov.hmrc.calculator.model.PayPeriod.DAILY
 import uk.gov.hmrc.calculator.model.PayPeriod.FOUR_WEEKLY
 import uk.gov.hmrc.calculator.model.PayPeriod.HOURLY
 import uk.gov.hmrc.calculator.model.PayPeriod.MONTHLY
@@ -28,19 +30,28 @@ import uk.gov.hmrc.calculator.model.PayPeriod.YEARLY
 
 internal fun Double.convertWageToYearly(
     payPeriod: PayPeriod,
-    hoursPerWeek: Double? = null
+    hoursOrDaysWorkedForPayPeriod: Double? = null
 ): Double {
     return when (payPeriod) {
-        HOURLY -> {
-            if (hoursPerWeek != null && Validator.isAboveMinimumHoursPerWeek(hoursPerWeek) &&
-                Validator.isBelowMaximumHoursPerWeek(hoursPerWeek)) this * hoursPerWeek * 52
-            else throw InvalidHoursException("The number of hours must be between 0 and 168 when PayPeriod is HOURLY")
-        }
+        HOURLY -> hourlyToYearly(hoursOrDaysWorkedForPayPeriod)
+        DAILY -> dailyToYearly(hoursOrDaysWorkedForPayPeriod)
         WEEKLY -> this * 52
         FOUR_WEEKLY -> this * 13
         MONTHLY -> this * 12
         YEARLY -> this
     }
+}
+
+private fun Double.hourlyToYearly(hoursWorked: Double?): Double {
+    return if (hoursWorked != null && Validator.isValidHoursPerWeek(hoursWorked))
+        this * hoursWorked * 52
+    else throw InvalidHoursException("The number of hours must be between 1 and 168 when PayPeriod is HOURLY")
+}
+
+private fun Double.dailyToYearly(daysWorked: Double?): Double {
+    return if (daysWorked != null && Validator.isValidDaysPerWeek(daysWorked))
+        this * daysWorked * 52
+    else throw InvalidDaysException("The number of days must be between 1 and 7 when PayPeriod is DAILY")
 }
 
 internal fun List<BandBreakdown>.convertListOfBandBreakdownForPayPeriod(payPeriod: PayPeriod): List<BandBreakdown> =

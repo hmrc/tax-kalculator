@@ -13,18 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.gov.hmrc.calculator.exception
+package uk.gov.hmrc.calculator.model
 
-class InvalidTaxCodeException(message: String) : Exception(message)
-
-class InvalidTaxYearException(message: String) : Exception(message)
-
-class InvalidWagesException(message: String) : Exception(message)
-
-class InvalidPayPeriodException(message: String) : Exception(message)
-
-class InvalidHoursException(message: String) : Exception(message)
-
-class InvalidDaysException(message: String) : Exception(message)
-
-class InvalidTaxBandException(message: String) : Exception(message)
+enum class ValidationError {
+    WrongTaxCodeNumber, WrongTaxCodePrefix, WrongTaxCodeSuffix, Other
+}
