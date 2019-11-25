@@ -16,16 +16,29 @@
 package uk.gov.hmrc.calculator
 
 import uk.gov.hmrc.calculator.exception.InvalidTaxCodeException
+import uk.gov.hmrc.calculator.model.TaxCodeValidationResponse
+import uk.gov.hmrc.calculator.model.ValidationError
 import uk.gov.hmrc.calculator.utils.toTaxCode
 
 object Validator {
-    fun isValidTaxCode(taxCode: String): Boolean {
+    fun isValidTaxCode(taxCode: String): TaxCodeValidationResponse {
         return try {
             taxCode.toTaxCode()
-            true
+            TaxCodeValidationResponse(true)
         } catch (e: InvalidTaxCodeException) {
-            false
+            taxCode.invalidTaxCodeErrorGeneration()
         }
+    }
+
+    private fun String.invalidTaxCodeErrorGeneration(): TaxCodeValidationResponse {
+        return if (!this.replace("[^\\d.]".toRegex(), "").matches("^[0-9]{1,4}".toRegex()))
+            TaxCodeValidationResponse(false, ValidationError.WrongTaxCodeNumber)
+        else if (this.replace("([0-9])+([A-Z]?)+".toRegex(), "").matches("[A-JL-RT-Z]{1,2}".toRegex()))
+            TaxCodeValidationResponse(false, ValidationError.WrongTaxCodePrefix)
+        else if (this.replace("^([A-Z]?)+([0-9]?)+".toRegex(), "").matches("[A-KO-SU-Z]".toRegex()))
+            TaxCodeValidationResponse(false, ValidationError.WrongTaxCodeSuffix)
+        else
+            TaxCodeValidationResponse(false, ValidationError.Other)
     }
 
     fun isValidWages(wages: Double) =

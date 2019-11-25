@@ -4,7 +4,7 @@ R
 [![Build Status](https://app.bitrise.io/app/cd7fb52c258b9273/status.svg?token=lntO8o4xz5AUEvLwVzbo3A&branch=master)](https://app.bitrise.io/app/cd7fb52c258b9273)
 ![LINE](https://img.shields.io/badge/line--coverage-98%25-brightgreen.svg)
 ![BRANCH](https://img.shields.io/badge/branch--coverage-93%25-brightgreen.svg)
-![COMPLEXITY](https://img.shields.io/badge/complexity-1.53-brightgreen.svg)
+![COMPLEXITY](https://img.shields.io/badge/complexity-1.54-brightgreen.svg)
 [ ![Download](https://api.bintray.com/packages/hmrc/mobile-releases/tax-kalculator/images/download.svg) ](https://bintray.com/hmrc/mobile-releases/tax-kalculator/_latestVersion)
 
 ## Calculate take-home pay
@@ -49,7 +49,12 @@ This will returns an object of type `CalculatorResponse`. This class is broken u
 To validate a tax code:
 
 ```kotlin
-val isValid = Validator.isValidTaxCode("1250L") // true
+val isValid = Validator.isValidTaxCode("1250L") // TaxCodeValidationResponse(true)
+val isValid = Validator.isValidTaxCode("OO9999") // TaxCodeValidationResponse(false, ValidationError.WrongTaxCodePrefix)
+val isValid = Validator.isValidTaxCode("9999R") // TaxCodeValidationResponse(false, ValidationError.WrongTaxCodeSuffix)
+val isValid = Validator.isValidTaxCode("HELLO") // TaxCodeValidationResponse(false, ValidationError.WrongTaxCodeNumber)
+val isValid = Validator.isValidTaxCode("110") // TaxCodeValidationResponse(false, ValidationError.Other)
+
 ```
 
 To validate wages:

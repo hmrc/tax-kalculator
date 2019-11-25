@@ -16,18 +16,38 @@
 package uk.gov.hmrc.calculator
 
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
+import uk.gov.hmrc.calculator.model.ValidationError
 
 class ValidatorTests {
     @Test
     fun `Validate valid tax code`() {
-        assertTrue(Validator.isValidTaxCode("1250L"))
+        assertTrue(Validator.isValidTaxCode("1250L").isValid)
     }
 
     @Test
-    fun `Validate invalid tax code`() {
-        assertFalse(Validator.isValidTaxCode("HELLO"))
+    fun `Validate invalid tax code WrongTaxCodeNumber`() {
+        assertFalse(Validator.isValidTaxCode("HELLO").isValid)
+        assertEquals(ValidationError.WrongTaxCodeNumber, Validator.isValidTaxCode("HELLO").errorType)
+    }
+
+    @Test
+    fun `Validate invalid tax code Other`() {
+        assertFalse(Validator.isValidTaxCode("110").isValid)
+        assertEquals(ValidationError.Other, Validator.isValidTaxCode("110").errorType)
+    }
+
+    @Test
+    fun `Validate invalid tax code Prefix`() {
+        assertFalse(Validator.isValidTaxCode("OO9999").isValid)
+        assertEquals(ValidationError.WrongTaxCodePrefix, Validator.isValidTaxCode("OO9999").errorType)
+    }
+    @Test
+    fun `Validate invalid tax code Suffix`() {
+        assertFalse(Validator.isValidTaxCode("9999R").isValid)
+        assertEquals(ValidationError.WrongTaxCodeSuffix, Validator.isValidTaxCode("9999R").errorType)
     }
 
     @Test
