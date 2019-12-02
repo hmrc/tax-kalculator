@@ -86,7 +86,7 @@ private fun String.matchScottishTaxCode(): ScottishTaxCode {
     }
 }
 
-internal fun String.matchOtherScottishTaxCode(): ScottishTaxCode {
+private fun String.matchOtherScottishTaxCode(): ScottishTaxCode {
     return when {
         "^S[0-9]{1,4}T".toRegex().matches(this) ->
             STCode(removePrefix("S").removeSuffix("T").toDouble())
@@ -123,7 +123,7 @@ private fun String.matchWelshTaxCode(): WelshTaxCode {
     }
 }
 
-internal fun String.matchOtherWelshTaxCode(): WelshTaxCode {
+private fun String.matchOtherWelshTaxCode(): WelshTaxCode {
     return when {
         "C[0-9]{1,4}T".toRegex().matches(this) ->
             CTCode(removePrefix("C").removeSuffix("T").toDouble())
@@ -161,7 +161,7 @@ private fun String.matchEnglishTaxCode(): EnglishTaxCode {
     }
 }
 
-internal fun String.matchOtherEnglishTaxCode(): EnglishTaxCode {
+private fun String.matchOtherEnglishTaxCode(): EnglishTaxCode {
     return when {
         "[0-9]{1,4}T".toRegex().matches(this) -> TCode(removeSuffix("T").toDouble())
         "[0-9]{1,4}L".toRegex().matches(this) -> LCode(removeSuffix("L").toDouble())
