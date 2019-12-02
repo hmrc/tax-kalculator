@@ -34,9 +34,11 @@ import uk.gov.hmrc.calculator.model.taxcodes.CLCode
 import uk.gov.hmrc.calculator.model.taxcodes.CTCode
 import uk.gov.hmrc.calculator.model.taxcodes.D0
 import uk.gov.hmrc.calculator.model.taxcodes.D1
+import uk.gov.hmrc.calculator.model.taxcodes.EmergencyTaxCode
 import uk.gov.hmrc.calculator.model.taxcodes.EnglishEmergencyCode
 import uk.gov.hmrc.calculator.model.taxcodes.EnglishMCode
 import uk.gov.hmrc.calculator.model.taxcodes.EnglishNCode
+import uk.gov.hmrc.calculator.model.taxcodes.EnglishTaxCode
 import uk.gov.hmrc.calculator.model.taxcodes.KCode
 import uk.gov.hmrc.calculator.model.taxcodes.LCode
 import uk.gov.hmrc.calculator.model.taxcodes.NoTaxTaxCode
@@ -51,10 +53,12 @@ import uk.gov.hmrc.calculator.model.taxcodes.STCode
 import uk.gov.hmrc.calculator.model.taxcodes.ScottishEmergencyCode
 import uk.gov.hmrc.calculator.model.taxcodes.ScottishMCode
 import uk.gov.hmrc.calculator.model.taxcodes.ScottishNCode
+import uk.gov.hmrc.calculator.model.taxcodes.ScottishTaxCode
 import uk.gov.hmrc.calculator.model.taxcodes.TCode
 import uk.gov.hmrc.calculator.model.taxcodes.WelshEmergencyCode
 import uk.gov.hmrc.calculator.model.taxcodes.WelshMCode
 import uk.gov.hmrc.calculator.model.taxcodes.WelshNCode
+import uk.gov.hmrc.calculator.model.taxcodes.WelshTaxCode
 import uk.gov.hmrc.calculator.model.taxcodes.ZeroT
 
 class StringTaxCodeTests {
@@ -470,6 +474,33 @@ class StringTaxCodeTests {
         assertEquals(0.0, taxCode.taxFreeAmount)
         assertEquals(ENGLAND, taxCode.country)
         assertEquals(1009.0, taxCode.amountToAddToWages)
+    }
+
+    @Test
+    fun `England 1212LX`() {
+        val taxCode = "1212LX".toTaxCode()
+        assertTrue(taxCode is EnglishTaxCode)
+        assertTrue(taxCode is EmergencyTaxCode)
+        assertEquals(12129.0, taxCode.taxFreeAmount)
+        assertEquals(ENGLAND, taxCode.country)
+    }
+
+    @Test
+    fun `Wales C1212LX`() {
+        val taxCode = "C1212LX".toTaxCode()
+        assertTrue(taxCode is WelshTaxCode)
+        assertTrue(taxCode is WelshEmergencyCode)
+        assertEquals(12129.0, taxCode.taxFreeAmount)
+        assertEquals(WALES, taxCode.country)
+    }
+
+    @Test
+    fun `Scotland S1212LX`() {
+        val taxCode = "S1212LX".toTaxCode()
+        assertTrue(taxCode is ScottishTaxCode)
+        assertTrue(taxCode is ScottishEmergencyCode)
+        assertEquals(12129.0, taxCode.taxFreeAmount)
+        assertEquals(SCOTLAND, taxCode.country)
     }
 
     @Test
