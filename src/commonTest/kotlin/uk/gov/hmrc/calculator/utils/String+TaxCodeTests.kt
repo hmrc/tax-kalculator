@@ -60,6 +60,7 @@ import uk.gov.hmrc.calculator.model.taxcodes.WelshMCode
 import uk.gov.hmrc.calculator.model.taxcodes.WelshNCode
 import uk.gov.hmrc.calculator.model.taxcodes.WelshTaxCode
 import uk.gov.hmrc.calculator.model.taxcodes.ZeroT
+import uk.gov.hmrc.calculator.utils.taxcode.toTaxCode
 
 class StringTaxCodeTests {
 

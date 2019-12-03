@@ -15,11 +15,9 @@
  */
 package uk.gov.hmrc.calculator.utils
 
-import uk.gov.hmrc.calculator.Validator
 import uk.gov.hmrc.calculator.exception.InvalidDaysException
 import uk.gov.hmrc.calculator.exception.InvalidHoursException
 import uk.gov.hmrc.calculator.exception.InvalidPayPeriodException
-import uk.gov.hmrc.calculator.model.BandBreakdown
 import uk.gov.hmrc.calculator.model.PayPeriod
 import uk.gov.hmrc.calculator.model.PayPeriod.DAILY
 import uk.gov.hmrc.calculator.model.PayPeriod.FOUR_WEEKLY
@@ -27,6 +25,7 @@ import uk.gov.hmrc.calculator.model.PayPeriod.HOURLY
 import uk.gov.hmrc.calculator.model.PayPeriod.MONTHLY
 import uk.gov.hmrc.calculator.model.PayPeriod.WEEKLY
 import uk.gov.hmrc.calculator.model.PayPeriod.YEARLY
+import uk.gov.hmrc.calculator.utils.validation.HoursDaysValidator
 
 internal fun Double.convertWageToYearly(
     payPeriod: PayPeriod,
@@ -43,24 +42,16 @@ internal fun Double.convertWageToYearly(
 }
 
 private fun Double.hourlyToYearly(hoursWorked: Double?): Double {
-    return if (hoursWorked != null && Validator.isValidHoursPerWeek(hoursWorked))
+    return if (hoursWorked != null && HoursDaysValidator.isValidHoursPerWeek(hoursWorked))
         this * hoursWorked * 52
     else throw InvalidHoursException("The number of hours must be between 1 and 168 when PayPeriod is HOURLY")
 }
 
 private fun Double.dailyToYearly(daysWorked: Double?): Double {
-    return if (daysWorked != null && Validator.isValidDaysPerWeek(daysWorked))
+    return if (daysWorked != null && HoursDaysValidator.isValidDaysPerWeek(daysWorked))
         this * daysWorked * 52
     else throw InvalidDaysException("The number of days must be between 1 and 7 when PayPeriod is DAILY")
 }
-
-internal fun List<BandBreakdown>.convertListOfBandBreakdownForPayPeriod(payPeriod: PayPeriod): List<BandBreakdown> =
-    this.map { bandBreakdown ->
-        BandBreakdown(
-            percentage = bandBreakdown.percentage,
-            amount = bandBreakdown.amount.convertAmountFromYearlyToPayPeriod(payPeriod)
-        )
-    }
 
 internal fun Double.convertAmountFromYearlyToPayPeriod(
     payPeriod: PayPeriod
