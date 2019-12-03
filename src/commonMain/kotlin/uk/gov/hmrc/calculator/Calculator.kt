@@ -50,7 +50,8 @@ import uk.gov.hmrc.calculator.utils.TaxYear
 import uk.gov.hmrc.calculator.utils.convertAmountFromYearlyToPayPeriod
 import uk.gov.hmrc.calculator.utils.convertListOfBandBreakdownForPayPeriod
 import uk.gov.hmrc.calculator.utils.convertWageToYearly
-import uk.gov.hmrc.calculator.utils.toTaxCode
+import uk.gov.hmrc.calculator.utils.taxcode.toTaxCode
+import uk.gov.hmrc.calculator.utils.validation.WageValidator
 
 class Calculator @JvmOverloads constructor(
     private val taxCode: String,
@@ -66,7 +67,7 @@ class Calculator @JvmOverloads constructor(
     @Throws(InvalidTaxCodeException::class, InvalidTaxYearException::class, InvalidWagesException::class,
         InvalidPayPeriodException::class, InvalidHoursException::class, InvalidTaxBandException::class)
     fun run(): CalculatorResponse {
-        if (!Validator.isAboveMinimumWages(wages) || !Validator.isBelowMaximumWages(wages)) {
+        if (!WageValidator.isAboveMinimumWages(wages) || !WageValidator.isBelowMaximumWages(wages)) {
             throw InvalidWagesException("Wages must be between 0 and 9999999.99")
         }
 

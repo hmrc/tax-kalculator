@@ -28,7 +28,7 @@ import uk.gov.hmrc.calculator.model.PayPeriod.MONTHLY
 import uk.gov.hmrc.calculator.model.PayPeriod.WEEKLY
 import uk.gov.hmrc.calculator.model.PayPeriod.YEARLY
 
-class WageConverterTest {
+class DoublePayPeriodTest {
 
     @Test
     fun `Week Invalid When Converting From Year`() {
