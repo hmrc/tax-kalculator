@@ -49,31 +49,31 @@ This will returns an object of type `CalculatorResponse`. This class is broken u
 To validate a tax code:
 
 ```kotlin
-val isValid = Validator.isValidTaxCode("1250L") // TaxCodeValidationResponse(true)
-val isValid = Validator.isValidTaxCode("OO9999") // TaxCodeValidationResponse(false, ValidationError.WrongTaxCodePrefix)
-val isValid = Validator.isValidTaxCode("9999R") // TaxCodeValidationResponse(false, ValidationError.WrongTaxCodeSuffix)
-val isValid = Validator.isValidTaxCode("HELLO") // TaxCodeValidationResponse(false, ValidationError.WrongTaxCodeNumber)
-val isValid = Validator.isValidTaxCode("110") // TaxCodeValidationResponse(false, ValidationError.Other)
+val isValid = TaxCodeValidator.isValidTaxCode("1250L") // TaxCodeValidationResponse(true)
+val isValid = TaxCodeValidator.isValidTaxCode("OO9999") // TaxCodeValidationResponse(false, ValidationError.WrongTaxCodePrefix)
+val isValid = TaxCodeValidator.isValidTaxCode("9999R") // TaxCodeValidationResponse(false, ValidationError.WrongTaxCodeSuffix)
+val isValid = TaxCodeValidator.isValidTaxCode("HELLO") // TaxCodeValidationResponse(false, ValidationError.WrongTaxCodeNumber)
+val isValid = TaxCodeValidator.isValidTaxCode("110") // TaxCodeValidationResponse(false, ValidationError.Other)
 
 ```
 
 To validate wages:
 
 ```kotlin
-val isValidWages = Validator.isValidWages(1000) // true
-val isAboveMinimumWages = Validator.isAboveMinimumWages(0.0) // false
-val isBelowMaximumWages = Validator.isBelowMaximumWages(120000.0) // true
+val isValidWages = WageValidator.isValidWages(1000) // true
+val isAboveMinimumWages = WageValidator.isAboveMinimumWages(0.0) // false
+val isBelowMaximumWages = WageValidator.isBelowMaximumWages(120000.0) // true
 ```
 
 To validate hours worked per week:
 
 ```kotlin
-val isValidHoursPerWeek = Validator.isValidHoursPerWeek(20) // true
-val isAboveMinimumHoursPerWeek = Validator.isAboveMinimumHoursPerWeek(1.0) // true
-val isBelowMaximumHoursPerWeek = Validator.isBelowMaximumHoursPerWeek(170.0) // false
-val isValidHoursPerDay = Validator.isValidHoursPerDay(20) // true
-val isAboveMinimumHoursPerDay = Validator.isAboveMinimumHoursPerDay(1.0) // true
-val isBelowMaximumHoursPerDay = Validator.isBelowMaximumHoursPerDay(25.0) // false
+val isValidHoursPerWeek = HoursDaysValidator.isValidHoursPerWeek(20) // true
+val isAboveMinimumHoursPerWeek = HoursDaysValidator.isAboveMinimumHoursPerWeek(1.0) // true
+val isBelowMaximumHoursPerWeek = HoursDaysValidator.isBelowMaximumHoursPerWeek(170.0) // false
+val isValidHoursPerDay = HoursDaysValidator.isValidHoursPerDay(20) // true
+val isAboveMinimumHoursPerDay = HoursDaysValidator.isAboveMinimumHoursPerDay(1.0) // true
+val isBelowMaximumHoursPerDay = HoursDaysValidator.isBelowMaximumHoursPerDay(25.0) // false
 ```
 
 ## Development
