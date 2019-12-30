@@ -82,7 +82,6 @@ class CalculatorResponseTests {
                 )
             ), response.yearly.taxBreakdown
         )
-        assertEquals(response.yearly.taxBreakdown?.get(0)?.bandDescription, "Income taxed at 20%")
 
         assertEquals(191.51666666666668, response.monthly.taxToPay)
         assertEquals(153.67999999999998, response.monthly.employeesNI)
@@ -160,8 +159,6 @@ class CalculatorResponseTests {
                 BandBreakdown(percentage = 0.4, amount = 32000.00)
             ), response.yearly.taxBreakdown
         )
-        assertEquals(response.monthly.taxBreakdown?.get(0)?.bandDescription, "Income taxed at 20%")
-        assertEquals(response.monthly.taxBreakdown?.get(1)?.bandDescription, "Income taxed at 40%")
 
         assertEquals(3291.5166666666664, response.monthly.taxToPay)
         assertEquals(530.3466666666667, response.monthly.employeesNI)
@@ -249,10 +246,6 @@ class CalculatorResponseTests {
                 BandBreakdown(percentage = 0.41, amount = 35493.70)
             ), response.yearly.taxBreakdown
         )
-        assertEquals(response.monthly.taxBreakdown?.get(0)?.bandDescription, "Income taxed at 19%")
-        assertEquals(response.monthly.taxBreakdown?.get(1)?.bandDescription, "Income taxed at 20%")
-        assertEquals(response.monthly.taxBreakdown?.get(2)?.bandDescription, "Income taxed at 21%")
-        assertEquals(response.monthly.taxBreakdown?.get(3)?.bandDescription, "Income taxed at 41%")
 
         assertEquals(3486.8633333333332, response.monthly.taxToPay)
         assertEquals(530.3466666666667, response.monthly.employeesNI)

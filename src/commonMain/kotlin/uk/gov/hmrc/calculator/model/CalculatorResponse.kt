@@ -15,11 +15,7 @@
  */
 package uk.gov.hmrc.calculator.model
 
-data class BandBreakdown(val percentage: Double, val amount: Double) {
-    // TODO better way if percentage is a decimal. Awaiting Kotlin native library for MPP
-    private val percentageFormatted = (percentage * 100).toInt()
-    val bandDescription: String = "Income taxed at $percentageFormatted%"
-}
+data class BandBreakdown(val percentage: Double, val amount: Double)
 
 class CalculatorResponsePayPeriod(
     val payPeriod: PayPeriod,
