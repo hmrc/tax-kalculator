@@ -149,14 +149,14 @@ kotlin {
         baseName = frameworkName
         destinationDir = File(buildDir, "xcode-frameworks")
 
-        val ios32Framework = ios32.binaries.getFramework(frameworkName, "RELEASE")
-        val ios64Framework = ios64.binaries.getFramework(frameworkName, "RELEASE")
-        val iosSimulatorFramework = iosSimulator.binaries.getFramework(frameworkName, "RELEASE")
+        val ios32Framework = ios32.binaries.getFramework("RELEASE")
+        val ios64Framework = ios64.binaries.getFramework("RELEASE")
+        val iosSimulatorFramework = iosSimulator.binaries.getFramework("RELEASE")
 
         this.dependsOn(ios32Framework.linkTask)
         this.dependsOn(ios64Framework.linkTask)
         this.dependsOn(iosSimulatorFramework.linkTask)
-        this.dependsOn(tasks.findByName("build"))
+
         from(
             ios32Framework,
             ios64Framework,
@@ -171,6 +171,8 @@ kotlin {
         }
     }
 }
+
+tasks.getByName("build").dependsOn(tasks.getByName("fatFramework"))
 
 /***********************************************************************************************************************
 * Other Task Configuration
