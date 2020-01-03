@@ -33,7 +33,7 @@ tasks.jacocoTestCoverageVerification {
     val coverageSourceDirs = listOf("src/commonMain/kotlin")
     sourceDirectories.setFrom(files(coverageSourceDirs))
     classDirectories.setFrom(fileTree("${project.buildDir}/classes/kotlin/jvm/").exclude(excludes))
-    executionData(files("${project.buildDir}/jacoco/jvmTest.exec"))
+    executionData.setFrom(files("${project.buildDir}/jacoco/jvmTest.exec"))
 }
 
 
@@ -73,6 +73,10 @@ kotlin {
             baseName = frameworkName
             embedBitcode("disable")
         }
+    }
+
+    sourceSets.all {
+        languageSettings.useExperimentalAnnotation("kotlin.Experimental")
     }
 
     sourceSets {
@@ -255,8 +259,7 @@ fun getYear(): String {
     return Calendar.getInstance().get(Calendar.YEAR).toString()
 }
 
-val licenseString = """\
-/*
+val licenseString = """/*
  * Copyright ${getYear()} HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -277,7 +280,7 @@ spotless {
     kotlin {
         target("**/*.kt")
         ktlint()
-        licenseHeader(licenseString, "package ") // TODO Check this yellow line?
+        licenseHeader(licenseString, "package ")
     }
 }
 
