@@ -83,14 +83,12 @@ kotlin {
         val klockVersion = "1.8.0"
         val commonMain by getting {
             dependencies {
-                // Kotlin
                 implementation(kotlin("stdlib-common"))
                 implementation("com.soywiz.korlibs.klock:klock:$klockVersion")
             }
         }
         val commonTest by getting {
             dependencies {
-                // Kotlin
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
             }
@@ -98,7 +96,6 @@ kotlin {
 
         val jvmMain by getting {
             dependencies {
-                // Kotlin
                 implementation(kotlin("stdlib"))
             }
         }
@@ -119,7 +116,6 @@ kotlin {
             iosSimulatorMain.dependsOn(this)
 
             dependencies {
-                //Kotlin
                 implementation(kotlin("stdlib"))
             }
         }
