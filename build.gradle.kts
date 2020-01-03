@@ -4,6 +4,14 @@ import java.util.Date
 import java.util.Properties
 import org.gradle.api.tasks.GradleBuild
 
+/***********************************************************************************************************************
+* Project Gradle Config
+***********************************************************************************************************************/
+
+group = "uk.gov.hmrc"
+description = "Multiplatform Tax Calculator library"
+version = System.getenv("BITRISE_GIT_TAG") ?: ("SNAPSHOT-" + getDate())
+
 plugins {
     `maven-publish`
     kotlin("multiplatform").version("1.3.61")
@@ -14,28 +22,6 @@ plugins {
     id("com.diffplug.gradle.spotless").version("3.27.0")
     id("com.jfrog.bintray").version("1.8.4")
 }
-
-jacocoBadgeGenSetting {
-    jacocoReportPath = "$buildDir/reports/jacoco/testCommonUnitTestCoverage/testCommonUnitTestCoverage.xml"
-}
-
-tasks.jacocoTestCoverageVerification {
-    group = "verification"
-
-    violationRules {
-        rule {
-            limit {
-                minimum = "0.95".toBigDecimal()
-            }
-        }
-    }
-    val excludes = listOf("**/*Test*.*")
-    val coverageSourceDirs = listOf("src/commonMain/kotlin")
-    sourceDirectories.setFrom(files(coverageSourceDirs))
-    classDirectories.setFrom(fileTree("${project.buildDir}/classes/kotlin/jvm/").exclude(excludes))
-    executionData.setFrom(files("${project.buildDir}/jacoco/jvmTest.exec"))
-}
-
 
 repositories {
     mavenCentral()
@@ -48,17 +34,31 @@ repositories {
     }
 }
 
-fun getDate(): String {
-    val date = Date()
-    val format = "yyyyMMddHHmm"
-    return SimpleDateFormat(format).format(date).toString()
-}
-
-group = "uk.gov.hmrc"
-description = "Multiplatform Tax Calculator library"
-version = System.getenv("BITRISE_GIT_TAG") ?: ("SNAPSHOT-" + getDate())
+/***********************************************************************************************************************
+* Declarations
+***********************************************************************************************************************/
 
 val frameworkName = "TaxKalculator"
+val licenseString = """/*
+ * Copyright ${getYear()} HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+"""
+
+/***********************************************************************************************************************
+* Kotlin Configuration
+***********************************************************************************************************************/
 
 kotlin {
 
@@ -148,16 +148,10 @@ kotlin {
         }
     }
 
-    // Create a task building a fat framework.
     tasks.register<org.jetbrains.kotlin.gradle.tasks.FatFrameworkTask>("fatFramework") {
         group = "build"
-
-        // The fat framework must have the same base name as the initial frameworks.
         baseName = frameworkName
-
-        // The default destination directory is "<build directory>/fat-framework".
         destinationDir = File(buildDir, "xcode-frameworks")
-
 
         val ios32Framework = ios32.binaries.getFramework(frameworkName, "RELEASE")
         val ios64Framework = ios64.binaries.getFramework(frameworkName, "RELEASE")
@@ -167,7 +161,6 @@ kotlin {
         this.dependsOn(ios64Framework.linkTask)
         this.dependsOn(iosSimulatorFramework.linkTask)
         this.dependsOn(tasks.findByName("build"))
-        // Specify the frameworks to be merged.
         from(
             ios32Framework,
             ios64Framework,
@@ -181,11 +174,18 @@ kotlin {
                 .writeText("#!/bin/bash\nexport 'JAVA_HOME=${System.getProperty("java.home")}'\ncd '${rootProject.rootDir}'\n./gradlew \$@\n")
         }
     }
-
 }
+
+/***********************************************************************************************************************
+* Other Task Configuration
+***********************************************************************************************************************/
 
 configurations {
     compileClasspath
+}
+
+jacocoBadgeGenSetting {
+    jacocoReportPath = "$buildDir/reports/jacoco/testCommonUnitTestCoverage/testCommonUnitTestCoverage.xml"
 }
 
 jacoco {
@@ -203,7 +203,71 @@ detekt {
     }
 }
 
-// Create gradle task
+spotless {
+    kotlin {
+        target("**/*.kt")
+        ktlint()
+        licenseHeader(licenseString, "package ")
+    }
+}
+
+bintray {
+    val credentials = Properties()
+    rootProject.file("credentials.properties").inputStream().use { credentials.load(it) }
+
+    user = credentials.getProperty("bintray.user")
+    key = credentials.getProperty("bintray.apikey")
+    setPublications("jvm")
+    setPublications("metadata")
+
+    publish = true
+
+    pkg = PackageConfig()
+    pkg.repo = "mobile-releases"
+    pkg.name = project.name
+    pkg.userOrg = "hmrc"
+    pkg.desc = project.description
+    pkg.setLicenses("Apache-2.0")
+    pkg.version.name = project.version.toString()
+    pkg.version.released = Date().toString()
+}
+
+tasks.jacocoTestCoverageVerification {
+    group = "verification"
+
+    violationRules {
+        rule {
+            limit {
+                minimum = "0.95".toBigDecimal()
+            }
+        }
+    }
+    val excludes = listOf("**/*Test*.*")
+    val coverageSourceDirs = listOf("src/commonMain/kotlin")
+    sourceDirectories.setFrom(files(coverageSourceDirs))
+    classDirectories.setFrom(fileTree("${project.buildDir}/classes/kotlin/jvm/").exclude(excludes))
+    executionData.setFrom(files("${project.buildDir}/jacoco/jvmTest.exec"))
+}
+
+
+/***********************************************************************************************************************
+* Custom Functions
+ **********************************************************************************************************************/
+fun getYear(): String {
+    return Calendar.getInstance().get(Calendar.YEAR).toString()
+}
+
+fun getDate(): String {
+    val date = Date()
+    val format = "yyyyMMddHHmm"
+    return SimpleDateFormat(format).format(date).toString()
+}
+
+
+/***********************************************************************************************************************
+* Custom Tasks
+***********************************************************************************************************************/
+
 tasks.register<JacocoReport>("testCommonUnitTestCoverage") {
     group = "Reporting"
     description = "Generate Jacoco coverage reports on the common module build."
@@ -232,62 +296,4 @@ tasks.register<GradleBuild>("cleanBuildTestCoverage") {
         "generateJacocoBadge",
         "jacocoTestCoverageVerification"
     )
-}
-
-bintray {
-    val credentials = Properties()
-    rootProject.file("credentials.properties").inputStream().use { credentials.load(it) }
-
-    user = credentials.getProperty("bintray.user")
-    key = credentials.getProperty("bintray.apikey")
-    setPublications("jvm")
-    setPublications("metadata")
-
-    publish = true
-
-    pkg = PackageConfig()
-    pkg.repo = "mobile-releases"
-    pkg.name = project.name
-    pkg.userOrg = "hmrc"
-    pkg.desc = project.description
-    pkg.setLicenses("Apache-2.0")
-    pkg.version.name = project.version.toString()
-    pkg.version.released = Date().toString()
-}
-
-fun getYear(): String {
-    return Calendar.getInstance().get(Calendar.YEAR).toString()
-}
-
-val licenseString = """/*
- * Copyright ${getYear()} HM Revenue & Customs
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-"""
-
-spotless {
-    kotlin {
-        target("**/*.kt")
-        ktlint()
-        licenseHeader(licenseString, "package ")
-    }
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs = freeCompilerArgs + listOf(
-            "-Xuse-experimental=kotlin.Experimental"
-        )
-    }
 }
