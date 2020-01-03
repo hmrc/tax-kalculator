@@ -5,8 +5,8 @@ import java.util.Properties
 import org.gradle.api.tasks.GradleBuild
 
 /***********************************************************************************************************************
-* Project Gradle Config
-***********************************************************************************************************************/
+ * Project Gradle Config
+ ***********************************************************************************************************************/
 
 group = "uk.gov.hmrc"
 description = "Multiplatform Tax Calculator library"
@@ -35,8 +35,8 @@ repositories {
 }
 
 /***********************************************************************************************************************
-* Declarations
-***********************************************************************************************************************/
+ * Declarations
+ ***********************************************************************************************************************/
 
 val frameworkName = "TaxKalculator"
 val licenseString = """/*
@@ -57,21 +57,22 @@ val licenseString = """/*
 """
 
 /***********************************************************************************************************************
-* Kotlin Configuration
-***********************************************************************************************************************/
+ * Kotlin Configuration
+ ***********************************************************************************************************************/
 
 kotlin {
 
     jvm()
-    ios()
-    val ios32 = iosArm32("ios32")
-    val ios64 = iosX64("ios64")
-    val iosSimulator = iosArm64("iosSimulator")
+    val iosX64 = iosX64("ios")
+    val iosArm32 = iosArm32()
+    val iosArm64 = iosArm64() //Simulator
 
-    configure(listOf(ios32, ios64, iosSimulator)) {
-        binaries.framework {
-            baseName = frameworkName
-            embedBitcode("disable")
+    targets{
+        configure(listOf(iosX64, iosArm32, iosArm64)) {
+            binaries.framework {
+                baseName = frameworkName
+                embedBitcode("disable")
+            }
         }
     }
 
@@ -105,39 +106,39 @@ kotlin {
                 implementation(kotlin("test-junit"))
             }
         }
-        val iosArm32Main by sourceSets.creating
-        val ios64Main by sourceSets.getting
-        val iosSimulatorMain by sourceSets.getting
 
         val iosMain by getting {
-            dependsOn(commonMain)
-            iosArm32Main.dependsOn(this)
-            ios64Main.dependsOn(this)
-            iosSimulatorMain.dependsOn(this)
-
             dependencies {
                 implementation(kotlin("stdlib"))
             }
         }
-        val iosArm32Test by sourceSets.creating
-        val ios64Test by sourceSets.getting
-        val iosSimulatorTest by sourceSets.getting
+
         val iosTest by getting {
-            dependsOn(commonTest)
-            iosArm32Test.dependsOn(this)
-            ios64Test.dependsOn(this)
-            iosSimulatorTest.dependsOn(this)
+        }
+
+        val iosArm32Main by sourceSets.getting
+        val iosArm64Main by sourceSets.getting
+
+        configure(listOf(iosArm32Main, iosArm64Main)) {
+            dependsOn(iosMain)
+        }
+
+        val iosArm32Test by sourceSets.getting
+        val iosArm64Test by sourceSets.getting
+        configure(listOf(iosArm32Test, iosArm64Test)) {
+            dependsOn(iosTest)
         }
     }
 
     tasks.register("iosTest") {
+        group = project.name
         val device = project.findProperty("iosDevice")?.toString() ?: "iPhone 8"
-        this.dependsOn(ios64.binaries.getTest("DEBUG").linkTaskName)
+        this.dependsOn(iosX64.binaries.getTest("DEBUG").linkTaskName)
         group = JavaBasePlugin.VERIFICATION_GROUP
         description = "Runs tests for target ios on an iOS simulator"
 
         doLast {
-            val binary = iosSimulator.binaries.getTest("DEBUG").outputFile
+            val binary = iosArm64.binaries.getTest("DEBUG").outputFile
             exec {
                 commandLine(listOf("xcrun", "simctl", "spawn", device, binary.absolutePath))
             }
@@ -145,13 +146,13 @@ kotlin {
     }
 
     tasks.register<org.jetbrains.kotlin.gradle.tasks.FatFrameworkTask>("fatFramework") {
-        group = "build"
+        group = project.name
         baseName = frameworkName
         destinationDir = File(buildDir, "xcode-frameworks")
 
-        val ios32Framework = ios32.binaries.getFramework("RELEASE")
-        val ios64Framework = ios64.binaries.getFramework("RELEASE")
-        val iosSimulatorFramework = iosSimulator.binaries.getFramework("RELEASE")
+        val ios32Framework = iosArm32.binaries.getFramework("RELEASE")
+        val ios64Framework = iosX64.binaries.getFramework("RELEASE")
+        val iosSimulatorFramework = iosArm64.binaries.getFramework("RELEASE")
 
         this.dependsOn(ios32Framework.linkTask)
         this.dependsOn(ios64Framework.linkTask)
@@ -175,8 +176,8 @@ kotlin {
 tasks.getByName("build").dependsOn(tasks.getByName("fatFramework"))
 
 /***********************************************************************************************************************
-* Other Task Configuration
-***********************************************************************************************************************/
+ * Other Task Configuration
+ ***********************************************************************************************************************/
 
 configurations {
     compileClasspath
@@ -231,7 +232,7 @@ bintray {
 }
 
 tasks.jacocoTestCoverageVerification {
-    group = "verification"
+    group = project.name
 
     violationRules {
         rule {
@@ -249,7 +250,7 @@ tasks.jacocoTestCoverageVerification {
 
 
 /***********************************************************************************************************************
-* Custom Functions
+ * Custom Functions
  **********************************************************************************************************************/
 fun getYear(): String {
     return Calendar.getInstance().get(Calendar.YEAR).toString()
@@ -263,11 +264,11 @@ fun getDate(): String {
 
 
 /***********************************************************************************************************************
-* Custom Tasks
-***********************************************************************************************************************/
+ * Custom Tasks
+ ***********************************************************************************************************************/
 
 tasks.register<JacocoReport>("testCommonUnitTestCoverage") {
-    group = "Reporting"
+    group = project.name
     description = "Generate Jacoco coverage reports on the common module build."
 
     this.dependsOn("allTests")
@@ -284,7 +285,7 @@ tasks.register<JacocoReport>("testCommonUnitTestCoverage") {
 }
 
 tasks.register<GradleBuild>("cleanBuildTestCoverage") {
-    group = "verification"
+    group = project.name
 
     tasks = listOf(
         "clean",
