@@ -6,7 +6,7 @@ else
   if [ -z "$1" ]; then
       echo "ERROR: Please provide a git tag"
   else
-      if echo "$1" | grep -Eq "^\d{0,3}\.\d{1}\.\d{1}(-(alpha|beta))?$"; then
+      if echo "$1" | grep -Eq "^\d{0,3}\.\d{1}\.\d{1}(-((alpha|beta)(\d{1})?))?$"; then
         DIRECTORY="Carthage"
         ZIP="TaxKalculator.framework.zip"
         if [ -d "$DIRECTORY" ]; then
