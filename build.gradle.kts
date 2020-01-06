@@ -8,7 +8,7 @@ import org.gradle.api.tasks.GradleBuild
  * Project Gradle Config
  ***********************************************************************************************************************/
 
-buildscript{
+buildscript {
     repositories {
         maven {
             url = uri("https://hmrc.bintray.com/mobile-releases")
@@ -79,7 +79,7 @@ kotlin {
     val iosArm32 = iosArm32()
     val iosArm64 = iosArm64() //Simulator
 
-    targets{
+    targets {
         configure(listOf(iosX64, iosArm32, iosArm64)) {
             binaries.framework {
                 baseName = frameworkName
@@ -220,8 +220,7 @@ bintray {
 
     user = credentials.getProperty("bintray.user")
     key = credentials.getProperty("bintray.apikey")
-    setPublications("jvm")
-    setPublications("metadata")
+    setPublications("jvm", "metadata")
 
     publish = true
 
