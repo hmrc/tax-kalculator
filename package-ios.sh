@@ -6,7 +6,7 @@ else
   if [ -z "$1" ]; then
       echo "ERROR: Please provide a git tag"
   else
-      if echo "$1" | grep -Eq "^\d{0,3}\.\d{1}\.\d{1}$"; then
+      if echo "$1" | grep -Eq "^\d{0,3}\.\d{1}\.\d{1}(-((alpha|beta)(\d{1})?))?$"; then
         DIRECTORY="Carthage"
         ZIP="TaxKalculator.framework.zip"
         if [ -d "$DIRECTORY" ]; then
@@ -29,6 +29,7 @@ else
         ghr "$1" $ZIP
       else
         echo "ERROR: Please use a valid git tag format e.g 1.0.3"
+        exit 1
       fi
   fi
 fi
