@@ -8,6 +8,19 @@ import org.gradle.api.tasks.GradleBuild
  * Project Gradle Config
  ***********************************************************************************************************************/
 
+buildscript{
+    repositories {
+        maven {
+            url = uri("https://hmrc.bintray.com/mobile-releases")
+        }
+    }
+    dependencies {
+        classpath("uk.gov.hmrc.gradle:spotless:0.1.0")
+    }
+}
+
+apply(plugin = "uk.gov.hmrc.spotless")
+
 group = "uk.gov.hmrc"
 description = "Multiplatform Tax Calculator library"
 version = System.getenv("BITRISE_GIT_TAG") ?: ("SNAPSHOT-" + getDate())
@@ -19,7 +32,6 @@ plugins {
     java
     id("com.github.dawnwords.jacoco.badge").version("0.1.0")
     id("io.gitlab.arturbosch.detekt").version("1.1.1")
-    id("com.diffplug.gradle.spotless").version("3.27.0")
     id("com.jfrog.bintray").version("1.8.4")
 }
 
@@ -199,14 +211,6 @@ detekt {
             enabled = true
             destination = file("build/reports/detekt/index.html")
         }
-    }
-}
-
-spotless {
-    kotlin {
-        target("**/*.kt")
-        ktlint()
-        licenseHeader(licenseString, "package ")
     }
 }
 
