@@ -39,6 +39,5 @@ internal fun String.toTaxCode(): TaxCode {
     }
 }
 
-internal fun String.extractDoubleFromEmergencyTaxCode(): Double {
-    return this.removeSuffix("W1").removeSuffix("M1").removeSuffix("X").removeSuffix("L").toDouble()
-}
+internal fun String.extractDoubleFromEmergencyTaxCode() =
+    removeSuffix("W1").removeSuffix("M1").removeSuffix("X").removeSuffix("L").removeSuffix("T").toDouble()

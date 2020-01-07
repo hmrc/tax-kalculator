@@ -205,4 +205,13 @@ class StringScottishTaxCodeTests {
         assertEquals(12129.0, taxCode.taxFreeAmount)
         assertEquals(SCOTLAND, taxCode.country)
     }
+
+    @Test
+    fun `Scotland S141TX`() {
+        val taxCode = "S141TX".toTaxCode()
+        assertTrue(taxCode is ScottishTaxCode)
+        assertTrue(taxCode is ScottishEmergencyCode)
+        assertEquals(1419.0, taxCode.taxFreeAmount)
+        assertEquals(SCOTLAND, taxCode.country)
+    }
 }
