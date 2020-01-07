@@ -44,7 +44,7 @@ private fun String.matchOtherWelshTaxCode(): WelshTaxCode {
             CTCode(removePrefix("C").removeSuffix("T").toDouble())
         "C[0-9]{1,4}L".toRegex().matches(this) ->
             CLCode(removePrefix("C").removeSuffix("L").toDouble())
-        "C[0-9]{1,4}(L)?(W1|M1|X)".toRegex().matches(this) -> {
+        "C[0-9]{1,4}[LT]?(W1|M1|X)".toRegex().matches(this) -> {
             val strippedValue =
                 removePrefix("C").extractDoubleFromEmergencyTaxCode()
             WelshEmergencyCode(strippedValue)

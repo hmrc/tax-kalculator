@@ -160,4 +160,13 @@ class StringWelshTaxCodeTests {
         assertEquals(12129.0, taxCode.taxFreeAmount)
         assertEquals(WALES, taxCode.country)
     }
+
+    @Test
+    fun `Wales C141TX`() {
+        val taxCode = "C141TX".toTaxCode()
+        assertTrue(taxCode is WelshTaxCode)
+        assertTrue(taxCode is WelshEmergencyCode)
+        assertEquals(1419.0, taxCode.taxFreeAmount)
+        assertEquals(WALES, taxCode.country)
+    }
 }

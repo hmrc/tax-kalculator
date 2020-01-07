@@ -46,7 +46,7 @@ internal fun String.matchOtherScottishTaxCode(): ScottishTaxCode {
             STCode(removePrefix("S").removeSuffix("T").toDouble())
         "^S[0-9]{1,4}L".toRegex().matches(this) ->
             SLCode(removePrefix("S").removeSuffix("L").toDouble())
-        "^S[0-9]{1,4}(L)?(W1|M1|X)".toRegex().matches(this) -> {
+        "^S[0-9]{1,4}[LT]?(W1|M1|X)".toRegex().matches(this) -> {
             val strippedValue = removePrefix("S").extractDoubleFromEmergencyTaxCode()
             ScottishEmergencyCode(strippedValue)
         }

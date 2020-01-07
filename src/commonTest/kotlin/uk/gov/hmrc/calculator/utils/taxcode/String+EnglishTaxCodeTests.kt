@@ -164,6 +164,15 @@ class StringEnglishTaxCodeTests {
     }
 
     @Test
+    fun `England 141TX`() {
+        val taxCode = "141TX".toTaxCode()
+        assertTrue(taxCode is EnglishTaxCode)
+        assertTrue(taxCode is EmergencyTaxCode)
+        assertEquals(1419.0, taxCode.taxFreeAmount)
+        assertEquals(ENGLAND, taxCode.country)
+    }
+
+    @Test
     fun `English Invalid`() {
         assertFailsWith<InvalidTaxCodeException> {
             "D2".toTaxCode()

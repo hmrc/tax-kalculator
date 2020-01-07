@@ -42,7 +42,7 @@ private fun String.matchOtherEnglishTaxCode(): EnglishTaxCode {
     return when {
         "[0-9]{1,4}T".toRegex().matches(this) -> TCode(removeSuffix("T").toDouble())
         "[0-9]{1,4}L".toRegex().matches(this) -> LCode(removeSuffix("L").toDouble())
-        "[0-9]{1,4}(L)?(W1|M1|X)".toRegex().matches(this) -> {
+        "[0-9]{1,4}[LT]?(W1|M1|X)".toRegex().matches(this) -> {
             val strippedValue = extractDoubleFromEmergencyTaxCode()
             EnglishEmergencyCode(strippedValue)
         }
