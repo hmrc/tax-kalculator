@@ -17,7 +17,7 @@ package uk.gov.hmrc.calculator.utils
 
 import com.soywiz.klock.DateTime
 
-internal class TaxYear {
+class TaxYear {
     fun currentTaxYear() = DateTime.nowLocal().let {
         if (it < firstDayOfTaxYear(it.yearInt)) it.yearInt - 1 else it.yearInt
     }
