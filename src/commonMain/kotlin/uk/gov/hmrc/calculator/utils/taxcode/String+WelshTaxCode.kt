@@ -50,9 +50,7 @@ private fun String.matchOtherWelshTaxCode(): WelshTaxCode {
             WelshEmergencyCode(strippedValue)
         }
         "C[0-9]{1,4}([MN])".toRegex().matches(this) -> matchWelshMNCode()
-        "CK[0-9]{1,4}".toRegex().matches(this) -> CKCode(
-            removePrefix("CK").toDouble()
-        )
+        "CK[0-9]{1,4}(W1|M1|X)?".toRegex().matches(this) -> CKCode(extractDoubleFromEmergencyTaxCode())
         else -> throw InvalidTaxCodeException("$this is an invalid Welsh tax code")
     }
 }

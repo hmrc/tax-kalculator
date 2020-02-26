@@ -51,9 +51,7 @@ internal fun String.matchOtherScottishTaxCode(): ScottishTaxCode {
             ScottishEmergencyCode(strippedValue)
         }
         "S[0-9]{1,4}([MN])".toRegex().matches(this) -> matchScottishMNCode()
-        "SK[0-9]{1,4}".toRegex().matches(this) -> SKCode(
-            removePrefix("SK").toDouble()
-        )
+        "SK[0-9]{1,4}(W1|M1|X)?".toRegex().matches(this) -> SKCode(extractDoubleFromEmergencyTaxCode())
         else -> throw InvalidTaxCodeException("$this is an invalid Scottish tax code")
     }
 }

@@ -47,7 +47,7 @@ private fun String.matchOtherEnglishTaxCode(): EnglishTaxCode {
             EnglishEmergencyCode(strippedValue)
         }
         "[0-9]{1,4}([MN])".toRegex().matches(this) -> matchEnglishMNCode()
-        "K[0-9]{1,4}".toRegex().matches(this) -> KCode(removePrefix("K").toDouble())
+        "K[0-9]{1,4}(W1|M1|X)?".toRegex().matches(this) -> KCode(extractDoubleFromEmergencyTaxCode())
         else -> throw InvalidTaxCodeException("$this is an invalid English tax code")
     }
 }
