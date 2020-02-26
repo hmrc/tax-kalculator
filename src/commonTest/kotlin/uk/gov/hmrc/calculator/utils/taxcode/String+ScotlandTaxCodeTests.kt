@@ -186,7 +186,7 @@ class StringScottishTaxCodeTests {
     @Test
     fun `Scottish invalid emergency K code`() {
         assertFailsWith<InvalidTaxCodeException> {
-            "SK100X".toTaxCode()
+            "SK100F".toTaxCode()
         }
     }
 
