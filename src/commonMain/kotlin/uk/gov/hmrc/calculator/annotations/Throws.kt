@@ -17,7 +17,7 @@ package uk.gov.hmrc.calculator.annotations
 
 import kotlin.reflect.KClass
 
-@UseExperimental(ExperimentalMultiplatform::class)
+@OptIn(ExperimentalMultiplatform::class)
 @OptionalExpectation
 @Target(AnnotationTarget.FUNCTION, AnnotationTarget.CONSTRUCTOR)
 @Retention(AnnotationRetention.SOURCE)

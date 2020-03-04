@@ -21,9 +21,9 @@ internal class EmployerNIBands(taxYear: Int) {
 
     private val employerNIBands2020: List<EmployerNIBand> = listOf(
         EmployerNIBand(0.0, 6240.00, 0.0),
-        EmployerNIBand(6240.0, 9500.00, 0.0),
-        EmployerNIBand(9500.0, 50000.00, 0.12),
-        EmployerNIBand(50000.0, -1.0, 0.02)
+        EmployerNIBand(6240.0, 8788.00, 0.0),
+        EmployerNIBand(8788.0, 50000.00, 0.138),
+        EmployerNIBand(50000.0, -1.0, 0.138)
     )
 
     private val employerNIBands2019: List<EmployerNIBand> = listOf(

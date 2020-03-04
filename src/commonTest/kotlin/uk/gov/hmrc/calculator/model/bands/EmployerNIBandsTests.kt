@@ -72,11 +72,4 @@ class EmployerNIBandsTests {
         assertEquals(true, band.inBand(10000.0))
     }
 
-    @Test
-    fun `Employer NI 2020 England`() {
-        val band = EmployerNIBands(2020).bands[2]
-        assertEquals(0.138, band.percentageAsDecimal)
-        assertEquals(false, band.inBand(1000.0))
-        assertEquals(true, band.inBand(10000.0))
-    }
 }
