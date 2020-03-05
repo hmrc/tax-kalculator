@@ -78,28 +78,4 @@ class TaxBandsTests {
         assertEquals(true, taxBand.inBand(14548.00))
         assertEquals(false, taxBand.inBand(14550.00))
     }
-
-    @Test
-    fun bandsForWales2020() {
-        val taxBand = TaxBands(WALES, 2020).bands[0]
-        assertEquals(20000.00, taxBand.upper)
-        assertEquals(0.00, taxBand.lower)
-        assertEquals(0.10, taxBand.percentageAsDecimal)
-    }
-
-    @Test
-    fun bandsForScotland2020() {
-        val taxBand = TaxBands(SCOTLAND, 2020).bands[0]
-        assertEquals(21000.00, taxBand.upper)
-        assertEquals(0.00, taxBand.lower)
-        assertEquals(0.15, taxBand.percentageAsDecimal)
-    }
-
-    @Test
-    fun bandsForEngland2020() {
-        val taxBand = TaxBands(ENGLAND, 2020).bands[0]
-        assertEquals(22000.00, taxBand.upper)
-        assertEquals(0.00, taxBand.lower)
-        assertEquals(0.20, taxBand.percentageAsDecimal)
-    }
 }

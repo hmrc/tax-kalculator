@@ -33,7 +33,7 @@ class EmployerNIBandsTests {
     }
 
     @Test
-    fun `Employee NI 2019 England`() {
+    fun `Employer NI 2019 England`() {
         val band = EmployerNIBands(2019).bands[2]
         assertEquals(0.138, band.percentageAsDecimal)
         assertEquals(false, band.inBand(1000.0))
@@ -41,7 +41,7 @@ class EmployerNIBandsTests {
     }
 
     @Test
-    fun `Employee NI 2019 Scotland`() {
+    fun `Employer NI 2019 Scotland`() {
         val band = EmployerNIBands(2019).bands[2]
         assertEquals(0.138, band.percentageAsDecimal)
         assertEquals(false, band.inBand(1000.0))
@@ -49,8 +49,24 @@ class EmployerNIBandsTests {
     }
 
     @Test
-    fun `Employee NI 2019 Wales`() {
+    fun `Employer NI 2019 Wales`() {
         val band = EmployerNIBands(2019).bands[2]
+        assertEquals(0.138, band.percentageAsDecimal)
+        assertEquals(false, band.inBand(1000.0))
+        assertEquals(true, band.inBand(10000.0))
+    }
+
+    @Test
+    fun `Employer NI 2020 England`() {
+        val band = EmployerNIBands(2020).bands[2]
+        assertEquals(0.138, band.percentageAsDecimal)
+        assertEquals(false, band.inBand(1000.0))
+        assertEquals(true, band.inBand(10000.0))
+    }
+
+    @Test
+    fun `Employer NI 2020 Scotland`() {
+        val band = EmployerNIBands(2020).bands[2]
         assertEquals(0.138, band.percentageAsDecimal)
         assertEquals(false, band.inBand(1000.0))
         assertEquals(true, band.inBand(10000.0))
