@@ -71,5 +71,4 @@ class EmployerNIBandsTests {
         assertEquals(false, band.inBand(1000.0))
         assertEquals(true, band.inBand(10000.0))
     }
-
 }
