@@ -31,7 +31,7 @@ plugins {
     jacoco
     java
     id("com.github.dawnwords.jacoco.badge").version("0.1.0")
-    id("io.gitlab.arturbosch.detekt").version("1.1.1")
+    id("io.gitlab.arturbosch.detekt").version("1.6.0")
     id("com.jfrog.bintray").version("1.8.4")
 }
 

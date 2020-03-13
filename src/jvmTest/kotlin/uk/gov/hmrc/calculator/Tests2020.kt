@@ -47,7 +47,7 @@ internal class Tests2020 {
             1260.0,
             1260.0,
             18740.0,
-            1547.26),TestData(
+            1547.26), TestData(
 
             Country.ENGLAND,
             "Basic rate L",
