@@ -39,6 +39,16 @@ internal class Tests2020 {
     @TestFactory
     fun `2020 Tests`() = listOf(
         TestData(
+            Country.NONE,
+            "NT code",
+            20000.0,
+            "NT",
+            0.0,
+            1260.0,
+            1260.0,
+            18740.0,
+            1547.26), TestData(
+
             Country.ENGLAND,
             "Basic rate L",
             43000.0,
@@ -140,16 +150,6 @@ internal class Tests2020 {
             4997.26),
         TestData(
             Country.ENGLAND,
-            "NT code",
-            20000.0,
-            "NT",
-            0.0,
-            1260.0,
-            1260.0,
-            18740.0,
-            1547.26),
-        TestData(
-            Country.ENGLAND,
             "0T code",
             60000.0,
             "0T",
@@ -208,6 +208,16 @@ internal class Tests2020 {
             24148.2,
             51351.8,
             9206.26),
+        TestData(
+            Country.WALES,
+            "Higher rate (no PA)",
+            119000.0,
+            "C1250L",
+            35098.20,
+            6240.00,
+            41338.20,
+            77661.80,
+            15209.26),
         TestData(
             Country.WALES,
             "Marriage allowance M",
@@ -278,16 +288,6 @@ internal class Tests2020 {
             15165.4,
             29834.6,
             4997.26),
-        TestData(
-            Country.WALES,
-            "NT code",
-            20000.0,
-            "NT",
-            0.0,
-            1260.0,
-            1260.0,
-            18740.0,
-            1547.26),
         TestData(
             Country.WALES,
             "0T code",
@@ -370,7 +370,7 @@ internal class Tests2020 {
             167.26),
         TestData(
             Country.SCOTLAND,
-            "Emergency Rate",
+            "Emergency Rate W1",
             20000.0,
             "S1250 W1",
             1477.8,
@@ -380,7 +380,7 @@ internal class Tests2020 {
             1547.26),
         TestData(
             Country.SCOTLAND,
-            "Emergency Rate",
+            "Emergency Rate M1",
             20000.0,
             "S1250 M1",
             1477.8,
@@ -390,7 +390,7 @@ internal class Tests2020 {
             1547.26),
         TestData(
             Country.SCOTLAND,
-            "Emergency Rate",
+            "Emergency Rate X",
             20000.0,
             "S1250 X",
             1477.8,
@@ -400,7 +400,7 @@ internal class Tests2020 {
             1547.26),
         TestData(
             Country.SCOTLAND,
-            "Emergency Rate",
+            "Emergency RateL X",
             20000.0,
             "S1250L X",
             1477.8,
@@ -417,16 +417,6 @@ internal class Tests2020 {
             1260.0,
             5527.14,
             14472.86,
-            1547.26),
-        TestData(
-            Country.SCOTLAND,
-            "NT code",
-            20000.0,
-            "NT",
-            0.0,
-            1260.0,
-            1260.0,
-            18740.0,
             1547.26),
         TestData(
             Country.SCOTLAND,
@@ -485,6 +475,7 @@ internal class Tests2020 {
             val response: CalculatorResponse =
                 Calculator(it.taxCode, it.salary, payPeriod = PayPeriod.YEARLY, taxYear = 2020).run()
 
+            assertEquals(it.country, response.country)
             assertEquals(it.niEmployee, response.yearly.employeesNI, 0.01)
             assertEquals(it.niEmployer, response.yearly.employersNI, 0.01)
             assertEquals(it.incomeTax, response.yearly.taxToPay, 0.01)
