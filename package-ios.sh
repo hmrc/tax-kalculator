@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+
+# This is an example of the shell script that is used in the CI tool. This should NOT be run locally. It is just represent for demonstrative purposes.
+
 if [ -z "$2" ]; then
   echo "ERROR: Please provide a Github token"
 else

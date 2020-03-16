@@ -139,6 +139,19 @@ dependencies {
 }
 ```
 
+### Release process
+
+The CI tool has been setup to trigger a build and publish to Bintray and GitHub when a tag is created on a build.
+
+Recommended flow:
+- Raise PR
+- Approved PR
+- Merge
+- Wait for Bitrise to build and test
+- Tag for release
+- Apps update to new version
+
+
 ### License
 
 This code is open source software licensed under the [Apache 2.0 License]("http://www.apache.org/licenses/LICENSE-2.0.html").
