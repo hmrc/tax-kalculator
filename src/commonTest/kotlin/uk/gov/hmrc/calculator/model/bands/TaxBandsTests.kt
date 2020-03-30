@@ -104,7 +104,7 @@ class TaxBandsTests {
         assertEquals(12500.00, taxBand.lower)
         assertEquals(0.19, taxBand.percentageAsDecimal)
 
-        assertEquals(false, taxBand.inBand(12500.00))
+        assertEquals(false, taxBand.inBand(12509.00))
         assertEquals(false, taxBand.inBand(12409.00))
         assertEquals(true, taxBand.inBand(12501.00))
         assertEquals(true, taxBand.inBand(14585.00))
