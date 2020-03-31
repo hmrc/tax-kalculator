@@ -31,7 +31,8 @@ class TaxBandsTests {
         val exception = assertFailsWith<InvalidTaxYearException> {
             TaxBands(
                 ENGLAND,
-                2017
+                2017,
+                DateTime(2020, 5, 1)
             )
         }
         assertEquals(exception.message, "2017")
@@ -39,7 +40,7 @@ class TaxBandsTests {
 
     @Test
     fun bandsForEngland2019() {
-        val taxBand = TaxBands(ENGLAND, 2019).bands[1]
+        val taxBand = TaxBands(ENGLAND, 2019, DateTime(2020, 5, 1)).bands[1]
         assertEquals(50000.00, taxBand.upper)
         assertEquals(12509.00, taxBand.lower)
         assertEquals(0.20, taxBand.percentageAsDecimal)
@@ -53,7 +54,7 @@ class TaxBandsTests {
 
     @Test
     fun bandsForWales2019() {
-        val taxBand = TaxBands(WALES, 2019).bands[1]
+        val taxBand = TaxBands(WALES, 2019, DateTime(2020, 5, 1)).bands[1]
         assertEquals(50000.00, taxBand.upper)
         assertEquals(12509.00, taxBand.lower)
         assertEquals(0.20, taxBand.percentageAsDecimal)
@@ -67,7 +68,7 @@ class TaxBandsTests {
 
     @Test
     fun bandsForScotland2019() {
-        val taxBand = TaxBands(SCOTLAND, 2019).bands[1]
+        val taxBand = TaxBands(SCOTLAND, 2019, DateTime(2020, 5, 1)).bands[1]
         assertEquals(14549.00, taxBand.upper)
         assertEquals(12509.00, taxBand.lower)
         assertEquals(0.19, taxBand.percentageAsDecimal)

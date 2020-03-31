@@ -20,7 +20,7 @@ import uk.gov.hmrc.calculator.exception.InvalidTaxYearException
 import uk.gov.hmrc.calculator.model.Country
 import uk.gov.hmrc.calculator.model.Country.SCOTLAND
 
-internal class TaxBands(country: Country, taxYear: Int, currentDate: DateTime = DateTime.now()) {
+internal class TaxBands(country: Country, taxYear: Int, currentDate: DateTime) {
 
     //    2020 version 2 (release AFTER 11th May 2020)
     private val scotland2020After11May: List<Band> = listOf(
