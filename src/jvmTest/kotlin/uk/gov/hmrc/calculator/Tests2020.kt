@@ -15,6 +15,7 @@
  */
 package uk.gov.hmrc.calculator
 
+import com.soywiz.klock.DateTime
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DynamicTest.dynamicTest
 import org.junit.jupiter.api.TestFactory
@@ -474,6 +475,170 @@ internal class Tests2020 {
 
             val response: CalculatorResponse =
                 Calculator(it.taxCode, it.salary, payPeriod = PayPeriod.YEARLY, taxYear = 2020).run()
+
+            assertEquals(it.country, response.country)
+            assertEquals(it.niEmployee, response.yearly.employeesNI, 0.01)
+            assertEquals(it.niEmployer, response.yearly.employersNI, 0.01)
+            assertEquals(it.incomeTax, response.yearly.taxToPay, 0.01)
+            assertEquals(it.totalDeduction, response.yearly.totalDeductions, 0.01)
+            assertEquals(it.takeHome, response.yearly.takeHome, 0.01)
+        }
+    }
+
+    @TestFactory
+    fun `2020 Scottish income tax rate after 11th May`() =
+        listOf(
+            TestData(
+                Country.SCOTLAND,
+                "Basic rate L",
+                43000.0,
+                "S1250L",
+                6255.86,
+                4020.0,
+                10275.86,
+                32724.14,
+                4721.26),
+            TestData(
+                Country.SCOTLAND,
+                "Higher rate L",
+                75500.0,
+                "S980L",
+                20601.86,
+                5370.0,
+                25971.86,
+                49528.14,
+                9206.26),
+            TestData(
+                Country.SCOTLAND,
+                "Marriage allowance M",
+                20000.0,
+                "S1375M",
+                1227.44,
+                1260.0,
+                2487.44,
+                17512.56,
+                1547.26),
+            TestData(
+                Country.SCOTLAND,
+                "Marriage allowance N",
+                10000.0,
+                "S1125N",
+                0.0,
+                60.0,
+                60.00,
+                9940.00,
+                167.26),
+            TestData(
+                Country.SCOTLAND,
+                "Emergency Rate W1",
+                20000.0,
+                "S1250 W1",
+                1477.44,
+                1260.0,
+                2737.44,
+                17262.56,
+                1547.26),
+            TestData(
+                Country.SCOTLAND,
+                "Emergency Rate M1",
+                20000.0,
+                "S1250 M1",
+                1477.44,
+                1260.0,
+                2737.44,
+                17262.56,
+                1547.26),
+            TestData(
+                Country.SCOTLAND,
+                "Emergency Rate X",
+                20000.0,
+                "S1250 X",
+                1477.44,
+                1260.0,
+                2737.44,
+                17262.56,
+                1547.26),
+            TestData(
+                Country.SCOTLAND,
+                "Emergency Rate L X",
+                20000.0,
+                "S1250 L X",
+                1477.44,
+                1260.0,
+                2737.44,
+                17262.56,
+                1547.26),
+            TestData(
+                Country.SCOTLAND,
+                "K code",
+                20000.0,
+                "SK100",
+                4264.64,
+                1260.00,
+                5524.64,
+                14475.36,
+                1547.26),
+            TestData(
+                Country.SCOTLAND,
+                "0T code",
+                60000.0,
+                "S0T",
+                18268.55,
+                5060.00,
+                23328.55,
+                36671.45,
+                7067.26),
+            TestData(
+                Country.SCOTLAND,
+                "BR code",
+                10000.0,
+                "SBR",
+                2000.0,
+                60.00,
+                2060.00,
+                7940.00,
+                167.26),
+            TestData(
+                Country.SCOTLAND,
+                "D0 code",
+                12000.0,
+                "SD0",
+                2520.00,
+                300.00,
+                2820.00,
+                9180.00,
+                443.26),
+            TestData(
+                Country.SCOTLAND,
+                "D1 code",
+                12000.0,
+                "SD1",
+                4920.00,
+                300.00,
+                5220.00,
+                6780.00,
+                443.26),
+            TestData(
+                Country.SCOTLAND,
+                "D2 code",
+                12000.0,
+                "SD2",
+                5520.00,
+                300.00,
+                5820.00,
+                6180.00,
+                443.26)
+        ).map {
+        dynamicTest("${it.country} - ${it.scenario} - ${it.taxCode} - ${it.salary}") {
+
+            val response: CalculatorResponse =
+                Calculator(
+                    it.taxCode,
+                    it.salary,
+                    payPeriod = PayPeriod.YEARLY,
+                    taxYear = 2020,
+                    currentDate = DateTime(2020, 5, 13)
+                ).run()
 
             assertEquals(it.country, response.country)
             assertEquals(it.niEmployee, response.yearly.employeesNI, 0.01)
