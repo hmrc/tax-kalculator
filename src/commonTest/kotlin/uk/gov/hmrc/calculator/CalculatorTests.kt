@@ -18,7 +18,7 @@ package uk.gov.hmrc.calculator
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
-import uk.gov.hmrc.calculator.CalculatorInternal.Companion.getDefaultTaxAllowance
+import uk.gov.hmrc.calculator.Calculator.Companion.getDefaultTaxAllowance
 import uk.gov.hmrc.calculator.exception.InvalidHoursException
 import uk.gov.hmrc.calculator.exception.InvalidWagesException
 import uk.gov.hmrc.calculator.model.PayPeriod.HOURLY

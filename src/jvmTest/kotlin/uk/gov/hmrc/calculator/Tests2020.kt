@@ -632,7 +632,7 @@ internal class Tests2020 {
         dynamicTest("${it.country} - ${it.scenario} - ${it.taxCode} - ${it.salary}") {
 
             val response: CalculatorResponse =
-                CalculatorInternal(
+                Calculator(
                     it.taxCode,
                     it.salary,
                     payPeriod = PayPeriod.YEARLY,

@@ -16,7 +16,6 @@
 package uk.gov.hmrc.calculator
 
 import com.soywiz.klock.DateTime
-import kotlin.jvm.JvmOverloads
 import uk.gov.hmrc.calculator.annotations.Throws
 import uk.gov.hmrc.calculator.exception.InvalidHoursException
 import uk.gov.hmrc.calculator.exception.InvalidPayPeriodException
@@ -54,24 +53,28 @@ import uk.gov.hmrc.calculator.utils.convertWageToYearly
 import uk.gov.hmrc.calculator.utils.taxcode.toTaxCode
 import uk.gov.hmrc.calculator.utils.validation.WageValidator
 
-class Calculator @JvmOverloads constructor(
-    taxCode: String,
-    wages: Double,
-    payPeriod: PayPeriod,
-    isPensionAge: Boolean = false,
-    howManyAWeek: Double? = null,
-    taxYear: Int = TaxYear().currentTaxYear()
-) : CalculatorInternal(taxCode, wages, payPeriod, isPensionAge, howManyAWeek, taxYear, DateTime.now())
-
-open class CalculatorInternal @JvmOverloads constructor(
-    private val taxCode: String,
-    private val wages: Double,
-    private val payPeriod: PayPeriod,
-    private val isPensionAge: Boolean = false,
-    private val howManyAWeek: Double? = null,
-    private val taxYear: Int = TaxYear().currentTaxYear(),
-    private val currentDate: DateTime = DateTime.now()
+class Calculator(
+    var taxCode: String,
+    private var wages: Double,
+    var payPeriod: PayPeriod,
+    var isPensionAge: Boolean = false,
+    var howManyAWeek: Double? = null,
+    var taxYear: Int = TaxYear().currentTaxYear()
 ) {
+    private var currentDate: DateTime = DateTime.now()
+
+    internal constructor(
+        taxCode: String,
+        wages: Double,
+        payPeriod: PayPeriod,
+        isPensionAge: Boolean = false,
+        howManyAWeek: Double? = null,
+        taxYear: Int = TaxYear().currentTaxYear(),
+        currentDate: DateTime = DateTime.now()
+    ) : this (taxCode, wages, payPeriod, isPensionAge, howManyAWeek, taxYear) {
+        this.currentDate = currentDate
+    }
+
     private val bandBreakdown: MutableList<BandBreakdown> = mutableListOf()
 
     @Throws(InvalidTaxCodeException::class, InvalidTaxYearException::class, InvalidWagesException::class,
@@ -224,7 +227,6 @@ open class CalculatorInternal @JvmOverloads constructor(
             taxYear: Int,
             country: Country = ENGLAND,
             currentDate: DateTime = DateTime.now()
-        ) =
-            TaxBands(country, taxYear, currentDate).bands[0].upper.toInt()
+        ) = TaxBands(country, taxYear, currentDate).bands[0].upper.toInt()
     }
 }
