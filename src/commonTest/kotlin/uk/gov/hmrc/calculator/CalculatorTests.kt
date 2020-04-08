@@ -18,12 +18,10 @@ package uk.gov.hmrc.calculator
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
-import uk.gov.hmrc.calculator.Calculator.Companion.getDefaultTaxAllowance
 import uk.gov.hmrc.calculator.exception.InvalidHoursException
 import uk.gov.hmrc.calculator.exception.InvalidWagesException
 import uk.gov.hmrc.calculator.model.PayPeriod.HOURLY
 import uk.gov.hmrc.calculator.model.PayPeriod.YEARLY
-import uk.gov.hmrc.calculator.utils.TaxYear
 
 class CalculatorTests {
 
@@ -50,6 +48,6 @@ class CalculatorTests {
 
     @Test
     fun `Get Default Tax code for year`() {
-        assertEquals("${(getDefaultTaxAllowance(TaxYear().currentTaxYear()) / 10)}L", "1250L")
+        assertEquals(Calculator.getDefaultTaxCode(), "1250L")
     }
 }

@@ -223,6 +223,8 @@ class Calculator(
     private fun shouldAddBand(band: Band, percentage: Double) = band is TaxBand && percentage > 0.0
 
     companion object {
+        fun getDefaultTaxCode() = "${(getDefaultTaxAllowance(TaxYear().currentTaxYear()) / 10)}L"
+
         internal fun getDefaultTaxAllowance(
             taxYear: Int,
             country: Country = ENGLAND,
