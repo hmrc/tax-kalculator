@@ -20,13 +20,13 @@ import kotlin.test.assertEquals
 import uk.gov.hmrc.calculator.Calculator
 import uk.gov.hmrc.calculator.model.PayPeriod.YEARLY
 
-class GeneralTaxCodeTests {
+class GeneralTaxCodeTests2019 {
 
     @Test
     fun `NT Yearly 20k`() {
         val taxCode = "NT"
         val wages = 20000.00
-        val response = Calculator(taxCode, wages, payPeriod = YEARLY).run()
+        val response = Calculator(taxCode, wages, payPeriod = YEARLY, taxYear = 2019).run()
         assertEquals(0.0, response.yearly.taxToPay)
         assertEquals(1568.784, response.yearly.employersNI)
         assertEquals(1364.1599999999999, response.yearly.employeesNI)

@@ -16,6 +16,7 @@
 package uk.gov.hmrc.calculator
 
 import com.soywiz.klock.DateTime
+import kotlin.jvm.JvmOverloads
 import uk.gov.hmrc.calculator.annotations.Throws
 import uk.gov.hmrc.calculator.exception.InvalidHoursException
 import uk.gov.hmrc.calculator.exception.InvalidPayPeriodException
@@ -53,13 +54,13 @@ import uk.gov.hmrc.calculator.utils.convertWageToYearly
 import uk.gov.hmrc.calculator.utils.taxcode.toTaxCode
 import uk.gov.hmrc.calculator.utils.validation.WageValidator
 
-class Calculator(
-    var taxCode: String,
-    private var wages: Double,
-    var payPeriod: PayPeriod,
-    var isPensionAge: Boolean = false,
-    var howManyAWeek: Double? = null,
-    var taxYear: Int = TaxYear().currentTaxYear()
+class Calculator @JvmOverloads constructor(
+    private val taxCode: String,
+    private val wages: Double,
+    private val payPeriod: PayPeriod,
+    private val isPensionAge: Boolean = false,
+    private val howManyAWeek: Double? = null,
+    private val taxYear: Int = TaxYear().currentTaxYear()
 ) {
     private var currentDate: DateTime = DateTime.now()
 
@@ -223,6 +224,8 @@ class Calculator(
     private fun shouldAddBand(band: Band, percentage: Double) = band is TaxBand && percentage > 0.0
 
     companion object {
+        fun getDefaultTaxCode() = "${(getDefaultTaxAllowance(TaxYear().currentTaxYear()) / 10)}L"
+
         internal fun getDefaultTaxAllowance(
             taxYear: Int,
             country: Country = ENGLAND,
