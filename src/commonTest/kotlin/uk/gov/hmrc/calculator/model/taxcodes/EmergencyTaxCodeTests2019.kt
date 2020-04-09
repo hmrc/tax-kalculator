@@ -20,13 +20,13 @@ import kotlin.test.assertEquals
 import uk.gov.hmrc.calculator.Calculator
 import uk.gov.hmrc.calculator.model.PayPeriod.YEARLY
 
-class EmergencyTaxCodeTests {
+class EmergencyTaxCodeTests2019 {
 
     @Test
     fun `Wales C1250X 20k`() {
         val taxCode = "C1250X"
         val wages = 20000.00
-        val response = Calculator(taxCode, wages, payPeriod = YEARLY).run()
+        val response = Calculator(taxCode, wages, payPeriod = YEARLY, taxYear = 2019).run()
         assertEquals(1498.2, response.yearly.taxToPay)
         assertEquals(1568.784, response.yearly.employersNI)
         assertEquals(1364.1599999999999, response.yearly.employeesNI)
@@ -37,7 +37,7 @@ class EmergencyTaxCodeTests {
     fun `Wales C1250M1 20k`() {
         val taxCode = "C1250M1"
         val wages = 20000.00
-        val response = Calculator(taxCode, wages, payPeriod = YEARLY).run()
+        val response = Calculator(taxCode, wages, payPeriod = YEARLY, taxYear = 2019).run()
         assertEquals(1498.2, response.yearly.taxToPay)
         assertEquals(1568.784, response.yearly.employersNI)
         assertEquals(1364.1599999999999, response.yearly.employeesNI)
@@ -48,7 +48,7 @@ class EmergencyTaxCodeTests {
     fun `Wales C1250W1 20k`() {
         val taxCode = "C1250W1"
         val wages = 20000.00
-        val response = Calculator(taxCode, wages, payPeriod = YEARLY).run()
+        val response = Calculator(taxCode, wages, payPeriod = YEARLY, taxYear = 2019).run()
         assertEquals(1498.2, response.yearly.taxToPay)
         assertEquals(1568.784, response.yearly.employersNI)
         assertEquals(1364.1599999999999, response.yearly.employeesNI)
@@ -59,7 +59,7 @@ class EmergencyTaxCodeTests {
     fun `Scotland S1250X 20k`() {
         val taxCode = "S1250X"
         val wages = 20000.00
-        val response = Calculator(taxCode, wages, payPeriod = YEARLY).run()
+        val response = Calculator(taxCode, wages, payPeriod = YEARLY, taxYear = 2019).run()
         assertEquals(1477.8000000000002, response.yearly.taxToPay)
         assertEquals(1568.784, response.yearly.employersNI)
         assertEquals(1364.1599999999999, response.yearly.employeesNI)
@@ -70,7 +70,7 @@ class EmergencyTaxCodeTests {
     fun `Scotland S1250M1 20k`() {
         val taxCode = "S1250M1"
         val wages = 20000.00
-        val response = Calculator(taxCode, wages, payPeriod = YEARLY).run()
+        val response = Calculator(taxCode, wages, payPeriod = YEARLY, taxYear = 2019).run()
         assertEquals(1477.8000000000002, response.yearly.taxToPay)
         assertEquals(1568.784, response.yearly.employersNI)
         assertEquals(1364.1599999999999, response.yearly.employeesNI)
@@ -81,7 +81,7 @@ class EmergencyTaxCodeTests {
     fun `Scotland S1250W1 20k`() {
         val taxCode = "S1250W1"
         val wages = 20000.00
-        val response = Calculator(taxCode, wages, payPeriod = YEARLY).run()
+        val response = Calculator(taxCode, wages, payPeriod = YEARLY, taxYear = 2019).run()
         assertEquals(1477.8000000000002, response.yearly.taxToPay)
         assertEquals(1568.784, response.yearly.employersNI)
         assertEquals(1364.1599999999999, response.yearly.employeesNI)
@@ -92,7 +92,7 @@ class EmergencyTaxCodeTests {
     fun `England 1250X 20k`() {
         val taxCode = "1250X"
         val wages = 20000.00
-        val response = Calculator(taxCode, wages, payPeriod = YEARLY).run()
+        val response = Calculator(taxCode, wages, payPeriod = YEARLY, taxYear = 2019).run()
         assertEquals(1498.2, response.yearly.taxToPay)
         assertEquals(1568.784, response.yearly.employersNI)
         assertEquals(1364.1599999999999, response.yearly.employeesNI)
@@ -103,7 +103,7 @@ class EmergencyTaxCodeTests {
     fun `England 1250M1 20k`() {
         val taxCode = "1250M1"
         val wages = 20000.00
-        val response = Calculator(taxCode, wages, payPeriod = YEARLY).run()
+        val response = Calculator(taxCode, wages, payPeriod = YEARLY, taxYear = 2019).run()
         assertEquals(1498.2, response.yearly.taxToPay)
         assertEquals(1568.784, response.yearly.employersNI)
         assertEquals(1364.1599999999999, response.yearly.employeesNI)
@@ -114,7 +114,7 @@ class EmergencyTaxCodeTests {
     fun `England 1250W1 20k`() {
         val taxCode = "1250W1"
         val wages = 20000.00
-        val response = Calculator(taxCode, wages, payPeriod = YEARLY).run()
+        val response = Calculator(taxCode, wages, payPeriod = YEARLY, taxYear = 2019).run()
         assertEquals(1498.2, response.yearly.taxToPay)
         assertEquals(1568.784, response.yearly.employersNI)
         assertEquals(1364.1599999999999, response.yearly.employeesNI)

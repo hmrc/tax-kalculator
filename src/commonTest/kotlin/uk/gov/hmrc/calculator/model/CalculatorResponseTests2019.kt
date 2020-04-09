@@ -23,7 +23,7 @@ import uk.gov.hmrc.calculator.model.Country.SCOTLAND
 import uk.gov.hmrc.calculator.model.PayPeriod.MONTHLY
 import uk.gov.hmrc.calculator.model.PayPeriod.YEARLY
 
-class CalculatorResponseTests {
+class CalculatorResponseTests2019 {
 
     @Test
     fun `Check Summation Of Total Deductions`() {
@@ -58,7 +58,7 @@ class CalculatorResponseTests {
     fun `Check Full Calculator Response Small Amount`() {
         val taxCode = "1250L"
         val wages = 2000.00
-        val response = Calculator(taxCode, wages, payPeriod = MONTHLY).run()
+        val response = Calculator(taxCode, wages, payPeriod = MONTHLY, taxYear = 2019).run()
 
         assertEquals(ENGLAND, response.country)
         assertEquals(false, response.isKCode)
@@ -134,7 +134,7 @@ class CalculatorResponseTests {
     fun `Check Full Calculator Response Large Amount`() {
         val taxCode = "250T"
         val wages = 10000.00
-        val response = Calculator(taxCode, wages, payPeriod = MONTHLY).run()
+        val response = Calculator(taxCode, wages, payPeriod = MONTHLY, taxYear = 2019).run()
 
         assertEquals(ENGLAND, response.country)
         assertEquals(false, response.isKCode)
@@ -222,7 +222,7 @@ class CalculatorResponseTests {
     fun `Check Full Calculator Response Scotland Large Amount`() {
         val taxCode = "S250T"
         val wages = 10000.00
-        val response = Calculator(taxCode, wages, payPeriod = MONTHLY).run()
+        val response = Calculator(taxCode, wages, payPeriod = MONTHLY, taxYear = 2019).run()
 
         assertEquals(SCOTLAND, response.country)
         assertEquals(false, response.isKCode)
@@ -324,7 +324,7 @@ class CalculatorResponseTests {
     fun `Test code SD2`() {
         val taxCode = "SD2"
         val wages = 130000.00
-        val response = Calculator(taxCode, wages, payPeriod = YEARLY).run()
+        val response = Calculator(taxCode, wages, payPeriod = YEARLY, taxYear = 2019).run()
 
         assertEquals(66364.16, response.yearly.totalDeductions)
         assertEquals(
@@ -341,7 +341,7 @@ class CalculatorResponseTests {
     fun `Test code NT`() {
         val taxCode = "NT"
         val wages = 130000.00
-        val response = Calculator(taxCode, wages, payPeriod = YEARLY).run()
+        val response = Calculator(taxCode, wages, payPeriod = YEARLY, taxYear = 2019).run()
         assertEquals(false, response.yearly.maxTaxAmountExceeded)
         assertEquals(6564.16, response.yearly.totalDeductions)
         assertEquals(
@@ -358,7 +358,7 @@ class CalculatorResponseTests {
     fun `Check K9999 (Ensure HMRC does not tax you more than 50%)`() {
         val taxCode = "K9999"
         val wages = 400.00
-        val response = Calculator(taxCode, wages, payPeriod = PayPeriod.WEEKLY).run()
+        val response = Calculator(taxCode, wages, payPeriod = PayPeriod.WEEKLY, taxYear = 2019).run()
 
         assertEquals(ENGLAND, response.country)
         assertEquals(true, response.isKCode)
@@ -382,7 +382,8 @@ class CalculatorResponseTests {
         val taxCode = "S1250L"
         val wages = 500.0
         val days = 5.0
-        val response = Calculator(taxCode, wages, payPeriod = PayPeriod.DAILY, howManyAWeek = days).run()
+        val response = Calculator(taxCode, wages, payPeriod = PayPeriod.DAILY, howManyAWeek = days, taxYear = 2019)
+            .run()
 
         assertEquals(SCOTLAND, response.country)
         assertEquals(false, response.isKCode)
