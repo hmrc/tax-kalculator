@@ -30,12 +30,7 @@ internal fun String.toTaxCode(): TaxCode {
         Country.SCOTLAND -> formattedTaxCode.matchScottishTaxCode()
         Country.WALES -> formattedTaxCode.matchWelshTaxCode()
         Country.ENGLAND -> formattedTaxCode.matchEnglishTaxCode()
-        Country.NONE -> {
-            when (formattedTaxCode) {
-                "NT" -> NTCode()
-                else -> throw InvalidTaxCodeException("$this is an invalid tax code")
-            }
-        }
+        Country.NONE -> NTCode()
     }
 }
 

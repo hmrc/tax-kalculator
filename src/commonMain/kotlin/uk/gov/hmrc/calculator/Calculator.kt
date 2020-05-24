@@ -15,7 +15,6 @@
  */
 package uk.gov.hmrc.calculator
 
-import com.soywiz.klock.DateTime
 import kotlin.jvm.JvmOverloads
 import uk.gov.hmrc.calculator.annotations.Throws
 import uk.gov.hmrc.calculator.exception.InvalidHoursException
@@ -62,19 +61,6 @@ class Calculator @JvmOverloads constructor(
     private val howManyAWeek: Double? = null,
     private val taxYear: Int = TaxYear().currentTaxYear()
 ) {
-    private var currentDate: DateTime = DateTime.now()
-
-    internal constructor(
-        taxCode: String,
-        wages: Double,
-        payPeriod: PayPeriod,
-        isPensionAge: Boolean = false,
-        howManyAWeek: Double? = null,
-        taxYear: Int = TaxYear().currentTaxYear(),
-        currentDate: DateTime = DateTime.now()
-    ) : this (taxCode, wages, payPeriod, isPensionAge, howManyAWeek, taxYear) {
-        this.currentDate = currentDate
-    }
 
     private val bandBreakdown: MutableList<BandBreakdown> = mutableListOf()
 
@@ -89,7 +75,7 @@ class Calculator @JvmOverloads constructor(
 
         val taxCode = this.taxCode.toTaxCode()
 
-        val taxBands = TaxBands(taxCode.country, taxYear, currentDate).bands
+        val taxBands = TaxBands.getBands(taxYear, taxCode.country)
 
         val taxFreeAmount = adjustTaxBands(taxBands, taxCode)[0].upper
         val amountToAddToWages = if (taxCode is KTaxCode) taxCode.amountToAddToWages else null
@@ -111,7 +97,6 @@ class Calculator @JvmOverloads constructor(
         val employeesNI = employeeNIToPay(yearlyWages)
         val employersNI = employerNIToPay(yearlyWages)
         return CalculatorResponse(
-            taxCode = this.taxCode,
             country = taxCode.country,
             isKCode = taxCode is KTaxCode,
             weekly = CalculatorResponsePayPeriod(
@@ -158,7 +143,7 @@ class Calculator @JvmOverloads constructor(
     }
 
     private fun taxToPay(yearlyWages: Double, taxCode: TaxCode): Double {
-        val taxBands = TaxBands(taxCode.country, taxYear, currentDate).bands
+        val taxBands = TaxBands.getBands(taxYear, taxCode.country)
 
         return when (taxCode) {
             is StandardTaxCode, is AdjustedTaxFreeTCode, is EmergencyTaxCode, is MarriageTaxCodes ->
@@ -179,7 +164,7 @@ class Calculator @JvmOverloads constructor(
 
     private fun adjustTaxBands(taxBands: List<Band>, taxCode: TaxCode): List<Band> {
         // The full tax free amount e.g. 12509
-        val bandAdjuster = getDefaultTaxAllowance(taxYear, taxCode.country, currentDate)
+        val bandAdjuster = getDefaultTaxAllowance(taxYear, taxCode.country)
 
         taxBands[0].upper = taxCode.taxFreeAmount
         taxBands[1].lower = taxCode.taxFreeAmount
@@ -224,12 +209,16 @@ class Calculator @JvmOverloads constructor(
     private fun shouldAddBand(band: Band, percentage: Double) = band is TaxBand && percentage > 0.0
 
     companion object {
-        fun getDefaultTaxCode() = "${(getDefaultTaxAllowance(TaxYear().currentTaxYear()) / 10)}L"
+
+        fun getDefaultTaxCode(): String {
+            val taxYear = TaxYear().currentTaxYear()
+            val defaultTaxAllowance = getDefaultTaxAllowance(taxYear)
+            return "${(defaultTaxAllowance / 10)}L"
+        }
 
         internal fun getDefaultTaxAllowance(
             taxYear: Int,
-            country: Country = ENGLAND,
-            currentDate: DateTime = DateTime.now()
-        ) = TaxBands(country, taxYear, currentDate).bands[0].upper.toInt()
+            country: Country = ENGLAND
+        ) = TaxBands.getBands(taxYear, country)[0].upper.toInt()
     }
 }

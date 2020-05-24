@@ -36,7 +36,6 @@ class CalculatorResponsePayPeriod(
 }
 
 data class CalculatorResponse(
-    val taxCode: String,
     val country: Country,
     val isKCode: Boolean,
     val weekly: CalculatorResponsePayPeriod,

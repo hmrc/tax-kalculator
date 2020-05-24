@@ -35,8 +35,5 @@ object HoursDaysValidator {
 
     fun isBelowMaximumDaysPerWeek(days: Double) = days <= 7
 
-    private fun Double.isTwoDecimalPlacesOrFewer(): Boolean {
-        val splitByDecimalPoint = toString().split(".")
-        return splitByDecimalPoint.size == 2 && splitByDecimalPoint.last().length <= 2
-    }
+    internal fun Double.isTwoDecimalPlacesOrFewer() = toString().split(".").last().length <= 2
 }

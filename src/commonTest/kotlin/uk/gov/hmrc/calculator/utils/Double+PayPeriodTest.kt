@@ -38,6 +38,11 @@ class DoublePayPeriodTest {
     }
 
     @Test
+    fun `GIVEN paid daily 5 times per week WHEN convert to yearly THEN result is correct`() {
+        assertEquals(26000.0, 100.0.convertWageToYearly(DAILY, 5.0))
+    }
+
+    @Test
     fun `Convert monthly to yearly`() {
         assertEquals(12000.0, 1000.0.convertWageToYearly(MONTHLY))
     }

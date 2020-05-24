@@ -15,6 +15,8 @@
  */
 package uk.gov.hmrc.calculator.utils.validation
 
+import uk.gov.hmrc.calculator.utils.validation.HoursDaysValidator.isTwoDecimalPlacesOrFewer
+
 object WageValidator {
     fun isValidWages(wages: Double) =
         isAboveMinimumWages(wages) && isBelowMaximumWages(
@@ -24,9 +26,4 @@ object WageValidator {
     fun isAboveMinimumWages(wages: Double) = wages > 0
 
     fun isBelowMaximumWages(wages: Double) = wages < 9999999.99
-
-    private fun Double.isTwoDecimalPlacesOrFewer(): Boolean {
-        val splitByDecimalPoint = toString().split(".")
-        return splitByDecimalPoint.size == 2 && splitByDecimalPoint.last().length <= 2
-    }
 }
