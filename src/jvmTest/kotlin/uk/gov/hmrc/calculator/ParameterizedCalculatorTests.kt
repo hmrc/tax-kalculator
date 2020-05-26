@@ -55,21 +55,23 @@ internal class ParameterizedCalculatorTests {
         ).run()
 
         assertEquals(expectedCountry, response.country, "Country did not match")
-        assertEquals(PayPeriod.YEARLY, response.yearly.payPeriod, "Pay period did not match")
-        assertEquals(expectedYearlyNiEmployee, response.yearly.employeesNI, 0.01, "Yearly employee NI did not match")
-        assertEquals(expectedYearlyNiEmployer, response.yearly.employersNI, 0.01, "Yearly employer NI did not match")
-        assertEquals(expectedYearlyIncomeTax, response.yearly.taxToPay, 0.01, "Yearly income tax did not match")
-        assertEquals(expectedYearlyTotalDeduction, response.yearly.totalDeductions, 0.01, "Yearly total deductions did not match")
-        assertEquals(expectedYearlyTakeHome, response.yearly.takeHome, 0.01, "Yearly take home did not match")
-        assertEquals(expectedYearlyWages, response.yearly.wages, 0.01, "Yearly wages did not match")
-        assertEquals(expectedYearlyTaxFreeAmount, response.yearly.taxFree, 0.01, "Yearly tax free amount did not match")
-        assertEquals(expectedYearlyKCodeAdjustment, response.yearly.kCodeAdjustment, "Yearly K code adjustment did not match")
-        assertFalse(response.yearly.maxTaxAmountExceeded)
-        assertEquals(PayPeriod.YEARLY, response.yearly.payPeriod)
+        assertEquals(expectedIsKCode, response.isKCode)
+
+        val yearlyPeriod = response.yearly
+        assertEquals(PayPeriod.YEARLY, yearlyPeriod.payPeriod)
+        assertEquals(expectedYearlyNiEmployee, yearlyPeriod.employeesNI, 0.01, "Yearly employee NI did not match")
+        assertEquals(expectedYearlyNiEmployer, yearlyPeriod.employersNI, 0.01, "Yearly employer NI did not match")
+        assertEquals(expectedYearlyIncomeTax, yearlyPeriod.taxToPay, 0.01, "Yearly income tax did not match")
+        assertEquals(expectedYearlyTotalDeduction, yearlyPeriod.totalDeductions, 0.01, "Yearly total deductions did not match")
+        assertEquals(expectedYearlyTakeHome, yearlyPeriod.takeHome, 0.01, "Yearly take home did not match")
+        assertEquals(expectedYearlyWages, yearlyPeriod.wages, 0.01, "Yearly wages did not match")
+        assertEquals(expectedYearlyTaxFreeAmount, yearlyPeriod.taxFree, 0.01, "Yearly tax free amount did not match")
+        assertEquals(expectedYearlyKCodeAdjustment, yearlyPeriod.kCodeAdjustment, "Yearly K code adjustment did not match")
+        assertFalse(yearlyPeriod.maxTaxAmountExceeded)
+
         assertEquals(PayPeriod.MONTHLY, response.monthly.payPeriod)
         assertEquals(PayPeriod.FOUR_WEEKLY, response.fourWeekly.payPeriod)
         assertEquals(PayPeriod.WEEKLY, response.weekly.payPeriod)
-        assertEquals(expectedIsKCode, response.isKCode)
     }
 
     class PayPeriodConverter : ArgumentConverter {
