@@ -102,6 +102,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("test"))
                 implementation(kotlin("test-junit5"))
+                implementation("org.junit.jupiter:junit-jupiter-params:5.6.2")
             }
         }
 
