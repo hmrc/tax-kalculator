@@ -51,8 +51,18 @@ class WageValidatorTests {
     }
 
     @Test
-    fun `Validate wages below max`() {
+    fun `Validate wages below max no decimal`() {
         assertTrue(WageValidator.isBelowMaximumWages(9999999.0))
+    }
+
+    @Test
+    fun `Validate wages below max with decimal`() {
+        assertTrue(WageValidator.isBelowMaximumWages(9999999.99))
+    }
+
+    @Test
+    fun `Validate wages below max with decimal but 3 places`() {
+        assertFalse(WageValidator.isBelowMaximumWages(9999999.991))
     }
 
     @Test
