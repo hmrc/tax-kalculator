@@ -25,5 +25,5 @@ object WageValidator {
 
     fun isAboveMinimumWages(wages: Double) = wages > 0
 
-    fun isBelowMaximumWages(wages: Double) = wages < 9999999.99
+    fun isBelowMaximumWages(wages: Double) = wages <= 9999999.99
 }
