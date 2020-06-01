@@ -9,7 +9,7 @@ else
   if [ -z "$1" ]; then
       echo "ERROR: Please provide a git tag"
   else
-      if echo "$1" | grep -Eq "^\d{0,3}\.\d{1}\.\d{1}(-((alpha|beta)(\d{1})?))?$"; then
+      if echo "$1" | grep -Eq "^((([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?)(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?)$"; then
         DIRECTORY="Carthage"
         ZIP="TaxKalculator.framework.zip"
         if [ -d "$DIRECTORY" ]; then
