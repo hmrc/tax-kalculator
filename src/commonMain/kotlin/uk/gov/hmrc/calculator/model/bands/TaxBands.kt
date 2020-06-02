@@ -18,31 +18,46 @@ package uk.gov.hmrc.calculator.model.bands
 import uk.gov.hmrc.calculator.exception.InvalidTaxYearException
 import uk.gov.hmrc.calculator.model.Country
 import uk.gov.hmrc.calculator.model.Country.SCOTLAND
+import uk.gov.hmrc.calculator.model.taxcodes.TaxCode
 
 internal object TaxBands {
 
-    private object Year2020 {
-        val scotland: List<Band> = listOf(
-            TaxBand(0.0, 12509.00, 0.0),
-            TaxBand(12509.00, 14585.00, 0.19),
-            TaxBand(14585.00, 25158.00, 0.20),
-            TaxBand(25158.00, 43430.00, 0.21),
-            TaxBand(43430.00, 150000.00, 0.41),
-            TaxBand(150000.0, -1.0, 0.46)
-        )
-        val other: List<Band> = listOf(
-            TaxBand(0.0, 12509.00, 0.0),
-            TaxBand(12509.0, 50000.00, 0.2),
-            TaxBand(50000.0, 150000.00, 0.4),
-            TaxBand(150000.0, -1.0, 0.45)
-        )
-    }
-
     fun getBands(taxYear: Int, country: Country) = when (taxYear) {
         2020 -> when (country) {
-            SCOTLAND -> Year2020.scotland
-            else -> Year2020.other
+            SCOTLAND -> listOf(
+                TaxBand(0.0, 12509.00, 0.0),
+                TaxBand(12509.00, 14585.00, 0.19),
+                TaxBand(14585.00, 25158.00, 0.20),
+                TaxBand(25158.00, 43430.00, 0.21),
+                TaxBand(43430.00, 150000.00, 0.41),
+                TaxBand(150000.0, -1.0, 0.46)
+            )
+            else -> listOf(
+                TaxBand(0.0, 12509.00, 0.0),
+                TaxBand(12509.0, 50000.00, 0.2),
+                TaxBand(50000.0, 150000.00, 0.4),
+                TaxBand(150000.0, -1.0, 0.45)
+            )
         }
         else -> throw InvalidTaxYearException("$taxYear")
+    }
+
+    fun getAdjustedBands(taxYear: Int, taxCode: TaxCode): List<Band> {
+        val taxBands = getBands(taxYear, taxCode.country).toMutableList()
+
+        // The full tax free amount e.g. 12509
+        val bandAdjuster = taxBands[0].upper.toInt()
+
+        taxBands[0].upper = taxCode.taxFreeAmount
+        taxBands[1].lower = taxCode.taxFreeAmount
+        taxBands[1].upper = taxBands[1].upper + taxCode.taxFreeAmount - bandAdjuster
+
+        for (bandNumber in 2 until taxBands.size) {
+            taxBands[bandNumber].lower = taxBands[bandNumber].lower + taxCode.taxFreeAmount - bandAdjuster
+            if (taxBands[bandNumber].upper != -1.0) {
+                taxBands[bandNumber].upper = taxBands[bandNumber].upper + taxCode.taxFreeAmount - bandAdjuster
+            }
+        }
+        return taxBands
     }
 }
