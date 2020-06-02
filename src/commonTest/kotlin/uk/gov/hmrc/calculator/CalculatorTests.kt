@@ -15,9 +15,9 @@
  */
 package uk.gov.hmrc.calculator
 
+import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
 import uk.gov.hmrc.calculator.exception.InvalidHoursException
 import uk.gov.hmrc.calculator.exception.InvalidWagesException
 import uk.gov.hmrc.calculator.model.PayPeriod
@@ -27,35 +27,35 @@ internal class CalculatorTests {
     @Test
     fun `GIVEN hours is zero and pay period hour WHEN calculate THEN exception`() {
         assertFailsWith<InvalidHoursException> {
-            Calculator("1250L", 20.0, payPeriod = PayPeriod.HOURLY, howManyAWeek = 0.0).run()
+            Calculator(taxCode = "1250L", wages = 20.0, payPeriod = PayPeriod.HOURLY, howManyAWeek = 0.0).run()
         }
     }
 
     @Test
     fun `GIVEN hours is null and pay period hour WHEN calculate THEN exception`() {
         assertFailsWith<InvalidHoursException> {
-            Calculator("1250L", 20.0, payPeriod = PayPeriod.HOURLY).run()
+            Calculator(taxCode = "1250L", wages = 20.0, payPeriod = PayPeriod.HOURLY).run()
         }
     }
 
     @Test
     fun `GIVEN wages is below zero WHEN calculate THEN exception`() {
         assertFailsWith<InvalidWagesException> {
-            Calculator("1250L", -190.0, payPeriod = PayPeriod.WEEKLY).run()
+            Calculator(taxCode = "1250L", wages = -190.0, payPeriod = PayPeriod.WEEKLY).run()
         }
     }
 
     @Test
     fun `GIVEN wages is zero WHEN calculate THEN exception`() {
         assertFailsWith<InvalidWagesException> {
-            Calculator("1250L", 0.0, payPeriod = PayPeriod.YEARLY).run()
+            Calculator(taxCode = "1250L", wages = 0.0, payPeriod = PayPeriod.YEARLY).run()
         }
     }
 
     @Test
     fun `GIVEN wages too high WHEN calculate THEN exception`() {
         assertFailsWith<InvalidWagesException> {
-            Calculator("1250L", 10000000.0, payPeriod = PayPeriod.YEARLY).run()
+            Calculator(taxCode = "1250L", wages = 10000000.0, payPeriod = PayPeriod.YEARLY).run()
         }
     }
 
