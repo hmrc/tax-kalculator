@@ -206,6 +206,7 @@ bintray {
     pkg.userOrg = "hmrc-mobile"
     pkg.desc = project.description
     pkg.setLicenses("Apache-2.0")
+    pkg.vcsUrl = "https://github.com/hmrc/tax-kalculator"
     pkg.version.name = project.version.toString()
     pkg.version.released = Date().toString()
 }
