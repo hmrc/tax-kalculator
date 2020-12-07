@@ -126,7 +126,7 @@ Add the mobile-releases bintray repository to your top-level `build.gradle`:
 ```groovy
 repositories {
     maven {
-        url  "https://hmrc.bintray.com/mobile-releases" 
+        url  "https://dl.bintray.com/hmrc-mobile/mobile-releases" 
     }
 }
 ```

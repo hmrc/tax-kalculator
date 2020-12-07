@@ -10,11 +10,11 @@ import org.gradle.api.tasks.GradleBuild
 buildscript {
     repositories {
         maven {
-            url = uri("https://hmrc.bintray.com/mobile-releases")
+            url = uri("https://dl.bintray.com/hmrc-mobile/mobile-releases")
         }
     }
     dependencies {
-        classpath("uk.gov.hmrc.gradle:spotless:0.1.0")
+        classpath("uk.gov.hmrc.gradle:spotless:0.1.4")
     }
 }
 
@@ -37,9 +37,6 @@ plugins {
 repositories {
     mavenCentral()
     jcenter()
-    jcenter {
-        url = uri("https://hmrc.bintray.com/releases/")
-    }
     maven {
         url = uri("https://plugins.gradle.org/m2/")
     }
@@ -206,7 +203,7 @@ bintray {
     pkg = PackageConfig()
     pkg.repo = "mobile-releases"
     pkg.name = project.name
-    pkg.userOrg = "hmrc"
+    pkg.userOrg = "hmrc-mobile"
     pkg.desc = project.description
     pkg.setLicenses("Apache-2.0")
     pkg.version.name = project.version.toString()
