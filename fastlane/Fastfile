@@ -1,0 +1,87 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+fastlane_require 'semantic'
+
+default_platform(:android)
+
+platform :android do
+  desc "Tag a new release of the library."
+  lane :tag_release do
+
+    UI.user_error!("You need to provide a Github Personal token via a `GITHUB_TOKEN` environment variable - you can create a new token on Github https://github.com/settings/tokens/new") unless !ENV["GITHUB_TOKEN"].nil?
+
+    # ensure repo is clean and on master
+    ensure_git_status_clean
+    ensure_git_branch
+
+    # pull latest changes and fetch tags
+    git_pull
+
+    # get current version
+    current_tag = last_git_tag
+    version = Semantic::Version.new(current_tag)
+
+    # prompt for bump type
+    bump_type = UI.select(
+      "Current version is #{current_tag}. What would you like to bump?",
+      ["major", "minor", "patch"]
+    )
+
+    # increment version
+    case bump_type
+    when "major"
+      tag = version.increment!(:major)
+    when "minor"
+      tag = version.increment!(:minor)
+    else
+      tag = version.increment!(:patch)
+    end
+
+    # build the XCFramework
+    sh("cd .. && ./build_xcframework.sh #{tag.to_string}")
+
+    # update changelog
+    stamp_changelog(
+      section_identifier: tag.to_string
+    )
+
+    # commit Package.swift and CHANGELOG.md
+    git_commit(
+      path: ["Package.swift", "CHANGELOG.md"],
+      message: "Bump version to #{tag} and tagging release"
+    )
+    push_to_git_remote
+
+    # take tag and push to remote
+    add_git_tag(tag: tag.to_string)
+    push_git_tags
+
+    changelog = read_changelog(
+      section_identifier: "[#{tag}]",
+      excluded_markdown_elements: []
+    )
+
+    # upload artifacts to tagged Github release
+    set_github_release(
+      repository_name: "hmrc/tax-kalculator",
+      api_token: ENV["GITHUB_TOKEN"],
+      name: tag.to_string,
+      tag_name: tag.to_string,
+      description: changelog,
+      upload_assets: ["swiftpm/TaxKalculator.xcframework.zip"]
+    )
+  end
+end
