@@ -26,12 +26,13 @@ version = System.getenv("BITRISE_GIT_TAG") ?: ("SNAPSHOT-" + getDate())
 
 plugins {
     `maven-publish`
-    kotlin("multiplatform").version("1.3.70")
+    kotlin("multiplatform").version("1.4.10")
     jacoco
     java
     id("com.github.dawnwords.jacoco.badge").version("0.1.0")
     id("io.gitlab.arturbosch.detekt").version("1.6.0")
     id("com.jfrog.bintray").version("1.8.4")
+    id("com.chromaticnoise.multiplatform-swiftpackage").version("2.0.3")
 }
 
 repositories {
@@ -74,7 +75,7 @@ kotlin {
     }
 
     sourceSets {
-        val klockVersion = "1.9.0"
+        val klockVersion = "2.0.1"
         val commonMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-common"))
@@ -124,31 +125,6 @@ kotlin {
             dependsOn(iosTest)
         }
     }
-
-
-    tasks.register<org.jetbrains.kotlin.gradle.tasks.FatFrameworkTask>("fatFramework") {
-        group = project.name
-        baseName = frameworkName
-        destinationDir = File(buildDir, "xcode-frameworks")
-
-        val ios32Framework = iosArm32.binaries.getFramework("RELEASE")
-        val ios64Framework = iosX64.binaries.getFramework("RELEASE")
-        val iosSimulatorFramework = iosArm64.binaries.getFramework("RELEASE")
-
-        this.dependsOn(ios32Framework.linkTask)
-        this.dependsOn(ios64Framework.linkTask)
-        this.dependsOn(iosSimulatorFramework.linkTask)
-
-        from(
-            ios32Framework, ios64Framework, iosSimulatorFramework)
-
-        doLast {
-            File(destinationDir, "gradlew").apply {
-                setExecutable(true)
-            }
-                .writeText("#!/bin/bash\nexport 'JAVA_HOME=${System.getProperty("java.home")}'\ncd '${rootProject.rootDir}'\n./gradlew \$@\n")
-        }
-    }
 }
 
 tasks.named<Test>("jvmTest") {
@@ -161,7 +137,17 @@ tasks.named<Test>("jvmTest") {
     }
 }
 
-tasks.getByName("build").dependsOn(tasks.getByName("fatFramework"))
+/***********************************************************************************************************************
+ * Swift Package Manager Configuration
+ ***********************************************************************************************************************/
+
+multiplatformSwiftPackage {
+    swiftToolsVersion("5.3")
+    targetPlatforms {
+        iOS { v("11") }
+    }
+    outputDirectory(File(projectDir, "build/xcframework"))
+}
 
 /***********************************************************************************************************************
  * Other Task Configuration

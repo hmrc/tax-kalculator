@@ -38,3 +38,6 @@ build
 /credentials.properties
 local.properties
 .DS_Store
+swiftpm
+Package.swift.bak
+fastlane/report.xml

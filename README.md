@@ -89,8 +89,15 @@ To update the README badges:
 ## Download
 
 ### iOS
-
-Each release tag includes a Carthage binary dependency specification. To use the Carthage binary:
+#### Swift Package Manager
+- From version `0.12.0` onwards, the use of `Swift Package Manager` is required.
+- Note: Because this operates as a closed source, binary dependency, Swift PM will only work with tagged releases and not branches.
+```swift
+https://github.com/hmrc/tax-kalculator
+```
+#### Carthage
+- For all versions below `0.12.0`, the use of `Carthage` is required.
+- Each release tag includes a Carthage binary dependency specification. To use the Carthage binary:
 * In the same directory as your Cartfile, add a directory.
 ```shell script
  $ mkdir Carthage-Binaries

@@ -15,4 +15,4 @@
  */
 package uk.gov.hmrc.calculator.annotations
 
-actual typealias Throws = kotlin.native.Throws
+actual typealias Throws = kotlin.Throws
