@@ -6,6 +6,7 @@
 ![BRANCH](https://img.shields.io/badge/branch--coverage-93%25-brightgreen.svg)
 ![COMPLEXITY](https://img.shields.io/badge/complexity-1.52-brightgreen.svg)
 [ ![Download](https://api.bintray.com/packages/hmrc/mobile-releases/tax-kalculator/images/download.svg) ](https://bintray.com/hmrc/mobile-releases/tax-kalculator/_latestVersion)
+![swift-pm](https://img.shields.io/badge/SwiftPM-Compatible-success.svg)
 
 ## Calculate take-home pay
 
