@@ -17,17 +17,14 @@ package uk.gov.hmrc.calculator.model
 
 import uk.gov.hmrc.calculator.utils.formatMoney
 
-data class BandBreakdown(val percentage: Double, val amount: Double) {
-    override fun toString() = "BandBreakdown(percentage=$percentage \n, amount=$amount) \n"
-}
+data class BandBreakdown(val percentage: Double, val amount: Double)
 
 class CalculatorResponsePayPeriod(
     val payPeriod: PayPeriod,
-    private val taxToPayForPayPeriod: Double,
+    taxToPayForPayPeriod: Double,
     private var employeesNIRaw: Double,
     private var employersNIRaw: Double,
     private var wagesRaw: Double,
-    val taxBreakdownForPayPeriod: List<BandBreakdown>?,
     private var taxFreeRaw: Double,
     private var kCodeAdjustmentRaw: Double? = null
 ) {
@@ -56,17 +53,6 @@ class CalculatorResponsePayPeriod(
     val kCodeAdjustment: Double? by lazy {
         kCodeAdjustmentRaw?.formatMoney()
     }
-
-    override fun toString() = "CalculatorResponsePayPeriod(" +
-            "payPeriod=$payPeriod \n" +
-            "taxToPayForPayPeriod=$taxToPayForPayPeriod \n" +
-            "employeesNI=$employeesNI \n" +
-            "employersNI=$employersNI \n" +
-            "wages=$wages \n" +
-            "taxBreakdownForPayPeriod=$taxBreakdownForPayPeriod \n" +
-            "taxFree=$taxFree \n" +
-            "kCodeAdjustment=$kCodeAdjustment \n" +
-            ")"
 }
 
 data class CalculatorResponse(
@@ -76,13 +62,4 @@ data class CalculatorResponse(
     val fourWeekly: CalculatorResponsePayPeriod,
     val monthly: CalculatorResponsePayPeriod,
     val yearly: CalculatorResponsePayPeriod
-) {
-    override fun toString() = "CalculatorResponse(" +
-            "country=$country \n" +
-            "isKCode=$isKCode \n" +
-            "weekly=$weekly \n" +
-            "fourWeekly=$fourWeekly \n" +
-            "monthly=$monthly \n" +
-            "yearly=$yearly \n" +
-            ")"
-}
+)
