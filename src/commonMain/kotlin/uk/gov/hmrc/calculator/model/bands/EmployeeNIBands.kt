@@ -26,8 +26,16 @@ internal class EmployeeNIBands(taxYear: Int) {
         EmployeeNIBand(50000.0, -1.0, 0.02)
     )
 
+    private val employeeNIBands2021: List<EmployeeNIBand> = listOf(
+        EmployeeNIBand(0.0, 6240.00, 0.0),
+        EmployeeNIBand(6240.0, 9568.00, 0.0),
+        EmployeeNIBand(9568.0, 50270.00, 0.12),
+        EmployeeNIBand(50270.0, -1.0, 0.02)
+    )
+
     internal val bands: List<EmployeeNIBand> = when (taxYear) {
         2020 -> employeeNIBands2020
+        2021 -> employeeNIBands2021
         else -> throw InvalidTaxYearException("$taxYear")
     }
 }

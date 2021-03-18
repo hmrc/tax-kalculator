@@ -47,4 +47,20 @@ class EmployerNIBandsTests {
         assertEquals(false, band.inBand(1000.0))
         assertEquals(true, band.inBand(10000.0))
     }
+
+    @Test
+    fun `Employer NI 2021`() {
+        val band = EmployerNIBands(2021).bands[2]
+        assertEquals(0.138, band.percentageAsDecimal)
+        assertEquals(false, band.inBand(8789.0))
+        assertEquals(true, band.inBand(10000.0))
+    }
+
+    @Test
+    fun `Employer NI 2021 upper limit`() {
+        val band = EmployerNIBands(2021).bands[3]
+        assertEquals(0.138, band.percentageAsDecimal)
+        assertEquals(false, band.inBand(50001.0))
+        assertEquals(true, band.inBand(100000.0))
+    }
 }
