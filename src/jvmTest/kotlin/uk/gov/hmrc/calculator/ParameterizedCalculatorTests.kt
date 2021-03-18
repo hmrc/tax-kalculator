@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.converter.ArgumentConverter
 import org.junit.jupiter.params.converter.ConvertWith
 import org.junit.jupiter.params.provider.CsvFileSource
-import org.junit.platform.commons.util.ToStringBuilder
 import uk.gov.hmrc.calculator.model.Country
 import uk.gov.hmrc.calculator.model.PayPeriod
 
@@ -60,13 +59,13 @@ internal class ParameterizedCalculatorTests {
 
         val yearlyPeriod = response.yearly
         assertEquals(PayPeriod.YEARLY, yearlyPeriod.payPeriod)
-        assertEquals(expectedYearlyNiEmployee, yearlyPeriod.employeesNI, 0.01, "Yearly employee NI did not match")
-        assertEquals(expectedYearlyNiEmployer, yearlyPeriod.employersNI, 0.01, "Yearly employer NI did not match")
-        assertEquals(expectedYearlyIncomeTax, yearlyPeriod.taxToPay, 0.02, "Yearly income tax did not match")
-        assertEquals(expectedYearlyTotalDeduction, yearlyPeriod.totalDeductions, 0.01, "Yearly total deductions did not match")
-        assertEquals(expectedYearlyTakeHome, yearlyPeriod.takeHome, 0.01, "Yearly take home did not match")
-        assertEquals(expectedYearlyWages, yearlyPeriod.wages, 0.01, "Yearly wages did not match")
-        assertEquals(expectedYearlyTaxFreeAmount, yearlyPeriod.taxFree, 0.01, "Yearly tax free amount did not match")
+        assertEquals(expectedYearlyNiEmployee, yearlyPeriod.employeesNI, "Yearly employee NI did not match")
+        assertEquals(expectedYearlyNiEmployer, yearlyPeriod.employersNI, "Yearly employer NI did not match")
+        assertEquals(expectedYearlyIncomeTax, yearlyPeriod.taxToPay, "Yearly income tax did not match")
+        assertEquals(expectedYearlyTotalDeduction, yearlyPeriod.totalDeductions, "Yearly total deductions did not match")
+        assertEquals(expectedYearlyTakeHome, yearlyPeriod.takeHome, "Yearly take home did not match")
+        assertEquals(expectedYearlyWages, yearlyPeriod.wages, "Yearly wages did not match")
+        assertEquals(expectedYearlyTaxFreeAmount, yearlyPeriod.taxFree, "Yearly tax free amount did not match")
         assertEquals(expectedYearlyKCodeAdjustment, yearlyPeriod.kCodeAdjustment, "Yearly K code adjustment did not match")
         assertFalse(yearlyPeriod.maxTaxAmountExceeded)
 
@@ -108,14 +107,15 @@ internal class ParameterizedCalculatorTests {
         val yearlyPeriod = response.yearly
         println(inputTaxCode)
         println(yearlyPeriod.toString())
+        println("expectedYearlyNiEmployer=$expectedYearlyNiEmployer, yearlyPeriod.employersNI=$yearlyPeriod.employersNI")
         assertEquals(PayPeriod.YEARLY, yearlyPeriod.payPeriod)
-        assertEquals(expectedYearlyNiEmployee, yearlyPeriod.employeesNI, 0.01, "Yearly employee NI did not match")
-        assertEquals(expectedYearlyNiEmployer, yearlyPeriod.employersNI, 0.01, "Yearly employer NI did not match")
-        assertEquals(expectedYearlyIncomeTax, yearlyPeriod.taxToPay, 0.01, "Yearly income tax did not match")
-        assertEquals(expectedYearlyTotalDeduction, yearlyPeriod.totalDeductions, 0.01, "Yearly total deductions did not match")
-        assertEquals(expectedYearlyTakeHome, yearlyPeriod.takeHome, 0.03, "Yearly take home did not match")
-        assertEquals(expectedYearlyWages, yearlyPeriod.wages, 0.01, "Yearly wages did not match")
-        assertEquals(expectedYearlyTaxFreeAmount, yearlyPeriod.taxFree, 0.01, "Yearly tax free amount did not match")
+        assertEquals(expectedYearlyNiEmployee, yearlyPeriod.employeesNI, "Yearly employee NI did not match")
+        assertEquals(expectedYearlyNiEmployer, yearlyPeriod.employersNI, "Yearly employer NI did not match")
+        assertEquals(expectedYearlyIncomeTax, yearlyPeriod.taxToPay, "Yearly income tax did not match")
+        assertEquals(expectedYearlyTotalDeduction, yearlyPeriod.totalDeductions, "Yearly total deductions did not match")
+        assertEquals(expectedYearlyTakeHome, yearlyPeriod.takeHome, "Yearly take home did not match")
+        assertEquals(expectedYearlyWages, yearlyPeriod.wages, "Yearly wages did not match")
+        assertEquals(expectedYearlyTaxFreeAmount, yearlyPeriod.taxFree, "Yearly tax free amount did not match")
         assertEquals(expectedYearlyKCodeAdjustment, yearlyPeriod.kCodeAdjustment, "Yearly K code adjustment did not match")
         assertFalse(yearlyPeriod.maxTaxAmountExceeded)
 

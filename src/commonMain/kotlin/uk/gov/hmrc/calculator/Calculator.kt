@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -102,42 +102,42 @@ class Calculator @JvmOverloads constructor(
             weekly = CalculatorResponsePayPeriod(
                 payPeriod = WEEKLY,
                 taxToPayForPayPeriod = taxPayable.convertAmountFromYearlyToPayPeriod(WEEKLY),
-                employeesNI = employeesNI.convertAmountFromYearlyToPayPeriod(WEEKLY),
-                employersNI = employersNI.convertAmountFromYearlyToPayPeriod(WEEKLY),
-                wages = yearlyWages.convertAmountFromYearlyToPayPeriod(WEEKLY),
+                employeesNIRaw = employeesNI.convertAmountFromYearlyToPayPeriod(WEEKLY),
+                employersNIRaw = employersNI.convertAmountFromYearlyToPayPeriod(WEEKLY),
+                wagesRaw = yearlyWages.convertAmountFromYearlyToPayPeriod(WEEKLY),
                 taxBreakdownForPayPeriod = bandBreakdown.convertListOfBandBreakdownForPayPeriod(WEEKLY),
-                taxFree = taxFreeAmount.convertAmountFromYearlyToPayPeriod(WEEKLY),
-                kCodeAdjustment = amountToAddToWages?.convertAmountFromYearlyToPayPeriod(WEEKLY)
+                taxFreeRaw = taxFreeAmount.convertAmountFromYearlyToPayPeriod(WEEKLY),
+                kCodeAdjustmentRaw = amountToAddToWages?.convertAmountFromYearlyToPayPeriod(WEEKLY)
             ),
             fourWeekly = CalculatorResponsePayPeriod(
                 payPeriod = FOUR_WEEKLY,
                 taxToPayForPayPeriod = taxPayable.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
-                employeesNI = employeesNI.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
-                employersNI = employersNI.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
-                wages = yearlyWages.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
+                employeesNIRaw = employeesNI.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
+                employersNIRaw = employersNI.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
+                wagesRaw = yearlyWages.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
                 taxBreakdownForPayPeriod = bandBreakdown.convertListOfBandBreakdownForPayPeriod(FOUR_WEEKLY),
-                taxFree = taxFreeAmount.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
-                kCodeAdjustment = amountToAddToWages?.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY)
+                taxFreeRaw = taxFreeAmount.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
+                kCodeAdjustmentRaw = amountToAddToWages?.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY)
             ),
             monthly = CalculatorResponsePayPeriod(
                 payPeriod = MONTHLY,
                 taxToPayForPayPeriod = taxPayable.convertAmountFromYearlyToPayPeriod(MONTHLY),
-                employeesNI = employeesNI.convertAmountFromYearlyToPayPeriod(MONTHLY),
-                employersNI = employersNI.convertAmountFromYearlyToPayPeriod(MONTHLY),
-                wages = yearlyWages.convertAmountFromYearlyToPayPeriod(MONTHLY),
+                employeesNIRaw = employeesNI.convertAmountFromYearlyToPayPeriod(MONTHLY),
+                employersNIRaw = employersNI.convertAmountFromYearlyToPayPeriod(MONTHLY),
+                wagesRaw = yearlyWages.convertAmountFromYearlyToPayPeriod(MONTHLY),
                 taxBreakdownForPayPeriod = bandBreakdown.convertListOfBandBreakdownForPayPeriod(MONTHLY),
-                taxFree = taxFreeAmount.convertAmountFromYearlyToPayPeriod(MONTHLY),
-                kCodeAdjustment = amountToAddToWages?.convertAmountFromYearlyToPayPeriod(MONTHLY)
+                taxFreeRaw = taxFreeAmount.convertAmountFromYearlyToPayPeriod(MONTHLY),
+                kCodeAdjustmentRaw = amountToAddToWages?.convertAmountFromYearlyToPayPeriod(MONTHLY)
             ),
             yearly = CalculatorResponsePayPeriod(
                 payPeriod = YEARLY,
                 taxToPayForPayPeriod = taxPayable.convertAmountFromYearlyToPayPeriod(YEARLY),
-                employeesNI = employeesNI.convertAmountFromYearlyToPayPeriod(YEARLY),
-                employersNI = employersNI.convertAmountFromYearlyToPayPeriod(YEARLY),
-                wages = yearlyWages.convertAmountFromYearlyToPayPeriod(YEARLY),
+                employeesNIRaw = employeesNI.convertAmountFromYearlyToPayPeriod(YEARLY),
+                employersNIRaw = employersNI.convertAmountFromYearlyToPayPeriod(YEARLY),
+                wagesRaw = yearlyWages.convertAmountFromYearlyToPayPeriod(YEARLY),
                 taxBreakdownForPayPeriod = bandBreakdown,
-                taxFree = taxFreeAmount,
-                kCodeAdjustment = amountToAddToWages
+                taxFreeRaw = taxFreeAmount,
+                kCodeAdjustmentRaw = amountToAddToWages
             )
         )
     }

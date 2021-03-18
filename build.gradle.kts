@@ -26,7 +26,7 @@ version = System.getenv("BITRISE_GIT_TAG") ?: ("SNAPSHOT-" + getDate())
 
 plugins {
     `maven-publish`
-    kotlin("multiplatform").version("1.4.10")
+    kotlin("multiplatform").version("1.4.31")
     jacoco
     java
     id("com.github.dawnwords.jacoco.badge").version("0.1.0")
@@ -86,8 +86,8 @@ kotlin {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
-                implementation("io.kotlintest:kotlintest-runner-junit5:3.3.2")
-                runtimeOnly("org.junit.jupiter:junit-jupiter-engine:5.5.2")
+                implementation("io.kotlintest:kotlintest-runner-junit5:3.4.2")
+                runtimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.1")
             }
         }
 
@@ -100,7 +100,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("test"))
                 implementation(kotlin("test-junit5"))
-                implementation("org.junit.jupiter:junit-jupiter-params:5.6.2")
+                implementation("org.junit.jupiter:junit-jupiter-params:5.7.1")
             }
         }
 
