@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,24 +15,58 @@
  */
 package uk.gov.hmrc.calculator.model
 
-data class BandBreakdown(val percentage: Double, val amount: Double)
+import uk.gov.hmrc.calculator.utils.formatMoney
+
+data class BandBreakdown(val percentage: Double, val amount: Double) {
+    override fun toString() = "BandBreakdown(percentage=$percentage \n, amount=$amount) \n"
+}
 
 class CalculatorResponsePayPeriod(
     val payPeriod: PayPeriod,
-    taxToPayForPayPeriod: Double,
-    val employeesNI: Double,
-    val employersNI: Double,
-    val wages: Double,
-    taxBreakdownForPayPeriod: List<BandBreakdown>?,
-    val taxFree: Double,
-    val kCodeAdjustment: Double? = null
+    private val taxToPayForPayPeriod: Double,
+    private var employeesNIRaw: Double,
+    private var employersNIRaw: Double,
+    private var wagesRaw: Double,
+    val taxBreakdownForPayPeriod: List<BandBreakdown>?,
+    private var taxFreeRaw: Double,
+    private var kCodeAdjustmentRaw: Double? = null
 ) {
-    private val maxTaxAmount = wages / 2
-    val taxToPay = if (taxToPayForPayPeriod > maxTaxAmount) maxTaxAmount else taxToPayForPayPeriod
+    private val maxTaxAmount = (wagesRaw / 2).formatMoney()
+    val taxToPay = if (taxToPayForPayPeriod > maxTaxAmount) maxTaxAmount else taxToPayForPayPeriod.formatMoney()
     val maxTaxAmountExceeded = (taxToPayForPayPeriod > maxTaxAmount)
-    val totalDeductions = taxToPay + employeesNI
-    val takeHome = wages - totalDeductions
-    val taxBreakdown = if (maxTaxAmountExceeded) null else taxBreakdownForPayPeriod
+    val totalDeductions = (taxToPay + employeesNIRaw).formatMoney()
+    val takeHome = (wagesRaw - totalDeductions).formatMoney()
+
+    var employeesNI
+        get() = employeesNIRaw.formatMoney()
+        set(value) { employeesNIRaw = value }
+
+    var employersNI
+        get() = employersNIRaw.formatMoney()
+        set(value) { employersNIRaw = value }
+
+    var wages
+        get() = wagesRaw.formatMoney()
+        set(value) { wagesRaw = value }
+
+    var taxFree
+        get() = taxFreeRaw.formatMoney()
+        set(value) { taxFreeRaw = value }
+
+    var kCodeAdjustment
+        get() = kCodeAdjustmentRaw?.formatMoney()
+        set(value) { kCodeAdjustmentRaw = value }
+
+    override fun toString() = "CalculatorResponsePayPeriod(" +
+            "payPeriod=$payPeriod \n" +
+            "taxToPayForPayPeriod=$taxToPayForPayPeriod \n" +
+            "employeesNI=$employeesNI \n" +
+            "employersNI=$employersNI \n" +
+            "wages=$wages \n" +
+            "taxBreakdownForPayPeriod=$taxBreakdownForPayPeriod \n" +
+            "taxFree=$taxFree \n" +
+            "kCodeAdjustment=$kCodeAdjustment \n" +
+            ")"
 }
 
 data class CalculatorResponse(
@@ -42,4 +76,13 @@ data class CalculatorResponse(
     val fourWeekly: CalculatorResponsePayPeriod,
     val monthly: CalculatorResponsePayPeriod,
     val yearly: CalculatorResponsePayPeriod
-)
+) {
+    override fun toString() = "CalculatorResponse(" +
+            "country=$country \n" +
+            "isKCode=$isKCode \n" +
+            "weekly=$weekly \n" +
+            "fourWeekly=$fourWeekly \n" +
+            "monthly=$monthly \n" +
+            "yearly=$yearly \n" +
+            ")"
+}
