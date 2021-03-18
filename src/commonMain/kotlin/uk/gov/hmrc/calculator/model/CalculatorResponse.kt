@@ -25,6 +25,7 @@ class CalculatorResponsePayPeriod(
     private var employeesNIRaw: Double,
     private var employersNIRaw: Double,
     private var wagesRaw: Double,
+    taxBreakdownForPayPeriod: List<BandBreakdown>? = null,
     private var taxFreeRaw: Double,
     private var kCodeAdjustmentRaw: Double? = null
 ) {
@@ -33,6 +34,7 @@ class CalculatorResponsePayPeriod(
     val maxTaxAmountExceeded = (taxToPayForPayPeriod > maxTaxAmount)
     val totalDeductions = (taxToPay + employeesNIRaw).formatMoney()
     val takeHome = (wagesRaw - totalDeductions).formatMoney()
+    val taxBreakdown = if (maxTaxAmountExceeded) null else taxBreakdownForPayPeriod
 
     val employeesNI: Double by lazy {
         employeesNIRaw.formatMoney()
