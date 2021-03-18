@@ -37,25 +37,25 @@ class CalculatorResponsePayPeriod(
     val totalDeductions = (taxToPay + employeesNIRaw).formatMoney()
     val takeHome = (wagesRaw - totalDeductions).formatMoney()
 
-    var employeesNI
-        get() = employeesNIRaw.formatMoney()
-        set(value) { employeesNIRaw = value }
+    val employeesNI: Double by lazy {
+        employeesNIRaw.formatMoney()
+    }
 
-    var employersNI
-        get() = employersNIRaw.formatMoney()
-        set(value) { employersNIRaw = value }
+    val employersNI: Double by lazy {
+        employersNIRaw.formatMoney()
+    }
 
-    var wages
-        get() = wagesRaw.formatMoney()
-        set(value) { wagesRaw = value }
+    val wages: Double by lazy {
+        wagesRaw.formatMoney()
+    }
 
-    var taxFree
-        get() = taxFreeRaw.formatMoney()
-        set(value) { taxFreeRaw = value }
+    val taxFree: Double by lazy {
+        taxFreeRaw.formatMoney()
+    }
 
-    var kCodeAdjustment
-        get() = kCodeAdjustmentRaw?.formatMoney()
-        set(value) { kCodeAdjustmentRaw = value }
+    val kCodeAdjustment: Double? by lazy {
+        kCodeAdjustmentRaw?.formatMoney()
+    }
 
     override fun toString() = "CalculatorResponsePayPeriod(" +
             "payPeriod=$payPeriod \n" +
