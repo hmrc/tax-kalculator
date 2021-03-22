@@ -47,6 +47,7 @@ import uk.gov.hmrc.calculator.model.taxcodes.StandardTaxCode
 import uk.gov.hmrc.calculator.model.taxcodes.TaxCode
 import uk.gov.hmrc.calculator.utils.TaxYear
 import uk.gov.hmrc.calculator.utils.convertAmountFromYearlyToPayPeriod
+import uk.gov.hmrc.calculator.utils.convertListOfBandBreakdownForPayPeriod
 import uk.gov.hmrc.calculator.utils.convertWageToYearly
 import uk.gov.hmrc.calculator.utils.taxcode.toTaxCode
 import uk.gov.hmrc.calculator.utils.validation.WageValidator
@@ -104,6 +105,7 @@ class Calculator @JvmOverloads constructor(
                 employeesNIRaw = employeesNI.convertAmountFromYearlyToPayPeriod(WEEKLY),
                 employersNIRaw = employersNI.convertAmountFromYearlyToPayPeriod(WEEKLY),
                 wagesRaw = yearlyWages.convertAmountFromYearlyToPayPeriod(WEEKLY),
+                taxBreakdownForPayPeriod = bandBreakdown.convertListOfBandBreakdownForPayPeriod(WEEKLY),
                 taxFreeRaw = taxFreeAmount.convertAmountFromYearlyToPayPeriod(WEEKLY),
                 kCodeAdjustmentRaw = amountToAddToWages?.convertAmountFromYearlyToPayPeriod(WEEKLY)
             ),
@@ -113,6 +115,7 @@ class Calculator @JvmOverloads constructor(
                 employeesNIRaw = employeesNI.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
                 employersNIRaw = employersNI.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
                 wagesRaw = yearlyWages.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
+                taxBreakdownForPayPeriod = bandBreakdown.convertListOfBandBreakdownForPayPeriod(FOUR_WEEKLY),
                 taxFreeRaw = taxFreeAmount.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
                 kCodeAdjustmentRaw = amountToAddToWages?.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY)
             ),
@@ -122,6 +125,7 @@ class Calculator @JvmOverloads constructor(
                 employeesNIRaw = employeesNI.convertAmountFromYearlyToPayPeriod(MONTHLY),
                 employersNIRaw = employersNI.convertAmountFromYearlyToPayPeriod(MONTHLY),
                 wagesRaw = yearlyWages.convertAmountFromYearlyToPayPeriod(MONTHLY),
+                taxBreakdownForPayPeriod = bandBreakdown.convertListOfBandBreakdownForPayPeriod(MONTHLY),
                 taxFreeRaw = taxFreeAmount.convertAmountFromYearlyToPayPeriod(MONTHLY),
                 kCodeAdjustmentRaw = amountToAddToWages?.convertAmountFromYearlyToPayPeriod(MONTHLY)
             ),
@@ -131,6 +135,7 @@ class Calculator @JvmOverloads constructor(
                 employeesNIRaw = employeesNI.convertAmountFromYearlyToPayPeriod(YEARLY),
                 employersNIRaw = employersNI.convertAmountFromYearlyToPayPeriod(YEARLY),
                 wagesRaw = yearlyWages.convertAmountFromYearlyToPayPeriod(YEARLY),
+                taxBreakdownForPayPeriod = bandBreakdown,
                 taxFreeRaw = taxFreeAmount,
                 kCodeAdjustmentRaw = amountToAddToWages
             )
