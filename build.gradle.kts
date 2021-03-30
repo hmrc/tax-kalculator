@@ -1,22 +1,25 @@
 import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.Properties
 import org.gradle.api.tasks.GradleBuild
-
-/***********************************************************************************************************************
- * Project Gradle Config
- ***********************************************************************************************************************/
 
 buildscript {
     repositories {
         maven {
-            url = uri("https://dl.bintray.com/hmrc-mobile/mobile-releases")
+            url = uri("https://maven.pkg.github.com/hmrc/mobile-gradle-plugins")
+            credentials {
+                username = System.getenv("GITHUB_USER_NAME")
+                password = System.getenv("GITHUB_TOKEN")
+            }
         }
     }
     dependencies {
         classpath("uk.gov.hmrc.gradle:spotless:0.1.4")
     }
 }
+
+/***********************************************************************************************************************
+ * Project Gradle Config
+ ***********************************************************************************************************************/
 
 apply(plugin = "uk.gov.hmrc.spotless")
 
@@ -31,7 +34,6 @@ plugins {
     java
     id("com.github.dawnwords.jacoco.badge").version("0.1.0")
     id("io.gitlab.arturbosch.detekt").version("1.6.0")
-    id("com.jfrog.bintray").version("1.8.4")
     id("com.chromaticnoise.multiplatform-swiftpackage").version("2.0.3")
 }
 
@@ -48,6 +50,7 @@ repositories {
  * Declarations
  ***********************************************************************************************************************/
 
+val artifactId = "tax-kalculator"
 val frameworkName = "TaxKalculator"
 
 /***********************************************************************************************************************
@@ -150,6 +153,30 @@ multiplatformSwiftPackage {
 }
 
 /***********************************************************************************************************************
+ * GitHubPackages publishing
+ ***********************************************************************************************************************/
+
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            groupId = "$group.$artifactId"
+            artifactId = artifactId
+            version = version
+        }
+    }
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/hmrc/tax-kalculator")
+            credentials {
+                username = System.getenv("GITHUB_USER_NAME")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+}
+
+/***********************************************************************************************************************
  * Other Task Configuration
  ***********************************************************************************************************************/
 
@@ -176,27 +203,6 @@ detekt {
     }
 }
 
-bintray {
-    val credentials = Properties()
-    rootProject.file("credentials.properties").inputStream().use { credentials.load(it) }
-
-    user = credentials.getProperty("bintray.user")
-    key = credentials.getProperty("bintray.apikey")
-    setPublications("jvm", "metadata")
-
-    publish = true
-
-    pkg = PackageConfig()
-    pkg.repo = "mobile-releases"
-    pkg.name = project.name
-    pkg.userOrg = "hmrc-mobile"
-    pkg.desc = project.description
-    pkg.setLicenses("Apache-2.0")
-    pkg.vcsUrl = "https://github.com/hmrc/tax-kalculator"
-    pkg.version.name = project.version.toString()
-    pkg.version.released = Date().toString()
-}
-
 tasks.jacocoTestCoverageVerification {
     group = project.name
 
@@ -214,7 +220,6 @@ tasks.jacocoTestCoverageVerification {
     executionData.setFrom(files("${project.buildDir}/jacoco/jvmTest.exec"))
 }
 
-
 /***********************************************************************************************************************
  * Custom Functions
  **********************************************************************************************************************/
@@ -224,7 +229,6 @@ fun getDate(): String {
     val format = "yyyyMMddHHmm"
     return SimpleDateFormat(format).format(date).toString()
 }
-
 
 /***********************************************************************************************************************
  * Custom Tasks

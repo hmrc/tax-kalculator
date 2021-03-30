@@ -5,7 +5,7 @@
 ![LINE](https://img.shields.io/badge/line--coverage-98%25-brightgreen.svg)
 ![BRANCH](https://img.shields.io/badge/branch--coverage-93%25-brightgreen.svg)
 ![COMPLEXITY](https://img.shields.io/badge/complexity-1.52-brightgreen.svg)
-[ ![Download](https://api.bintray.com/packages/hmrc/mobile-releases/tax-kalculator/images/download.svg) ](https://bintray.com/hmrc/mobile-releases/tax-kalculator/_latestVersion)
+[![Github](https://img.shields.io/github/release/hmrc/tax-kalculator.svg)](https://gitHub.com/hmrc/tax-kalculator/releases/)
 ![swift-pm](https://img.shields.io/badge/SwiftPM-Compatible-success.svg)
 
 ## Calculate take-home pay
@@ -129,12 +129,16 @@ You may want to implement something like [this](http://ikennd.ac/blog/2015/02/st
 
 ### Android or JVM
 
-Add the mobile-releases bintray repository to your top-level `build.gradle`:
+Add the Github Package repository to your top-level `build.gradle`, along with a Github username and access token (no permissions required).
 
 ```groovy
 repositories {
     maven {
-        url  "https://dl.bintray.com/hmrc-mobile/mobile-releases" 
+        url = "https://maven.pkg.github.com/hmrc/tax-kalculator"
+        credentials {
+            username = System.getenv("GITHUB_USER_NAME")
+            password = System.getenv("GITHUB_TOKEN")
+        }
     }
 }
 ```
@@ -149,7 +153,7 @@ dependencies {
 
 ### Release process
 
-The CI tool has been setup to trigger a build and publish to Bintray and GitHub when a tag is created on a build.
+The CI tool has been set up to trigger a build and publish to GitHub packages when a tag is created on a build.
 
 Recommended flow:
 - Raise PR
