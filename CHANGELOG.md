@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+- Changed to Github packages for artefact storage.
 
 ## [0.12.0] - 2021-02-03
 - Added support for `Swift Package Manager`
