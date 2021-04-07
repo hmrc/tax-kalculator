@@ -55,12 +55,12 @@ internal class CalculatorTests {
     @Test
     fun `GIVEN wages too high WHEN calculate THEN exception`() {
         assertFailsWith<InvalidWagesException> {
-            Calculator(taxCode = "1250L", wages = 10000000.0, payPeriod = PayPeriod.YEARLY).run()
+            Calculator(taxCode = "1257L", wages = 10000000.0, payPeriod = PayPeriod.YEARLY).run()
         }
     }
 
     @Test
     fun `WHEN get default tax code THEN return 1250L`() {
-        assertEquals("1250L", Calculator.getDefaultTaxCode())
+        assertEquals("1257L", Calculator.getDefaultTaxCode())
     }
 }
