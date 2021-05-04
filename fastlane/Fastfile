@@ -22,6 +22,9 @@ platform :android do
   lane :tag_release do
 
     UI.user_error!("You need to provide a Github Personal token via a `GITHUB_TOKEN` environment variable - you can create a new token on Github https://github.com/settings/tokens/new") unless !ENV["GITHUB_TOKEN"].nil?
+    UI.user_error!("You need to provide the Bitrise token via a `BITRISE_TOKEN` environment variable - See the Bitrise docs for help https://devcenter.bitrise.io/api/authentication.") unless !ENV["BITRISE_TOKEN"].nil?
+    UI.user_error!("You need to provide the Bitrise app slug for this repo via a `TAX_KALC_APP_SLUG` environment variable") unless !ENV["TAX_KALC_APP_SLUG"].nil?
+    UI.user_error!("You need to provide the Bitrise release workflow ID this repo via a `TAX_KALC_RELEASE_WORKFLOW_ID` environment variable") unless !ENV["TAX_KALC_RELEASE_WORKFLOW_ID"].nil?
 
     # ensure repo is clean and on master
     ensure_git_status_clean
@@ -83,5 +86,8 @@ platform :android do
       description: changelog,
       upload_assets: ["swiftpm/TaxKalculator.xcframework.zip"]
     )
+
+    # start release process on CI
+    sh("cd .. && sh release.sh '#{tag.to_string}'")
   end
 end

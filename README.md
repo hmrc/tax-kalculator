@@ -163,6 +163,9 @@ Recommended flow:
 - Tag for release
 - Apps update to new version
 
+You need to:
+* Have a valid Bitrise access token saved in your path under the variable name `BITRISE_TOKEN`. See [Bitrise docs](https://devcenter.bitrise.io/api/authentication).
+* Two environment variables, `TAX_KALC_APP_SLUG` & `TAX_KALC_RELEASE_WORKFLOW_ID` will also need to be included in your bash/ZSH profile. Speak with [Chris](https://github.com/chrisob55) to obtain these values.
 
 ### License
 
