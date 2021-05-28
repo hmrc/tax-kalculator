@@ -46,9 +46,9 @@ internal object TaxBands {
     private fun scottish2021Bands() = listOf(
         TaxBand(0.0, 12579.00, 0.0),
         TaxBand(12579.00, 14676.00, 0.19),
-        TaxBand(14676.00, 27402.00, 0.20),
-        TaxBand(27402.00, 58494.00, 0.21),
-        TaxBand(58494.00, 150000.00, 0.41),
+        TaxBand(14676.00, 25305.00, 0.20),
+        TaxBand(25305.00, 43671.00, 0.21),
+        TaxBand(43671.00, 150000.00, 0.41),
         TaxBand(150000.0, -1.0, 0.46)
     )
 
