@@ -174,14 +174,14 @@ class TaxBandsTests {
         assertEquals(0.19, taxBands[1].percentageAsDecimal)
 
         assertEquals(14676.00, taxBands[2].lower)
-        assertEquals(27402.00, taxBands[2].upper)
+        assertEquals(25305.00, taxBands[2].upper)
         assertEquals(0.20, taxBands[2].percentageAsDecimal)
 
-        assertEquals(27402.00, taxBands[3].lower)
-        assertEquals(58494.00, taxBands[3].upper)
+        assertEquals(25305.00, taxBands[3].lower)
+        assertEquals(43671.00, taxBands[3].upper)
         assertEquals(0.21, taxBands[3].percentageAsDecimal)
 
-        assertEquals(58494.00, taxBands[4].lower)
+        assertEquals(43671.00, taxBands[4].lower)
         assertEquals(150000.00, taxBands[4].upper)
         assertEquals(0.41, taxBands[4].percentageAsDecimal)
 
