@@ -262,3 +262,7 @@ tasks.register<GradleBuild>("cleanBuildTestCoverage") {
         "generateJacocoBadge",
         "jacocoTestCoverageVerification")
 }
+
+tasks.named<Jar>("jvmJar") {
+    archiveFileName.set("$artifactId-$version.jar")
+}
