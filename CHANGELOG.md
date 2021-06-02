@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [1.3.0] - 2021-06-02Z
 - Removing `-jvm` from .jar name
 
 ## [1.2.0] - 2021-05-28
