@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+- Removing `-jvm` from .jar name
 
 ## [1.2.0] - 2021-05-28
 - Updated Scottish rates.
