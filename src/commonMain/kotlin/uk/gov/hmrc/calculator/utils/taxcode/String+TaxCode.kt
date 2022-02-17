@@ -24,7 +24,7 @@ import uk.gov.hmrc.calculator.utils.toCountry
 internal fun String.toTaxCode(): TaxCode {
     if (isBlank()) throw InvalidTaxCodeException("Tax code cannot be empty")
 
-    val formattedTaxCode = this.replace("\\s".toRegex(), "").toUpperCase()
+    val formattedTaxCode = this.replace("\\s".toRegex(), "").uppercase()
 
     return when (formattedTaxCode.toCountry()) {
         Country.SCOTLAND -> formattedTaxCode.matchScottishTaxCode()
