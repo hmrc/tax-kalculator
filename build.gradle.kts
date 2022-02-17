@@ -29,7 +29,7 @@ version = System.getenv("BITRISE_GIT_TAG") ?: ("SNAPSHOT-" + getDate())
 
 plugins {
     `maven-publish`
-    kotlin("multiplatform").version("1.4.31")
+    kotlin("multiplatform").version("1.6.0")
     jacoco
     java
     id("com.github.dawnwords.jacoco.badge").version("0.1.0")
@@ -74,7 +74,7 @@ kotlin {
     }
 
     sourceSets.all {
-        languageSettings.useExperimentalAnnotation("kotlin.Experimental")
+        languageSettings.optIn("kotlin.Experimental")
     }
 
     sourceSets {
@@ -147,7 +147,7 @@ tasks.named<Test>("jvmTest") {
 multiplatformSwiftPackage {
     swiftToolsVersion("5.3")
     targetPlatforms {
-        iOS { v("11") }
+        iOS { v("13") }
     }
     outputDirectory(File(projectDir, "build/xcframework"))
 }
