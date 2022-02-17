@@ -147,7 +147,7 @@ tasks.named<Test>("jvmTest") {
 multiplatformSwiftPackage {
     swiftToolsVersion("5.3")
     targetPlatforms {
-        iOS { v("13") }
+        iOS { v("11") }
     }
     outputDirectory(File(projectDir, "build/xcframework"))
 }
