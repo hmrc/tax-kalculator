@@ -26,7 +26,7 @@ import uk.gov.hmrc.calculator.model.taxcodes.NoTaxTaxCode
 class StringOtherTaxCodeTests {
 
     @Test
-    fun `NT (no tax) tax code`() {
+    fun `NT tax code`() {
         val taxCode = "NT".toTaxCode()
         assertTrue(taxCode is NoTaxTaxCode)
         assertEquals(0.0, taxCode.taxFreeAmount)

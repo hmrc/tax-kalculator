@@ -32,7 +32,7 @@ plugins {
     kotlin("multiplatform").version("1.6.0")
     jacoco
     java
-    id("com.github.dawnwords.jacoco.badge").version("0.1.0")
+    id("com.github.dawnwords.jacoco.badge").version("0.2.4")
     id("io.gitlab.arturbosch.detekt").version("1.6.0")
     id("com.chromaticnoise.multiplatform-swiftpackage").version("2.0.3")
 }
@@ -189,7 +189,7 @@ jacocoBadgeGenSetting {
 }
 
 jacoco {
-    toolVersion = "0.8.4"
+    toolVersion = "0.8.7"
 }
 
 detekt {
