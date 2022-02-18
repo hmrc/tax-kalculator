@@ -46,7 +46,7 @@ class StringWelshTaxCodeTests {
 
         val taxCode: CBR = "CBR".toTaxCode() as CBR
         assertEquals(WALES, taxCode.country)
-        assertEquals(1, taxCode.taxAllAtBand)
+        assertEquals(0, taxCode.taxAllAtBand)
         assertEquals(0.0, taxCode.taxFreeAmount)
     }
 
@@ -55,7 +55,7 @@ class StringWelshTaxCodeTests {
         assertTrue("CD0".toTaxCode() is CD0)
         val taxCode: CD0 = "CD0".toTaxCode() as CD0
         assertEquals(WALES, taxCode.country)
-        assertEquals(2, taxCode.taxAllAtBand)
+        assertEquals(1, taxCode.taxAllAtBand)
         assertEquals(0.0, taxCode.taxFreeAmount)
     }
 
@@ -64,7 +64,7 @@ class StringWelshTaxCodeTests {
         assertTrue("CD1".toTaxCode() is CD1)
         val taxCode: CD1 = "CD1".toTaxCode() as CD1
         assertEquals(WALES, taxCode.country)
-        assertEquals(3, taxCode.taxAllAtBand)
+        assertEquals(2, taxCode.taxAllAtBand)
         assertEquals(0.0, taxCode.taxFreeAmount)
     }
 

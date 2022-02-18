@@ -26,7 +26,6 @@ import uk.gov.hmrc.calculator.exception.InvalidWagesException
 import uk.gov.hmrc.calculator.model.BandBreakdown
 import uk.gov.hmrc.calculator.model.CalculatorResponse
 import uk.gov.hmrc.calculator.model.CalculatorResponsePayPeriod
-import uk.gov.hmrc.calculator.model.Country.ENGLAND
 import uk.gov.hmrc.calculator.model.PayPeriod
 import uk.gov.hmrc.calculator.model.PayPeriod.FOUR_WEEKLY
 import uk.gov.hmrc.calculator.model.PayPeriod.MONTHLY
@@ -37,6 +36,7 @@ import uk.gov.hmrc.calculator.model.bands.EmployeeNIBands
 import uk.gov.hmrc.calculator.model.bands.EmployerNIBands
 import uk.gov.hmrc.calculator.model.bands.TaxBand
 import uk.gov.hmrc.calculator.model.bands.TaxBands
+import uk.gov.hmrc.calculator.model.bands.TaxFreeAllowance
 import uk.gov.hmrc.calculator.model.taxcodes.AdjustedTaxFreeTCode
 import uk.gov.hmrc.calculator.model.taxcodes.EmergencyTaxCode
 import uk.gov.hmrc.calculator.model.taxcodes.KTaxCode
@@ -200,7 +200,7 @@ class Calculator @JvmOverloads constructor(
 
         fun getDefaultTaxCode(): String {
             val taxYear = TaxYear().currentTaxYear()
-            val defaultTaxAllowance = TaxBands.getBands(taxYear, ENGLAND)[0].upper.toInt()
+            val defaultTaxAllowance = TaxFreeAllowance.getAllowance(taxYear).toInt()
             return "${(defaultTaxAllowance / 10)}L"
         }
     }

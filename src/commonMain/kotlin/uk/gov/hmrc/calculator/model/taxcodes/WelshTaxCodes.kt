@@ -30,17 +30,17 @@ internal class C0T : WelshTaxCode, AdjustedTaxFreeTCode {
 
 internal class CBR : WelshTaxCode, SingleBandTax {
     override val taxAllAtBand: Int
-        get() = 1
+        get() = 0
 }
 
 internal class CD0 : WelshTaxCode, SingleBandTax {
     override val taxAllAtBand: Int
-        get() = 2
+        get() = 1
 }
 
 internal class CD1 : WelshTaxCode, SingleBandTax {
     override val taxAllAtBand: Int
-        get() = 3
+        get() = 2
 }
 
 internal class CTCode(private val taxFreeAmountWithoutTrailingZero: Double) : WelshTaxCode, AdjustedTaxFreeTCode {
