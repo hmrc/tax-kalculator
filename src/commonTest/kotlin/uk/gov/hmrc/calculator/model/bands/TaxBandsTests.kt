@@ -22,6 +22,7 @@ import uk.gov.hmrc.calculator.exception.InvalidTaxYearException
 import uk.gov.hmrc.calculator.model.Country.ENGLAND
 import uk.gov.hmrc.calculator.model.Country.SCOTLAND
 import uk.gov.hmrc.calculator.model.Country.WALES
+import uk.gov.hmrc.calculator.model.TaxYear
 import uk.gov.hmrc.calculator.utils.taxcode.toTaxCode
 
 class TaxBandsTests {
@@ -30,7 +31,7 @@ class TaxBandsTests {
     fun `GIVEN invalid year WHEN get bands THEN fail with exception`() {
         val exception = assertFailsWith<InvalidTaxYearException> {
             TaxBands.getBands(
-                2017,
+                TaxYear.fromInt(2017)!!,
                 ENGLAND
             )
         }
@@ -41,7 +42,7 @@ class TaxBandsTests {
     fun `GIVEN invalid year WHEN get adjusted bands THEN fail with exception`() {
         val exception = assertFailsWith<InvalidTaxYearException> {
             TaxBands.getAdjustedBands(
-                2017,
+                TaxYear.fromInt(2017)!!,
                 "1250L".toTaxCode()
             )
         }
@@ -50,7 +51,7 @@ class TaxBandsTests {
 
     @Test
     fun `GIVEN year is 2020 WHEN get bands for Scotland THEN bands are as expected`() {
-        val taxBands = TaxBands.getBands(2020, SCOTLAND)
+        val taxBands = TaxBands.getBands(TaxYear.TWENTY_TWENTY, SCOTLAND)
 
         assertEquals(0.00, taxBands[0].lower)
         assertEquals(2076.00, taxBands[0].upper)
@@ -75,7 +76,7 @@ class TaxBandsTests {
 
     @Test
     fun `GIVEN year is 2020 WHEN get bands for ENGLAND THEN bands are as expected`() {
-        val taxBands = TaxBands.getBands(2020, ENGLAND)
+        val taxBands = TaxBands.getBands(TaxYear.TWENTY_TWENTY, ENGLAND)
 
         assertEquals(0.00, taxBands[0].lower)
         assertEquals(37491.0, taxBands[0].upper)
@@ -92,7 +93,7 @@ class TaxBandsTests {
 
     @Test
     fun `GIVEN year is 2020 WHEN get bands for WALES THEN bands are as expected`() {
-        val taxBands = TaxBands.getBands(2020, WALES)
+        val taxBands = TaxBands.getBands(TaxYear.TWENTY_TWENTY, WALES)
 
         assertEquals(0.00, taxBands[0].lower)
         assertEquals(37491.0, taxBands[0].upper)
@@ -109,7 +110,7 @@ class TaxBandsTests {
 
     @Test
     fun `GIVEN year is 2020 WHEN get adjusted bands for 1250L THEN bands are as expected`() {
-        val taxBands = TaxBands.getAdjustedBands(2020, "1250L".toTaxCode())
+        val taxBands = TaxBands.getAdjustedBands(TaxYear.TWENTY_TWENTY, "1250L".toTaxCode())
 
         assertEquals(0.0, taxBands[0].lower)
         assertEquals(12509.00, taxBands[0].upper)
@@ -130,7 +131,7 @@ class TaxBandsTests {
 
     @Test
     fun `GIVEN year is 2020 WHEN get adjusted bands for BR THEN bands are as expected`() {
-        val taxBands = TaxBands.getAdjustedBands(2020, "BR".toTaxCode())
+        val taxBands = TaxBands.getAdjustedBands(TaxYear.TWENTY_TWENTY, "BR".toTaxCode())
 
         assertEquals(0.0, taxBands[0].lower)
         assertEquals(0.0, taxBands[0].upper)
@@ -151,7 +152,7 @@ class TaxBandsTests {
 
     @Test
     fun `GIVEN year is 2021 WHEN get bands for Scotland THEN bands are as expected`() {
-        val taxBands = TaxBands.getBands(2021, SCOTLAND)
+        val taxBands = TaxBands.getBands(TaxYear.TWENTY_TWENTY_ONE, SCOTLAND)
 
         assertEquals(0.0, taxBands[0].lower)
         assertEquals(2097.00, taxBands[0].upper)
@@ -176,7 +177,7 @@ class TaxBandsTests {
 
     @Test
     fun `GIVEN year is 2021 WHEN get bands for England THEN bands are as expected`() {
-        val taxBands = TaxBands.getBands(2021, ENGLAND)
+        val taxBands = TaxBands.getBands(TaxYear.TWENTY_TWENTY_ONE, ENGLAND)
 
         assertEquals(0.0, taxBands[0].lower)
         assertEquals(37700.00, taxBands[0].upper)
@@ -193,7 +194,7 @@ class TaxBandsTests {
 
     @Test
     fun `GIVEN year is 2021 WHEN get bands for Wales THEN bands are as expected`() {
-        val taxBands = TaxBands.getBands(2021, WALES)
+        val taxBands = TaxBands.getBands(TaxYear.TWENTY_TWENTY_ONE, WALES)
 
         assertEquals(0.0, taxBands[0].lower)
         assertEquals(37700.00, taxBands[0].upper)
@@ -210,7 +211,7 @@ class TaxBandsTests {
 
     @Test
     fun `GIVEN year is 2021 WHEN get adjusted bands for 1250L THEN bands are as expected`() {
-        val taxBands = TaxBands.getAdjustedBands(2021, "1257L".toTaxCode())
+        val taxBands = TaxBands.getAdjustedBands(TaxYear.TWENTY_TWENTY_ONE, "1257L".toTaxCode())
 
         assertEquals(0.0, taxBands[0].lower)
         assertEquals(12579.00, taxBands[0].upper)
@@ -231,7 +232,7 @@ class TaxBandsTests {
 
     @Test
     fun `GIVEN year is 2021 WHEN get adjusted bands for BR THEN bands are as expected`() {
-        val taxBands = TaxBands.getAdjustedBands(2021, "BR".toTaxCode())
+        val taxBands = TaxBands.getAdjustedBands(TaxYear.TWENTY_TWENTY_ONE, "BR".toTaxCode())
 
         assertEquals(0.0, taxBands[0].lower)
         assertEquals(0.0, taxBands[0].upper)

@@ -18,16 +18,17 @@ package uk.gov.hmrc.calculator.model.bands
 import uk.gov.hmrc.calculator.exception.InvalidTaxYearException
 import uk.gov.hmrc.calculator.model.Country
 import uk.gov.hmrc.calculator.model.Country.SCOTLAND
+import uk.gov.hmrc.calculator.model.TaxYear
 import uk.gov.hmrc.calculator.model.taxcodes.TaxCode
 
 internal object TaxBands {
 
-    fun getBands(taxYear: Int, country: Country) = when (taxYear) {
-        2020 -> when (country) {
+    fun getBands(taxYear: TaxYear, country: Country) = when (taxYear) {
+        TaxYear.TWENTY_TWENTY -> when (country) {
             SCOTLAND -> scottish2020Bands()
             else -> restOfUK2020Bands()
         }
-        2021 -> when (country) {
+        TaxYear.TWENTY_TWENTY_ONE -> when (country) {
             SCOTLAND -> scottish2021Bands()
             else -> restOfUK2021Bands()
         }
@@ -62,7 +63,7 @@ internal object TaxBands {
         TaxBand(150000.0, -1.0, 0.45)
     )
 
-    fun getAdjustedBands(taxYear: Int, taxCode: TaxCode): List<Band> {
+    fun getAdjustedBands(taxYear: TaxYear, taxCode: TaxCode): List<Band> {
         val taxBands = getBands(taxYear, taxCode.country).toMutableList()
 
         taxBands.add(0, TaxBand(0.0, taxCode.taxFreeAmount, 0.0))

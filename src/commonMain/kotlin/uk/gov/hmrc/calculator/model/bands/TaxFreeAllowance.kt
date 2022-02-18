@@ -16,13 +16,14 @@
 package uk.gov.hmrc.calculator.model.bands
 
 import uk.gov.hmrc.calculator.exception.InvalidTaxYearException
+import uk.gov.hmrc.calculator.model.TaxYear
 
 internal object TaxFreeAllowance {
 
-    fun getAllowance(taxYear: Int): Double =
+    fun getAllowance(taxYear: TaxYear): Double =
         when (taxYear) {
-            2020 -> 12500.00
-            2021 -> 12570.00
+            TaxYear.TWENTY_TWENTY -> 12500.00
+            TaxYear.TWENTY_TWENTY_ONE -> 12570.00
             else -> throw InvalidTaxYearException("$taxYear")
         }
 }
