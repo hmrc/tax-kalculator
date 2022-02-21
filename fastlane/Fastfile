@@ -28,7 +28,9 @@ platform :android do
 
     # ensure repo is clean and on master
     ensure_git_status_clean
-    ensure_git_branch
+    ensure_git_branch(
+        branch: 'main'
+    )
 
     # pull latest changes and fetch tags
     git_pull
