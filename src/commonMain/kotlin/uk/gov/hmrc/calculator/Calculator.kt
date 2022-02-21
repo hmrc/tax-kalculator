@@ -16,6 +16,7 @@
 package uk.gov.hmrc.calculator
 
 import kotlin.jvm.JvmOverloads
+import kotlin.math.min
 import uk.gov.hmrc.calculator.annotations.Throws
 import uk.gov.hmrc.calculator.exception.InvalidHoursException
 import uk.gov.hmrc.calculator.exception.InvalidPayPeriodException
@@ -48,6 +49,7 @@ import uk.gov.hmrc.calculator.model.taxcodes.TaxCode
 import uk.gov.hmrc.calculator.utils.convertAmountFromYearlyToPayPeriod
 import uk.gov.hmrc.calculator.utils.convertListOfBandBreakdownForPayPeriod
 import uk.gov.hmrc.calculator.utils.convertWageToYearly
+import uk.gov.hmrc.calculator.utils.taxcode.getTrueTaxFreeAmount
 import uk.gov.hmrc.calculator.utils.taxcode.toTaxCode
 import uk.gov.hmrc.calculator.utils.validation.WageValidator
 
@@ -75,7 +77,17 @@ class Calculator @JvmOverloads constructor(
 
         val taxBands = TaxBands.getAdjustedBands(taxYearType, taxCode)
 
-        val taxFreeAmount = taxBands[0].upper
+        val initialTaxBandUpper = taxBands[0].upper
+        val defaultAllowance = taxCode.getTrueTaxFreeAmount()
+
+        var taxFreeAmount = 0.0
+
+        if (initialTaxBandUpper > taxCode.taxFreeAmount) {
+            taxFreeAmount = initialTaxBandUpper
+        } else if (initialTaxBandUpper == taxCode.taxFreeAmount) {
+            taxFreeAmount = defaultAllowance
+        } else min(initialTaxBandUpper, defaultAllowance)
+
         val amountToAddToWages = if (taxCode is KTaxCode) taxCode.amountToAddToWages else null
 
         return createResponse(
