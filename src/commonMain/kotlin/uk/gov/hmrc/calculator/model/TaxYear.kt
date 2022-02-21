@@ -29,8 +29,7 @@ enum class TaxYear(private val value: Int) {
 
         @Throws(InvalidTaxYearException::class)
         fun fromInt(value: Int): TaxYear =
-            TaxYear
-                .values()
+            values()
                 .firstOrNull { it.value == value }
                 ?: throw InvalidTaxYearException("$value")
 
@@ -42,8 +41,7 @@ enum class TaxYear(private val value: Int) {
                 }
 
         val currentTaxYear: TaxYear =
-            TaxYear
-                .values()
+            values()
                 .first { it.value == currentTaxYearInt }
 
         private fun firstDayOfTaxYear(year: Int): DateTimeTz =

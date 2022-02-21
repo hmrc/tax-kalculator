@@ -15,9 +15,9 @@
  */
 package uk.gov.hmrc.calculator.model.bands
 
-import uk.gov.hmrc.calculator.exception.InvalidTaxYearException
+import uk.gov.hmrc.calculator.model.TaxYear
 
-internal class EmployeeNIBands(taxYear: Int) {
+internal class EmployeeNIBands(taxYear: TaxYear) {
 
     private val employeeNIBands2020: List<EmployeeNIBand> = listOf(
         EmployeeNIBand(0.0, 6240.00, 0.0),
@@ -33,9 +33,16 @@ internal class EmployeeNIBands(taxYear: Int) {
         EmployeeNIBand(50270.0, -1.0, 0.02)
     )
 
+    private val employeeNIBands2022: List<EmployeeNIBand> = listOf(
+        EmployeeNIBand(0.0, 6396.00, 0.0),
+        EmployeeNIBand(6396.0, 9880.00, 0.0),
+        EmployeeNIBand(9880.0, 50270.00, 0.1325),
+        EmployeeNIBand(50270.0, -1.0, 0.0325)
+    )
+
     internal val bands: List<EmployeeNIBand> = when (taxYear) {
-        2020 -> employeeNIBands2020
-        2021 -> employeeNIBands2021
-        else -> throw InvalidTaxYearException("$taxYear")
+        TaxYear.TWENTY_TWENTY -> employeeNIBands2020
+        TaxYear.TWENTY_TWENTY_ONE -> employeeNIBands2021
+        TaxYear.TWENTY_TWENTY_TWO -> employeeNIBands2022
     }
 }

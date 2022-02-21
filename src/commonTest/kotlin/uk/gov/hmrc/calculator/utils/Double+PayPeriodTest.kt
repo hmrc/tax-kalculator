@@ -87,18 +87,21 @@ class DoublePayPeriodTest {
             10.0.convertWageToYearly(HOURLY, 169.0)
         }
     }
+
     @Test
     fun `Convert to DAILY invalid when days per week too high`() {
         assertFailsWith<InvalidDaysException> {
             50.0.convertWageToYearly(DAILY, 8.0)
         }
     }
+
     @Test
     fun `Convert to DAILY invalid when days per week is 0`() {
         assertFailsWith<InvalidDaysException> {
             50.0.convertWageToYearly(DAILY, 0.0)
         }
     }
+
     @Test
     fun `Convert to DAILY invalid when days per week is null`() {
         assertFailsWith<InvalidDaysException> {

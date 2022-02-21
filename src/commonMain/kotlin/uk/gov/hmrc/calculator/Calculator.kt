@@ -167,10 +167,10 @@ class Calculator @JvmOverloads constructor(
     }
 
     private fun employerNIToPay(yearlyWages: Double) =
-        if (isPensionAge) 0.0 else getTotalFromBands(EmployerNIBands(taxYear).bands, yearlyWages)
+        if (isPensionAge) 0.0 else getTotalFromBands(EmployerNIBands(taxYearType).bands, yearlyWages)
 
     private fun employeeNIToPay(yearlyWages: Double) =
-        if (isPensionAge) 0.0 else getTotalFromBands(EmployeeNIBands(taxYear).bands, yearlyWages)
+        if (isPensionAge) 0.0 else getTotalFromBands(EmployeeNIBands(taxYearType).bands, yearlyWages)
 
     private fun getTotalFromBands(bands: List<Band>, wages: Double): Double {
         var amount = 0.0

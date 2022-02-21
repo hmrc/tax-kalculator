@@ -15,7 +15,6 @@
  */
 package uk.gov.hmrc.calculator.model.bands
 
-import uk.gov.hmrc.calculator.exception.InvalidTaxYearException
 import uk.gov.hmrc.calculator.model.Country
 import uk.gov.hmrc.calculator.model.Country.SCOTLAND
 import uk.gov.hmrc.calculator.model.TaxYear
@@ -24,15 +23,9 @@ import uk.gov.hmrc.calculator.model.taxcodes.TaxCode
 internal object TaxBands {
 
     fun getBands(taxYear: TaxYear, country: Country) = when (taxYear) {
-        TaxYear.TWENTY_TWENTY -> when (country) {
-            SCOTLAND -> scottish2020Bands()
-            else -> restOfUK2020Bands()
-        }
-        TaxYear.TWENTY_TWENTY_ONE -> when (country) {
-            SCOTLAND -> scottish2021Bands()
-            else -> restOfUK2021Bands()
-        }
-        else -> throw InvalidTaxYearException("$taxYear")
+        TaxYear.TWENTY_TWENTY -> if (country == SCOTLAND) scottish2020Bands() else restOfUK2020Bands()
+        TaxYear.TWENTY_TWENTY_ONE -> if (country == SCOTLAND) scottish2021Bands() else restOfUK2021Bands()
+        TaxYear.TWENTY_TWENTY_TWO -> if (country == SCOTLAND) scottish2022Bands() else restOfUK2022Bands()
     }
 
     private fun scottish2020Bands() = listOf(
@@ -51,6 +44,14 @@ internal object TaxBands {
         TaxBand(150000.00, -1.0, 0.46)
     )
 
+    private fun scottish2022Bands() = listOf(
+        TaxBand(0.00, 2162.00, 0.19),
+        TaxBand(2162.00, 13118.00, 0.20),
+        TaxBand(13118.00, 31092.00, 0.21),
+        TaxBand(31092.00, 150000.00, 0.41),
+        TaxBand(150000.00, -1.0, 0.46)
+    )
+
     private fun restOfUK2020Bands() = listOf(
         TaxBand(0.00, 37491.00, 0.2),
         TaxBand(37491.0, 150000.00, 0.4),
@@ -58,6 +59,12 @@ internal object TaxBands {
     )
 
     private fun restOfUK2021Bands() = listOf(
+        TaxBand(0.0, 37700.00, 0.2),
+        TaxBand(37700.00, 150000.00, 0.4),
+        TaxBand(150000.0, -1.0, 0.45)
+    )
+
+    private fun restOfUK2022Bands() = listOf(
         TaxBand(0.0, 37700.00, 0.2),
         TaxBand(37700.00, 150000.00, 0.4),
         TaxBand(150000.0, -1.0, 0.45)
