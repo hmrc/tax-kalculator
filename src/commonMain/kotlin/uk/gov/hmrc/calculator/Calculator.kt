@@ -16,6 +16,7 @@
 package uk.gov.hmrc.calculator
 
 import kotlin.jvm.JvmOverloads
+import kotlin.math.min
 import uk.gov.hmrc.calculator.annotations.Throws
 import uk.gov.hmrc.calculator.exception.InvalidHoursException
 import uk.gov.hmrc.calculator.exception.InvalidPayPeriodException
@@ -37,7 +38,6 @@ import uk.gov.hmrc.calculator.model.bands.EmployeeNIBands
 import uk.gov.hmrc.calculator.model.bands.EmployerNIBands
 import uk.gov.hmrc.calculator.model.bands.TaxBand
 import uk.gov.hmrc.calculator.model.bands.TaxBands
-import uk.gov.hmrc.calculator.model.bands.TaxFreeAllowance
 import uk.gov.hmrc.calculator.model.taxcodes.AdjustedTaxFreeTCode
 import uk.gov.hmrc.calculator.model.taxcodes.EmergencyTaxCode
 import uk.gov.hmrc.calculator.model.taxcodes.KTaxCode
@@ -52,7 +52,6 @@ import uk.gov.hmrc.calculator.utils.convertWageToYearly
 import uk.gov.hmrc.calculator.utils.taxcode.getTrueTaxFreeAmount
 import uk.gov.hmrc.calculator.utils.taxcode.toTaxCode
 import uk.gov.hmrc.calculator.utils.validation.WageValidator
-import kotlin.math.min
 
 class Calculator @JvmOverloads constructor(
     private val taxCode: String,
