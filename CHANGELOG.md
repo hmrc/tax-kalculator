@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+- Removed £9 adjustment from results.
+
+## [2.0.0] - 2022-02-21
+- Updated 2022/23 rates.
 
 ## [1.3.0] - 2021-06-02Z
 - Removing `-jvm` from .jar name
