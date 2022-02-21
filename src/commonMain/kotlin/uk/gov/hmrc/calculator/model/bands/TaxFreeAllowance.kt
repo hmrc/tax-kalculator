@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.gov.hmrc.calculator.utils
+package uk.gov.hmrc.calculator.model.bands
 
-import com.soywiz.klock.DateTime
+import uk.gov.hmrc.calculator.model.TaxYear
 
-class TaxYear {
-    fun currentTaxYear() = DateTime.nowLocal().let {
-        if (it < firstDayOfTaxYear(it.yearInt)) it.yearInt - 1 else it.yearInt
-    }
+internal object TaxFreeAllowance {
 
-    private fun firstDayOfTaxYear(year: Int) = DateTime(year = year, month = 4, day = 6).local
+    fun getAllowance(taxYear: TaxYear): Double =
+        when (taxYear) {
+            TaxYear.TWENTY_TWENTY -> 12500.00
+            TaxYear.TWENTY_TWENTY_ONE, TaxYear.TWENTY_TWENTY_TWO -> 12570.00
+        }
 }

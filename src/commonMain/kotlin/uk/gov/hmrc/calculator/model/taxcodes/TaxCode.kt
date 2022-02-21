@@ -16,10 +16,21 @@
 package uk.gov.hmrc.calculator.model.taxcodes
 
 import uk.gov.hmrc.calculator.model.Country
+import uk.gov.hmrc.calculator.model.TaxYear
+import uk.gov.hmrc.calculator.model.bands.TaxFreeAllowance
 
 internal interface TaxCode {
     val country: Country
     val taxFreeAmount: Double
+
+    companion object {
+        fun getDefaultTaxCode(taxYear: TaxYear = TaxYear.currentTaxYear): String {
+            val defaultTaxAllowance = TaxFreeAllowance
+                .getAllowance(taxYear)
+                .toInt()
+            return "${(defaultTaxAllowance / 10)}L"
+        }
+    }
 }
 
 internal interface SingleBandTax : TaxCode {

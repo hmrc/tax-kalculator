@@ -34,25 +34,25 @@ internal class SBR : ScottishTaxCode,
     override val taxFreeAmount: Double
         get() = 0.0
     override val taxAllAtBand: Int
-        get() = 2
+        get() = 1
 }
 
 internal class SD0 : ScottishTaxCode,
     SingleBandTax {
     override val taxAllAtBand: Int
-        get() = 3
+        get() = 2
 }
 
 internal class SD1 : ScottishTaxCode,
     SingleBandTax {
     override val taxAllAtBand: Int
-        get() = 4
+        get() = 3
 }
 
 internal class SD2 : ScottishTaxCode,
     SingleBandTax {
     override val taxAllAtBand: Int
-        get() = 5
+        get() = 4
 }
 
 internal class STCode(private val taxFreeAmountWithoutTrailingZero: Double) : ScottishTaxCode, AdjustedTaxFreeTCode {

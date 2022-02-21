@@ -2,9 +2,9 @@
 # tax-kalculator
 
 [![Build Status](https://app.bitrise.io/app/cd7fb52c258b9273/status.svg?token=lntO8o4xz5AUEvLwVzbo3A&branch=master)](https://app.bitrise.io/app/cd7fb52c258b9273)
-![LINE](https://img.shields.io/badge/line--coverage-98%25-brightgreen.svg)
-![BRANCH](https://img.shields.io/badge/branch--coverage-93%25-brightgreen.svg)
-![COMPLEXITY](https://img.shields.io/badge/complexity-1.52-brightgreen.svg)
+![LINE](https://img.shields.io/badge/line--coverage-98.40%25-brightgreen.svg)
+![BRANCH](https://img.shields.io/badge/branch--coverage-95.05%25-brightgreen.svg)
+![COMPLEXITY](https://img.shields.io/badge/complexity-1.53-brightgreen.svg)
 [![Github](https://img.shields.io/github/release/hmrc/tax-kalculator.svg)](https://gitHub.com/hmrc/tax-kalculator/releases/)
 ![swift-pm](https://img.shields.io/badge/SwiftPM-Compatible-success.svg)
 
@@ -19,7 +19,7 @@ val calculator = Calculator(
     payPeriod = YEARLY,    // Required
     isPensionAge = false,  // Optional (Default: false)
     howManyAWeek = null,   // Optional (Default: null)
-    taxYear = 2020         // Optional (Default: Current Tax Year)
+    taxYear = 2022         // Optional (Default: Current Tax Year)
 )
 ```
 
@@ -153,15 +153,9 @@ dependencies {
 
 ### Release process
 
-The CI tool has been set up to trigger a build and publish to GitHub packages when a tag is created on a build.
-
-Recommended flow:
-- Raise PR
-- Approved PR
-- Merge
-- Wait for Bitrise to build and test
-- Tag for release
-- Apps update to new version
+```shell
+bundle exec fastlane tag_release
+```
 
 You need to:
 * Have a valid Bitrise access token saved in your path under the variable name `BITRISE_TOKEN`. See [Bitrise docs](https://devcenter.bitrise.io/api/authentication).

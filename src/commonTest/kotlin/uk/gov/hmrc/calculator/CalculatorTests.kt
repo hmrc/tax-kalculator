@@ -19,8 +19,11 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import uk.gov.hmrc.calculator.exception.InvalidHoursException
+import uk.gov.hmrc.calculator.exception.InvalidTaxYearException
 import uk.gov.hmrc.calculator.exception.InvalidWagesException
 import uk.gov.hmrc.calculator.model.PayPeriod
+import uk.gov.hmrc.calculator.model.TaxYear
+import uk.gov.hmrc.calculator.model.taxcodes.TaxCode
 
 internal class CalculatorTests {
 
@@ -60,7 +63,29 @@ internal class CalculatorTests {
     }
 
     @Test
-    fun `WHEN get default tax code THEN return 1250L`() {
-        assertEquals("1257L", Calculator.getDefaultTaxCode())
+    fun `GIVEN year invalid WHEN calculate THEN exception`() {
+        assertFailsWith<InvalidTaxYearException> {
+            Calculator(taxCode = "1257L", wages = 40000.0, payPeriod = PayPeriod.YEARLY, taxYear = 2040).run()
+        }
+    }
+
+    @Test
+    fun `WHEN get default tax code THEN return 1257L`() {
+        assertEquals("1257L", TaxCode.getDefaultTaxCode())
+    }
+
+    @Test
+    fun `WHEN 2020 get default tax code THEN return 1250L`() {
+        assertEquals("1250L", TaxCode.getDefaultTaxCode(TaxYear.TWENTY_TWENTY))
+    }
+
+    @Test
+    fun `WHEN 2021 get default tax code THEN return 1257L`() {
+        assertEquals("1257L", TaxCode.getDefaultTaxCode(TaxYear.TWENTY_TWENTY_ONE))
+    }
+
+    @Test
+    fun `WHEN 2022 get default tax code THEN return 1257L`() {
+        assertEquals("1257L", TaxCode.getDefaultTaxCode(TaxYear.TWENTY_TWENTY_TWO))
     }
 }

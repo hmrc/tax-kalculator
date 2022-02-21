@@ -33,19 +33,19 @@ internal class ZeroT : EnglishTaxCode,
 internal class BR : EnglishTaxCode,
     SingleBandTax {
     override val taxAllAtBand: Int
-        get() = 1
+        get() = 0
 }
 
 internal class D0 : EnglishTaxCode,
     SingleBandTax {
     override val taxAllAtBand: Int
-        get() = 2
+        get() = 1
 }
 
 internal class D1 : EnglishTaxCode,
     SingleBandTax {
     override val taxAllAtBand: Int
-        get() = 3
+        get() = 2
 }
 
 internal class TCode(private val taxFreeAmountWithoutTrailingZero: Double) : EnglishTaxCode, AdjustedTaxFreeTCode {

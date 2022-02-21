@@ -26,12 +26,12 @@ import uk.gov.hmrc.calculator.exception.InvalidWagesException
 import uk.gov.hmrc.calculator.model.BandBreakdown
 import uk.gov.hmrc.calculator.model.CalculatorResponse
 import uk.gov.hmrc.calculator.model.CalculatorResponsePayPeriod
-import uk.gov.hmrc.calculator.model.Country.ENGLAND
 import uk.gov.hmrc.calculator.model.PayPeriod
 import uk.gov.hmrc.calculator.model.PayPeriod.FOUR_WEEKLY
 import uk.gov.hmrc.calculator.model.PayPeriod.MONTHLY
 import uk.gov.hmrc.calculator.model.PayPeriod.WEEKLY
 import uk.gov.hmrc.calculator.model.PayPeriod.YEARLY
+import uk.gov.hmrc.calculator.model.TaxYear
 import uk.gov.hmrc.calculator.model.bands.Band
 import uk.gov.hmrc.calculator.model.bands.EmployeeNIBands
 import uk.gov.hmrc.calculator.model.bands.EmployerNIBands
@@ -45,7 +45,6 @@ import uk.gov.hmrc.calculator.model.taxcodes.NoTaxTaxCode
 import uk.gov.hmrc.calculator.model.taxcodes.SingleBandTax
 import uk.gov.hmrc.calculator.model.taxcodes.StandardTaxCode
 import uk.gov.hmrc.calculator.model.taxcodes.TaxCode
-import uk.gov.hmrc.calculator.utils.TaxYear
 import uk.gov.hmrc.calculator.utils.convertAmountFromYearlyToPayPeriod
 import uk.gov.hmrc.calculator.utils.convertListOfBandBreakdownForPayPeriod
 import uk.gov.hmrc.calculator.utils.convertWageToYearly
@@ -58,7 +57,7 @@ class Calculator @JvmOverloads constructor(
     private val payPeriod: PayPeriod,
     private val isPensionAge: Boolean = false,
     private val howManyAWeek: Double? = null,
-    private val taxYear: Int = TaxYear().currentTaxYear()
+    private val taxYear: Int = TaxYear.currentTaxYearInt
 ) {
 
     private val bandBreakdown: MutableList<BandBreakdown> = mutableListOf()
@@ -74,7 +73,7 @@ class Calculator @JvmOverloads constructor(
 
         val taxCode = this.taxCode.toTaxCode()
 
-        val taxBands = TaxBands.getAdjustedBands(taxYear, taxCode)
+        val taxBands = TaxBands.getAdjustedBands(taxYearType, taxCode)
 
         val taxFreeAmount = taxBands[0].upper
         val amountToAddToWages = if (taxCode is KTaxCode) taxCode.amountToAddToWages else null
@@ -145,16 +144,16 @@ class Calculator @JvmOverloads constructor(
     private fun taxToPay(yearlyWages: Double, taxCode: TaxCode): Double {
         return when (taxCode) {
             is StandardTaxCode, is AdjustedTaxFreeTCode, is EmergencyTaxCode, is MarriageTaxCodes -> {
-                val taxBands = TaxBands.getAdjustedBands(taxYear, taxCode)
+                val taxBands = TaxBands.getAdjustedBands(taxYearType, taxCode)
                 getTotalFromBands(taxBands, yearlyWages)
             }
             is NoTaxTaxCode -> getTotalFromSingleBand(yearlyWages, taxCode.taxFreeAmount)
             is SingleBandTax -> {
-                val taxBands = TaxBands.getBands(taxYear, taxCode.country)
+                val taxBands = TaxBands.getBands(taxYearType, taxCode.country)
                 getTotalFromSingleBand(yearlyWages, taxBands[taxCode.taxAllAtBand].percentageAsDecimal)
             }
             is KTaxCode -> {
-                val taxBands = TaxBands.getAdjustedBands(taxYear, taxCode)
+                val taxBands = TaxBands.getAdjustedBands(taxYearType, taxCode)
                 getTotalFromBands(taxBands, yearlyWages + taxCode.amountToAddToWages)
             }
             else -> throw InvalidTaxCodeException("$this is an invalid tax code")
@@ -168,10 +167,10 @@ class Calculator @JvmOverloads constructor(
     }
 
     private fun employerNIToPay(yearlyWages: Double) =
-        if (isPensionAge) 0.0 else getTotalFromBands(EmployerNIBands(taxYear).bands, yearlyWages)
+        if (isPensionAge) 0.0 else getTotalFromBands(EmployerNIBands(taxYearType).bands, yearlyWages)
 
     private fun employeeNIToPay(yearlyWages: Double) =
-        if (isPensionAge) 0.0 else getTotalFromBands(EmployeeNIBands(taxYear).bands, yearlyWages)
+        if (isPensionAge) 0.0 else getTotalFromBands(EmployeeNIBands(taxYearType).bands, yearlyWages)
 
     private fun getTotalFromBands(bands: List<Band>, wages: Double): Double {
         var amount = 0.0
@@ -194,14 +193,9 @@ class Calculator @JvmOverloads constructor(
         throw InvalidTaxBandException("No tax bands were found to be used for the calculation")
     }
 
-    private fun shouldAddBand(band: Band, percentage: Double) = band is TaxBand && percentage > 0.0
-
-    companion object {
-
-        fun getDefaultTaxCode(): String {
-            val taxYear = TaxYear().currentTaxYear()
-            val defaultTaxAllowance = TaxBands.getBands(taxYear, ENGLAND)[0].upper.toInt()
-            return "${(defaultTaxAllowance / 10)}L"
-        }
+    private val taxYearType: TaxYear by lazy {
+        TaxYear.fromInt(taxYear)
     }
+
+    private fun shouldAddBand(band: Band, percentage: Double) = band is TaxBand && percentage > 0.0
 }

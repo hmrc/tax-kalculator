@@ -51,7 +51,7 @@ class StringScottishTaxCodeTests {
         assertTrue("SBR".toTaxCode() is SBR)
         val taxCode: SBR = "SBR".toTaxCode() as SBR
         assertEquals(SCOTLAND, taxCode.country)
-        assertEquals(2, taxCode.taxAllAtBand)
+        assertEquals(1, taxCode.taxAllAtBand)
         assertEquals(0.0, taxCode.taxFreeAmount)
     }
 
@@ -60,7 +60,7 @@ class StringScottishTaxCodeTests {
         assertTrue("SD0".toTaxCode() is SD0)
         val taxCode: SD0 = "SD0".toTaxCode() as SD0
         assertEquals(SCOTLAND, taxCode.country)
-        assertEquals(3, taxCode.taxAllAtBand)
+        assertEquals(2, taxCode.taxAllAtBand)
         assertEquals(0.0, taxCode.taxFreeAmount)
     }
 
@@ -69,7 +69,7 @@ class StringScottishTaxCodeTests {
         assertTrue("SD1".toTaxCode() is SD1)
         val taxCode: SD1 = "SD1".toTaxCode() as SD1
         assertEquals(SCOTLAND, taxCode.country)
-        assertEquals(4, taxCode.taxAllAtBand)
+        assertEquals(3, taxCode.taxAllAtBand)
         assertEquals(0.0, taxCode.taxFreeAmount)
     }
 
@@ -78,7 +78,7 @@ class StringScottishTaxCodeTests {
         assertTrue("SD2".toTaxCode() is SD2)
         val taxCode: SD2 = "SD2".toTaxCode() as SD2
         assertEquals(SCOTLAND, taxCode.country)
-        assertEquals(5, taxCode.taxAllAtBand)
+        assertEquals(4, taxCode.taxAllAtBand)
         assertEquals(0.0, taxCode.taxFreeAmount)
     }
 

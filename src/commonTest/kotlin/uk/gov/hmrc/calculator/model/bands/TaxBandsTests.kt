@@ -22,6 +22,7 @@ import uk.gov.hmrc.calculator.exception.InvalidTaxYearException
 import uk.gov.hmrc.calculator.model.Country.ENGLAND
 import uk.gov.hmrc.calculator.model.Country.SCOTLAND
 import uk.gov.hmrc.calculator.model.Country.WALES
+import uk.gov.hmrc.calculator.model.TaxYear
 import uk.gov.hmrc.calculator.utils.taxcode.toTaxCode
 
 class TaxBandsTests {
@@ -30,7 +31,7 @@ class TaxBandsTests {
     fun `GIVEN invalid year WHEN get bands THEN fail with exception`() {
         val exception = assertFailsWith<InvalidTaxYearException> {
             TaxBands.getBands(
-                2017,
+                TaxYear.fromInt(2017),
                 ENGLAND
             )
         }
@@ -41,7 +42,7 @@ class TaxBandsTests {
     fun `GIVEN invalid year WHEN get adjusted bands THEN fail with exception`() {
         val exception = assertFailsWith<InvalidTaxYearException> {
             TaxBands.getAdjustedBands(
-                2017,
+                TaxYear.fromInt(2017),
                 "1250L".toTaxCode()
             )
         }
@@ -50,78 +51,66 @@ class TaxBandsTests {
 
     @Test
     fun `GIVEN year is 2020 WHEN get bands for Scotland THEN bands are as expected`() {
-        val taxBands = TaxBands.getBands(2020, SCOTLAND)
+        val taxBands = TaxBands.getBands(TaxYear.TWENTY_TWENTY, SCOTLAND)
 
-        assertEquals(0.0, taxBands[0].lower)
-        assertEquals(12509.00, taxBands[0].upper)
-        assertEquals(0.0, taxBands[0].percentageAsDecimal)
+        assertEquals(0.00, taxBands[0].lower)
+        assertEquals(2076.00, taxBands[0].upper)
+        assertEquals(0.19, taxBands[0].percentageAsDecimal)
 
-        assertEquals(12509.00, taxBands[1].lower)
-        assertEquals(14585.00, taxBands[1].upper)
-        assertEquals(0.19, taxBands[1].percentageAsDecimal)
+        assertEquals(2076.00, taxBands[1].lower)
+        assertEquals(12649.00, taxBands[1].upper)
+        assertEquals(0.20, taxBands[1].percentageAsDecimal)
 
-        assertEquals(14585.00, taxBands[2].lower)
-        assertEquals(25158.00, taxBands[2].upper)
-        assertEquals(0.20, taxBands[2].percentageAsDecimal)
+        assertEquals(12649.00, taxBands[2].lower)
+        assertEquals(30921.00, taxBands[2].upper)
+        assertEquals(0.21, taxBands[2].percentageAsDecimal)
 
-        assertEquals(25158.00, taxBands[3].lower)
-        assertEquals(43430.00, taxBands[3].upper)
-        assertEquals(0.21, taxBands[3].percentageAsDecimal)
+        assertEquals(30921.00, taxBands[3].lower)
+        assertEquals(150000.00, taxBands[3].upper)
+        assertEquals(0.41, taxBands[3].percentageAsDecimal)
 
-        assertEquals(43430.00, taxBands[4].lower)
-        assertEquals(150000.00, taxBands[4].upper)
-        assertEquals(0.41, taxBands[4].percentageAsDecimal)
-
-        assertEquals(150000.00, taxBands[5].lower)
-        assertEquals(-1.0, taxBands[5].upper)
-        assertEquals(0.46, taxBands[5].percentageAsDecimal)
+        assertEquals(150000.00, taxBands[4].lower)
+        assertEquals(-1.0, taxBands[4].upper)
+        assertEquals(0.46, taxBands[4].percentageAsDecimal)
     }
 
     @Test
     fun `GIVEN year is 2020 WHEN get bands for ENGLAND THEN bands are as expected`() {
-        val taxBands = TaxBands.getBands(2020, ENGLAND)
+        val taxBands = TaxBands.getBands(TaxYear.TWENTY_TWENTY, ENGLAND)
 
-        assertEquals(0.0, taxBands[0].lower)
-        assertEquals(12509.00, taxBands[0].upper)
-        assertEquals(0.0, taxBands[0].percentageAsDecimal)
+        assertEquals(0.00, taxBands[0].lower)
+        assertEquals(37491.0, taxBands[0].upper)
+        assertEquals(0.2, taxBands[0].percentageAsDecimal)
 
-        assertEquals(12509.00, taxBands[1].lower)
-        assertEquals(50000.0, taxBands[1].upper)
-        assertEquals(0.2, taxBands[1].percentageAsDecimal)
+        assertEquals(37491.0, taxBands[1].lower)
+        assertEquals(150000.0, taxBands[1].upper)
+        assertEquals(0.4, taxBands[1].percentageAsDecimal)
 
-        assertEquals(50000.0, taxBands[2].lower)
-        assertEquals(150000.0, taxBands[2].upper)
-        assertEquals(0.4, taxBands[2].percentageAsDecimal)
-
-        assertEquals(150000.0, taxBands[3].lower)
-        assertEquals(-1.0, taxBands[3].upper)
-        assertEquals(0.45, taxBands[3].percentageAsDecimal)
+        assertEquals(150000.0, taxBands[2].lower)
+        assertEquals(-1.0, taxBands[2].upper)
+        assertEquals(0.45, taxBands[2].percentageAsDecimal)
     }
 
     @Test
     fun `GIVEN year is 2020 WHEN get bands for WALES THEN bands are as expected`() {
-        val taxBands = TaxBands.getBands(2020, WALES)
+        val taxBands = TaxBands.getBands(TaxYear.TWENTY_TWENTY, WALES)
 
-        assertEquals(0.0, taxBands[0].lower)
-        assertEquals(12509.00, taxBands[0].upper)
-        assertEquals(0.0, taxBands[0].percentageAsDecimal)
+        assertEquals(0.00, taxBands[0].lower)
+        assertEquals(37491.0, taxBands[0].upper)
+        assertEquals(0.2, taxBands[0].percentageAsDecimal)
 
-        assertEquals(12509.00, taxBands[1].lower)
-        assertEquals(50000.0, taxBands[1].upper)
-        assertEquals(0.2, taxBands[1].percentageAsDecimal)
+        assertEquals(37491.0, taxBands[1].lower)
+        assertEquals(150000.0, taxBands[1].upper)
+        assertEquals(0.4, taxBands[1].percentageAsDecimal)
 
-        assertEquals(50000.0, taxBands[2].lower)
-        assertEquals(150000.0, taxBands[2].upper)
-        assertEquals(0.4, taxBands[2].percentageAsDecimal)
-
-        assertEquals(150000.0, taxBands[3].lower)
-        assertEquals(-1.0, taxBands[3].upper)
-        assertEquals(0.45, taxBands[3].percentageAsDecimal)
+        assertEquals(150000.0, taxBands[2].lower)
+        assertEquals(-1.0, taxBands[2].upper)
+        assertEquals(0.45, taxBands[2].percentageAsDecimal)
     }
 
     @Test
     fun `GIVEN year is 2020 WHEN get adjusted bands for 1250L THEN bands are as expected`() {
-        val taxBands = TaxBands.getAdjustedBands(2020, "1250L".toTaxCode())
+        val taxBands = TaxBands.getAdjustedBands(TaxYear.TWENTY_TWENTY, "1250L".toTaxCode())
 
         assertEquals(0.0, taxBands[0].lower)
         assertEquals(12509.00, taxBands[0].upper)
@@ -132,17 +121,17 @@ class TaxBandsTests {
         assertEquals(0.2, taxBands[1].percentageAsDecimal)
 
         assertEquals(50000.0, taxBands[2].lower)
-        assertEquals(150000.0, taxBands[2].upper)
+        assertEquals(162509.0, taxBands[2].upper)
         assertEquals(0.4, taxBands[2].percentageAsDecimal)
 
-        assertEquals(150000.0, taxBands[3].lower)
+        assertEquals(162509.0, taxBands[3].lower)
         assertEquals(-1.0, taxBands[3].upper)
         assertEquals(0.45, taxBands[3].percentageAsDecimal)
     }
 
     @Test
     fun `GIVEN year is 2020 WHEN get adjusted bands for BR THEN bands are as expected`() {
-        val taxBands = TaxBands.getAdjustedBands(2020, "BR".toTaxCode())
+        val taxBands = TaxBands.getAdjustedBands(TaxYear.TWENTY_TWENTY, "BR".toTaxCode())
 
         assertEquals(0.0, taxBands[0].lower)
         assertEquals(0.0, taxBands[0].upper)
@@ -153,88 +142,76 @@ class TaxBandsTests {
         assertEquals(0.2, taxBands[1].percentageAsDecimal)
 
         assertEquals(37491.0, taxBands[2].lower)
-        assertEquals(137491.0, taxBands[2].upper)
+        assertEquals(150000.0, taxBands[2].upper)
         assertEquals(0.4, taxBands[2].percentageAsDecimal)
 
-        assertEquals(137491.0, taxBands[3].lower)
+        assertEquals(150000.0, taxBands[3].lower)
         assertEquals(-1.0, taxBands[3].upper)
         assertEquals(0.45, taxBands[3].percentageAsDecimal)
     }
 
     @Test
     fun `GIVEN year is 2021 WHEN get bands for Scotland THEN bands are as expected`() {
-        val taxBands = TaxBands.getBands(2021, SCOTLAND)
+        val taxBands = TaxBands.getBands(TaxYear.TWENTY_TWENTY_ONE, SCOTLAND)
 
         assertEquals(0.0, taxBands[0].lower)
-        assertEquals(12579.00, taxBands[0].upper)
-        assertEquals(0.0, taxBands[0].percentageAsDecimal)
+        assertEquals(2097.00, taxBands[0].upper)
+        assertEquals(0.19, taxBands[0].percentageAsDecimal)
 
-        assertEquals(12579.00, taxBands[1].lower)
-        assertEquals(14676.00, taxBands[1].upper)
-        assertEquals(0.19, taxBands[1].percentageAsDecimal)
+        assertEquals(2097.00, taxBands[1].lower)
+        assertEquals(12726.00, taxBands[1].upper)
+        assertEquals(0.20, taxBands[1].percentageAsDecimal)
 
-        assertEquals(14676.00, taxBands[2].lower)
-        assertEquals(25305.00, taxBands[2].upper)
-        assertEquals(0.20, taxBands[2].percentageAsDecimal)
+        assertEquals(12726.00, taxBands[2].lower)
+        assertEquals(31092.00, taxBands[2].upper)
+        assertEquals(0.21, taxBands[2].percentageAsDecimal)
 
-        assertEquals(25305.00, taxBands[3].lower)
-        assertEquals(43671.00, taxBands[3].upper)
-        assertEquals(0.21, taxBands[3].percentageAsDecimal)
+        assertEquals(31092.00, taxBands[3].lower)
+        assertEquals(150000.00, taxBands[3].upper)
+        assertEquals(0.41, taxBands[3].percentageAsDecimal)
 
-        assertEquals(43671.00, taxBands[4].lower)
-        assertEquals(150000.00, taxBands[4].upper)
-        assertEquals(0.41, taxBands[4].percentageAsDecimal)
-
-        assertEquals(150000.00, taxBands[5].lower)
-        assertEquals(-1.0, taxBands[5].upper)
-        assertEquals(0.46, taxBands[5].percentageAsDecimal)
+        assertEquals(150000.00, taxBands[4].lower)
+        assertEquals(-1.00, taxBands[4].upper)
+        assertEquals(0.46, taxBands[4].percentageAsDecimal)
     }
 
     @Test
     fun `GIVEN year is 2021 WHEN get bands for England THEN bands are as expected`() {
-        val taxBands = TaxBands.getBands(2021, ENGLAND)
+        val taxBands = TaxBands.getBands(TaxYear.TWENTY_TWENTY_ONE, ENGLAND)
 
         assertEquals(0.0, taxBands[0].lower)
-        assertEquals(12579.00, taxBands[0].upper)
-        assertEquals(0.0, taxBands[0].percentageAsDecimal)
+        assertEquals(37700.00, taxBands[0].upper)
+        assertEquals(0.2, taxBands[0].percentageAsDecimal)
 
-        assertEquals(12579.00, taxBands[1].lower)
-        assertEquals(50279.0, taxBands[1].upper)
-        assertEquals(0.2, taxBands[1].percentageAsDecimal)
+        assertEquals(37700.00, taxBands[1].lower)
+        assertEquals(150000.0, taxBands[1].upper)
+        assertEquals(0.4, taxBands[1].percentageAsDecimal)
 
-        assertEquals(50279.0, taxBands[2].lower)
-        assertEquals(150000.0, taxBands[2].upper)
-        assertEquals(0.4, taxBands[2].percentageAsDecimal)
-
-        assertEquals(150000.0, taxBands[3].lower)
-        assertEquals(-1.0, taxBands[3].upper)
-        assertEquals(0.45, taxBands[3].percentageAsDecimal)
+        assertEquals(150000.0, taxBands[2].lower)
+        assertEquals(-1.0, taxBands[2].upper)
+        assertEquals(0.45, taxBands[2].percentageAsDecimal)
     }
 
     @Test
     fun `GIVEN year is 2021 WHEN get bands for Wales THEN bands are as expected`() {
-        val taxBands = TaxBands.getBands(2021, WALES)
+        val taxBands = TaxBands.getBands(TaxYear.TWENTY_TWENTY_ONE, WALES)
 
         assertEquals(0.0, taxBands[0].lower)
-        assertEquals(12579.00, taxBands[0].upper)
-        assertEquals(0.0, taxBands[0].percentageAsDecimal)
+        assertEquals(37700.00, taxBands[0].upper)
+        assertEquals(0.2, taxBands[0].percentageAsDecimal)
 
-        assertEquals(12579.00, taxBands[1].lower)
-        assertEquals(50279.0, taxBands[1].upper)
-        assertEquals(0.2, taxBands[1].percentageAsDecimal)
+        assertEquals(37700.00, taxBands[1].lower)
+        assertEquals(150000.0, taxBands[1].upper)
+        assertEquals(0.4, taxBands[1].percentageAsDecimal)
 
-        assertEquals(50279.0, taxBands[2].lower)
-        assertEquals(150000.0, taxBands[2].upper)
-        assertEquals(0.4, taxBands[2].percentageAsDecimal)
-
-        assertEquals(150000.0, taxBands[3].lower)
-        assertEquals(-1.0, taxBands[3].upper)
-        assertEquals(0.45, taxBands[3].percentageAsDecimal)
+        assertEquals(150000.0, taxBands[2].lower)
+        assertEquals(-1.0, taxBands[2].upper)
+        assertEquals(0.45, taxBands[2].percentageAsDecimal)
     }
 
     @Test
     fun `GIVEN year is 2021 WHEN get adjusted bands for 1250L THEN bands are as expected`() {
-        val taxBands = TaxBands.getAdjustedBands(2021, "1257L".toTaxCode())
+        val taxBands = TaxBands.getAdjustedBands(TaxYear.TWENTY_TWENTY_ONE, "1257L".toTaxCode())
 
         assertEquals(0.0, taxBands[0].lower)
         assertEquals(12579.00, taxBands[0].upper)
@@ -245,17 +222,17 @@ class TaxBandsTests {
         assertEquals(0.2, taxBands[1].percentageAsDecimal)
 
         assertEquals(50279.0, taxBands[2].lower)
-        assertEquals(150000.0, taxBands[2].upper)
+        assertEquals(162579.0, taxBands[2].upper)
         assertEquals(0.4, taxBands[2].percentageAsDecimal)
 
-        assertEquals(150000.0, taxBands[3].lower)
+        assertEquals(162579.0, taxBands[3].lower)
         assertEquals(-1.0, taxBands[3].upper)
         assertEquals(0.45, taxBands[3].percentageAsDecimal)
     }
 
     @Test
     fun `GIVEN year is 2021 WHEN get adjusted bands for BR THEN bands are as expected`() {
-        val taxBands = TaxBands.getAdjustedBands(2021, "BR".toTaxCode())
+        val taxBands = TaxBands.getAdjustedBands(TaxYear.TWENTY_TWENTY_ONE, "BR".toTaxCode())
 
         assertEquals(0.0, taxBands[0].lower)
         assertEquals(0.0, taxBands[0].upper)
@@ -266,10 +243,111 @@ class TaxBandsTests {
         assertEquals(0.2, taxBands[1].percentageAsDecimal)
 
         assertEquals(37700.0, taxBands[2].lower)
-        assertEquals(137421.0, taxBands[2].upper)
+        assertEquals(150000.0, taxBands[2].upper)
         assertEquals(0.4, taxBands[2].percentageAsDecimal)
 
-        assertEquals(137421.0, taxBands[3].lower)
+        assertEquals(150000.0, taxBands[3].lower)
+        assertEquals(-1.0, taxBands[3].upper)
+        assertEquals(0.45, taxBands[3].percentageAsDecimal)
+    }
+
+    @Test
+    fun `GIVEN year is 2022 WHEN get bands for Scotland THEN bands are as expected`() {
+        val taxBands = TaxBands.getBands(TaxYear.TWENTY_TWENTY_TWO, SCOTLAND)
+
+        assertEquals(0.0, taxBands[0].lower)
+        assertEquals(2162.00, taxBands[0].upper)
+        assertEquals(0.19, taxBands[0].percentageAsDecimal)
+
+        assertEquals(2162.00, taxBands[1].lower)
+        assertEquals(13118.00, taxBands[1].upper)
+        assertEquals(0.20, taxBands[1].percentageAsDecimal)
+
+        assertEquals(13118.00, taxBands[2].lower)
+        assertEquals(31092.00, taxBands[2].upper)
+        assertEquals(0.21, taxBands[2].percentageAsDecimal)
+
+        assertEquals(31092.00, taxBands[3].lower)
+        assertEquals(150000.00, taxBands[3].upper)
+        assertEquals(0.41, taxBands[3].percentageAsDecimal)
+
+        assertEquals(150000.00, taxBands[4].lower)
+        assertEquals(-1.00, taxBands[4].upper)
+        assertEquals(0.46, taxBands[4].percentageAsDecimal)
+    }
+
+    @Test
+    fun `GIVEN year is 2022 WHEN get bands for England THEN bands are as expected`() {
+        val taxBands = TaxBands.getBands(TaxYear.TWENTY_TWENTY_TWO, ENGLAND)
+
+        assertEquals(0.0, taxBands[0].lower)
+        assertEquals(37700.00, taxBands[0].upper)
+        assertEquals(0.2, taxBands[0].percentageAsDecimal)
+
+        assertEquals(37700.00, taxBands[1].lower)
+        assertEquals(150000.0, taxBands[1].upper)
+        assertEquals(0.4, taxBands[1].percentageAsDecimal)
+
+        assertEquals(150000.0, taxBands[2].lower)
+        assertEquals(-1.0, taxBands[2].upper)
+        assertEquals(0.45, taxBands[2].percentageAsDecimal)
+    }
+
+    @Test
+    fun `GIVEN year is 2022 WHEN get bands for Wales THEN bands are as expected`() {
+        val taxBands = TaxBands.getBands(TaxYear.TWENTY_TWENTY_TWO, WALES)
+
+        assertEquals(0.0, taxBands[0].lower)
+        assertEquals(37700.00, taxBands[0].upper)
+        assertEquals(0.2, taxBands[0].percentageAsDecimal)
+
+        assertEquals(37700.00, taxBands[1].lower)
+        assertEquals(150000.0, taxBands[1].upper)
+        assertEquals(0.4, taxBands[1].percentageAsDecimal)
+
+        assertEquals(150000.0, taxBands[2].lower)
+        assertEquals(-1.0, taxBands[2].upper)
+        assertEquals(0.45, taxBands[2].percentageAsDecimal)
+    }
+
+    @Test
+    fun `GIVEN year is 2022 WHEN get adjusted bands for 1250L THEN bands are as expected`() {
+        val taxBands = TaxBands.getAdjustedBands(TaxYear.TWENTY_TWENTY_TWO, "1257L".toTaxCode())
+
+        assertEquals(0.0, taxBands[0].lower)
+        assertEquals(12579.00, taxBands[0].upper)
+        assertEquals(0.0, taxBands[0].percentageAsDecimal)
+
+        assertEquals(12579.00, taxBands[1].lower)
+        assertEquals(50279.0, taxBands[1].upper)
+        assertEquals(0.2, taxBands[1].percentageAsDecimal)
+
+        assertEquals(50279.0, taxBands[2].lower)
+        assertEquals(162579.0, taxBands[2].upper)
+        assertEquals(0.4, taxBands[2].percentageAsDecimal)
+
+        assertEquals(162579.0, taxBands[3].lower)
+        assertEquals(-1.0, taxBands[3].upper)
+        assertEquals(0.45, taxBands[3].percentageAsDecimal)
+    }
+
+    @Test
+    fun `GIVEN year is 2022 WHEN get adjusted bands for BR THEN bands are as expected`() {
+        val taxBands = TaxBands.getAdjustedBands(TaxYear.TWENTY_TWENTY_TWO, "BR".toTaxCode())
+
+        assertEquals(0.0, taxBands[0].lower)
+        assertEquals(0.0, taxBands[0].upper)
+        assertEquals(0.0, taxBands[0].percentageAsDecimal)
+
+        assertEquals(0.0, taxBands[1].lower)
+        assertEquals(37700.0, taxBands[1].upper)
+        assertEquals(0.2, taxBands[1].percentageAsDecimal)
+
+        assertEquals(37700.0, taxBands[2].lower)
+        assertEquals(150000.0, taxBands[2].upper)
+        assertEquals(0.4, taxBands[2].percentageAsDecimal)
+
+        assertEquals(150000.0, taxBands[3].lower)
         assertEquals(-1.0, taxBands[3].upper)
         assertEquals(0.45, taxBands[3].percentageAsDecimal)
     }
