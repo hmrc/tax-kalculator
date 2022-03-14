@@ -27,7 +27,6 @@ import uk.gov.hmrc.calculator.exception.InvalidWagesException
 import uk.gov.hmrc.calculator.model.BandBreakdown
 import uk.gov.hmrc.calculator.model.CalculatorResponse
 import uk.gov.hmrc.calculator.model.CalculatorResponsePayPeriod
-import uk.gov.hmrc.calculator.model.DefaultTaxCodeResponse
 import uk.gov.hmrc.calculator.model.PayPeriod
 import uk.gov.hmrc.calculator.model.PayPeriod.FOUR_WEEKLY
 import uk.gov.hmrc.calculator.model.PayPeriod.MONTHLY
