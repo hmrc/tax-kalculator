@@ -13,14 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.gov.hmrc.calculator.utils.taxcode
+package uk.gov.hmrc.calculator
 
+import uk.gov.hmrc.calculator.annotations.Throws
+import uk.gov.hmrc.calculator.exception.InvalidTaxYearException
+import uk.gov.hmrc.calculator.model.DefaultTaxCodeResponse
+import uk.gov.hmrc.calculator.model.TaxYear
 import uk.gov.hmrc.calculator.model.taxcodes.TaxCode
 
-/*
-    Tax-free amount without the "£9"
-*/
-internal fun TaxCode.getTrueTaxFreeAmount(): Double {
-    val amount = this.taxFreeAmount
-    return if (amount > 0) amount - 9 else 0.0
+object CalculatorUtils {
+
+    @Throws(InvalidTaxYearException::class)
+    fun defaultTaxCode(taxYear: Int = TaxYear.currentTaxYearInt): DefaultTaxCodeResponse =
+        DefaultTaxCodeResponse(
+            TaxCode.getDefaultTaxCode(TaxYear.fromInt(taxYear)),
+            taxYear
+        )
 }

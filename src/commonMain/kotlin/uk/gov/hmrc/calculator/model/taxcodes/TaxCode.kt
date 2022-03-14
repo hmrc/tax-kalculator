@@ -19,7 +19,7 @@ import uk.gov.hmrc.calculator.model.Country
 import uk.gov.hmrc.calculator.model.TaxYear
 import uk.gov.hmrc.calculator.model.bands.TaxFreeAllowance
 
-interface TaxCode {
+internal interface TaxCode {
     val country: Country
     val taxFreeAmount: Double
 
