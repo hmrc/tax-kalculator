@@ -62,6 +62,9 @@ internal class CalculatorUtilsTests {
         )
     }
 
+    /*
+    Expected to fail when the tax changes and the default tax code differs from the previous year.
+     */
     @Test
     fun `WHEN no year supplied THEN default tax code returned`() {
         val result = CalculatorUtils.defaultTaxCode()
