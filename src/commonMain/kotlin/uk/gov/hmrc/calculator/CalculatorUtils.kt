@@ -29,4 +29,6 @@ object CalculatorUtils {
             TaxCode.getDefaultTaxCode(TaxYear.fromInt(taxYear)),
             taxYear
         )
+
+    fun currentTaxYear(): Int = TaxYear.currentTaxYearInt
 }
