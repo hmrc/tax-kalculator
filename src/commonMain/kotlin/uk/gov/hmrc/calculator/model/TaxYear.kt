@@ -20,7 +20,7 @@ import com.soywiz.klock.DateTimeTz
 import uk.gov.hmrc.calculator.annotations.Throws
 import uk.gov.hmrc.calculator.exception.InvalidTaxYearException
 
-internal enum class TaxYear(private val value: Int) {
+enum class TaxYear(private val value: Int) {
     TWENTY_TWENTY(2020),
     TWENTY_TWENTY_ONE(2021),
     TWENTY_TWENTY_TWO(2022);
