@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+- Fixed access level issues and added a new helper for the default tax code.
 
 ## [2.1.0] - 2022-02-21Z
 - Removed £9 adjustment from results.
