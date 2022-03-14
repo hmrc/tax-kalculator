@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.2.0] - 2022-03-14Z
 - Fixed access level issues and added a new helper for the default tax code.
 
 ## [2.1.0] - 2022-02-21Z
