@@ -121,10 +121,10 @@ class TaxBandsTests {
         assertEquals(0.2, taxBands[1].percentageAsDecimal)
 
         assertEquals(50000.0, taxBands[2].lower)
-        assertEquals(162509.0, taxBands[2].upper)
+        assertEquals(150000.0, taxBands[2].upper)
         assertEquals(0.4, taxBands[2].percentageAsDecimal)
 
-        assertEquals(162509.0, taxBands[3].lower)
+        assertEquals(150000.0, taxBands[3].lower)
         assertEquals(-1.0, taxBands[3].upper)
         assertEquals(0.45, taxBands[3].percentageAsDecimal)
     }
@@ -222,10 +222,10 @@ class TaxBandsTests {
         assertEquals(0.2, taxBands[1].percentageAsDecimal)
 
         assertEquals(50279.0, taxBands[2].lower)
-        assertEquals(162579.0, taxBands[2].upper)
+        assertEquals(150000.0, taxBands[2].upper)
         assertEquals(0.4, taxBands[2].percentageAsDecimal)
 
-        assertEquals(162579.0, taxBands[3].lower)
+        assertEquals(150000.0, taxBands[3].lower)
         assertEquals(-1.0, taxBands[3].upper)
         assertEquals(0.45, taxBands[3].percentageAsDecimal)
     }
@@ -323,10 +323,10 @@ class TaxBandsTests {
         assertEquals(0.2, taxBands[1].percentageAsDecimal)
 
         assertEquals(50279.0, taxBands[2].lower)
-        assertEquals(162579.0, taxBands[2].upper)
+        assertEquals(150000.0, taxBands[2].upper)
         assertEquals(0.4, taxBands[2].percentageAsDecimal)
 
-        assertEquals(162579.0, taxBands[3].lower)
+        assertEquals(150000.0, taxBands[3].lower)
         assertEquals(-1.0, taxBands[3].upper)
         assertEquals(0.45, taxBands[3].percentageAsDecimal)
     }

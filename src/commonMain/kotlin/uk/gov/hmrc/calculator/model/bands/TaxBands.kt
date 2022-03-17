@@ -79,11 +79,16 @@ internal object TaxBands {
         taxBands[1].upper = taxBands[1].upper + taxCode.taxFreeAmount
 
         for (bandNumber in 2 until taxBands.size) {
-            taxBands[bandNumber].lower = taxBands[bandNumber].lower + taxCode.taxFreeAmount
-            if (taxBands[bandNumber].upper != -1.0) {
+            taxBands[bandNumber].lower =
+                if (taxBands[bandNumber].lower == ONE_FIFTY_THRESHOLD) ONE_FIFTY_THRESHOLD
+                else taxBands[bandNumber].lower + taxCode.taxFreeAmount
+
+            if (taxBands[bandNumber].upper != -1.0 && taxBands[bandNumber].upper != ONE_FIFTY_THRESHOLD) {
                 taxBands[bandNumber].upper = taxBands[bandNumber].upper + taxCode.taxFreeAmount
             }
         }
         return taxBands
     }
+
+    private const val ONE_FIFTY_THRESHOLD: Double = 150000.0
 }
