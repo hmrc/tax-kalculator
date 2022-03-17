@@ -19,6 +19,7 @@ import uk.gov.hmrc.calculator.model.Country
 import uk.gov.hmrc.calculator.model.Country.SCOTLAND
 import uk.gov.hmrc.calculator.model.TaxYear
 import uk.gov.hmrc.calculator.model.taxcodes.TaxCode
+import uk.gov.hmrc.calculator.utils.taxcode.getTrueTaxFreeAmount
 
 internal object TaxBands {
 
@@ -53,8 +54,8 @@ internal object TaxBands {
     )
 
     private fun restOfUK2020Bands() = listOf(
-        TaxBand(0.00, 37491.00, 0.2),
-        TaxBand(37491.0, 150000.00, 0.4),
+        TaxBand(0.00, 37500.00, 0.2),
+        TaxBand(37500.0, 150000.00, 0.4),
         TaxBand(150000.0, -1.0, 0.45)
     )
 
@@ -72,18 +73,30 @@ internal object TaxBands {
 
     fun getAdjustedBands(taxYear: TaxYear, taxCode: TaxCode): List<Band> {
         val taxBands = getBands(taxYear, taxCode.country).toMutableList()
+        val adjustedBands = mutableListOf<TaxBand>()
 
-        taxBands.add(0, TaxBand(0.0, taxCode.taxFreeAmount, 0.0))
+        adjustedBands.add(0, TaxBand(0.0, taxCode.taxFreeAmount, 0.0))
 
-        taxBands[1].lower = taxCode.taxFreeAmount
-        taxBands[1].upper = taxBands[1].upper + taxCode.taxFreeAmount
+        for (bandNumber in 0 until taxBands.size) {
+            val lower = if (taxBands[bandNumber].lower == ONE_FIFTY_THRESHOLD) {
+                ONE_FIFTY_THRESHOLD
+            } else adjustedBands[adjustedBands.size - 1].upper
 
-        for (bandNumber in 2 until taxBands.size) {
-            taxBands[bandNumber].lower = taxBands[bandNumber].lower + taxCode.taxFreeAmount
-            if (taxBands[bandNumber].upper != -1.0) {
-                taxBands[bandNumber].upper = taxBands[bandNumber].upper + taxCode.taxFreeAmount
-            }
+            val nineAdjustment = if (bandNumber == 0 && taxCode.taxFreeAmount > 0) 9 else 0
+            val upper = if (taxBands[bandNumber].upper == ONE_FIFTY_THRESHOLD) {
+                ONE_FIFTY_THRESHOLD
+            } else if (taxBands[bandNumber].upper == -1.0) {
+                -1.0
+            } else adjustedBands[adjustedBands.size - 1].upper + (taxBands[bandNumber].upper - taxBands[bandNumber].lower - nineAdjustment)
+
+            adjustedBands.add(TaxBand(
+                lower = lower,
+                upper = upper,
+                percentageAsDecimal = taxBands[bandNumber].percentageAsDecimal)
+            )
         }
-        return taxBands
+        return adjustedBands
     }
+
+    private const val ONE_FIFTY_THRESHOLD: Double = 150000.0
 }

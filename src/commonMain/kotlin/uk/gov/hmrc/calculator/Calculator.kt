@@ -80,12 +80,10 @@ class Calculator @JvmOverloads constructor(
         val initialTaxBandUpper = taxBands[0].upper
         val defaultAllowance = taxCode.getTrueTaxFreeAmount()
 
-        var taxFreeAmount = 0.0
-
-        if (initialTaxBandUpper > taxCode.taxFreeAmount) {
-            taxFreeAmount = initialTaxBandUpper
+        val taxFreeAmount = if (initialTaxBandUpper > taxCode.taxFreeAmount) {
+            initialTaxBandUpper
         } else if (initialTaxBandUpper == taxCode.taxFreeAmount) {
-            taxFreeAmount = defaultAllowance
+            taxCode.taxFreeAmount
         } else min(initialTaxBandUpper, defaultAllowance)
 
         val amountToAddToWages = if (taxCode is KTaxCode) taxCode.amountToAddToWages else null

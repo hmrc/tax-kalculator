@@ -79,10 +79,10 @@ class TaxBandsTests {
         val taxBands = TaxBands.getBands(TaxYear.TWENTY_TWENTY, ENGLAND)
 
         assertEquals(0.00, taxBands[0].lower)
-        assertEquals(37491.0, taxBands[0].upper)
+        assertEquals(37500.0, taxBands[0].upper)
         assertEquals(0.2, taxBands[0].percentageAsDecimal)
 
-        assertEquals(37491.0, taxBands[1].lower)
+        assertEquals(37500.0, taxBands[1].lower)
         assertEquals(150000.0, taxBands[1].upper)
         assertEquals(0.4, taxBands[1].percentageAsDecimal)
 
@@ -96,10 +96,10 @@ class TaxBandsTests {
         val taxBands = TaxBands.getBands(TaxYear.TWENTY_TWENTY, WALES)
 
         assertEquals(0.00, taxBands[0].lower)
-        assertEquals(37491.0, taxBands[0].upper)
+        assertEquals(37500.0, taxBands[0].upper)
         assertEquals(0.2, taxBands[0].percentageAsDecimal)
 
-        assertEquals(37491.0, taxBands[1].lower)
+        assertEquals(37500.0, taxBands[1].lower)
         assertEquals(150000.0, taxBands[1].upper)
         assertEquals(0.4, taxBands[1].percentageAsDecimal)
 
@@ -121,10 +121,10 @@ class TaxBandsTests {
         assertEquals(0.2, taxBands[1].percentageAsDecimal)
 
         assertEquals(50000.0, taxBands[2].lower)
-        assertEquals(162509.0, taxBands[2].upper)
+        assertEquals(150000.0, taxBands[2].upper)
         assertEquals(0.4, taxBands[2].percentageAsDecimal)
 
-        assertEquals(162509.0, taxBands[3].lower)
+        assertEquals(150000.0, taxBands[3].lower)
         assertEquals(-1.0, taxBands[3].upper)
         assertEquals(0.45, taxBands[3].percentageAsDecimal)
     }
@@ -138,10 +138,10 @@ class TaxBandsTests {
         assertEquals(0.0, taxBands[0].percentageAsDecimal)
 
         assertEquals(0.0, taxBands[1].lower)
-        assertEquals(37491.0, taxBands[1].upper)
+        assertEquals(37500.0, taxBands[1].upper)
         assertEquals(0.2, taxBands[1].percentageAsDecimal)
 
-        assertEquals(37491.0, taxBands[2].lower)
+        assertEquals(37500.0, taxBands[2].lower)
         assertEquals(150000.0, taxBands[2].upper)
         assertEquals(0.4, taxBands[2].percentageAsDecimal)
 
@@ -218,14 +218,14 @@ class TaxBandsTests {
         assertEquals(0.0, taxBands[0].percentageAsDecimal)
 
         assertEquals(12579.00, taxBands[1].lower)
-        assertEquals(50279.0, taxBands[1].upper)
+        assertEquals(50270.0, taxBands[1].upper)
         assertEquals(0.2, taxBands[1].percentageAsDecimal)
 
-        assertEquals(50279.0, taxBands[2].lower)
-        assertEquals(162579.0, taxBands[2].upper)
+        assertEquals(50270.0, taxBands[2].lower)
+        assertEquals(150000.0, taxBands[2].upper)
         assertEquals(0.4, taxBands[2].percentageAsDecimal)
 
-        assertEquals(162579.0, taxBands[3].lower)
+        assertEquals(150000.0, taxBands[3].lower)
         assertEquals(-1.0, taxBands[3].upper)
         assertEquals(0.45, taxBands[3].percentageAsDecimal)
     }
@@ -319,14 +319,14 @@ class TaxBandsTests {
         assertEquals(0.0, taxBands[0].percentageAsDecimal)
 
         assertEquals(12579.00, taxBands[1].lower)
-        assertEquals(50279.0, taxBands[1].upper)
+        assertEquals(50270.0, taxBands[1].upper)
         assertEquals(0.2, taxBands[1].percentageAsDecimal)
 
-        assertEquals(50279.0, taxBands[2].lower)
-        assertEquals(162579.0, taxBands[2].upper)
+        assertEquals(50270.0, taxBands[2].lower)
+        assertEquals(150000.0, taxBands[2].upper)
         assertEquals(0.4, taxBands[2].percentageAsDecimal)
 
-        assertEquals(162579.0, taxBands[3].lower)
+        assertEquals(150000.0, taxBands[3].lower)
         assertEquals(-1.0, taxBands[3].upper)
         assertEquals(0.45, taxBands[3].percentageAsDecimal)
     }
@@ -350,5 +350,32 @@ class TaxBandsTests {
         assertEquals(150000.0, taxBands[3].lower)
         assertEquals(-1.0, taxBands[3].upper)
         assertEquals(0.45, taxBands[3].percentageAsDecimal)
+    }
+
+    @Test
+    fun `GIVEN zsdsyear is 2020 WHEN get adjusted bands for 1250L THEN bands are as expected`() {
+        val taxBands = TaxBands.getAdjustedBands(
+            TaxYear.TWENTY_TWENTY_TWO,
+            "0L".toTaxCode()
+        )
+        println(taxBands)
+
+        val taxBands3 = TaxBands.getAdjustedBands(
+            TaxYear.TWENTY_TWENTY_TWO,
+            "BR".toTaxCode()
+        )
+        println(taxBands3)
+
+        val taxBands1 = TaxBands.getAdjustedBands(
+            TaxYear.TWENTY_TWENTY_TWO,
+            "1257L".toTaxCode()
+        )
+        println(taxBands1)
+
+        val taxBands2 = TaxBands.getAdjustedBands(
+            TaxYear.TWENTY_TWENTY_TWO,
+            "S1257L".toTaxCode()
+        )
+        println(taxBands2)
     }
 }
