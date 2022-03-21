@@ -2,9 +2,6 @@
 # tax-kalculator
 
 [![Build Status](https://app.bitrise.io/app/cd7fb52c258b9273/status.svg?token=lntO8o4xz5AUEvLwVzbo3A&branch=master)](https://app.bitrise.io/app/cd7fb52c258b9273)
-![LINE](https://img.shields.io/badge/line--coverage-98.40%25-brightgreen.svg)
-![BRANCH](https://img.shields.io/badge/branch--coverage-95.05%25-brightgreen.svg)
-![COMPLEXITY](https://img.shields.io/badge/complexity-1.53-brightgreen.svg)
 [![Github](https://img.shields.io/github/release/hmrc/tax-kalculator.svg)](https://gitHub.com/hmrc/tax-kalculator/releases/)
 ![swift-pm](https://img.shields.io/badge/SwiftPM-Compatible-success.svg)
 
@@ -142,13 +139,10 @@ let isBelowMaximumHoursPerDay = HoursDaysValidator.shared.isBelowMaximumHoursPer
 
 ## Development
 
-To run unit tests and checks:
-
-`./gradlew check`
-
-To update the README badges:
-
-`./gradlew cleanBuildTestCoverage`
+To run all tests and coverage verification:
+```shell
+./gradlew check
+```
 
 ## Usage
 
