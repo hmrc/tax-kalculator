@@ -148,7 +148,7 @@ To run all tests and coverage verification:
 
 ### iOS
 #### Swift Package Manager
-- Note: Because this operates as a closed source, binary dependency, Swift PM will only work with tagged releases and not branches.
+> Because this operates as a closed source, binary dependency, Swift PM will only work with tagged releases and not branches.
 ```swift
 https://github.com/hmrc/tax-kalculator
 ```
