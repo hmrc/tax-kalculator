@@ -16,10 +16,6 @@ buildscript {
     }
 }
 
-/***********************************************************************************************************************
- * Project Gradle Config
- ***********************************************************************************************************************/
-
 apply(plugin = "uk.gov.hmrc.spotless")
 
 group = "uk.gov.hmrc"
@@ -44,17 +40,10 @@ repositories {
 }
 
 
-/***********************************************************************************************************************
- * Declarations
- ***********************************************************************************************************************/
-
 val artifactId = "tax-kalculator"
 val frameworkName = "TaxKalculator"
 
-/***********************************************************************************************************************
- * Kotlin Configuration
- ***********************************************************************************************************************/
-
+// Configure source sets
 kotlin {
 
     jvm()
@@ -128,20 +117,7 @@ kotlin {
     }
 }
 
-tasks.named<Test>("jvmTest") {
-    useJUnitPlatform()
-    testLogging {
-        showExceptions = true
-        showStandardStreams = true
-        events = setOf(org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED, org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED)
-        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
-    }
-}
-
-/***********************************************************************************************************************
- * Swift Package Manager Configuration
- ***********************************************************************************************************************/
-
+// Configure Swift Package Manager
 multiplatformSwiftPackage {
     swiftToolsVersion("5.3")
     targetPlatforms {
@@ -150,10 +126,7 @@ multiplatformSwiftPackage {
     outputDirectory(File(projectDir, "build/xcframework"))
 }
 
-/***********************************************************************************************************************
- * GitHubPackages publishing
- ***********************************************************************************************************************/
-
+// Configure GitHub Packages publishing
 publishing {
     publications {
         create<MavenPublication>("mavenJava") {
@@ -173,10 +146,6 @@ publishing {
         }
     }
 }
-
-/***********************************************************************************************************************
- * Other Task Configuration
- ***********************************************************************************************************************/
 
 configurations {
     compileClasspath
@@ -203,20 +172,22 @@ tasks.koverVerify {
     }
 }
 
-/***********************************************************************************************************************
- * Custom Functions
- **********************************************************************************************************************/
+tasks.named<Test>("jvmTest") {
+    useJUnitPlatform()
+    testLogging {
+        showExceptions = true
+        showStandardStreams = true
+        events = setOf(org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED, org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED)
+        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+    }
+}
+
+tasks.named<Jar>("jvmJar") {
+    archiveFileName.set("$artifactId-$version.jar")
+}
 
 fun getDate(): String {
     val date = Date()
     val format = "yyyyMMddHHmm"
     return SimpleDateFormat(format).format(date).toString()
-}
-
-/***********************************************************************************************************************
- * Custom Tasks
- ***********************************************************************************************************************/
-
-tasks.named<Jar>("jvmJar") {
-    archiveFileName.set("$artifactId-$version.jar")
 }
