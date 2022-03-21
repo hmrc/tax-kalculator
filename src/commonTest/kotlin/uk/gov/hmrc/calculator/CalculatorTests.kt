@@ -46,7 +46,7 @@ internal class CalculatorTests {
         assertEquals(70.23, weekly.employeesNI)
         assertEquals(82.69, weekly.employersNI)
         assertEquals(769.23, weekly.wages)
-        assertEquals(241.73, weekly.taxFree)
+        assertEquals(241.9, weekly.taxFree)
         assertEquals(105.47, weekly.taxToPay)
         assertEquals(593.53, weekly.takeHome)
 
@@ -55,7 +55,7 @@ internal class CalculatorTests {
         assertEquals(280.91, fourWeekly.employeesNI)
         assertEquals(330.78, fourWeekly.employersNI)
         assertEquals(3076.92, fourWeekly.wages)
-        assertEquals(966.92, fourWeekly.taxFree)
+        assertEquals(967.62, fourWeekly.taxFree)
         assertEquals(421.86, fourWeekly.taxToPay)
         assertEquals(2374.15, fourWeekly.takeHome)
 
@@ -64,7 +64,7 @@ internal class CalculatorTests {
         assertEquals(304.32, monthly.employeesNI)
         assertEquals(358.34, monthly.employersNI)
         assertEquals(3333.33, monthly.wages)
-        assertEquals(1047.50, monthly.taxFree)
+        assertEquals(1048.25, monthly.taxFree)
         assertEquals(457.02, monthly.taxToPay)
         assertEquals(2571.99, monthly.takeHome)
 
@@ -73,7 +73,7 @@ internal class CalculatorTests {
         assertEquals(3651.84, yearly.employeesNI)
         assertEquals(4300.08, yearly.employersNI)
         assertEquals(40000.00, yearly.wages)
-        assertEquals(12570.00, yearly.taxFree)
+        assertEquals(12579.0, yearly.taxFree)
         assertEquals(5484.20, yearly.taxToPay)
         assertEquals(30863.96, yearly.takeHome)
     }
@@ -95,7 +95,7 @@ internal class CalculatorTests {
         assertEquals(76.75, weekly.employeesNI)
         assertEquals(89.43, weekly.employersNI)
         assertEquals(769.23, weekly.wages)
-        assertEquals(241.73, weekly.taxFree)
+        assertEquals(241.9, weekly.taxFree)
         assertEquals(105.47, weekly.taxToPay)
         assertEquals(587.01, weekly.takeHome)
 
@@ -104,7 +104,7 @@ internal class CalculatorTests {
         assertEquals(306.99, fourWeekly.employeesNI)
         assertEquals(357.73, fourWeekly.employersNI)
         assertEquals(3076.92, fourWeekly.wages)
-        assertEquals(966.92, fourWeekly.taxFree)
+        assertEquals(967.62, fourWeekly.taxFree)
         assertEquals(421.86, fourWeekly.taxToPay)
         assertEquals(2348.07, fourWeekly.takeHome)
 
@@ -113,7 +113,7 @@ internal class CalculatorTests {
         assertEquals(332.58, monthly.employeesNI)
         assertEquals(387.54, monthly.employersNI)
         assertEquals(3333.33, monthly.wages)
-        assertEquals(1047.50, monthly.taxFree)
+        assertEquals(1048.25, monthly.taxFree)
         assertEquals(457.02, monthly.taxToPay)
         assertEquals(2543.73, monthly.takeHome)
 
@@ -122,7 +122,7 @@ internal class CalculatorTests {
         assertEquals(3990.90, yearly.employeesNI)
         assertEquals(4650.45, yearly.employersNI)
         assertEquals(40000.00, yearly.wages)
-        assertEquals(12570.00, yearly.taxFree)
+        assertEquals(12579.00, yearly.taxFree)
         assertEquals(5484.20, yearly.taxToPay)
         assertEquals(30524.90, yearly.takeHome)
     }

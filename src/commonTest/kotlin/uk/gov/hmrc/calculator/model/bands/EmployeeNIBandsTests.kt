@@ -25,74 +25,44 @@ class EmployeeNIBandsTests {
     fun `WHEN year is 2020 THEN band ranges correct`() {
         val bands = EmployeeNIBands(TaxYear.TWENTY_TWENTY).bands
 
-        val band1 = bands[0]
-        assertEquals(0.0, band1.percentageAsDecimal)
-        assertEquals(true, band1.inBand(1000.0))
-        assertEquals(false, band1.inBand(10000.0))
+        val band0 = bands[0]
+        assertEquals(0.12, band0.percentageAsDecimal)
+        assertEquals(true, band0.inBand(12000.0))
+        assertEquals(false, band0.inBand(650000.0))
 
-        val band2 = bands[1]
-        assertEquals(0.0, band2.percentageAsDecimal)
-        assertEquals(true, band2.inBand(6800.0))
-        assertEquals(false, band2.inBand(10000.0))
-
-        val band3 = bands[2]
-        assertEquals(0.12, band3.percentageAsDecimal)
-        assertEquals(true, band3.inBand(12000.0))
-        assertEquals(false, band3.inBand(650000.0))
-
-        val band4 = bands[3]
-        assertEquals(0.02, band4.percentageAsDecimal)
-        assertEquals(true, band4.inBand(650000.0))
-        assertEquals(false, band4.inBand(1000.0))
+        val band1 = bands[1]
+        assertEquals(0.02, band1.percentageAsDecimal)
+        assertEquals(true, band1.inBand(650000.0))
+        assertEquals(false, band1.inBand(1000.0))
     }
 
     @Test
     fun `WHEN year is 2021 THEN band ranges correct`() {
         val bands = EmployeeNIBands(TaxYear.TWENTY_TWENTY_ONE).bands
 
-        val band1 = bands[0]
-        assertEquals(0.0, band1.percentageAsDecimal)
-        assertEquals(true, band1.inBand(1000.0))
-        assertEquals(false, band1.inBand(10000.0))
+        val band0 = bands[0]
+        assertEquals(0.12, band0.percentageAsDecimal)
+        assertEquals(true, band0.inBand(12000.0))
+        assertEquals(false, band0.inBand(650000.0))
 
-        val band2 = bands[1]
-        assertEquals(0.0, band2.percentageAsDecimal)
-        assertEquals(true, band2.inBand(6800.0))
-        assertEquals(false, band2.inBand(6240.0))
-
-        val band3 = bands[2]
-        assertEquals(0.12, band3.percentageAsDecimal)
-        assertEquals(true, band3.inBand(12000.0))
-        assertEquals(false, band3.inBand(650000.0))
-
-        val band4 = bands[3]
-        assertEquals(0.02, band4.percentageAsDecimal)
-        assertEquals(true, band4.inBand(650000.0))
-        assertEquals(false, band4.inBand(1000.0))
+        val band1 = bands[1]
+        assertEquals(0.02, band1.percentageAsDecimal)
+        assertEquals(true, band1.inBand(650000.0))
+        assertEquals(false, band1.inBand(1000.0))
     }
 
     @Test
     fun `WHEN year is 2022 THEN band ranges correct`() {
         val bands = EmployeeNIBands(TaxYear.TWENTY_TWENTY_TWO).bands
 
-        val band1 = bands[0]
-        assertEquals(0.0, band1.percentageAsDecimal)
-        assertEquals(true, band1.inBand(6390.0))
-        assertEquals(false, band1.inBand(6500.0))
+        val band0 = bands[0]
+        assertEquals(0.1325, band0.percentageAsDecimal)
+        assertEquals(true, band0.inBand(12000.0))
+        assertEquals(false, band0.inBand(650000.0))
 
-        val band2 = bands[1]
-        assertEquals(0.0, band2.percentageAsDecimal)
-        assertEquals(true, band2.inBand(6500.0))
-        assertEquals(false, band2.inBand(10000.0))
-
-        val band3 = bands[2]
-        assertEquals(0.1325, band3.percentageAsDecimal)
-        assertEquals(true, band3.inBand(12000.0))
-        assertEquals(false, band3.inBand(650000.0))
-
-        val band4 = bands[3]
-        assertEquals(0.0325, band4.percentageAsDecimal)
-        assertEquals(true, band4.inBand(650000.0))
-        assertEquals(false, band4.inBand(1000.0))
+        val band1 = bands[1]
+        assertEquals(0.0325, band1.percentageAsDecimal)
+        assertEquals(true, band1.inBand(650000.0))
+        assertEquals(false, band1.inBand(1000.0))
     }
 }

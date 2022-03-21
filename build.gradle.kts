@@ -1,6 +1,5 @@
 import java.text.SimpleDateFormat
 import java.util.Date
-import org.gradle.api.tasks.GradleBuild
 
 buildscript {
     repositories {
@@ -17,10 +16,6 @@ buildscript {
     }
 }
 
-/***********************************************************************************************************************
- * Project Gradle Config
- ***********************************************************************************************************************/
-
 apply(plugin = "uk.gov.hmrc.spotless")
 
 group = "uk.gov.hmrc"
@@ -30,11 +25,10 @@ version = System.getenv("BITRISE_GIT_TAG") ?: ("SNAPSHOT-" + getDate())
 plugins {
     `maven-publish`
     kotlin("multiplatform").version("1.6.0")
-    jacoco
     java
-    id("com.github.dawnwords.jacoco.badge").version("0.2.4")
     id("io.gitlab.arturbosch.detekt").version("1.6.0")
     id("com.chromaticnoise.multiplatform-swiftpackage").version("2.0.3")
+    id("org.jetbrains.kotlinx.kover") version "0.5.0"
 }
 
 repositories {
@@ -46,17 +40,10 @@ repositories {
 }
 
 
-/***********************************************************************************************************************
- * Declarations
- ***********************************************************************************************************************/
-
 val artifactId = "tax-kalculator"
 val frameworkName = "TaxKalculator"
 
-/***********************************************************************************************************************
- * Kotlin Configuration
- ***********************************************************************************************************************/
-
+// Configure source sets
 kotlin {
 
     jvm()
@@ -130,20 +117,7 @@ kotlin {
     }
 }
 
-tasks.named<Test>("jvmTest") {
-    useJUnitPlatform()
-    testLogging {
-        showExceptions = true
-        showStandardStreams = true
-        events = setOf(org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED, org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED)
-        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
-    }
-}
-
-/***********************************************************************************************************************
- * Swift Package Manager Configuration
- ***********************************************************************************************************************/
-
+// Configure Swift Package Manager
 multiplatformSwiftPackage {
     swiftToolsVersion("5.3")
     targetPlatforms {
@@ -152,10 +126,7 @@ multiplatformSwiftPackage {
     outputDirectory(File(projectDir, "build/xcframework"))
 }
 
-/***********************************************************************************************************************
- * GitHubPackages publishing
- ***********************************************************************************************************************/
-
+// Configure GitHub Packages publishing
 publishing {
     publications {
         create<MavenPublication>("mavenJava") {
@@ -176,20 +147,8 @@ publishing {
     }
 }
 
-/***********************************************************************************************************************
- * Other Task Configuration
- ***********************************************************************************************************************/
-
 configurations {
     compileClasspath
-}
-
-jacocoBadgeGenSetting {
-    jacocoReportPath = "$buildDir/reports/jacoco/testCommonUnitTestCoverage/testCommonUnitTestCoverage.xml"
-}
-
-jacoco {
-    toolVersion = "0.8.7"
 }
 
 detekt {
@@ -203,66 +162,32 @@ detekt {
     }
 }
 
-tasks.jacocoTestCoverageVerification {
-    group = project.name
-
-    violationRules {
-        rule {
-            limit {
-                minimum = "0.95".toBigDecimal()
-            }
+tasks.koverVerify {
+    rule {
+        name = "Coverage rate"
+        bound {
+            minValue = 95
+            valueType = kotlinx.kover.api.VerificationValueType.COVERED_LINES_PERCENTAGE
         }
     }
-    val excludes = listOf("**/*Test*.*")
-    val coverageSourceDirs = listOf("src/commonMain/kotlin")
-    sourceDirectories.setFrom(files(coverageSourceDirs))
-    classDirectories.setFrom(fileTree("${project.buildDir}/classes/kotlin/jvm/").exclude(excludes))
-    executionData.setFrom(files("${project.buildDir}/jacoco/jvmTest.exec"))
 }
 
-/***********************************************************************************************************************
- * Custom Functions
- **********************************************************************************************************************/
+tasks.named<Test>("jvmTest") {
+    useJUnitPlatform()
+    testLogging {
+        showExceptions = true
+        showStandardStreams = true
+        events = setOf(org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED, org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED)
+        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+    }
+}
+
+tasks.named<Jar>("jvmJar") {
+    archiveFileName.set("$artifactId-$version.jar")
+}
 
 fun getDate(): String {
     val date = Date()
     val format = "yyyyMMddHHmm"
     return SimpleDateFormat(format).format(date).toString()
-}
-
-/***********************************************************************************************************************
- * Custom Tasks
- ***********************************************************************************************************************/
-
-tasks.register<JacocoReport>("testCommonUnitTestCoverage") {
-    group = project.name
-    description = "Generate Jacoco coverage reports on the common module build."
-
-    this.dependsOn("allTests")
-    val excludes = listOf("**/*Test*.*")
-    val coverageSourceDirs = listOf("src/commonMain/kotlin")
-    executionData(files("${project.buildDir}/jacoco/jvmTest.exec"))
-
-    reports {
-        xml.isEnabled = true
-        html.isEnabled = true
-        sourceDirectories.setFrom(files(coverageSourceDirs))
-        classDirectories.setFrom(fileTree("${project.buildDir}/classes/kotlin/jvm/").exclude(excludes))
-    }
-}
-
-tasks.register<GradleBuild>("cleanBuildTestCoverage") {
-    group = project.name
-
-    tasks = listOf(
-        "clean",
-        "cleanAllTests",
-        "build",
-        "testCommonUnitTestCoverage",
-        "generateJacocoBadge",
-        "jacocoTestCoverageVerification")
-}
-
-tasks.named<Jar>("jvmJar") {
-    archiveFileName.set("$artifactId-$version.jar")
 }

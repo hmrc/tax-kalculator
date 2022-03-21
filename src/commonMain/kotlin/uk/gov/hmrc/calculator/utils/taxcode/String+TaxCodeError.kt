@@ -25,6 +25,5 @@ internal fun String.invalidTaxCodeErrorGeneration(): TaxCodeValidationResponse {
         TaxCodeValidationResponse(false, ValidationError.WrongTaxCodePrefix)
     else if (this.replace("^([A-Z]?)+([0-9]?)+".toRegex(), "").matches("[A-KO-SU-Z]".toRegex()))
         TaxCodeValidationResponse(false, ValidationError.WrongTaxCodeSuffix)
-    else
-        TaxCodeValidationResponse(false, ValidationError.Other)
+    else TaxCodeValidationResponse(false, ValidationError.Other)
 }
