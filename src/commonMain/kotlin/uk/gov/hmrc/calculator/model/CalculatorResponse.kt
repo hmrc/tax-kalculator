@@ -17,7 +17,10 @@ package uk.gov.hmrc.calculator.model
 
 import uk.gov.hmrc.calculator.utils.formatMoney
 
-data class BandBreakdown(val percentage: Double, val amount: Double)
+data class BandBreakdown(
+    val percentage: Double,
+    val amount: Double
+)
 
 class CalculatorResponsePayPeriod(
     val payPeriod: PayPeriod,
@@ -34,7 +37,6 @@ class CalculatorResponsePayPeriod(
     val maxTaxAmountExceeded = (taxToPayForPayPeriod > maxTaxAmount)
     val totalDeductions = (taxToPay + employeesNIRaw).formatMoney()
     val takeHome = (wagesRaw - totalDeductions).formatMoney()
-    val taxBreakdown = if (maxTaxAmountExceeded) null else taxBreakdownForPayPeriod
 
     val employeesNI: Double by lazy {
         employeesNIRaw.formatMoney()

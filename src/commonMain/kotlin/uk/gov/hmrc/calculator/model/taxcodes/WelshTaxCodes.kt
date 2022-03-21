@@ -23,32 +23,38 @@ internal interface WelshTaxCode : TaxCode {
         get() = WALES
 }
 
-internal class C0T : WelshTaxCode, AdjustedTaxFreeTCode {
+internal class C0T : WelshTaxCode,
+    AdjustedTaxFreeTCode {
     override val taxFreeAmount: Double
         get() = 0.0
 }
 
-internal class CBR : WelshTaxCode, SingleBandTax {
+internal class CBR : WelshTaxCode,
+    SingleBandTax {
     override val taxAllAtBand: Int
         get() = 0
 }
 
-internal class CD0 : WelshTaxCode, SingleBandTax {
+internal class CD0 : WelshTaxCode,
+    SingleBandTax {
     override val taxAllAtBand: Int
         get() = 1
 }
 
-internal class CD1 : WelshTaxCode, SingleBandTax {
+internal class CD1 : WelshTaxCode,
+    SingleBandTax {
     override val taxAllAtBand: Int
         get() = 2
 }
 
-internal class CTCode(private val taxFreeAmountWithoutTrailingZero: Double) : WelshTaxCode, AdjustedTaxFreeTCode {
+internal class CTCode(private val taxFreeAmountWithoutTrailingZero: Double) : WelshTaxCode,
+    AdjustedTaxFreeTCode {
     override val taxFreeAmount: Double
         get() = taxFreeAmountWithoutTrailingZero * 10 + 9
 }
 
-internal class CLCode(private val taxFreeAmountWithoutTrailingZero: Double) : WelshTaxCode, StandardTaxCode {
+internal class CLCode(private val taxFreeAmountWithoutTrailingZero: Double) : WelshTaxCode,
+    StandardTaxCode {
     override val taxFreeAmount: Double
         get() = taxFreeAmountWithoutTrailingZero * 10 + 9
 }
@@ -59,21 +65,24 @@ internal class WelshEmergencyCode(private val taxFreeAmountWithoutTrailingZero: 
         get() = taxFreeAmountWithoutTrailingZero * 10 + 9
 }
 
-internal class WelshMCode(private val taxFreeAmountWithoutTrailingZero: Double) : WelshTaxCode, MarriageTaxCodes {
+internal class WelshMCode(private val taxFreeAmountWithoutTrailingZero: Double) : WelshTaxCode,
+    MarriageTaxCodes {
     override val increasedTaxAllowance: Boolean
         get() = true
     override val taxFreeAmount: Double
         get() = (taxFreeAmountWithoutTrailingZero * 10) + 9
 }
 
-internal class WelshNCode(private val taxFreeAmountWithoutTrailingZero: Double) : WelshTaxCode, MarriageTaxCodes {
+internal class WelshNCode(private val taxFreeAmountWithoutTrailingZero: Double) : WelshTaxCode,
+    MarriageTaxCodes {
     override val increasedTaxAllowance: Boolean
         get() = false
     override val taxFreeAmount: Double
         get() = (taxFreeAmountWithoutTrailingZero * 10) + 9
 }
 
-internal class CKCode(private val amountToAddToWagesFromCode: Double) : WelshTaxCode, KTaxCode {
+internal class CKCode(private val amountToAddToWagesFromCode: Double) : WelshTaxCode,
+    KTaxCode {
     override val amountToAddToWages: Double
         get() = amountToAddToWagesFromCode * 10 + 9
     override val taxFreeAmount: Double

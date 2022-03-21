@@ -48,12 +48,14 @@ internal class D1 : EnglishTaxCode,
         get() = 2
 }
 
-internal class TCode(private val taxFreeAmountWithoutTrailingZero: Double) : EnglishTaxCode, AdjustedTaxFreeTCode {
+internal class TCode(private val taxFreeAmountWithoutTrailingZero: Double) : EnglishTaxCode,
+    AdjustedTaxFreeTCode {
     override val taxFreeAmount: Double
         get() = taxFreeAmountWithoutTrailingZero * 10 + 9
 }
 
-internal class LCode(private val taxFreeAmountWithoutTrailingZero: Double) : EnglishTaxCode, StandardTaxCode {
+internal class LCode(private val taxFreeAmountWithoutTrailingZero: Double) : EnglishTaxCode,
+    StandardTaxCode {
     override val taxFreeAmount: Double
         get() = taxFreeAmountWithoutTrailingZero * 10 + 9
 }
@@ -69,21 +71,24 @@ internal class NTCode : NoTaxTaxCode {
         get() = NONE
 }
 
-internal class EnglishMCode(private val taxFreeAmountWithoutTrailingZero: Double) : EnglishTaxCode, MarriageTaxCodes {
+internal class EnglishMCode(private val taxFreeAmountWithoutTrailingZero: Double) : EnglishTaxCode,
+    MarriageTaxCodes {
     override val increasedTaxAllowance: Boolean
         get() = true
     override val taxFreeAmount: Double
         get() = (taxFreeAmountWithoutTrailingZero * 10) + 9
 }
 
-internal class EnglishNCode(private val taxFreeAmountWithoutTrailingZero: Double) : EnglishTaxCode, MarriageTaxCodes {
+internal class EnglishNCode(private val taxFreeAmountWithoutTrailingZero: Double) : EnglishTaxCode,
+    MarriageTaxCodes {
     override val increasedTaxAllowance: Boolean
         get() = false
     override val taxFreeAmount: Double
         get() = (taxFreeAmountWithoutTrailingZero * 10) + 9
 }
 
-internal class KCode(private val amountToAddToWagesFromCode: Double) : EnglishTaxCode, KTaxCode {
+internal class KCode(private val amountToAddToWagesFromCode: Double) : EnglishTaxCode,
+    KTaxCode {
     override val amountToAddToWages: Double
         get() = amountToAddToWagesFromCode * 10 + 9
     override val taxFreeAmount: Double

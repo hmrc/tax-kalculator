@@ -20,22 +20,16 @@ import uk.gov.hmrc.calculator.model.TaxYear
 internal class EmployerNIBands(taxYear: TaxYear) {
 
     private val employerNIBands2020: List<EmployerNIBand> = listOf(
-        EmployerNIBand(0.0, 6240.00, 0.0),
-        EmployerNIBand(6240.0, 8788.00, 0.0),
         EmployerNIBand(8788.0, 50000.00, 0.138),
         EmployerNIBand(50000.0, -1.0, 0.138)
     )
 
     private val employerNIBands2021: List<EmployerNIBand> = listOf(
-        EmployerNIBand(0.0, 6240.00, 0.0),
-        EmployerNIBand(6240.0, 8840.00, 0.0),
         EmployerNIBand(8840.0, 50270.00, 0.138),
         EmployerNIBand(50270.0, -1.0, 0.138)
     )
 
     private val employerNIBands2022: List<EmployerNIBand> = listOf(
-        EmployerNIBand(0.0, 6396.00, 0.0),
-        EmployerNIBand(6396.0, 9100.00, 0.0),
         EmployerNIBand(9100.0, 50270.00, 0.1505),
         EmployerNIBand(50270.0, -1.0, 0.1505)
     )

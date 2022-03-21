@@ -81,8 +81,8 @@ internal class CalculatorTests {
     @Test
     fun `GIVEN 2022 WHEN all supplied data valid THEN calculates response`() {
         val result = Calculator(
-            taxCode = "0L",
-            wages = 150000.0,
+            taxCode = "1257L",
+            wages = 40000.0,
             payPeriod = PayPeriod.YEARLY,
             taxYear = 2022
         ).run()

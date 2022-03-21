@@ -16,7 +16,6 @@
 package uk.gov.hmrc.calculator
 
 import kotlin.jvm.JvmOverloads
-import kotlin.math.min
 import uk.gov.hmrc.calculator.annotations.Throws
 import uk.gov.hmrc.calculator.exception.InvalidHoursException
 import uk.gov.hmrc.calculator.exception.InvalidPayPeriodException
@@ -36,7 +35,6 @@ import uk.gov.hmrc.calculator.model.TaxYear
 import uk.gov.hmrc.calculator.model.bands.Band
 import uk.gov.hmrc.calculator.model.bands.EmployeeNIBands
 import uk.gov.hmrc.calculator.model.bands.EmployerNIBands
-import uk.gov.hmrc.calculator.model.bands.TaxBand
 import uk.gov.hmrc.calculator.model.bands.TaxBands
 import uk.gov.hmrc.calculator.model.taxcodes.AdjustedTaxFreeTCode
 import uk.gov.hmrc.calculator.model.taxcodes.EmergencyTaxCode
@@ -49,7 +47,6 @@ import uk.gov.hmrc.calculator.model.taxcodes.TaxCode
 import uk.gov.hmrc.calculator.utils.convertAmountFromYearlyToPayPeriod
 import uk.gov.hmrc.calculator.utils.convertListOfBandBreakdownForPayPeriod
 import uk.gov.hmrc.calculator.utils.convertWageToYearly
-import uk.gov.hmrc.calculator.utils.taxcode.getTrueTaxFreeAmount
 import uk.gov.hmrc.calculator.utils.taxcode.toTaxCode
 import uk.gov.hmrc.calculator.utils.validation.WageValidator
 
@@ -64,34 +61,28 @@ class Calculator @JvmOverloads constructor(
 
     private val bandBreakdown: MutableList<BandBreakdown> = mutableListOf()
 
-    @Throws(InvalidTaxCodeException::class, InvalidTaxYearException::class, InvalidWagesException::class,
-        InvalidPayPeriodException::class, InvalidHoursException::class, InvalidTaxBandException::class)
+    @Throws(
+        InvalidTaxCodeException::class,
+        InvalidTaxYearException::class,
+        InvalidWagesException::class,
+        InvalidPayPeriodException::class,
+        InvalidHoursException::class,
+        InvalidTaxBandException::class
+    )
     fun run(): CalculatorResponse {
         if (!WageValidator.isAboveMinimumWages(wages) || !WageValidator.isBelowMaximumWages(wages)) {
             throw InvalidWagesException("Wages must be between 0 and 9999999.99")
         }
-
-        val yearlyWages = wages.convertWageToYearly(payPeriod, howManyAWeek)
-
-        val taxCode = this.taxCode.toTaxCode()
-
-        val taxBands = TaxBands.getAdjustedBands(taxYearType, taxCode)
-
-        val initialTaxBandUpper = taxBands[0].upper
-        val defaultAllowance = taxCode.getTrueTaxFreeAmount()
-
-        val taxFreeAmount = if (initialTaxBandUpper > taxCode.taxFreeAmount) {
-            initialTaxBandUpper
-        } else if (initialTaxBandUpper == taxCode.taxFreeAmount) {
-            taxCode.taxFreeAmount
-        } else min(initialTaxBandUpper, defaultAllowance)
-
-        val amountToAddToWages = if (taxCode is KTaxCode) taxCode.amountToAddToWages else null
+        val yearlyWages = wages.convertWageToYearly(
+            payPeriod,
+            howManyAWeek
+        )
+        val amountToAddToWages = if (taxCodeType is KTaxCode) (taxCodeType as KTaxCode).amountToAddToWages else null
 
         return createResponse(
-            taxCode,
+            taxCodeType,
             yearlyWages,
-            taxFreeAmount,
+            taxCodeType.taxFreeAmount,
             amountToAddToWages
         )
     }
@@ -102,7 +93,10 @@ class Calculator @JvmOverloads constructor(
         taxFreeAmount: Double,
         amountToAddToWages: Double?
     ): CalculatorResponse {
-        val taxPayable = taxToPay(yearlyWages, taxCode)
+        val taxPayable = taxToPay(
+            yearlyWages,
+            taxCode
+        )
         val employeesNI = employeeNIToPay(yearlyWages)
         val employersNI = employerNIToPay(yearlyWages)
         return CalculatorResponse(
@@ -151,61 +145,130 @@ class Calculator @JvmOverloads constructor(
         )
     }
 
-    private fun taxToPay(yearlyWages: Double, taxCode: TaxCode): Double {
+    private fun taxToPay(
+        yearlyWages: Double,
+        taxCode: TaxCode
+    ): Double {
         return when (taxCode) {
             is StandardTaxCode, is AdjustedTaxFreeTCode, is EmergencyTaxCode, is MarriageTaxCodes -> {
-                val taxBands = TaxBands.getAdjustedBands(taxYearType, taxCode)
-                getTotalFromBands(taxBands, yearlyWages)
+                val taxBands = TaxBands.getBands(
+                    taxYearType,
+                    taxCode.country
+                )
+                getTotalFromTaxBands(
+                    taxBands,
+                    yearlyWages
+                )
             }
-            is NoTaxTaxCode -> getTotalFromSingleBand(yearlyWages, taxCode.taxFreeAmount)
+            is NoTaxTaxCode -> getTotalFromSingleBand(
+                yearlyWages,
+                taxCode.taxFreeAmount
+            )
             is SingleBandTax -> {
-                val taxBands = TaxBands.getBands(taxYearType, taxCode.country)
-                getTotalFromSingleBand(yearlyWages, taxBands[taxCode.taxAllAtBand].percentageAsDecimal)
+                val taxBands = TaxBands.getBands(
+                    taxYearType,
+                    taxCode.country
+                )
+                getTotalFromSingleBand(
+                    yearlyWages,
+                    taxBands[taxCode.taxAllAtBand].percentageAsDecimal
+                )
             }
             is KTaxCode -> {
-                val taxBands = TaxBands.getAdjustedBands(taxYearType, taxCode)
-                getTotalFromBands(taxBands, yearlyWages + taxCode.amountToAddToWages)
+                val taxBands = TaxBands.getBands(
+                    taxYearType,
+                    taxCode.country
+                )
+                getTotalFromTaxBands(
+                    taxBands,
+                    yearlyWages + taxCode.amountToAddToWages
+                )
             }
             else -> throw InvalidTaxCodeException("$this is an invalid tax code")
         }
     }
 
-    private fun getTotalFromSingleBand(yearlyWage: Double, percentageForSingleBand: Double): Double {
+    private fun getTotalFromSingleBand(
+        yearlyWage: Double,
+        percentageForSingleBand: Double
+    ): Double {
         val taxToPayForSingleBand: Double = yearlyWage * percentageForSingleBand
-        bandBreakdown.add(BandBreakdown(percentageForSingleBand, taxToPayForSingleBand))
+        bandBreakdown.add(
+            BandBreakdown(
+                percentageForSingleBand,
+                taxToPayForSingleBand
+            )
+        )
         return taxToPayForSingleBand
     }
 
     private fun employerNIToPay(yearlyWages: Double) =
-        if (isPensionAge) 0.0 else getTotalFromBands(EmployerNIBands(taxYearType).bands, yearlyWages)
+        if (isPensionAge) 0.0 else getTotalFromNIBands(
+            EmployerNIBands(taxYearType).bands,
+            yearlyWages
+        )
 
     private fun employeeNIToPay(yearlyWages: Double) =
-        if (isPensionAge) 0.0 else getTotalFromBands(EmployeeNIBands(taxYearType).bands, yearlyWages)
+        if (isPensionAge) 0.0 else getTotalFromNIBands(
+            EmployeeNIBands(taxYearType).bands,
+            yearlyWages
+        )
 
-    private fun getTotalFromBands(bands: List<Band>, wages: Double): Double {
+    private fun getTotalFromTaxBands(
+        bands: List<Band>,
+        wages: Double
+    ): Double {
         var amount = 0.0
+        var remainingToTax = wages - taxCodeType.taxFreeAmount
         bands.map { band: Band ->
-            if (band.inBand(wages)) {
-                val taxForBand = (wages - band.lower) * band.percentageAsDecimal
-                if (shouldAddBand(band, band.percentageAsDecimal)) {
-                    bandBreakdown.add(BandBreakdown(band.percentageAsDecimal, taxForBand))
-                }
-                amount += taxForBand
-                return amount
+            if (remainingToTax <= 0) return amount
+
+            val toTax = if ((band.upper - band.lower) < remainingToTax && band.upper != -1.0) {
+                band.upper - band.lower
             } else {
-                val taxForBand = (band.upper - band.lower) * band.percentageAsDecimal
-                if (shouldAddBand(band, band.percentageAsDecimal)) {
-                    bandBreakdown.add(BandBreakdown(band.percentageAsDecimal, taxForBand))
-                }
-                amount += taxForBand
+                remainingToTax
             }
+            val taxForBand = toTax * band.percentageAsDecimal
+            bandBreakdown.add(
+                BandBreakdown(
+                    band.percentageAsDecimal,
+                    taxForBand
+                )
+            )
+
+            remainingToTax -= toTax
+            amount += taxForBand
         }
-        throw InvalidTaxBandException("No tax bands were found to be used for the calculation")
+        return amount
+    }
+
+    private fun getTotalFromNIBands(
+        bands: List<Band>,
+        wages: Double
+    ): Double {
+        var amount = 0.0
+        var remainingToTax = wages - bands[0].lower
+        bands.map { band: Band ->
+            if (remainingToTax <= 0) return amount
+
+            val toTax = if ((band.upper - band.lower) < remainingToTax && band.upper != -1.0) {
+                band.upper - band.lower
+            } else {
+                remainingToTax
+            }
+            val taxForBand = toTax * band.percentageAsDecimal
+
+            remainingToTax -= toTax
+            amount += taxForBand
+        }
+        return amount
     }
 
     private val taxYearType: TaxYear by lazy {
         TaxYear.fromInt(taxYear)
     }
 
-    private fun shouldAddBand(band: Band, percentage: Double) = band is TaxBand && percentage > 0.0
+    private val taxCodeType: TaxCode by lazy {
+        this.taxCode.toTaxCode()
+    }
 }

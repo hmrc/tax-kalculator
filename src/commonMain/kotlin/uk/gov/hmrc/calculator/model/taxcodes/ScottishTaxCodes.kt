@@ -55,12 +55,14 @@ internal class SD2 : ScottishTaxCode,
         get() = 4
 }
 
-internal class STCode(private val taxFreeAmountWithoutTrailingZero: Double) : ScottishTaxCode, AdjustedTaxFreeTCode {
+internal class STCode(private val taxFreeAmountWithoutTrailingZero: Double) : ScottishTaxCode,
+    AdjustedTaxFreeTCode {
     override val taxFreeAmount: Double
         get() = taxFreeAmountWithoutTrailingZero * 10 + 9
 }
 
-internal class SLCode(private val taxFreeAmountWithoutTrailingZero: Double) : ScottishTaxCode, StandardTaxCode {
+internal class SLCode(private val taxFreeAmountWithoutTrailingZero: Double) : ScottishTaxCode,
+    StandardTaxCode {
     override val taxFreeAmount: Double
         get() = taxFreeAmountWithoutTrailingZero * 10 + 9
 }
@@ -71,21 +73,24 @@ internal class ScottishEmergencyCode(private val taxFreeAmountWithoutTrailingZer
         get() = taxFreeAmountWithoutTrailingZero * 10 + 9
 }
 
-internal class ScottishMCode(private val taxFreeAmountWithoutTrailingZero: Double) : ScottishTaxCode, MarriageTaxCodes {
+internal class ScottishMCode(private val taxFreeAmountWithoutTrailingZero: Double) : ScottishTaxCode,
+    MarriageTaxCodes {
     override val increasedTaxAllowance: Boolean
         get() = true
     override val taxFreeAmount: Double
         get() = (taxFreeAmountWithoutTrailingZero * 10) + 9
 }
 
-internal class ScottishNCode(private val taxFreeAmountWithoutTrailingZero: Double) : ScottishTaxCode, MarriageTaxCodes {
+internal class ScottishNCode(private val taxFreeAmountWithoutTrailingZero: Double) : ScottishTaxCode,
+    MarriageTaxCodes {
     override val increasedTaxAllowance: Boolean
         get() = false
     override val taxFreeAmount: Double
         get() = (taxFreeAmountWithoutTrailingZero * 10) + 9
 }
 
-internal class SKCode(private val amountToAddToWagesFromCode: Double) : ScottishTaxCode, KTaxCode {
+internal class SKCode(private val amountToAddToWagesFromCode: Double) : ScottishTaxCode,
+    KTaxCode {
     override val amountToAddToWages: Double
         get() = amountToAddToWagesFromCode * 10 + 9
     override val taxFreeAmount: Double
