@@ -68,6 +68,4 @@ internal object TaxBands {
         TaxBand(37700.00, 150000.00, 0.4),
         TaxBand(150000.0, -1.0, 0.45)
     )
-
-    private const val ONE_FIFTY_THRESHOLD: Double = 150000.0
 }
