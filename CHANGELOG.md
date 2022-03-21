@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+- Removed the internal concept of adjusted bands.
+- Changed the way in which tax and NI is calculated and totalled.
 
 ## [2.3.0] - 2022-03-17Z
 - Added adjustment for over £150k
