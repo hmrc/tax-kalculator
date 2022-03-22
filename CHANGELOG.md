@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.4.1] - 2022-03-22Z
 - Restored `taxBreakdown` property to response.
 
 ## [2.4.0] - 2022-03-21Z
