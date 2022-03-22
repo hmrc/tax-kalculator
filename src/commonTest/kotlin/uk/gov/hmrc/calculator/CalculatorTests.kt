@@ -19,6 +19,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 import uk.gov.hmrc.calculator.exception.InvalidHoursException
 import uk.gov.hmrc.calculator.exception.InvalidTaxYearException
 import uk.gov.hmrc.calculator.exception.InvalidWagesException
@@ -98,6 +99,7 @@ internal class CalculatorTests {
         assertEquals(241.9, weekly.taxFree)
         assertEquals(105.47, weekly.taxToPay)
         assertEquals(587.01, weekly.takeHome)
+        assertTrue(weekly.taxBreakdown!!.isNotEmpty())
 
         val fourWeekly = result.fourWeekly
         assertEquals(PayPeriod.FOUR_WEEKLY, fourWeekly.payPeriod)
@@ -107,6 +109,7 @@ internal class CalculatorTests {
         assertEquals(967.62, fourWeekly.taxFree)
         assertEquals(421.86, fourWeekly.taxToPay)
         assertEquals(2348.07, fourWeekly.takeHome)
+        assertTrue(fourWeekly.taxBreakdown!!.isNotEmpty())
 
         val monthly = result.monthly
         assertEquals(PayPeriod.MONTHLY, monthly.payPeriod)
@@ -116,6 +119,7 @@ internal class CalculatorTests {
         assertEquals(1048.25, monthly.taxFree)
         assertEquals(457.02, monthly.taxToPay)
         assertEquals(2543.73, monthly.takeHome)
+        assertTrue(monthly.taxBreakdown!!.isNotEmpty())
 
         val yearly = result.yearly
         assertEquals(PayPeriod.YEARLY, yearly.payPeriod)
@@ -125,6 +129,7 @@ internal class CalculatorTests {
         assertEquals(12579.00, yearly.taxFree)
         assertEquals(5484.20, yearly.taxToPay)
         assertEquals(30524.90, yearly.takeHome)
+        assertTrue(yearly.taxBreakdown!!.isNotEmpty())
     }
 
     @Test
