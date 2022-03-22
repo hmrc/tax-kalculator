@@ -47,6 +47,7 @@ import uk.gov.hmrc.calculator.model.taxcodes.TaxCode
 import uk.gov.hmrc.calculator.utils.convertAmountFromYearlyToPayPeriod
 import uk.gov.hmrc.calculator.utils.convertListOfBandBreakdownForPayPeriod
 import uk.gov.hmrc.calculator.utils.convertWageToYearly
+import uk.gov.hmrc.calculator.utils.taxcode.getTrueTaxFreeAmount
 import uk.gov.hmrc.calculator.utils.taxcode.toTaxCode
 import uk.gov.hmrc.calculator.utils.validation.WageValidator
 
@@ -82,7 +83,7 @@ class Calculator @JvmOverloads constructor(
         return createResponse(
             taxCodeType,
             yearlyWages,
-            taxCodeType.taxFreeAmount,
+            taxCodeType.getTrueTaxFreeAmount(),
             amountToAddToWages
         )
     }
