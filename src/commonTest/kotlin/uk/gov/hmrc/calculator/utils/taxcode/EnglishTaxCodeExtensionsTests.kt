@@ -15,10 +15,6 @@
  */
 package uk.gov.hmrc.calculator.utils.taxcode
 
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
-import kotlin.test.assertTrue
 import uk.gov.hmrc.calculator.exception.InvalidTaxCodeException
 import uk.gov.hmrc.calculator.model.Country.ENGLAND
 import uk.gov.hmrc.calculator.model.taxcodes.BR
@@ -33,8 +29,12 @@ import uk.gov.hmrc.calculator.model.taxcodes.KCode
 import uk.gov.hmrc.calculator.model.taxcodes.LCode
 import uk.gov.hmrc.calculator.model.taxcodes.TCode
 import uk.gov.hmrc.calculator.model.taxcodes.ZeroT
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertTrue
 
-class StringEnglishTaxCodeTests {
+class EnglishTaxCodeExtensionsTests {
     @Test
     fun `English no allowance`() {
         assertTrue("0T".toTaxCode() is ZeroT)

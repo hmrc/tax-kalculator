@@ -45,3 +45,11 @@ internal fun String.extractDoubleFromEmergencyTaxCode(): Double =
         .removeSuffix("L")
         .removeSuffix("T")
         .toDouble()
+
+/*
+    Tax-free amount without the "£9"
+*/
+internal fun TaxCode.getTrueTaxFreeAmount(): Double {
+    val amount = this.taxFreeAmount
+    return if (amount > 0) amount - 9 else 0.0
+}

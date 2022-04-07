@@ -15,10 +15,10 @@
  */
 package uk.gov.hmrc.calculator.model
 
+import uk.gov.hmrc.calculator.exception.InvalidTaxYearException
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
-import uk.gov.hmrc.calculator.exception.InvalidTaxYearException
 
 class TaxYearTests {
 
