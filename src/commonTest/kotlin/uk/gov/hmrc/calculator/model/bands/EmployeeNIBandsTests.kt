@@ -15,9 +15,9 @@
  */
 package uk.gov.hmrc.calculator.model.bands
 
+import uk.gov.hmrc.calculator.model.TaxYear
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import uk.gov.hmrc.calculator.model.TaxYear
 
 class EmployeeNIBandsTests {
 

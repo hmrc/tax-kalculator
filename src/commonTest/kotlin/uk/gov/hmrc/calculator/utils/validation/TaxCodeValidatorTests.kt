@@ -15,11 +15,11 @@
  */
 package uk.gov.hmrc.calculator.utils.validation
 
+import uk.gov.hmrc.calculator.model.ValidationError
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
-import uk.gov.hmrc.calculator.model.ValidationError
 
 class TaxCodeValidatorTests {
     @Test

@@ -15,15 +15,15 @@
  */
 package uk.gov.hmrc.calculator.utils.taxcode
 
+import uk.gov.hmrc.calculator.exception.InvalidTaxCodeException
+import uk.gov.hmrc.calculator.model.Country.NONE
+import uk.gov.hmrc.calculator.model.taxcodes.NoTaxTaxCode
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
-import uk.gov.hmrc.calculator.exception.InvalidTaxCodeException
-import uk.gov.hmrc.calculator.model.Country.NONE
-import uk.gov.hmrc.calculator.model.taxcodes.NoTaxTaxCode
 
-class StringOtherTaxCodeTests {
+class OtherTaxCodeTests {
 
     @Test
     fun `NT tax code`() {

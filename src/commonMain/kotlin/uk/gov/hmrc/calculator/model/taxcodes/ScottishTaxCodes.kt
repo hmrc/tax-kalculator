@@ -23,13 +23,15 @@ internal interface ScottishTaxCode : TaxCode {
         get() = SCOTLAND
 }
 
-internal class S0T : ScottishTaxCode,
+internal class S0T :
+    ScottishTaxCode,
     AdjustedTaxFreeTCode {
     override val taxFreeAmount: Double
         get() = 0.0
 }
 
-internal class SBR : ScottishTaxCode,
+internal class SBR :
+    ScottishTaxCode,
     SingleBandTax {
     override val taxFreeAmount: Double
         get() = 0.0
@@ -37,43 +39,50 @@ internal class SBR : ScottishTaxCode,
         get() = 1
 }
 
-internal class SD0 : ScottishTaxCode,
+internal class SD0 :
+    ScottishTaxCode,
     SingleBandTax {
     override val taxAllAtBand: Int
         get() = 2
 }
 
-internal class SD1 : ScottishTaxCode,
+internal class SD1 :
+    ScottishTaxCode,
     SingleBandTax {
     override val taxAllAtBand: Int
         get() = 3
 }
 
-internal class SD2 : ScottishTaxCode,
+internal class SD2 :
+    ScottishTaxCode,
     SingleBandTax {
     override val taxAllAtBand: Int
         get() = 4
 }
 
-internal class STCode(private val taxFreeAmountWithoutTrailingZero: Double) : ScottishTaxCode,
+internal class STCode(private val taxFreeAmountWithoutTrailingZero: Double) :
+    ScottishTaxCode,
     AdjustedTaxFreeTCode {
     override val taxFreeAmount: Double
         get() = taxFreeAmountWithoutTrailingZero * 10 + 9
 }
 
-internal class SLCode(private val taxFreeAmountWithoutTrailingZero: Double) : ScottishTaxCode,
+internal class SLCode(private val taxFreeAmountWithoutTrailingZero: Double) :
+    ScottishTaxCode,
     StandardTaxCode {
     override val taxFreeAmount: Double
         get() = taxFreeAmountWithoutTrailingZero * 10 + 9
 }
 
-internal class ScottishEmergencyCode(private val taxFreeAmountWithoutTrailingZero: Double) : ScottishTaxCode,
+internal class ScottishEmergencyCode(private val taxFreeAmountWithoutTrailingZero: Double) :
+    ScottishTaxCode,
     EmergencyTaxCode {
     override val taxFreeAmount: Double
         get() = taxFreeAmountWithoutTrailingZero * 10 + 9
 }
 
-internal class ScottishMCode(private val taxFreeAmountWithoutTrailingZero: Double) : ScottishTaxCode,
+internal class ScottishMCode(private val taxFreeAmountWithoutTrailingZero: Double) :
+    ScottishTaxCode,
     MarriageTaxCodes {
     override val increasedTaxAllowance: Boolean
         get() = true
@@ -81,7 +90,8 @@ internal class ScottishMCode(private val taxFreeAmountWithoutTrailingZero: Doubl
         get() = (taxFreeAmountWithoutTrailingZero * 10) + 9
 }
 
-internal class ScottishNCode(private val taxFreeAmountWithoutTrailingZero: Double) : ScottishTaxCode,
+internal class ScottishNCode(private val taxFreeAmountWithoutTrailingZero: Double) :
+    ScottishTaxCode,
     MarriageTaxCodes {
     override val increasedTaxAllowance: Boolean
         get() = false
@@ -89,7 +99,8 @@ internal class ScottishNCode(private val taxFreeAmountWithoutTrailingZero: Doubl
         get() = (taxFreeAmountWithoutTrailingZero * 10) + 9
 }
 
-internal class SKCode(private val amountToAddToWagesFromCode: Double) : ScottishTaxCode,
+internal class SKCode(private val amountToAddToWagesFromCode: Double) :
+    ScottishTaxCode,
     KTaxCode {
     override val amountToAddToWages: Double
         get() = amountToAddToWagesFromCode * 10 + 9

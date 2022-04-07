@@ -12,7 +12,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath("uk.gov.hmrc.gradle:spotless:1.0.0")
+        classpath("uk.gov.hmrc.gradle:spotless:1.1.1")
     }
 }
 

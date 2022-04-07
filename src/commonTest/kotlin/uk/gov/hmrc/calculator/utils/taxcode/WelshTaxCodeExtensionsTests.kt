@@ -15,10 +15,6 @@
  */
 package uk.gov.hmrc.calculator.utils.taxcode
 
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
-import kotlin.test.assertTrue
 import uk.gov.hmrc.calculator.exception.InvalidTaxCodeException
 import uk.gov.hmrc.calculator.model.Country.WALES
 import uk.gov.hmrc.calculator.model.taxcodes.C0T
@@ -32,8 +28,12 @@ import uk.gov.hmrc.calculator.model.taxcodes.WelshEmergencyCode
 import uk.gov.hmrc.calculator.model.taxcodes.WelshMCode
 import uk.gov.hmrc.calculator.model.taxcodes.WelshNCode
 import uk.gov.hmrc.calculator.model.taxcodes.WelshTaxCode
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertTrue
 
-class StringWelshTaxCodeTests {
+class WelshTaxCodeExtensionsTests {
 
     @Test
     fun `Welsh no allowance`() {
