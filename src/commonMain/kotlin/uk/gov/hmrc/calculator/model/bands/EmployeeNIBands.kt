@@ -16,6 +16,8 @@
 package uk.gov.hmrc.calculator.model.bands
 
 import uk.gov.hmrc.calculator.model.TaxYear
+import com.soywiz.klock.DateTime
+import com.soywiz.klock.DateTimeTz
 
 internal class EmployeeNIBands(taxYear: TaxYear) {
 
@@ -34,9 +36,18 @@ internal class EmployeeNIBands(taxYear: TaxYear) {
         EmployeeNIBand(50270.0, -1.0, 0.0325)
     )
 
+    private val employeeNIBands2022Revised: List<EmployeeNIBand> = listOf(
+        EmployeeNIBand(12570.0, 50270.00, 0.1325),
+        EmployeeNIBand(50270.0, -1.0, 0.0325)
+    )
+
     internal val bands: List<EmployeeNIBand> = when (taxYear) {
         TaxYear.TWENTY_TWENTY -> employeeNIBands2020
         TaxYear.TWENTY_TWENTY_ONE -> employeeNIBands2021
-        TaxYear.TWENTY_TWENTY_TWO -> employeeNIBands2022
+        TaxYear.TWENTY_TWENTY_TWO -> if (DateTime.now().local > DateTime(
+                year = 2022,
+                month = 7,
+                day = 5
+            ).local) employeeNIBands2022Revised else employeeNIBands2022
     }
 }
