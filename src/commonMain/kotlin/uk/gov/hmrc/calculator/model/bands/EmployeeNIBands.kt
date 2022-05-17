@@ -16,10 +16,13 @@
 package uk.gov.hmrc.calculator.model.bands
 
 import uk.gov.hmrc.calculator.model.TaxYear
-import com.soywiz.klock.DateTime
-import com.soywiz.klock.DateTimeTz
+import uk.gov.hmrc.calculator.services.DateService
+import uk.gov.hmrc.calculator.services.DateServiceImpl
 
-internal class EmployeeNIBands(taxYear: TaxYear) {
+internal class EmployeeNIBands(
+    taxYear: TaxYear,
+    private val dateService: DateService = DateServiceImpl()
+) {
 
     private val employeeNIBands2020: List<EmployeeNIBand> = listOf(
         EmployeeNIBand(9500.0, 50000.00, 0.12),
@@ -44,10 +47,6 @@ internal class EmployeeNIBands(taxYear: TaxYear) {
     internal val bands: List<EmployeeNIBand> = when (taxYear) {
         TaxYear.TWENTY_TWENTY -> employeeNIBands2020
         TaxYear.TWENTY_TWENTY_ONE -> employeeNIBands2021
-        TaxYear.TWENTY_TWENTY_TWO -> if (DateTime.now().local > DateTime(
-                year = 2022,
-                month = 7,
-                day = 5
-            ).local) employeeNIBands2022Revised else employeeNIBands2022
+        TaxYear.TWENTY_TWENTY_TWO -> if (dateService.isIn2022RevisedPeriod) employeeNIBands2022Revised else employeeNIBands2022
     }
 }
