@@ -22,6 +22,6 @@ internal object TaxFreeAllowance {
     fun getAllowance(taxYear: TaxYear): Double =
         when (taxYear) {
             TaxYear.TWENTY_TWENTY -> 12500.00
-            TaxYear.TWENTY_TWENTY_ONE, TaxYear.TWENTY_TWENTY_TWO -> 12570.00
+            TaxYear.TWENTY_TWENTY_ONE, TaxYear.TWENTY_TWENTY_TWO, TaxYear.TWENTY_TWENTY_TWO_REVISED -> 12570.00
         }
 }

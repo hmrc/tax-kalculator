@@ -16,9 +16,11 @@
 package uk.gov.hmrc.calculator.services
 
 import com.soywiz.klock.DateTime
+import com.soywiz.klock.DateTimeTz
 
 interface DateService {
     val isIn2022RevisedPeriod: Boolean
+    fun firstDayOfTaxYear(year: Int): DateTimeTz
 }
 
 class DateServiceImpl : DateService {
@@ -29,4 +31,19 @@ class DateServiceImpl : DateService {
             month = 7,
             day = 5
         ).local
+
+    override fun firstDayOfTaxYear(year: Int): DateTimeTz =
+        DateTime(
+            year = year,
+            month = 4,
+            day = 6
+        ).local
+
+    companion object {
+        fun firstDayOfTaxYear(year: Int): DateTimeTz =
+            DateServiceImpl().firstDayOfTaxYear(year)
+
+        val isIn2022RevisedPeriod: Boolean =
+            DateServiceImpl().isIn2022RevisedPeriod
+    }
 }

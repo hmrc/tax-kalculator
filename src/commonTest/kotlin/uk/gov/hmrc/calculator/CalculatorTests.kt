@@ -36,7 +36,7 @@ internal class CalculatorTests {
             taxCode = "1257L",
             wages = 40000.0,
             payPeriod = PayPeriod.YEARLY,
-            taxYear = 2021
+            taxYear = TaxYear.TWENTY_TWENTY_ONE
         ).run()
 
         assertEquals(Country.ENGLAND, result.country)
@@ -85,7 +85,7 @@ internal class CalculatorTests {
             taxCode = "1257L",
             wages = 40000.0,
             payPeriod = PayPeriod.YEARLY,
-            taxYear = 2022
+            taxYear = TaxYear.TWENTY_TWENTY_TWO
         ).run()
 
         assertEquals(Country.ENGLAND, result.country)
@@ -195,7 +195,7 @@ internal class CalculatorTests {
                 taxCode = "1257L",
                 wages = 40000.0,
                 payPeriod = PayPeriod.YEARLY,
-                taxYear = 2040
+                taxYear = TaxYear.fromInt(2040)
             ).run()
         }
     }
