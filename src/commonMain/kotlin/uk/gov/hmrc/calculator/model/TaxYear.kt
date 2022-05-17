@@ -19,6 +19,7 @@ import com.soywiz.klock.DateTime
 import com.soywiz.klock.DateTimeTz
 import uk.gov.hmrc.calculator.annotations.Throws
 import uk.gov.hmrc.calculator.exception.InvalidTaxYearException
+import uk.gov.hmrc.calculator.services.DateService
 import uk.gov.hmrc.calculator.services.DateServiceImpl
 
 enum class TaxYear(private val value: Int) {
@@ -39,7 +40,7 @@ enum class TaxYear(private val value: Int) {
             DateTime
                 .nowLocal()
                 .let {
-                    if (it < DateServiceImpl.firstDayOfTaxYear(it.yearInt)) it.yearInt - 1 else it.yearInt
+                    if (it < DateService.firstDayOfTaxYear(it.yearInt)) it.yearInt - 1 else it.yearInt
                 }
 
         // do  logic to work out of 2022 and is in revised period
