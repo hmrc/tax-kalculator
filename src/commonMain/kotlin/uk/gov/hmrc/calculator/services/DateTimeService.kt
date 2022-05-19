@@ -13,15 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.gov.hmrc.calculator.model.bands
+package uk.gov.hmrc.calculator.services
 
-import uk.gov.hmrc.calculator.model.TaxYear
+import com.soywiz.klock.DateTime
 
-internal object TaxFreeAllowance {
+interface DateTimeService {
+    fun now(): DateTime
+}
 
-    fun getAllowance(taxYear: TaxYear): Double =
-        when (taxYear) {
-            TaxYear.TWENTY_TWENTY -> 12500.00
-            TaxYear.TWENTY_TWENTY_ONE, TaxYear.TWENTY_TWENTY_TWO, TaxYear.TWENTY_TWENTY_TWO_REVISED -> 12570.00
-        }
+class DateTimeServiceImpl : DateTimeService {
+    override fun now(): DateTime = DateTime.now()
 }

@@ -30,11 +30,12 @@ interface DateService {
             DateServiceImpl().isIn2022RevisedPeriod
     }
 }
-
-class DateServiceImpl : DateService {
+class DateServiceImpl(
+    private val dateTimeService: DateTimeService = DateTimeServiceImpl()
+) : DateService {
 
     override val isIn2022RevisedPeriod: Boolean =
-        DateTime.now().local > DateTime(
+        dateTimeService.now().local > DateTime(
             year = 2022,
             month = 7,
             day = 5

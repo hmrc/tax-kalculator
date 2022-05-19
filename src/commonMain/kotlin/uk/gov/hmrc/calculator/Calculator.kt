@@ -57,7 +57,7 @@ class Calculator @JvmOverloads constructor(
     private val payPeriod: PayPeriod,
     private val isPensionAge: Boolean = false,
     private val howManyAWeek: Double? = null,
-    private val taxYear: Int = TaxYear.currentTaxYearInt
+    private val taxYear: TaxYear = TaxYear.currentTaxYear
 ) {
 
     private val bandBreakdown: MutableList<BandBreakdown> = mutableListOf()
@@ -153,7 +153,7 @@ class Calculator @JvmOverloads constructor(
         return when (taxCode) {
             is StandardTaxCode, is AdjustedTaxFreeTCode, is EmergencyTaxCode, is MarriageTaxCodes -> {
                 val taxBands = TaxBands.getBands(
-                    taxYearType,
+                    taxYear,
                     taxCode.country
                 )
                 getTotalFromTaxBands(
@@ -167,7 +167,7 @@ class Calculator @JvmOverloads constructor(
             )
             is SingleBandTax -> {
                 val taxBands = TaxBands.getBands(
-                    taxYearType,
+                    taxYear,
                     taxCode.country
                 )
                 getTotalFromSingleBand(
@@ -177,7 +177,7 @@ class Calculator @JvmOverloads constructor(
             }
             is KTaxCode -> {
                 val taxBands = TaxBands.getBands(
-                    taxYearType,
+                    taxYear,
                     taxCode.country
                 )
                 getTotalFromTaxBands(
@@ -205,13 +205,13 @@ class Calculator @JvmOverloads constructor(
 
     private fun employerNIToPay(yearlyWages: Double) =
         if (isPensionAge) 0.0 else getTotalFromNIBands(
-            EmployerNIBands(taxYearType).bands,
+            EmployerNIBands(taxYear).bands,
             yearlyWages
         )
 
     private fun employeeNIToPay(yearlyWages: Double) =
         if (isPensionAge) 0.0 else getTotalFromNIBands(
-            EmployeeNIBands(taxYearType).bands,
+            EmployeeNIBands(taxYear).bands,
             yearlyWages
         )
 
@@ -263,10 +263,6 @@ class Calculator @JvmOverloads constructor(
             amount += taxForBand
         }
         return amount
-    }
-
-    private val taxYearType: TaxYear by lazy {
-        TaxYear.fromInt(taxYear)
     }
 
     private val taxCodeType: TaxCode by lazy {

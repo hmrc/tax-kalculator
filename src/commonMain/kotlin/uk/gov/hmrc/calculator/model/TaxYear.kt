@@ -16,7 +16,6 @@
 package uk.gov.hmrc.calculator.model
 
 import com.soywiz.klock.DateTime
-import com.soywiz.klock.DateTimeTz
 import uk.gov.hmrc.calculator.annotations.Throws
 import uk.gov.hmrc.calculator.exception.InvalidTaxYearException
 import uk.gov.hmrc.calculator.services.DateService
@@ -29,13 +28,11 @@ enum class TaxYear(private val value: Int) {
     TWENTY_TWENTY_TWO_REVISED(2022);
 
     companion object {
-
         @Throws(InvalidTaxYearException::class)
         fun fromInt(value: Int): TaxYear =
             values()
                 .firstOrNull { it.value == value }
                 ?: throw InvalidTaxYearException("$value")
-
         val currentTaxYearInt: Int =
             DateTime
                 .nowLocal()
