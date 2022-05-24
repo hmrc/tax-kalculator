@@ -186,6 +186,60 @@ internal class CalculatorTests {
     }
 
     @Test
+    fun `GIVEN 2022_REVISED WHEN all supplied data valid and 60000 salary THEN calculates response`() {
+        val result = Calculator(
+            taxCode = "1257L",
+            wages = 60000.0,
+            payPeriod = PayPeriod.YEARLY,
+            taxYear = TaxYear.TWENTY_TWENTY_TWO_REVISED
+        ).run()
+
+        assertEquals(Country.ENGLAND, result.country)
+        assertFalse(result.isKCode)
+
+        val weekly = result.weekly
+        assertEquals(PayPeriod.WEEKLY, weekly.payPeriod)
+        assertEquals(102.14, weekly.employeesNI)
+        assertEquals(147.32, weekly.employersNI)
+        assertEquals(1153.85, weekly.wages)
+        assertEquals(241.73, weekly.taxFree)
+        assertEquals(219.78, weekly.taxToPay)
+        assertEquals(831.93, weekly.takeHome)
+        assertTrue(weekly.taxBreakdown!!.isNotEmpty())
+
+        val fourWeekly = result.fourWeekly
+        assertEquals(PayPeriod.FOUR_WEEKLY, fourWeekly.payPeriod)
+        assertEquals(408.58, fourWeekly.employeesNI)
+        assertEquals(589.27, fourWeekly.employersNI)
+        assertEquals(4615.38, fourWeekly.wages)
+        assertEquals(966.92, fourWeekly.taxFree)
+        assertEquals(879.11, fourWeekly.taxToPay)
+        assertEquals(3327.7, fourWeekly.takeHome)
+        assertTrue(fourWeekly.taxBreakdown!!.isNotEmpty())
+
+
+        val monthly = result.monthly
+        assertEquals(PayPeriod.MONTHLY, monthly.payPeriod)
+        assertEquals(442.62, monthly.employeesNI)
+        assertEquals(638.37, monthly.employersNI)
+        assertEquals(5000.00, monthly.wages)
+        assertEquals(1047.5, monthly.taxFree)
+        assertEquals(952.37, monthly.taxToPay)
+        assertEquals(3605.01, monthly.takeHome)
+        assertTrue(monthly.taxBreakdown!!.isNotEmpty())
+
+        val yearly = result.yearly
+        assertEquals(PayPeriod.YEARLY, yearly.payPeriod)
+        assertEquals(5311.48, yearly.employeesNI)
+        assertEquals(7660.45, yearly.employersNI)
+        assertEquals(60000.00, yearly.wages)
+        assertEquals(12570.00, yearly.taxFree)
+        assertEquals(11428.40, yearly.taxToPay)
+        assertEquals(43260.12, yearly.takeHome)
+        assertTrue(yearly.taxBreakdown!!.isNotEmpty())
+    }
+
+    @Test
     fun `GIVEN hours is zero and pay period hour WHEN calculate THEN exception`() {
         assertFailsWith<InvalidHoursException> {
             Calculator(
