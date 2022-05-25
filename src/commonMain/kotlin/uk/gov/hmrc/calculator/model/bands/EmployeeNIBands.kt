@@ -16,8 +16,6 @@
 package uk.gov.hmrc.calculator.model.bands
 
 import uk.gov.hmrc.calculator.model.TaxYear
-import uk.gov.hmrc.calculator.services.DateService
-import uk.gov.hmrc.calculator.services.DateServiceImpl
 
 internal class EmployeeNIBands(taxYear: TaxYear) {
 
