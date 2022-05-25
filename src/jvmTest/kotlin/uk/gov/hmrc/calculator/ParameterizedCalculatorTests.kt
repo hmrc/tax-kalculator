@@ -24,6 +24,7 @@ import org.junit.jupiter.params.converter.ConvertWith
 import org.junit.jupiter.params.provider.CsvFileSource
 import uk.gov.hmrc.calculator.model.Country
 import uk.gov.hmrc.calculator.model.PayPeriod
+import uk.gov.hmrc.calculator.model.TaxYear
 
 internal class ParameterizedCalculatorTests {
 
@@ -50,7 +51,7 @@ internal class ParameterizedCalculatorTests {
             taxCode = inputTaxCode,
             wages = inputWages,
             payPeriod = inputPayPeriod,
-            taxYear = inputTaxYear,
+            taxYear = TaxYear.fromInt(inputTaxYear),
             isPensionAge = inputIsPensionAge
         ).run()
 
@@ -100,7 +101,7 @@ internal class ParameterizedCalculatorTests {
             taxCode = inputTaxCode,
             wages = inputWages,
             payPeriod = inputPayPeriod,
-            taxYear = inputTaxYear,
+            taxYear = TaxYear.fromInt(inputTaxYear),
             isPensionAge = inputIsPensionAge
         ).run()
 

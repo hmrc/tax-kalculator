@@ -65,4 +65,18 @@ class EmployeeNIBandsTests {
         assertEquals(true, band1.inBand(650000.0))
         assertEquals(false, band1.inBand(1000.0))
     }
+    @Test
+    fun `WHEN year is 2022Revised THEN band ranges correct`() {
+        val bands = EmployeeNIBands(TaxYear.TWENTY_TWENTY_TWO_REVISED).bands
+
+        val band0 = bands[0]
+        assertEquals(0.1325, band0.percentageAsDecimal)
+        assertEquals(true, band0.inBand(12571.0))
+        assertEquals(false, band0.inBand(650000.0))
+
+        val band1 = bands[1]
+        assertEquals(0.0325, band1.percentageAsDecimal)
+        assertEquals(true, band1.inBand(650000.0))
+        assertEquals(false, band1.inBand(1000.0))
+    }
 }

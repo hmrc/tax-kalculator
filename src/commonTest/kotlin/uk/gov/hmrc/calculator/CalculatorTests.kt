@@ -36,7 +36,7 @@ internal class CalculatorTests {
             taxCode = "1257L",
             wages = 40000.0,
             payPeriod = PayPeriod.YEARLY,
-            taxYear = 2021
+            taxYear = TaxYear.TWENTY_TWENTY_ONE
         ).run()
 
         assertEquals(Country.ENGLAND, result.country)
@@ -85,7 +85,7 @@ internal class CalculatorTests {
             taxCode = "1257L",
             wages = 40000.0,
             payPeriod = PayPeriod.YEARLY,
-            taxYear = 2022
+            taxYear = TaxYear.TWENTY_TWENTY_TWO
         ).run()
 
         assertEquals(Country.ENGLAND, result.country)
@@ -129,6 +129,112 @@ internal class CalculatorTests {
         assertEquals(12570.00, yearly.taxFree)
         assertEquals(5484.20, yearly.taxToPay)
         assertEquals(30524.90, yearly.takeHome)
+        assertTrue(yearly.taxBreakdown!!.isNotEmpty())
+    }
+
+    @Test
+    fun `GIVEN 2022_REVISED WHEN all supplied data valid THEN calculates response`() {
+        val result = Calculator(
+            taxCode = "1257L",
+            wages = 40000.0,
+            payPeriod = PayPeriod.YEARLY,
+            taxYear = TaxYear.TWENTY_TWENTY_TWO_REVISED
+        ).run()
+
+        assertEquals(Country.ENGLAND, result.country)
+        assertFalse(result.isKCode)
+
+        val weekly = result.weekly
+        assertEquals(PayPeriod.WEEKLY, weekly.payPeriod)
+        assertEquals(69.89, weekly.employeesNI)
+        assertEquals(89.43, weekly.employersNI)
+        assertEquals(769.23, weekly.wages)
+        assertEquals(241.73, weekly.taxFree)
+        assertEquals(105.47, weekly.taxToPay)
+        assertEquals(593.87, weekly.takeHome)
+        assertTrue(weekly.taxBreakdown!!.isNotEmpty())
+
+        val fourWeekly = result.fourWeekly
+        assertEquals(PayPeriod.FOUR_WEEKLY, fourWeekly.payPeriod)
+        assertEquals(279.58, fourWeekly.employeesNI)
+        assertEquals(357.73, fourWeekly.employersNI)
+        assertEquals(3076.92, fourWeekly.wages)
+        assertEquals(966.92, fourWeekly.taxFree)
+        assertEquals(421.86, fourWeekly.taxToPay)
+        assertEquals(2375.48, fourWeekly.takeHome)
+        assertTrue(fourWeekly.taxBreakdown!!.isNotEmpty())
+
+        val monthly = result.monthly
+        assertEquals(PayPeriod.MONTHLY, monthly.payPeriod)
+        assertEquals(302.87, monthly.employeesNI)
+        assertEquals(387.54, monthly.employersNI)
+        assertEquals(3333.33, monthly.wages)
+        assertEquals(1047.5, monthly.taxFree)
+        assertEquals(457.02, monthly.taxToPay)
+        assertEquals(2573.44, monthly.takeHome)
+        assertTrue(monthly.taxBreakdown!!.isNotEmpty())
+
+        val yearly = result.yearly
+        assertEquals(PayPeriod.YEARLY, yearly.payPeriod)
+        assertEquals(3634.48, yearly.employeesNI)
+        assertEquals(4650.45, yearly.employersNI)
+        assertEquals(40000.00, yearly.wages)
+        assertEquals(12570.00, yearly.taxFree)
+        assertEquals(5484.20, yearly.taxToPay)
+        assertEquals(30881.33, yearly.takeHome)
+        assertTrue(yearly.taxBreakdown!!.isNotEmpty())
+    }
+
+    @Test
+    fun `GIVEN 2022_REVISED WHEN all supplied data valid and 60000 salary THEN calculates response`() {
+        val result = Calculator(
+            taxCode = "1257L",
+            wages = 60000.0,
+            payPeriod = PayPeriod.YEARLY,
+            taxYear = TaxYear.TWENTY_TWENTY_TWO_REVISED
+        ).run()
+
+        assertEquals(Country.ENGLAND, result.country)
+        assertFalse(result.isKCode)
+
+        val weekly = result.weekly
+        assertEquals(PayPeriod.WEEKLY, weekly.payPeriod)
+        assertEquals(102.14, weekly.employeesNI)
+        assertEquals(147.32, weekly.employersNI)
+        assertEquals(1153.85, weekly.wages)
+        assertEquals(241.73, weekly.taxFree)
+        assertEquals(219.78, weekly.taxToPay)
+        assertEquals(831.93, weekly.takeHome)
+        assertTrue(weekly.taxBreakdown!!.isNotEmpty())
+
+        val fourWeekly = result.fourWeekly
+        assertEquals(PayPeriod.FOUR_WEEKLY, fourWeekly.payPeriod)
+        assertEquals(408.58, fourWeekly.employeesNI)
+        assertEquals(589.27, fourWeekly.employersNI)
+        assertEquals(4615.38, fourWeekly.wages)
+        assertEquals(966.92, fourWeekly.taxFree)
+        assertEquals(879.11, fourWeekly.taxToPay)
+        assertEquals(3327.7, fourWeekly.takeHome)
+        assertTrue(fourWeekly.taxBreakdown!!.isNotEmpty())
+
+        val monthly = result.monthly
+        assertEquals(PayPeriod.MONTHLY, monthly.payPeriod)
+        assertEquals(442.62, monthly.employeesNI)
+        assertEquals(638.37, monthly.employersNI)
+        assertEquals(5000.00, monthly.wages)
+        assertEquals(1047.5, monthly.taxFree)
+        assertEquals(952.37, monthly.taxToPay)
+        assertEquals(3605.01, monthly.takeHome)
+        assertTrue(monthly.taxBreakdown!!.isNotEmpty())
+
+        val yearly = result.yearly
+        assertEquals(PayPeriod.YEARLY, yearly.payPeriod)
+        assertEquals(5311.48, yearly.employeesNI)
+        assertEquals(7660.45, yearly.employersNI)
+        assertEquals(60000.00, yearly.wages)
+        assertEquals(12570.00, yearly.taxFree)
+        assertEquals(11428.40, yearly.taxToPay)
+        assertEquals(43260.12, yearly.takeHome)
         assertTrue(yearly.taxBreakdown!!.isNotEmpty())
     }
 
@@ -195,7 +301,7 @@ internal class CalculatorTests {
                 taxCode = "1257L",
                 wages = 40000.0,
                 payPeriod = PayPeriod.YEARLY,
-                taxYear = 2040
+                taxYear = TaxYear.fromInt(2040)
             ).run()
         }
     }
