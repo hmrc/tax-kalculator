@@ -19,7 +19,6 @@ import com.soywiz.klock.DateTime
 import uk.gov.hmrc.calculator.annotations.Throws
 import uk.gov.hmrc.calculator.exception.InvalidTaxYearException
 import uk.gov.hmrc.calculator.services.DateService
-import uk.gov.hmrc.calculator.services.DateServiceImpl
 
 enum class TaxYear(private val value: Int) {
     TWENTY_TWENTY(2020),

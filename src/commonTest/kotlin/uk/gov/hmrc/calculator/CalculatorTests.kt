@@ -217,7 +217,6 @@ internal class CalculatorTests {
         assertEquals(3327.7, fourWeekly.takeHome)
         assertTrue(fourWeekly.taxBreakdown!!.isNotEmpty())
 
-
         val monthly = result.monthly
         assertEquals(PayPeriod.MONTHLY, monthly.payPeriod)
         assertEquals(442.62, monthly.employeesNI)
