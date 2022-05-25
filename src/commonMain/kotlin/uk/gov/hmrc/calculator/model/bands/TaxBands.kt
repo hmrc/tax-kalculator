@@ -24,7 +24,8 @@ internal object TaxBands {
     fun getBands(taxYear: TaxYear, country: Country) = when (taxYear) {
         TaxYear.TWENTY_TWENTY -> if (country == SCOTLAND) scottish2020Bands() else restOfUK2020Bands()
         TaxYear.TWENTY_TWENTY_ONE -> if (country == SCOTLAND) scottish2021Bands() else restOfUK2021Bands()
-        TaxYear.TWENTY_TWENTY_TWO, TaxYear.TWENTY_TWENTY_TWO_REVISED -> if (country == SCOTLAND) scottish2022Bands() else restOfUK2022Bands()
+        TaxYear.TWENTY_TWENTY_TWO, TaxYear.TWENTY_TWENTY_TWO_REVISED ->
+            if (country == SCOTLAND) scottish2022Bands() else restOfUK2022Bands()
     }
 
     private fun scottish2020Bands() = listOf(

@@ -15,8 +15,6 @@
  */
 package uk.gov.hmrc.calculator.model.bands
 
-import com.soywiz.klock.DateTime
-import com.soywiz.klock.Month
 import uk.gov.hmrc.calculator.model.TaxYear
 import kotlin.test.Test
 import kotlin.test.assertEquals
