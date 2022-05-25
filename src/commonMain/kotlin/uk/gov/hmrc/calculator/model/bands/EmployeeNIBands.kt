@@ -19,10 +19,7 @@ import uk.gov.hmrc.calculator.model.TaxYear
 import uk.gov.hmrc.calculator.services.DateService
 import uk.gov.hmrc.calculator.services.DateServiceImpl
 
-internal class EmployeeNIBands(
-    taxYear: TaxYear,
-    private val dateService: DateService = DateServiceImpl()
-) {
+internal class EmployeeNIBands(taxYear: TaxYear) {
 
     private val employeeNIBands2020: List<EmployeeNIBand> = listOf(
         EmployeeNIBand(9500.0, 50000.00, 0.12),
