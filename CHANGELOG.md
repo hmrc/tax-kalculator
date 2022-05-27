@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+- Updated revised 2022 NI bands.
 
 ## [2.4.1] - 2022-03-22Z
 - Restored `taxBreakdown` property to response.
