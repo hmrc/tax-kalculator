@@ -21,12 +21,12 @@ Create an instance of `Calculator`, providing values as per the following exampl
 #### Android
 ```kotlin
 val calculator = Calculator(
-    taxCode = "1257L",     // Required
-    wages = 20000.0,       // Required
-    payPeriod = YEARLY,    // Required
-    isPensionAge = false,  // Optional (Default: false)
-    howManyAWeek = null,   // Optional (Default: null)
-    taxYear = 2022         // Optional (Default: Current Tax Year)
+    taxCode = "1257L",               // Required
+    wages = 20000.0,                 // Required
+    payPeriod = YEARLY,              // Required
+    isPensionAge = false,            // Optional (Default: false)
+    howManyAWeek = null,             // Optional (Default: null)
+    taxYear = TaxYear.currentTaxYear // Optional (Default: Current Tax Year)
 )
 
 val response = calculator.run()
@@ -39,7 +39,7 @@ let calculator = Calculator(
     payPeriod: period,
     isPensionAge: false,
     howManyAWeek: KotlinDouble(double: 35),
-    taxYear: 2022
+    taxYear: TaxYear.companion.currentTaxYear
 )
 
 let calculation = try calculator.run()
