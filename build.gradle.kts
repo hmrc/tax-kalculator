@@ -65,7 +65,7 @@ kotlin {
     }
 
     sourceSets {
-        val klockVersion = "2.0.1"
+        val klockVersion = "2.0.7"
         val commonMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-common"))
