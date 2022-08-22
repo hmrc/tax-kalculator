@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+- Updated klockVersion to minimum version avaliable on maven central
 
 ## [2.6.0] - 2022-05-27Z
 - Updated revised 2022 NI bands.
