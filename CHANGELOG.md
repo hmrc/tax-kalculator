@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+- Fixed CI issues
 
 ## [2.6.1] - 2022-08-22Z
 - Updated klockVersion to minimum version avaliable on maven central
