@@ -24,11 +24,11 @@ data class BandBreakdown(
 
 class CalculatorResponsePayPeriod(
     val payPeriod: PayPeriod,
-    taxToPayForPayPeriod: Double,
+    private var taxToPayForPayPeriod: Double,
     private var employeesNIRaw: Double,
     private var employersNIRaw: Double,
     private var wagesRaw: Double,
-    taxBreakdownForPayPeriod: List<BandBreakdown>? = null,
+    private var taxBreakdownForPayPeriod: List<BandBreakdown>? = null,
     private var taxFreeRaw: Double,
     private var kCodeAdjustmentRaw: Double? = null
 ) {
@@ -57,6 +57,19 @@ class CalculatorResponsePayPeriod(
 
     val kCodeAdjustment: Double? by lazy {
         kCodeAdjustmentRaw?.formatMoney()
+    }
+
+    override fun toString(): String {
+        return "CalculatorResponsePayPeriod(payPeriod=$payPeriod," +
+            "taxToPayForPayPeriod=$taxToPayForPayPeriod," +
+            "employeesNIRaw=$employeesNIRaw," +
+            "employersNIRaw=$employersNIRaw," +
+            "wagesRaw=$wagesRaw," +
+            "taxBreakdownForPayPeriod=$taxBreakdownForPayPeriod," +
+            "taxFreeRaw=$taxFreeRaw," +
+            "takeHome=$takeHome," +
+            "totalDeductions=$totalDeductions," +
+            "kCodeAdjustmentRaw=$kCodeAdjustmentRaw)"
     }
 }
 

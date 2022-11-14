@@ -34,8 +34,13 @@ internal class EmployeeNIBands(taxYear: TaxYear) {
         EmployeeNIBand(50270.0, -1.0, 0.0325)
     )
 
-    private val employeeNIBands2022Revised: List<EmployeeNIBand> = listOf(
+    private val employeeNIBands2022JulyRevised: List<EmployeeNIBand> = listOf(
         EmployeeNIBand(12570.0, 50270.00, 0.1325),
+        EmployeeNIBand(50270.0, -1.0, 0.0325)
+    )
+
+    private val employeeNIBands2022NovemberRevised: List<EmployeeNIBand> = listOf(
+        EmployeeNIBand(12570.0, 50270.00, 0.12),
         EmployeeNIBand(50270.0, -1.0, 0.0325)
     )
 
@@ -43,6 +48,7 @@ internal class EmployeeNIBands(taxYear: TaxYear) {
         TaxYear.TWENTY_TWENTY -> employeeNIBands2020
         TaxYear.TWENTY_TWENTY_ONE -> employeeNIBands2021
         TaxYear.TWENTY_TWENTY_TWO -> employeeNIBands2022
-        TaxYear.TWENTY_TWENTY_TWO_REVISED -> employeeNIBands2022Revised
+        TaxYear.TWENTY_TWENTY_TWO_JULY_REVISED -> employeeNIBands2022JulyRevised
+        TaxYear.TWENTY_TWENTY_TWO_NOVEMBER_REVISED -> employeeNIBands2022NovemberRevised
     }
 }

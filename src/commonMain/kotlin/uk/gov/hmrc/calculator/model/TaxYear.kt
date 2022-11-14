@@ -24,7 +24,8 @@ enum class TaxYear(private val value: Int) {
     TWENTY_TWENTY(2020),
     TWENTY_TWENTY_ONE(2021),
     TWENTY_TWENTY_TWO(2022),
-    TWENTY_TWENTY_TWO_REVISED(2022);
+    TWENTY_TWENTY_TWO_JULY_REVISED(2022),
+    TWENTY_TWENTY_TWO_NOVEMBER_REVISED(2022);
 
     companion object {
         @Throws(InvalidTaxYearException::class)
@@ -42,8 +43,10 @@ enum class TaxYear(private val value: Int) {
         val currentTaxYear: TaxYear
             get() {
                 val year = values().first { it.value == currentTaxYearInt }
-                return if (year == TWENTY_TWENTY_TWO && DateService.isIn2022RevisedPeriod) {
-                    TWENTY_TWENTY_TWO_REVISED
+                return if (year == TWENTY_TWENTY_TWO && DateService.isIn2022NovemberRevisedPeriod) {
+                    TWENTY_TWENTY_TWO_NOVEMBER_REVISED
+                } else if (year == TWENTY_TWENTY_TWO && DateService.isIn2022JulyRevisedPeriod) {
+                    TWENTY_TWENTY_TWO_JULY_REVISED
                 } else year
             }
     }

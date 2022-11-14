@@ -24,7 +24,7 @@ version = System.getenv("BITRISE_GIT_TAG") ?: ("SNAPSHOT-" + getDate())
 
 plugins {
     `maven-publish`
-    kotlin("multiplatform").version("1.6.0")
+    kotlin("multiplatform").version("1.7.20")
     java
     id("io.gitlab.arturbosch.detekt").version("1.6.0")
     id("com.chromaticnoise.multiplatform-swiftpackage").version("2.0.3")
@@ -33,7 +33,6 @@ plugins {
 
 repositories {
     mavenCentral()
-    jcenter()
     maven {
         url = uri("https://plugins.gradle.org/m2/")
     }
@@ -66,10 +65,12 @@ kotlin {
 
     sourceSets {
         val klockVersion = "2.0.7"
+        val kermitVersion = "1.2.2"
         val commonMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-common"))
                 implementation("com.soywiz.korlibs.klock:klock:$klockVersion")
+                implementation("co.touchlab:kermit:$kermitVersion")
             }
         }
         val commonTest by getting {
