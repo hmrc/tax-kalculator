@@ -15,10 +15,7 @@
  */
 package uk.gov.hmrc.calculator.utils
 
-fun Any.prettyPrint(): String {
-    val toString = toString()
-    return toString.prettyPrintObjectString()
-}
+fun Any.prettyPrint(): String = toString().prettyPrintObjectString()
 
 fun String.prettyPrintObjectString(
     indentWidth: Int = 4
