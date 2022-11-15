@@ -15,7 +15,7 @@
  */
 package uk.gov.hmrc.calculator.utils
 
-fun Any.prettyPrint(): String = toString().prettyPrintObjectString()
+fun Any.prettyPrintDataClass(): String = toString().prettyPrintObjectString()
 
 fun String.prettyPrintObjectString(
     indentWidth: Int = 4

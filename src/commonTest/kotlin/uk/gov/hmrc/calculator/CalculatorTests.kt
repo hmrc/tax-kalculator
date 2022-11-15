@@ -23,7 +23,7 @@ import uk.gov.hmrc.calculator.model.Country
 import uk.gov.hmrc.calculator.model.PayPeriod
 import uk.gov.hmrc.calculator.model.TaxYear
 import uk.gov.hmrc.calculator.model.taxcodes.TaxCode
-import uk.gov.hmrc.calculator.utils.prettyPrint
+import uk.gov.hmrc.calculator.utils.prettyPrintDataClass
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -40,6 +40,7 @@ internal class CalculatorTests {
             payPeriod = PayPeriod.YEARLY,
             taxYear = TaxYear.TWENTY_TWENTY_ONE
         ).run()
+        Logger.i(result.prettyPrintDataClass())
 
         assertEquals(Country.ENGLAND, result.country)
         assertFalse(result.isKCode)
@@ -89,6 +90,7 @@ internal class CalculatorTests {
             payPeriod = PayPeriod.YEARLY,
             taxYear = TaxYear.TWENTY_TWENTY_TWO
         ).run()
+        Logger.i(result.prettyPrintDataClass())
 
         assertEquals(Country.ENGLAND, result.country)
         assertFalse(result.isKCode)
@@ -142,6 +144,7 @@ internal class CalculatorTests {
             payPeriod = PayPeriod.YEARLY,
             taxYear = TaxYear.TWENTY_TWENTY_TWO_JULY_REVISED
         ).run()
+        Logger.i(result.prettyPrintDataClass())
 
         assertEquals(Country.ENGLAND, result.country)
         assertFalse(result.isKCode)
@@ -195,6 +198,7 @@ internal class CalculatorTests {
             payPeriod = PayPeriod.YEARLY,
             taxYear = TaxYear.TWENTY_TWENTY_TWO_JULY_REVISED
         ).run()
+        Logger.i(result.prettyPrintDataClass())
 
         assertEquals(Country.ENGLAND, result.country)
         assertFalse(result.isKCode)
@@ -248,6 +252,7 @@ internal class CalculatorTests {
             payPeriod = PayPeriod.YEARLY,
             taxYear = TaxYear.TWENTY_TWENTY_TWO_NOVEMBER_REVISED
         ).run()
+        Logger.i(result.prettyPrintDataClass())
 
         assertEquals(Country.ENGLAND, result.country)
         assertFalse(result.isKCode)
@@ -301,8 +306,7 @@ internal class CalculatorTests {
             payPeriod = PayPeriod.YEARLY,
             taxYear = TaxYear.TWENTY_TWENTY_TWO_NOVEMBER_REVISED
         ).run()
-
-        Logger.i(result.prettyPrint())
+        Logger.i(result.prettyPrintDataClass())
 
         assertEquals(Country.ENGLAND, result.country)
         assertFalse(result.isKCode)
