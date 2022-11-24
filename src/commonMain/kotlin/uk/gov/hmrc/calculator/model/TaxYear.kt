@@ -33,6 +33,7 @@ enum class TaxYear(private val value: Int) {
             values()
                 .firstOrNull { it.value == value }
                 ?: throw InvalidTaxYearException("$value")
+
         val currentTaxYearInt: Int =
             DateTime
                 .nowLocal()

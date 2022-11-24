@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 - Updated November revised 2022 NI bands.
-- 
+
 ## [2.6.2] - 2022-08-23Z
 - Fixed CI issues
 

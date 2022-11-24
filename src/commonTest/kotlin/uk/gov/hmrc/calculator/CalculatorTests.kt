@@ -260,7 +260,7 @@ internal class CalculatorTests {
         val weekly = result.weekly
         assertEquals(PayPeriod.WEEKLY, weekly.payPeriod)
         assertEquals(63.3, weekly.employeesNI)
-        assertEquals(89.43, weekly.employersNI)
+        assertEquals(82.00, weekly.employersNI)
         assertEquals(769.23, weekly.wages)
         assertEquals(241.73, weekly.taxFree)
         assertEquals(105.47, weekly.taxToPay)
@@ -270,7 +270,7 @@ internal class CalculatorTests {
         val fourWeekly = result.fourWeekly
         assertEquals(PayPeriod.FOUR_WEEKLY, fourWeekly.payPeriod)
         assertEquals(253.2, fourWeekly.employeesNI)
-        assertEquals(357.73, fourWeekly.employersNI)
+        assertEquals(328.02, fourWeekly.employersNI)
         assertEquals(3076.92, fourWeekly.wages)
         assertEquals(966.92, fourWeekly.taxFree)
         assertEquals(421.86, fourWeekly.taxToPay)
@@ -280,7 +280,7 @@ internal class CalculatorTests {
         val monthly = result.monthly
         assertEquals(PayPeriod.MONTHLY, monthly.payPeriod)
         assertEquals(274.3, monthly.employeesNI)
-        assertEquals(387.54, monthly.employersNI)
+        assertEquals(355.35, monthly.employersNI)
         assertEquals(3333.33, monthly.wages)
         assertEquals(1047.5, monthly.taxFree)
         assertEquals(457.02, monthly.taxToPay)
@@ -290,7 +290,7 @@ internal class CalculatorTests {
         val yearly = result.yearly
         assertEquals(PayPeriod.YEARLY, yearly.payPeriod)
         assertEquals(3291.6, yearly.employeesNI)
-        assertEquals(4650.45, yearly.employersNI)
+        assertEquals(4264.20, yearly.employersNI)
         assertEquals(40000.00, yearly.wages)
         assertEquals(12570.00, yearly.taxFree)
         assertEquals(5484.20, yearly.taxToPay)
@@ -313,42 +313,42 @@ internal class CalculatorTests {
 
         val weekly = result.weekly
         assertEquals(PayPeriod.WEEKLY, weekly.payPeriod)
-        assertEquals(93.08, weekly.employeesNI)
-        assertEquals(147.32, weekly.employersNI)
+        assertEquals(90.74, weekly.employeesNI)
+        assertEquals(135.08, weekly.employersNI)
         assertEquals(1153.85, weekly.wages)
         assertEquals(241.73, weekly.taxFree)
         assertEquals(219.78, weekly.taxToPay)
-        assertEquals(840.99, weekly.takeHome)
+        assertEquals(843.33, weekly.takeHome)
         assertTrue(weekly.taxBreakdown!!.isNotEmpty())
 
         val fourWeekly = result.fourWeekly
         assertEquals(PayPeriod.FOUR_WEEKLY, fourWeekly.payPeriod)
-        assertEquals(372.33, fourWeekly.employeesNI)
-        assertEquals(589.27, fourWeekly.employersNI)
+        assertEquals(362.97, fourWeekly.employeesNI)
+        assertEquals(540.32, fourWeekly.employersNI)
         assertEquals(4615.38, fourWeekly.wages)
         assertEquals(966.92, fourWeekly.taxFree)
         assertEquals(879.11, fourWeekly.taxToPay)
-        assertEquals(3363.94, fourWeekly.takeHome)
+        assertEquals(3373.3, fourWeekly.takeHome)
         assertTrue(fourWeekly.taxBreakdown!!.isNotEmpty())
 
         val monthly = result.monthly
         assertEquals(PayPeriod.MONTHLY, monthly.payPeriod)
-        assertEquals(403.35, monthly.employeesNI)
-        assertEquals(638.37, monthly.employersNI)
+        assertEquals(393.22, monthly.employeesNI)
+        assertEquals(585.35, monthly.employersNI)
         assertEquals(5000.00, monthly.wages)
         assertEquals(1047.5, monthly.taxFree)
         assertEquals(952.37, monthly.taxToPay)
-        assertEquals(3644.28, monthly.takeHome)
+        assertEquals(3654.41, monthly.takeHome)
         assertTrue(monthly.taxBreakdown!!.isNotEmpty())
 
         val yearly = result.yearly
         assertEquals(PayPeriod.YEARLY, yearly.payPeriod)
-        assertEquals(4840.23, yearly.employeesNI)
-        assertEquals(7660.45, yearly.employersNI)
+        assertEquals(4718.6, yearly.employeesNI)
+        assertEquals(7024.2, yearly.employersNI)
         assertEquals(60000.00, yearly.wages)
         assertEquals(12570.00, yearly.taxFree)
         assertEquals(11428.40, yearly.taxToPay)
-        assertEquals(43731.38, yearly.takeHome)
+        assertEquals(43853.0, yearly.takeHome)
         assertTrue(yearly.taxBreakdown!!.isNotEmpty())
     }
 

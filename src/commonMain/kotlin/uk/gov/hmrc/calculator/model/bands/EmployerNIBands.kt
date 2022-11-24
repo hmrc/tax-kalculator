@@ -34,9 +34,16 @@ internal class EmployerNIBands(taxYear: TaxYear) {
         EmployerNIBand(50270.0, -1.0, 0.1505)
     )
 
+    private val employerNIBands2022NovemberRevised: List<EmployerNIBand> = listOf(
+        EmployerNIBand(9100.0, 50270.00, 0.138),
+        EmployerNIBand(50270.0, -1.0, 0.138)
+    )
+
     internal val bands: List<EmployerNIBand> = when (taxYear) {
         TaxYear.TWENTY_TWENTY -> employerNIBands2020
         TaxYear.TWENTY_TWENTY_ONE -> employerNIBands2021
-        else -> employerNIBands2022
+        TaxYear.TWENTY_TWENTY_TWO,
+        TaxYear.TWENTY_TWENTY_TWO_JULY_REVISED  -> employerNIBands2022
+        TaxYear.TWENTY_TWENTY_TWO_NOVEMBER_REVISED -> employerNIBands2022NovemberRevised
     }
 }
