@@ -24,11 +24,11 @@ data class BandBreakdown(
 
 class CalculatorResponsePayPeriod(
     val payPeriod: PayPeriod,
-    private var taxToPayForPayPeriod: Double,
+    taxToPayForPayPeriod: Double,
     private var employeesNIRaw: Double,
     private var employersNIRaw: Double,
     private var wagesRaw: Double,
-    private var taxBreakdownForPayPeriod: List<BandBreakdown>? = null,
+    taxBreakdownForPayPeriod: List<BandBreakdown>? = null,
     private var taxFreeRaw: Double,
     private var kCodeAdjustmentRaw: Double? = null
 ) {
