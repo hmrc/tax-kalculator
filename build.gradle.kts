@@ -206,11 +206,3 @@ object Config {
     const val artifactId = "tax-kalculator"
     const val frameworkName = "TaxKalculator"
 }
-
-object Versions {
-
-    const val klockVersion = "2.0.7"
-    const val kermitVersion = "1.2.2"
-    const val junit5Version = "3.4.2"
-    const val jupiterEngineVersion = "5.7.1"
-}
