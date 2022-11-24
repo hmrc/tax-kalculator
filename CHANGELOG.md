@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.7.0] - 2022-11-24Z
 - Updated November revised 2022 NI bands.
 
 ## [2.6.2] - 2022-08-23Z
