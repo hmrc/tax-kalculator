@@ -5,15 +5,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+- Updated November revised 2022 NI bands.
 
 ## [2.6.2] - 2022-08-23Z
 - Fixed CI issues
 
 ## [2.6.1] - 2022-08-22Z
-- Updated klockVersion to minimum version avaliable on maven central
+- Updated klock version to minimum version available on maven central
 
 ## [2.6.0] - 2022-05-27Z
-- Updated revised 2022 NI bands.
+- Updated July revised 2022 NI bands.
 
 ## [2.4.1] - 2022-03-22Z
 - Restored `taxBreakdown` property to response.

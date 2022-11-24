@@ -1,5 +1,7 @@
 import java.text.SimpleDateFormat
 import java.util.Date
+import org.jetbrains.kotlin.gradle.targets.native.tasks.KotlinNativeSimulatorTest
+import uk.gov.hmrc.Dependencies
 
 buildscript {
     repositories {
@@ -24,7 +26,7 @@ version = System.getenv("BITRISE_GIT_TAG") ?: ("SNAPSHOT-" + getDate())
 
 plugins {
     `maven-publish`
-    kotlin("multiplatform").version("1.6.0")
+    kotlin("multiplatform").version("1.7.20")
     java
     id("io.gitlab.arturbosch.detekt").version("1.6.0")
     id("com.chromaticnoise.multiplatform-swiftpackage").version("2.0.3")
@@ -33,19 +35,13 @@ plugins {
 
 repositories {
     mavenCentral()
-    jcenter()
     maven {
         url = uri("https://plugins.gradle.org/m2/")
     }
 }
 
-
-val artifactId = "tax-kalculator"
-val frameworkName = "TaxKalculator"
-
 // Configure source sets
 kotlin {
-
     jvm()
     val iosX64 = iosX64("ios")
     val iosArm32 = iosArm32()
@@ -54,7 +50,7 @@ kotlin {
     targets {
         configure(listOf(iosX64, iosArm32, iosArm64)) {
             binaries.framework {
-                baseName = frameworkName
+                baseName = Config.frameworkName
                 embedBitcode("disable")
             }
         }
@@ -65,38 +61,48 @@ kotlin {
     }
 
     sourceSets {
-        val klockVersion = "2.0.7"
         val commonMain by getting {
             dependencies {
-                implementation(kotlin("stdlib-common"))
-                implementation("com.soywiz.korlibs.klock:klock:$klockVersion")
+                with(Dependencies.Common.Main) {
+                    implementation(kotlin(stdlib))
+                    implementation(klock)
+                    implementation(kermit)
+                }
             }
         }
         val commonTest by getting {
             dependencies {
-                implementation(kotlin("test-common"))
-                implementation(kotlin("test-annotations-common"))
-                implementation("io.kotlintest:kotlintest-runner-junit5:3.4.2")
-                runtimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.1")
+                with(Dependencies.Common.Test) {
+                    implementation(kotlin(common))
+                    implementation(kotlin(annotations))
+                    implementation(junit)
+                    runtimeOnly(jupiter)
+                }
             }
         }
 
         val jvmMain by getting {
             dependencies {
-                implementation(kotlin("stdlib"))
+                with(Dependencies.JVM.Main) {
+                    implementation(kotlin(stdlib))
+                }
             }
         }
         val jvmTest by getting {
             dependencies {
-                implementation(kotlin("test"))
-                implementation(kotlin("test-junit5"))
-                implementation("org.junit.jupiter:junit-jupiter-params:5.7.1")
+                with(Dependencies.JVM.Test) {
+                    implementation(kotlin(test))
+                    implementation(kotlin(junit))
+                    implementation(jupiter)
+                }
             }
         }
 
         val iosMain by getting {
             dependencies {
-                implementation(kotlin("stdlib"))
+                with(Dependencies.IOS.Main) {
+                    implementation(kotlin(stdlib))
+                }
             }
         }
 
@@ -121,7 +127,7 @@ kotlin {
 multiplatformSwiftPackage {
     swiftToolsVersion("5.3")
     targetPlatforms {
-        iOS { v("11") }
+        iOS { v("13") }
     }
     outputDirectory(File(projectDir, "build/xcframework"))
 }
@@ -183,11 +189,20 @@ tasks.named<Test>("jvmTest") {
 }
 
 tasks.named<Jar>("jvmJar") {
-    archiveFileName.set("$artifactId-$version.jar")
+    archiveFileName.set("${Config.artifactId}-$archiveVersion.jar")
+}
+
+tasks.getByName<KotlinNativeSimulatorTest>("iosTest") {
+    deviceId = "iPhone 14"
 }
 
 fun getDate(): String {
     val date = Date()
     val format = "yyyyMMddHHmm"
     return SimpleDateFormat(format).format(date).toString()
+}
+
+object Config {
+    const val artifactId = "tax-kalculator"
+    const val frameworkName = "TaxKalculator"
 }

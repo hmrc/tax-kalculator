@@ -41,3 +41,4 @@ local.properties
 swiftpm
 Package.swift.bak
 fastlane/report.xml
+*.numbers

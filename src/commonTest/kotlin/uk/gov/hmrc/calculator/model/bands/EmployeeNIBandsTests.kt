@@ -66,8 +66,8 @@ class EmployeeNIBandsTests {
         assertEquals(false, band1.inBand(1000.0))
     }
     @Test
-    fun `WHEN year is 2022Revised THEN band ranges correct`() {
-        val bands = EmployeeNIBands(TaxYear.TWENTY_TWENTY_TWO_REVISED).bands
+    fun `WHEN year is 2022JulyRevised THEN band ranges correct`() {
+        val bands = EmployeeNIBands(TaxYear.TWENTY_TWENTY_TWO_JULY_REVISED).bands
 
         val band0 = bands[0]
         assertEquals(0.1325, band0.percentageAsDecimal)
