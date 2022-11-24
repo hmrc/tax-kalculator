@@ -43,7 +43,7 @@ internal class EmployerNIBands(taxYear: TaxYear) {
         TaxYear.TWENTY_TWENTY -> employerNIBands2020
         TaxYear.TWENTY_TWENTY_ONE -> employerNIBands2021
         TaxYear.TWENTY_TWENTY_TWO,
-        TaxYear.TWENTY_TWENTY_TWO_JULY_REVISED  -> employerNIBands2022
+        TaxYear.TWENTY_TWENTY_TWO_JULY_REVISED -> employerNIBands2022
         TaxYear.TWENTY_TWENTY_TWO_NOVEMBER_REVISED -> employerNIBands2022NovemberRevised
     }
 }
