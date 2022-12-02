@@ -189,7 +189,7 @@ tasks.named<Test>("jvmTest") {
 }
 
 tasks.named<Jar>("jvmJar") {
-    archiveFileName.set("${Config.artifactId}-$archiveVersion.jar")
+    archiveFileName.set("${Config.artifactId}-$version.jar")
 }
 
 tasks.getByName<KotlinNativeSimulatorTest>("iosTest") {

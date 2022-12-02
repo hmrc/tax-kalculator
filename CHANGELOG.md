@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+- Fixed issue with the `.jar` name for JVM consumers.
 
 ## [2.7.0] - 2022-11-24Z
 - Updated November revised 2022 NI bands.
