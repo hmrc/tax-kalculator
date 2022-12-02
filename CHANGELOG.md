@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.7.1] - 2022-12-02Z
 - Fixed issue with the `.jar` name for JVM consumers.
 
 ## [2.7.0] - 2022-11-24Z
