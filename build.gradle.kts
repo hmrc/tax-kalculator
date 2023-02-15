@@ -26,7 +26,7 @@ version = System.getenv("BITRISE_GIT_TAG") ?: ("SNAPSHOT-" + getDate())
 
 plugins {
     `maven-publish`
-    kotlin("multiplatform").version("1.7.20")
+    kotlin("multiplatform").version("1.8.10")
     java
     id("io.gitlab.arturbosch.detekt").version("1.6.0")
     id("com.chromaticnoise.multiplatform-swiftpackage").version("2.0.3")
