@@ -49,7 +49,7 @@ object Dependencies {
 }
 
 object Versions {
-    const val klockVersion = "2.0.7"
+    const val klockVersion = "2.4.13"
     const val kermitVersion = "1.2.2"
     const val junit5Version = "3.4.2"
     const val jupiterEngineVersion = "5.7.1"
