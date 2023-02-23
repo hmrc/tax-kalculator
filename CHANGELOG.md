@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.8.0] - 2023-02-23Z
+- Added support for Apple Silicon simulator.
+
 ## [2.7.1] - 2022-12-02Z
 - Fixed issue with the `.jar` name for JVM consumers.
 
