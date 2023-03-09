@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+- Added 2023/24 rates.
 
 ## [2.8.0] - 2023-02-23Z
 - Added support for Apple Silicon simulator.
