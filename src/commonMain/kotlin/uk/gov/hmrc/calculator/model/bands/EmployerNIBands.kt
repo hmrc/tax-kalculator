@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,11 +39,17 @@ internal class EmployerNIBands(taxYear: TaxYear) {
         EmployerNIBand(50270.0, -1.0, 0.138)
     )
 
+    private val employerNIBands2023: List<EmployerNIBand> = listOf(
+        EmployerNIBand(9100.0, 50270.00, 0.138),
+        EmployerNIBand(50270.0, -1.0, 0.138)
+    )
+
     internal val bands: List<EmployerNIBand> = when (taxYear) {
         TaxYear.TWENTY_TWENTY -> employerNIBands2020
         TaxYear.TWENTY_TWENTY_ONE -> employerNIBands2021
         TaxYear.TWENTY_TWENTY_TWO,
         TaxYear.TWENTY_TWENTY_TWO_JULY_REVISED -> employerNIBands2022
         TaxYear.TWENTY_TWENTY_TWO_NOVEMBER_REVISED -> employerNIBands2022NovemberRevised
+        TaxYear.TWENTY_TWENTY_THREE -> employerNIBands2023
     }
 }
