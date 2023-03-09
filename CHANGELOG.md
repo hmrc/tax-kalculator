@@ -5,8 +5,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-
-## [2.9.0] - 2023-03-09Z
 - Added 2023/24 rates.
 
 ## [2.8.0] - 2023-02-23Z
