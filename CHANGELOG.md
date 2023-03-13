@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+- Downgrade Kotlin version for compatibility.
 
 ## [2.9.0] - 2023-03-09Z
 - Added 2023/24 rates.
