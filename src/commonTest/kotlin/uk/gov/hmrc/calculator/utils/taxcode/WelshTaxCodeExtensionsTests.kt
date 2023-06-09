@@ -41,10 +41,25 @@ class WelshTaxCodeExtensionsTests {
     }
 
     @Test
+    fun `Welsh no allowance ignore additional code`() {
+        assertTrue("C0TABC".toTaxCode() is C0T)
+    }
+
+    @Test
     fun `Welsh basic rate`() {
         assertTrue("CBR".toTaxCode() is CBR)
 
         val taxCode: CBR = "CBR".toTaxCode() as CBR
+        assertEquals(WALES, taxCode.country)
+        assertEquals(0, taxCode.taxAllAtBand)
+        assertEquals(0.0, taxCode.taxFreeAmount)
+    }
+
+    @Test
+    fun `Welsh basic rate ignore additional code`() {
+        assertTrue("CBRABC".toTaxCode() is CBR)
+
+        val taxCode: CBR = "CBRABC".toTaxCode() as CBR
         assertEquals(WALES, taxCode.country)
         assertEquals(0, taxCode.taxAllAtBand)
         assertEquals(0.0, taxCode.taxFreeAmount)
@@ -60,9 +75,27 @@ class WelshTaxCodeExtensionsTests {
     }
 
     @Test
+    fun `Welsh higher ignore additional code`() {
+        assertTrue("CD0ABC".toTaxCode() is CD0)
+        val taxCode: CD0 = "CD0ABC".toTaxCode() as CD0
+        assertEquals(WALES, taxCode.country)
+        assertEquals(1, taxCode.taxAllAtBand)
+        assertEquals(0.0, taxCode.taxFreeAmount)
+    }
+
+    @Test
     fun `Welsh additional`() {
         assertTrue("CD1".toTaxCode() is CD1)
         val taxCode: CD1 = "CD1".toTaxCode() as CD1
+        assertEquals(WALES, taxCode.country)
+        assertEquals(2, taxCode.taxAllAtBand)
+        assertEquals(0.0, taxCode.taxFreeAmount)
+    }
+
+    @Test
+    fun `Welsh additional ignore additional code`() {
+        assertTrue("CD1ABC".toTaxCode() is CD1)
+        val taxCode: CD1 = "CD1ABC".toTaxCode() as CD1
         assertEquals(WALES, taxCode.country)
         assertEquals(2, taxCode.taxAllAtBand)
         assertEquals(0.0, taxCode.taxFreeAmount)

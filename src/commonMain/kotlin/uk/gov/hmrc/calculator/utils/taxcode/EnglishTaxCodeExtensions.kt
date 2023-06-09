@@ -29,12 +29,12 @@ import uk.gov.hmrc.calculator.model.taxcodes.TCode
 import uk.gov.hmrc.calculator.model.taxcodes.ZeroT
 
 internal fun String.matchEnglishTaxCode(): EnglishTaxCode {
-    return when (this) {
+    return when (this.take(2)) {
         "0T" -> ZeroT()
         "BR" -> BR()
         "D0" -> D0()
         "D1" -> D1()
-        else -> matchOtherEnglishTaxCode()
+        else -> this.matchOtherEnglishTaxCode()
     }
 }
 

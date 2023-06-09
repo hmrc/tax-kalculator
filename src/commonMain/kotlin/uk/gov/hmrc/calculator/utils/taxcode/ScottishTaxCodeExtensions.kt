@@ -30,13 +30,13 @@ import uk.gov.hmrc.calculator.model.taxcodes.ScottishNCode
 import uk.gov.hmrc.calculator.model.taxcodes.ScottishTaxCode
 
 internal fun String.matchScottishTaxCode(): ScottishTaxCode {
-    return when (this) {
+    return when (this.take(3)) {
         "S0T" -> S0T()
         "SBR" -> SBR()
         "SD0" -> SD0()
         "SD1" -> SD1()
         "SD2" -> SD2()
-        else -> matchOtherScottishTaxCode()
+        else -> this.matchOtherScottishTaxCode()
     }
 }
 
