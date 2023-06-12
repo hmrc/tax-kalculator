@@ -41,9 +41,23 @@ class EnglishTaxCodeExtensionsTests {
     }
 
     @Test
+    fun `English no allowance ignore additional code`() {
+        assertTrue("0TABC".toTaxCode() is ZeroT)
+    }
+
+    @Test
     fun `English basic rate`() {
         assertTrue("BR".toTaxCode() is BR)
         val taxCode: BR = "BR".toTaxCode() as BR
+        assertEquals(ENGLAND, taxCode.country)
+        assertEquals(0, taxCode.taxAllAtBand)
+        assertEquals(0.0, taxCode.taxFreeAmount)
+    }
+
+    @Test
+    fun `English basic rate ignore additional code`() {
+        assertTrue("BRABC".toTaxCode() is BR)
+        val taxCode: BR = "BRABC".toTaxCode() as BR
         assertEquals(ENGLAND, taxCode.country)
         assertEquals(0, taxCode.taxAllAtBand)
         assertEquals(0.0, taxCode.taxFreeAmount)
@@ -59,9 +73,27 @@ class EnglishTaxCodeExtensionsTests {
     }
 
     @Test
+    fun `English higher ignore additional code`() {
+        assertTrue("D0ABC".toTaxCode() is D0)
+        val taxCode: D0 = "D0ABC".toTaxCode() as D0
+        assertEquals(ENGLAND, taxCode.country)
+        assertEquals(1, taxCode.taxAllAtBand)
+        assertEquals(0.0, taxCode.taxFreeAmount)
+    }
+
+    @Test
     fun `English additional`() {
         assertTrue("D1".toTaxCode() is D1)
         val taxCode: D1 = "D1".toTaxCode() as D1
+        assertEquals(ENGLAND, taxCode.country)
+        assertEquals(2, taxCode.taxAllAtBand)
+        assertEquals(0.0, taxCode.taxFreeAmount)
+    }
+
+    @Test
+    fun `English additional ignore additional code`() {
+        assertTrue("D1ABC".toTaxCode() is D1)
+        val taxCode: D1 = "D1ABC".toTaxCode() as D1
         assertEquals(ENGLAND, taxCode.country)
         assertEquals(2, taxCode.taxAllAtBand)
         assertEquals(0.0, taxCode.taxFreeAmount)

@@ -29,12 +29,12 @@ import uk.gov.hmrc.calculator.model.taxcodes.WelshNCode
 import uk.gov.hmrc.calculator.model.taxcodes.WelshTaxCode
 
 internal fun String.matchWelshTaxCode(): WelshTaxCode {
-    return when (this) {
+    return when (this.take(3)) {
         "C0T" -> C0T()
         "CBR" -> CBR()
         "CD0" -> CD0()
         "CD1" -> CD1()
-        else -> matchOtherWelshTaxCode()
+        else -> this.matchOtherWelshTaxCode()
     }
 }
 
