@@ -26,7 +26,10 @@ val calculator = Calculator(
     payPeriod = YEARLY,              // Required
     isPensionAge = false,            // Optional (Default: false)
     howManyAWeek = null,             // Optional (Default: null)
-    taxYear = TaxYear.currentTaxYear // Optional (Default: Current Tax Year)
+    taxYear = TaxYear.currentTaxYear, // Optional (Default: Current Tax Year)
+    pensionMethod = PERCENTAGE,      // Optional (Default: null)
+    pensionYearlyAmount = null,       // Optional (Default: null)
+    pensionPercentage = 10.0          // Optional (Default: null)
 )
 
 val response = calculator.run()
@@ -39,7 +42,10 @@ let calculator = Calculator(
     payPeriod: period,
     isPensionAge: false,
     howManyAWeek: KotlinDouble(double: 35),
-    taxYear: TaxYear.companion.currentTaxYear
+    taxYear: TaxYear.companion.currentTaxYear,
+    pensionMethod: pensionMethod,
+    pensionYearlyAmount: KotlinDouble(double: 0),
+    pensionPercentage: KotlinDouble(double: 10)
 )
 
 let calculation = try calculator.run()
@@ -57,6 +63,7 @@ Returns an object of type `CalculatorResponse`. This class is broken up into `we
 - `taxFree` of type `Double`
 - `totalDeductions` of type `Double`
 - `takeHome` of type `Double`
+- `pensionContribution` of type `Double` (This will return 0.0 if no Pension being added)
 
 > For tax breakdown this is the amount of tax per tax band which has two members, `percentage: Double` and `amount: Double`.
 
@@ -81,8 +88,6 @@ val year = CalculatorUtils.currentTaxYear()
 ```swift
 let year = CalculatorUtils.shared.currentTaxYear()
 ```
-
-## Validation
 
 ### Validate a tax code:
 #### Android
@@ -136,6 +141,8 @@ let isValidHoursPerDay = HoursDaysValidator.shared.isValidHoursPerDay(hours: 20)
 let isAboveMinimumHoursPerDay = HoursDaysValidator.shared.isAboveMinimumHoursPerDay(hours: 1.0) // true
 let isBelowMaximumHoursPerDay = HoursDaysValidator.shared.isBelowMaximumHoursPerDay(hours: 25.0) // false
 ```
+
+### Validate 
 
 ## Development
 
@@ -265,6 +272,23 @@ private val employerNIBands2022: List<EmployerNIBand> = listOf(
     EmployerNIBand(9100.0, 50270.00, 0.1505),
     EmployerNIBand(50270.0, -1.0, 0.1505)
 )
+```
+
+### Pension allowance
+Pension contribute has a life time and annual allowance, which are represented with the following data structures: 
+
+```kotlin
+internal data class PensionAllowance(
+  val standardLifetimeAllowance: Double,
+  val annualAllowance: Double
+)
+```
+In [`PensionAllowances.kt`](https://github.com/hmrc/tax-kalculator/blob/main/src/commonMain/kotlin/uk/gov/hmrc/calculator/model/pension/PensionAllowances.kt) update allowance as specified by the business.
+
+```kotlin
+private fun pensionAllowance2022() = PensionAllowance(1073100.0, 40000.0)
+
+private fun pensionAllowance2023() = PensionAllowance(1073100.0, 60000.0)
 ```
 
 ## License

@@ -28,3 +28,5 @@ class InvalidHoursException(message: String) : Exception(message)
 class InvalidDaysException(message: String) : Exception(message)
 
 class InvalidTaxBandException(message: String) : Exception(message)
+
+class InvalidPensionException(message: String) : Exception(message)

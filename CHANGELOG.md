@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+- Added Pension Contribution calculation.
 
 ## [2.9.2] - 2023-06-12Z
 - Fixed bug to ignore additional characters on valid tax code.

@@ -18,6 +18,7 @@ package uk.gov.hmrc.calculator
 import uk.gov.hmrc.calculator.annotations.Throws
 import uk.gov.hmrc.calculator.exception.InvalidHoursException
 import uk.gov.hmrc.calculator.exception.InvalidPayPeriodException
+import uk.gov.hmrc.calculator.exception.InvalidPensionException
 import uk.gov.hmrc.calculator.exception.InvalidTaxBandException
 import uk.gov.hmrc.calculator.exception.InvalidTaxCodeException
 import uk.gov.hmrc.calculator.exception.InvalidTaxYearException
@@ -35,6 +36,9 @@ import uk.gov.hmrc.calculator.model.bands.Band
 import uk.gov.hmrc.calculator.model.bands.EmployeeNIBands
 import uk.gov.hmrc.calculator.model.bands.EmployerNIBands
 import uk.gov.hmrc.calculator.model.bands.TaxBands
+import uk.gov.hmrc.calculator.model.pension.AnnualPensionMethod
+import uk.gov.hmrc.calculator.model.pension.PensionAllowances.getPensionAllowances
+import uk.gov.hmrc.calculator.model.pension.calculateYearlyPension
 import uk.gov.hmrc.calculator.model.taxcodes.AdjustedTaxFreeTCode
 import uk.gov.hmrc.calculator.model.taxcodes.EmergencyTaxCode
 import uk.gov.hmrc.calculator.model.taxcodes.KTaxCode
@@ -48,6 +52,7 @@ import uk.gov.hmrc.calculator.utils.convertListOfBandBreakdownForPayPeriod
 import uk.gov.hmrc.calculator.utils.convertWageToYearly
 import uk.gov.hmrc.calculator.utils.taxcode.getTrueTaxFreeAmount
 import uk.gov.hmrc.calculator.utils.taxcode.toTaxCode
+import uk.gov.hmrc.calculator.utils.validation.PensionValidator
 import uk.gov.hmrc.calculator.utils.validation.WageValidator
 import kotlin.jvm.JvmOverloads
 
@@ -57,7 +62,10 @@ class Calculator @JvmOverloads constructor(
     private val payPeriod: PayPeriod,
     private val isPensionAge: Boolean = false,
     private val howManyAWeek: Double? = null,
-    private val taxYear: TaxYear = TaxYear.currentTaxYear
+    private val taxYear: TaxYear = TaxYear.currentTaxYear,
+    private val pensionMethod: AnnualPensionMethod? = null,
+    private val pensionYearlyAmount: Double? = null,
+    private val pensionPercentage: Double? = null,
 ) {
 
     private val bandBreakdown: MutableList<BandBreakdown> = mutableListOf()
@@ -68,7 +76,8 @@ class Calculator @JvmOverloads constructor(
         InvalidWagesException::class,
         InvalidPayPeriodException::class,
         InvalidHoursException::class,
-        InvalidTaxBandException::class
+        InvalidTaxBandException::class,
+        InvalidPensionException::class,
     )
     fun run(): CalculatorResponse {
         if (!WageValidator.isAboveMinimumWages(wages) || !WageValidator.isBelowMaximumWages(wages)) {
@@ -80,23 +89,43 @@ class Calculator @JvmOverloads constructor(
         )
         val amountToAddToWages = if (taxCodeType is KTaxCode) (taxCodeType as KTaxCode).amountToAddToWages else null
 
+        val yearlyPensionContribution = calculateYearlyPension(
+            yearlyWages,
+            pensionMethod,
+            pensionYearlyAmount,
+            pensionPercentage
+        )
+
+        yearlyPensionContribution?.let { yearlyPension ->
+            if (!PensionValidator.isValidYearlyPension(yearlyWages, yearlyPension, taxYear)) {
+                throw InvalidPensionException(
+                    "Pension must be lower then your yearly wage, " +
+                        "and lower then ${getPensionAllowances(taxYear).standardLifetimeAllowance}"
+                )
+            }
+        }
+
         return createResponse(
             taxCodeType,
             yearlyWages,
             taxCodeType.getTrueTaxFreeAmount(),
-            amountToAddToWages
+            amountToAddToWages,
+            yearlyPensionContribution,
         )
     }
 
+    @Suppress("LongMethod")
     private fun createResponse(
         taxCode: TaxCode,
         yearlyWages: Double,
         taxFreeAmount: Double,
-        amountToAddToWages: Double?
+        amountToAddToWages: Double?,
+        yearlyPensionContribution: Double?,
     ): CalculatorResponse {
         val taxPayable = taxToPay(
             yearlyWages,
-            taxCode
+            taxCode,
+            yearlyPensionContribution
         )
         val employeesNI = employeeNIToPay(yearlyWages)
         val employersNI = employerNIToPay(yearlyWages)
@@ -111,7 +140,8 @@ class Calculator @JvmOverloads constructor(
                 wagesRaw = yearlyWages.convertAmountFromYearlyToPayPeriod(WEEKLY),
                 taxBreakdownForPayPeriod = bandBreakdown.convertListOfBandBreakdownForPayPeriod(WEEKLY),
                 taxFreeRaw = taxFreeAmount.convertAmountFromYearlyToPayPeriod(WEEKLY),
-                kCodeAdjustmentRaw = amountToAddToWages?.convertAmountFromYearlyToPayPeriod(WEEKLY)
+                kCodeAdjustmentRaw = amountToAddToWages?.convertAmountFromYearlyToPayPeriod(WEEKLY),
+                pensionContributionRaw = yearlyPensionContribution?.convertAmountFromYearlyToPayPeriod(WEEKLY),
             ),
             fourWeekly = CalculatorResponsePayPeriod(
                 payPeriod = FOUR_WEEKLY,
@@ -121,7 +151,8 @@ class Calculator @JvmOverloads constructor(
                 wagesRaw = yearlyWages.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
                 taxBreakdownForPayPeriod = bandBreakdown.convertListOfBandBreakdownForPayPeriod(FOUR_WEEKLY),
                 taxFreeRaw = taxFreeAmount.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
-                kCodeAdjustmentRaw = amountToAddToWages?.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY)
+                kCodeAdjustmentRaw = amountToAddToWages?.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
+                pensionContributionRaw = yearlyPensionContribution?.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
             ),
             monthly = CalculatorResponsePayPeriod(
                 payPeriod = MONTHLY,
@@ -131,7 +162,8 @@ class Calculator @JvmOverloads constructor(
                 wagesRaw = yearlyWages.convertAmountFromYearlyToPayPeriod(MONTHLY),
                 taxBreakdownForPayPeriod = bandBreakdown.convertListOfBandBreakdownForPayPeriod(MONTHLY),
                 taxFreeRaw = taxFreeAmount.convertAmountFromYearlyToPayPeriod(MONTHLY),
-                kCodeAdjustmentRaw = amountToAddToWages?.convertAmountFromYearlyToPayPeriod(MONTHLY)
+                kCodeAdjustmentRaw = amountToAddToWages?.convertAmountFromYearlyToPayPeriod(MONTHLY),
+                pensionContributionRaw = yearlyPensionContribution?.convertAmountFromYearlyToPayPeriod(MONTHLY),
             ),
             yearly = CalculatorResponsePayPeriod(
                 payPeriod = YEARLY,
@@ -141,15 +173,23 @@ class Calculator @JvmOverloads constructor(
                 wagesRaw = yearlyWages.convertAmountFromYearlyToPayPeriod(YEARLY),
                 taxBreakdownForPayPeriod = bandBreakdown,
                 taxFreeRaw = taxFreeAmount,
-                kCodeAdjustmentRaw = amountToAddToWages
+                kCodeAdjustmentRaw = amountToAddToWages,
+                pensionContributionRaw = yearlyPensionContribution?.convertAmountFromYearlyToPayPeriod(YEARLY),
             )
         )
     }
 
     private fun taxToPay(
         yearlyWages: Double,
-        taxCode: TaxCode
+        taxCode: TaxCode,
+        yearlyPensionContribution: Double?,
     ): Double {
+        val yearlyWageAfterPension = if (yearlyPensionContribution != null) {
+            val pensionAnnualAllowance = getPensionAllowances(taxYear).annualAllowance
+            val deductPension = minOf(yearlyPensionContribution, pensionAnnualAllowance)
+            yearlyWages - deductPension
+        } else yearlyWages
+
         return when (taxCode) {
             is StandardTaxCode, is AdjustedTaxFreeTCode, is EmergencyTaxCode, is MarriageTaxCodes -> {
                 val taxBands = TaxBands.getBands(
@@ -158,23 +198,26 @@ class Calculator @JvmOverloads constructor(
                 )
                 getTotalFromTaxBands(
                     taxBands,
-                    yearlyWages
+                    yearlyWageAfterPension
                 )
             }
+
             is NoTaxTaxCode -> getTotalFromSingleBand(
-                yearlyWages,
+                yearlyWageAfterPension,
                 taxCode.taxFreeAmount
             )
+
             is SingleBandTax -> {
                 val taxBands = TaxBands.getBands(
                     taxYear,
                     taxCode.country
                 )
                 getTotalFromSingleBand(
-                    yearlyWages,
+                    yearlyWageAfterPension,
                     taxBands[taxCode.taxAllAtBand].percentageAsDecimal
                 )
             }
+
             is KTaxCode -> {
                 val taxBands = TaxBands.getBands(
                     taxYear,
@@ -182,16 +225,17 @@ class Calculator @JvmOverloads constructor(
                 )
                 getTotalFromTaxBands(
                     taxBands,
-                    yearlyWages + taxCode.amountToAddToWages
+                    yearlyWageAfterPension + taxCode.amountToAddToWages
                 )
             }
+
             else -> throw InvalidTaxCodeException("$this is an invalid tax code")
         }
     }
 
     private fun getTotalFromSingleBand(
         yearlyWage: Double,
-        percentageForSingleBand: Double
+        percentageForSingleBand: Double,
     ): Double {
         val taxToPayForSingleBand: Double = yearlyWage * percentageForSingleBand
         bandBreakdown.add(
@@ -217,7 +261,7 @@ class Calculator @JvmOverloads constructor(
 
     private fun getTotalFromTaxBands(
         bands: List<Band>,
-        wages: Double
+        wages: Double,
     ): Double {
         var amount = 0.0
         var remainingToTax = wages - taxCodeType.taxFreeAmount
@@ -245,7 +289,7 @@ class Calculator @JvmOverloads constructor(
 
     private fun getTotalFromNIBands(
         bands: List<Band>,
-        wages: Double
+        wages: Double,
     ): Double {
         var amount = 0.0
         var remainingToTax = wages - bands[0].lower

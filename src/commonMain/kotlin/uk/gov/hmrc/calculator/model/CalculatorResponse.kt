@@ -30,12 +30,14 @@ class CalculatorResponsePayPeriod(
     private var wagesRaw: Double,
     val taxBreakdownForPayPeriod: List<BandBreakdown>? = null,
     private var taxFreeRaw: Double,
-    private var kCodeAdjustmentRaw: Double? = null
+    private var kCodeAdjustmentRaw: Double? = null,
+    private val pensionContributionRaw: Double? = null,
 ) {
     private val maxTaxAmount = (wagesRaw / 2).formatMoney()
     val taxToPay = if (taxToPayForPayPeriod > maxTaxAmount) maxTaxAmount else taxToPayForPayPeriod.formatMoney()
     val maxTaxAmountExceeded = (taxToPayForPayPeriod > maxTaxAmount)
-    val totalDeductions = (taxToPay + employeesNIRaw).formatMoney()
+    val pensionContribution = pensionContributionRaw?.formatMoney() ?: 0.0.formatMoney()
+    val totalDeductions = (taxToPay + employeesNIRaw + pensionContribution).formatMoney()
     val takeHome = (wagesRaw - totalDeductions).formatMoney()
     val taxBreakdown = if (maxTaxAmountExceeded) null else taxBreakdownForPayPeriod
 
@@ -69,7 +71,8 @@ class CalculatorResponsePayPeriod(
             "taxFreeRaw=$taxFreeRaw," +
             "takeHome=$takeHome," +
             "totalDeductions=$totalDeductions," +
-            "kCodeAdjustmentRaw=$kCodeAdjustmentRaw)"
+            "kCodeAdjustmentRaw=$kCodeAdjustmentRaw," +
+            "pensionContributionRaw=$pensionContributionRaw)"
     }
 }
 
