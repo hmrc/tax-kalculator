@@ -48,10 +48,10 @@ class PensionCalculationTest {
     }
 
     @Test
-    fun `GIVEN pensionMethod AMOUNT_IN_POUND AND pensionYearlyAmount null WHEN calculateYearlyPension THEN return null`() {
+    fun `GIVEN pensionMethod AMOUNT_IN_POUNDS AND pensionYearlyAmount null WHEN calculateYearlyPension THEN return null`() {
         val result = calculateYearlyPension(
             1000.0,
-            pensionMethod = AnnualPensionMethod.AMOUNT_IN_POUND,
+            pensionMethod = AnnualPensionMethod.AMOUNT_IN_POUNDS,
             pensionYearlyAmount = null,
             pensionPercentage = 10.0,
         )
@@ -72,10 +72,10 @@ class PensionCalculationTest {
     }
 
     @Test
-    fun `GIVEN pensionMethod AMOUNT_IN_POUND AND pensionYearlyAmount is 100 WHEN calculateYearlyPension THEN return pension amount`() {
+    fun `GIVEN pensionMethod AMOUNT_IN_POUNDS AND pensionYearlyAmount is 100 WHEN calculateYearlyPension THEN return pension amount`() {
         val result = calculateYearlyPension(
             1000.0,
-            pensionMethod = AnnualPensionMethod.AMOUNT_IN_POUND,
+            pensionMethod = AnnualPensionMethod.AMOUNT_IN_POUNDS,
             pensionYearlyAmount = 100.0,
             pensionPercentage = null,
         )

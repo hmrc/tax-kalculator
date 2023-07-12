@@ -441,7 +441,7 @@ internal class CalculatorTests {
             wages = 48000.0,
             payPeriod = PayPeriod.YEARLY,
             taxYear = TaxYear.TWENTY_TWENTY_THREE,
-            pensionMethod = AnnualPensionMethod.AMOUNT_IN_POUND,
+            pensionMethod = AnnualPensionMethod.AMOUNT_IN_POUNDS,
             pensionYearlyAmount = 4800.0
         ).run()
         Logger.i(result.prettyPrintDataClass())
@@ -497,7 +497,7 @@ internal class CalculatorTests {
             wages = 100000.0,
             payPeriod = PayPeriod.YEARLY,
             taxYear = TaxYear.TWENTY_TWENTY_THREE,
-            pensionMethod = AnnualPensionMethod.AMOUNT_IN_POUND,
+            pensionMethod = AnnualPensionMethod.AMOUNT_IN_POUNDS,
             pensionYearlyAmount = 60000.0
         ).run()
         Logger.i(result.prettyPrintDataClass())
@@ -609,7 +609,7 @@ internal class CalculatorTests {
             wages = 100000.0,
             payPeriod = PayPeriod.YEARLY,
             taxYear = TaxYear.TWENTY_TWENTY_THREE,
-            pensionMethod = AnnualPensionMethod.AMOUNT_IN_POUND,
+            pensionMethod = AnnualPensionMethod.AMOUNT_IN_POUNDS,
             pensionYearlyAmount = 65000.0
         ).run()
         Logger.i(result.prettyPrintDataClass())
@@ -721,7 +721,7 @@ internal class CalculatorTests {
             wages = 24579.0,
             payPeriod = PayPeriod.YEARLY,
             taxYear = TaxYear.TWENTY_TWENTY_THREE,
-            pensionMethod = AnnualPensionMethod.AMOUNT_IN_POUND,
+            pensionMethod = AnnualPensionMethod.AMOUNT_IN_POUNDS,
             pensionYearlyAmount = 12000.0
         ).run()
         Logger.i(result.prettyPrintDataClass())
@@ -846,7 +846,7 @@ internal class CalculatorTests {
                 wages = 40000.0,
                 payPeriod = PayPeriod.YEARLY,
                 taxYear = TaxYear.fromInt(2023),
-                pensionMethod = AnnualPensionMethod.AMOUNT_IN_POUND,
+                pensionMethod = AnnualPensionMethod.AMOUNT_IN_POUNDS,
                 pensionYearlyAmount = 45000.0
             ).run()
         }
@@ -874,7 +874,7 @@ internal class CalculatorTests {
                 wages = 1073500.0,
                 payPeriod = PayPeriod.YEARLY,
                 taxYear = TaxYear.fromInt(2023),
-                pensionMethod = AnnualPensionMethod.AMOUNT_IN_POUND,
+                pensionMethod = AnnualPensionMethod.AMOUNT_IN_POUNDS,
                 pensionYearlyAmount = 1073500.0
             ).run()
         }

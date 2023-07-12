@@ -22,7 +22,7 @@ internal fun calculateYearlyPension(
     pensionPercentage: Double? = null,
 ): Double? {
     return when (pensionMethod) {
-        AnnualPensionMethod.AMOUNT_IN_POUND -> pensionYearlyAmount
+        AnnualPensionMethod.AMOUNT_IN_POUNDS -> pensionYearlyAmount
         AnnualPensionMethod.PERCENTAGE -> {
             pensionPercentage?.let { percentage ->
                 yearlyWage * (percentage.div(100))
