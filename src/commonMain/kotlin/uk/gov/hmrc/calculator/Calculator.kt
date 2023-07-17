@@ -103,7 +103,7 @@ class Calculator @JvmOverloads constructor(
             if (!PensionValidator.isValidYearlyPension(yearlyWages, yearlyPension, taxYear)) {
                 throw InvalidPensionException(
                     "Pension must be lower then your yearly wage, " +
-                        "and lower then ${getPensionAllowances(taxYear).standardLifetimeAllowance}"
+                            "and lower then ${getPensionAllowances(taxYear).standardLifetimeAllowance}"
                 )
             }
         }
@@ -150,11 +150,14 @@ class Calculator @JvmOverloads constructor(
             taxCode,
             taperingAmountDeduction,
         )
-        val (employeesNI, employersNI) = if (isPensionAge) Pair(0.0, 0.0)
-        else Pair(
-            EmployeeNIBands(taxYear).bands.getTotalFromNIBands(yearlyWageAfterPensionDeduction),
-            EmployerNIBands(taxYear).bands.getTotalFromNIBands(yearlyWageAfterPensionDeduction)
-        )
+        val (employeesNI, employersNI) = if (isPensionAge) {
+            Pair(0.0, 0.0)
+        } else {
+            Pair(
+                EmployeeNIBands(taxYear).bands.getTotalFromNIBands(yearlyWageAfterPensionDeduction),
+                EmployerNIBands(taxYear).bands.getTotalFromNIBands(yearlyWageAfterPensionDeduction)
+            )
+        }
         return CalculatorResponse(
             country = taxCode.country,
             isKCode = taxCode is KTaxCode,
