@@ -103,7 +103,7 @@ class Calculator @JvmOverloads constructor(
             if (!PensionValidator.isValidYearlyPension(yearlyWages, yearlyPension, taxYear)) {
                 throw InvalidPensionException(
                     "Pension must be lower then your yearly wage, " +
-                            "and lower then ${getPensionAllowances(taxYear).standardLifetimeAllowance}"
+                        "and lower then ${getPensionAllowances(taxYear).standardLifetimeAllowance}"
                 )
             }
         }
