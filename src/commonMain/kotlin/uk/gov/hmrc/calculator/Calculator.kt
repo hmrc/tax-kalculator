@@ -50,6 +50,9 @@ import uk.gov.hmrc.calculator.model.taxcodes.TaxCode
 import uk.gov.hmrc.calculator.utils.convertAmountFromYearlyToPayPeriod
 import uk.gov.hmrc.calculator.utils.convertListOfBandBreakdownForPayPeriod
 import uk.gov.hmrc.calculator.utils.convertWageToYearly
+import uk.gov.hmrc.calculator.utils.tapering.deductTapering
+import uk.gov.hmrc.calculator.utils.tapering.getTaperingAmount
+import uk.gov.hmrc.calculator.utils.tapering.shouldApplyTapering
 import uk.gov.hmrc.calculator.utils.taxcode.getTrueTaxFreeAmount
 import uk.gov.hmrc.calculator.utils.taxcode.toTaxCode
 import uk.gov.hmrc.calculator.utils.validation.PensionValidator
@@ -105,30 +108,56 @@ class Calculator @JvmOverloads constructor(
             }
         }
 
+        val yearlyWageAfterPension = if (yearlyPensionContribution != null) {
+            val pensionAnnualAllowance = getPensionAllowances(taxYear).annualAllowance
+            val deductPension = minOf(yearlyPensionContribution, pensionAnnualAllowance)
+            yearlyWages - deductPension
+        } else yearlyWages
+
+        val (taxFreeAmount, taperingAmount) =
+            if (taxCodeType is StandardTaxCode && yearlyWageAfterPension.shouldApplyTapering()) {
+                Pair(
+                    taxCodeType.getTrueTaxFreeAmount().deductTapering(yearlyWageAfterPension),
+                    yearlyWageAfterPension.getTaperingAmount(taxCodeType.getTrueTaxFreeAmount())
+                )
+            } else {
+                Pair(taxCodeType.getTrueTaxFreeAmount(), null)
+            }
+
         return createResponse(
             taxCodeType,
             yearlyWages,
-            taxCodeType.getTrueTaxFreeAmount(),
+            taxFreeAmount,
             amountToAddToWages,
             yearlyPensionContribution,
+            yearlyWageAfterPension,
+            taperingAmount,
         )
     }
 
-    @Suppress("LongMethod")
+    @Suppress("LongMethod", "LongParameterList")
     private fun createResponse(
         taxCode: TaxCode,
         yearlyWages: Double,
         taxFreeAmount: Double,
         amountToAddToWages: Double?,
         yearlyPensionContribution: Double?,
+        yearlyWageAfterPensionDeduction: Double,
+        taperingAmountDeduction: Double?,
     ): CalculatorResponse {
         val taxPayable = taxToPay(
-            yearlyWages,
+            yearlyWageAfterPensionDeduction,
             taxCode,
-            yearlyPensionContribution
+            taperingAmountDeduction,
         )
-        val employeesNI = employeeNIToPay(yearlyWages)
-        val employersNI = employerNIToPay(yearlyWages)
+        val (employeesNI, employersNI) = if (isPensionAge) {
+            Pair(0.0, 0.0)
+        } else {
+            Pair(
+                EmployeeNIBands(taxYear).bands.getTotalFromNIBands(yearlyWageAfterPensionDeduction),
+                EmployerNIBands(taxYear).bands.getTotalFromNIBands(yearlyWageAfterPensionDeduction)
+            )
+        }
         return CalculatorResponse(
             country = taxCode.country,
             isKCode = taxCode is KTaxCode,
@@ -142,6 +171,9 @@ class Calculator @JvmOverloads constructor(
                 taxFreeRaw = taxFreeAmount.convertAmountFromYearlyToPayPeriod(WEEKLY),
                 kCodeAdjustmentRaw = amountToAddToWages?.convertAmountFromYearlyToPayPeriod(WEEKLY),
                 pensionContributionRaw = yearlyPensionContribution?.convertAmountFromYearlyToPayPeriod(WEEKLY),
+                wageAfterPensionDeductionRaw =
+                yearlyWageAfterPensionDeduction.convertAmountFromYearlyToPayPeriod(WEEKLY),
+                taperingAmountRaw = taperingAmountDeduction?.convertAmountFromYearlyToPayPeriod(WEEKLY),
             ),
             fourWeekly = CalculatorResponsePayPeriod(
                 payPeriod = FOUR_WEEKLY,
@@ -153,6 +185,9 @@ class Calculator @JvmOverloads constructor(
                 taxFreeRaw = taxFreeAmount.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
                 kCodeAdjustmentRaw = amountToAddToWages?.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
                 pensionContributionRaw = yearlyPensionContribution?.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
+                wageAfterPensionDeductionRaw =
+                yearlyWageAfterPensionDeduction.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
+                taperingAmountRaw = taperingAmountDeduction?.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
             ),
             monthly = CalculatorResponsePayPeriod(
                 payPeriod = MONTHLY,
@@ -164,6 +199,9 @@ class Calculator @JvmOverloads constructor(
                 taxFreeRaw = taxFreeAmount.convertAmountFromYearlyToPayPeriod(MONTHLY),
                 kCodeAdjustmentRaw = amountToAddToWages?.convertAmountFromYearlyToPayPeriod(MONTHLY),
                 pensionContributionRaw = yearlyPensionContribution?.convertAmountFromYearlyToPayPeriod(MONTHLY),
+                wageAfterPensionDeductionRaw =
+                yearlyWageAfterPensionDeduction.convertAmountFromYearlyToPayPeriod(MONTHLY),
+                taperingAmountRaw = taperingAmountDeduction?.convertAmountFromYearlyToPayPeriod(MONTHLY),
             ),
             yearly = CalculatorResponsePayPeriod(
                 payPeriod = YEARLY,
@@ -175,20 +213,18 @@ class Calculator @JvmOverloads constructor(
                 taxFreeRaw = taxFreeAmount,
                 kCodeAdjustmentRaw = amountToAddToWages,
                 pensionContributionRaw = yearlyPensionContribution?.convertAmountFromYearlyToPayPeriod(YEARLY),
+                wageAfterPensionDeductionRaw =
+                yearlyWageAfterPensionDeduction.convertAmountFromYearlyToPayPeriod(YEARLY),
+                taperingAmountRaw = taperingAmountDeduction?.convertAmountFromYearlyToPayPeriod(YEARLY),
             )
         )
     }
 
     private fun taxToPay(
-        yearlyWages: Double,
+        yearlyWageAfterPension: Double,
         taxCode: TaxCode,
-        yearlyPensionContribution: Double?,
+        taperingAmountDeduction: Double? = null,
     ): Double {
-        val yearlyWageAfterPension = if (yearlyPensionContribution != null) {
-            val pensionAnnualAllowance = getPensionAllowances(taxYear).annualAllowance
-            val deductPension = minOf(yearlyPensionContribution, pensionAnnualAllowance)
-            yearlyWages - deductPension
-        } else yearlyWages
 
         return when (taxCode) {
             is StandardTaxCode, is AdjustedTaxFreeTCode, is EmergencyTaxCode, is MarriageTaxCodes -> {
@@ -198,7 +234,8 @@ class Calculator @JvmOverloads constructor(
                 )
                 getTotalFromTaxBands(
                     taxBands,
-                    yearlyWageAfterPension
+                    yearlyWageAfterPension,
+                    taperingAmountDeduction
                 )
             }
 
@@ -247,24 +284,16 @@ class Calculator @JvmOverloads constructor(
         return taxToPayForSingleBand
     }
 
-    private fun employerNIToPay(yearlyWages: Double) =
-        if (isPensionAge) 0.0 else getTotalFromNIBands(
-            EmployerNIBands(taxYear).bands,
-            yearlyWages
-        )
-
-    private fun employeeNIToPay(yearlyWages: Double) =
-        if (isPensionAge) 0.0 else getTotalFromNIBands(
-            EmployeeNIBands(taxYear).bands,
-            yearlyWages
-        )
-
     private fun getTotalFromTaxBands(
         bands: List<Band>,
         wages: Double,
+        taperingAmountDeduction: Double? = null,
     ): Double {
         var amount = 0.0
-        var remainingToTax = wages - taxCodeType.taxFreeAmount
+        val taxFreeAmount = if (taperingAmountDeduction != null) taxCodeType.taxFreeAmount - taperingAmountDeduction
+        else taxCodeType.taxFreeAmount
+
+        var remainingToTax = wages - taxFreeAmount
         bands.map { band: Band ->
             if (remainingToTax <= 0) return amount
 
@@ -287,17 +316,14 @@ class Calculator @JvmOverloads constructor(
         return amount
     }
 
-    private fun getTotalFromNIBands(
-        bands: List<Band>,
-        wages: Double,
-    ): Double {
+    private fun List<Band>.getTotalFromNIBands(wages: Double): Double {
         var amount = 0.0
-        var remainingToTax = wages - bands[0].lower
-        bands.map { band: Band ->
+        var remainingToTax = wages - this[0].lower
+        this.map { band: Band ->
             if (remainingToTax <= 0) return amount
 
             val toTax = if ((band.upper - band.lower) < remainingToTax && band.upper != -1.0) {
-                band.upper - band.lower
+                band.upper - band.lower // Bandwidth
             } else {
                 remainingToTax
             }

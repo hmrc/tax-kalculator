@@ -64,6 +64,7 @@ Returns an object of type `CalculatorResponse`. This class is broken up into `we
 - `totalDeductions` of type `Double`
 - `takeHome` of type `Double`
 - `pensionContribution` of type `Double` (This will return 0.0 if no Pension being added)
+- `taperingAmountDeduction` of type `Double` (This will return 0.0 if wage is below £100,002)
 
 > For tax breakdown this is the amount of tax per tax band which has two members, `percentage: Double` and `amount: Double`.
 
@@ -88,6 +89,8 @@ val year = CalculatorUtils.currentTaxYear()
 ```swift
 let year = CalculatorUtils.shared.currentTaxYear()
 ```
+
+### Validate
 
 ### Validate a tax code:
 #### Android
@@ -141,8 +144,6 @@ let isValidHoursPerDay = HoursDaysValidator.shared.isValidHoursPerDay(hours: 20)
 let isAboveMinimumHoursPerDay = HoursDaysValidator.shared.isAboveMinimumHoursPerDay(hours: 1.0) // true
 let isBelowMaximumHoursPerDay = HoursDaysValidator.shared.isBelowMaximumHoursPerDay(hours: 25.0) // false
 ```
-
-### Validate 
 
 ## Development
 

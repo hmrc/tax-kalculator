@@ -32,6 +32,8 @@ class CalculatorResponsePayPeriod(
     private var taxFreeRaw: Double,
     private var kCodeAdjustmentRaw: Double? = null,
     private val pensionContributionRaw: Double? = null,
+    private var wageAfterPensionDeductionRaw: Double,
+    private var taperingAmountRaw: Double? = null,
 ) {
     private val maxTaxAmount = (wagesRaw / 2).formatMoney()
     val taxToPay = if (taxToPayForPayPeriod > maxTaxAmount) maxTaxAmount else taxToPayForPayPeriod.formatMoney()
@@ -40,6 +42,8 @@ class CalculatorResponsePayPeriod(
     val totalDeductions = (taxToPay + employeesNIRaw + pensionContribution).formatMoney()
     val takeHome = (wagesRaw - totalDeductions).formatMoney()
     val taxBreakdown = if (maxTaxAmountExceeded) null else taxBreakdownForPayPeriod
+    val wageAfterPensionDeduction = wageAfterPensionDeductionRaw.formatMoney()
+    val taperingAmountDeduction = taperingAmountRaw?.formatMoney() ?: 0.0.formatMoney()
 
     val employeesNI: Double by lazy {
         employeesNIRaw.formatMoney()
@@ -72,7 +76,9 @@ class CalculatorResponsePayPeriod(
             "takeHome=$takeHome," +
             "totalDeductions=$totalDeductions," +
             "kCodeAdjustmentRaw=$kCodeAdjustmentRaw," +
-            "pensionContributionRaw=$pensionContributionRaw)"
+            "pensionContributionRaw=$pensionContributionRaw," +
+            "wageAfterPensionDeductionRaw=$wageAfterPensionDeductionRaw," +
+            "taperingAmountDeductionRaw=$taperingAmountRaw)"
     }
 }
 
