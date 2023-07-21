@@ -16,10 +16,16 @@
 package uk.gov.hmrc.calculator.model
 
 import uk.gov.hmrc.calculator.utils.formatMoney
+import uk.gov.hmrc.calculator.utils.roundDownToWholeNumber
 
 data class BandBreakdown(
     val percentage: Double,
     val amount: Double
+)
+
+data class StudentLoanAmountBreakdown(
+    val plan: String,
+    var amount: Double,
 )
 
 class CalculatorResponsePayPeriod(
@@ -34,16 +40,20 @@ class CalculatorResponsePayPeriod(
     private val pensionContributionRaw: Double? = null,
     private var wageAfterPensionDeductionRaw: Double,
     private var taperingAmountRaw: Double? = null,
+    val studentLoanBreakdownList: List<StudentLoanAmountBreakdown>,
+    private var finalStudentLoanAmountRaw: Double,
 ) {
     private val maxTaxAmount = (wagesRaw / 2).formatMoney()
     val taxToPay = if (taxToPayForPayPeriod > maxTaxAmount) maxTaxAmount else taxToPayForPayPeriod.formatMoney()
     val maxTaxAmountExceeded = (taxToPayForPayPeriod > maxTaxAmount)
     val pensionContribution = pensionContributionRaw?.formatMoney() ?: 0.0.formatMoney()
-    val totalDeductions = (taxToPay + employeesNIRaw + pensionContribution).formatMoney()
+    val finalStudentLoanAmount = finalStudentLoanAmountRaw.roundDownToWholeNumber()
+    val totalDeductions = (taxToPay + employeesNIRaw + pensionContribution + finalStudentLoanAmount).formatMoney()
     val takeHome = (wagesRaw - totalDeductions).formatMoney()
     val taxBreakdown = if (maxTaxAmountExceeded) null else taxBreakdownForPayPeriod
     val wageAfterPensionDeduction = wageAfterPensionDeductionRaw.formatMoney()
     val taperingAmountDeduction = taperingAmountRaw?.formatMoney() ?: 0.0.formatMoney()
+    val studentLoanBreakdown = if (finalStudentLoanAmount > 0) studentLoanBreakdownList else null
 
     val employeesNI: Double by lazy {
         employeesNIRaw.formatMoney()
@@ -78,7 +88,9 @@ class CalculatorResponsePayPeriod(
             "kCodeAdjustmentRaw=$kCodeAdjustmentRaw," +
             "pensionContributionRaw=$pensionContributionRaw," +
             "wageAfterPensionDeductionRaw=$wageAfterPensionDeductionRaw," +
-            "taperingAmountDeductionRaw=$taperingAmountRaw)"
+            "taperingAmountDeductionRaw=$taperingAmountRaw," +
+            "studentLoanBreakdown=$studentLoanBreakdown," +
+            "finalStudentLoanAmount=$finalStudentLoanAmount)"
     }
 }
 

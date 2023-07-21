@@ -29,7 +29,11 @@ val calculator = Calculator(
     taxYear = TaxYear.currentTaxYear, // Optional (Default: Current Tax Year)
     pensionMethod = PERCENTAGE,      // Optional (Default: null)
     pensionYearlyAmount = null,       // Optional (Default: null)
-    pensionPercentage = 10.0          // Optional (Default: null)
+    pensionPercentage = 10.0,          // Optional (Default: null)
+    hasStudentLoanPlanOne = false,          // Optional (Default: false)
+    hasStudentLoanPlanTwo = false,          // Optional (Default: false)
+    hasStudentLoanPlanFour = false,          // Optional (Default: false)
+    hasStudentLoanPostgraduatePlan = false,          // Optional (Default: false)
 )
 
 val response = calculator.run()
@@ -45,7 +49,11 @@ let calculator = Calculator(
     taxYear: TaxYear.companion.currentTaxYear,
     pensionMethod: pensionMethod,
     pensionYearlyAmount: KotlinDouble(double: 0),
-    pensionPercentage: KotlinDouble(double: 10)
+    pensionPercentage: KotlinDouble(double: 10),
+    hasStudentLoanPlanOne: false,
+    hasStudentLoanPlanTwo: false,
+    hasStudentLoanPlanFour: false,
+    hasStudentLoanPostgraduatePlan: false
 )
 
 let calculation = try calculator.run()
@@ -65,6 +73,8 @@ Returns an object of type `CalculatorResponse`. This class is broken up into `we
 - `takeHome` of type `Double`
 - `pensionContribution` of type `Double` (This will return 0.0 if no Pension being added)
 - `taperingAmountDeduction` of type `Double` (This will return 0.0 if wage is below £100,002)
+- `studentLoanBreakdown` of type `List<StudentLoanAmountBreakdown>` (This will return null if no student loan plan)
+- `finalStudentLoanAmount` of type `Double` (This will return 0.0 if no student loan plan)
 
 > For tax breakdown this is the amount of tax per tax band which has two members, `percentage: Double` and `amount: Double`.
 
@@ -290,6 +300,27 @@ In [`PensionAllowances.kt`](https://github.com/hmrc/tax-kalculator/blob/main/src
 private fun pensionAllowance2022() = PensionAllowance(1073100.0, 40000.0)
 
 private fun pensionAllowance2023() = PensionAllowance(1073100.0, 60000.0)
+```
+
+### Student Loan Rate
+Student loan rate has a Threshold and Recovery rate (in percentage), which are represented with the following data structures: 
+
+```kotlin
+internal data class StudentLoanRepayment(
+        val yearlyThreshold: Double,
+        val recoveryRatePercentage: Double,
+    )
+```
+
+In [`StudentLoanRate.kt`](https://github.com/hmrc/tax-kalculator/blob/main/src/commonMain/kotlin/uk/gov/hmrc/calculator/model.studentloans/StudentLoanRate.kt) update rate as specified by the business.
+
+```kotlin
+private fun studentLoanRepaymentRate2023() = mapOf(
+        StudentLoanPlan.PLAN_ONE to StudentLoanRepayment(22015.0, 0.09),
+        StudentLoanPlan.PLAN_TWO to StudentLoanRepayment(27295.0, 0.09),
+        StudentLoanPlan.PLAN_FOUR to StudentLoanRepayment(27660.0, 0.09),
+        StudentLoanPlan.POST_GRADUATE_PLAN to StudentLoanRepayment(21000.0, 0.06),
+    )
 ```
 
 ## License

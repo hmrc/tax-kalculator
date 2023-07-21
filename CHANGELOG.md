@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - Added Pension Contribution calculation.
 - Added Tapering calculation.
+- Added Student Loan calculation.
 
 ## [2.9.2] - 2023-06-12Z
 - Fixed bug to ignore additional characters on valid tax code.

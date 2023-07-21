@@ -15,6 +15,7 @@
  */
 package uk.gov.hmrc.calculator.utils
 
+import kotlin.math.floor
 import kotlin.math.round
 
 fun Double.formatMoney(): Double {
@@ -25,4 +26,8 @@ fun Double.decimalRound(places: Int): Double {
     var multiplier = 1.0
     repeat(places) { multiplier *= 10 }
     return round(this * multiplier) / multiplier
+}
+
+fun Double.roundDownToWholeNumber(): Double {
+    return floor(this)
 }
