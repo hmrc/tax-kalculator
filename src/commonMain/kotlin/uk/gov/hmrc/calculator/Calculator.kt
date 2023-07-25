@@ -31,6 +31,7 @@ import uk.gov.hmrc.calculator.model.PayPeriod.FOUR_WEEKLY
 import uk.gov.hmrc.calculator.model.PayPeriod.MONTHLY
 import uk.gov.hmrc.calculator.model.PayPeriod.WEEKLY
 import uk.gov.hmrc.calculator.model.PayPeriod.YEARLY
+import uk.gov.hmrc.calculator.model.StudentLoanAmountBreakdown
 import uk.gov.hmrc.calculator.model.TaxYear
 import uk.gov.hmrc.calculator.model.bands.Band
 import uk.gov.hmrc.calculator.model.bands.EmployeeNIBands
@@ -39,6 +40,8 @@ import uk.gov.hmrc.calculator.model.bands.TaxBands
 import uk.gov.hmrc.calculator.model.pension.AnnualPensionMethod
 import uk.gov.hmrc.calculator.model.pension.PensionAllowances.getPensionAllowances
 import uk.gov.hmrc.calculator.model.pension.calculateYearlyPension
+import uk.gov.hmrc.calculator.model.studentloans.StudentLoanCalculation
+import uk.gov.hmrc.calculator.model.studentloans.StudentLoanRate
 import uk.gov.hmrc.calculator.model.taxcodes.AdjustedTaxFreeTCode
 import uk.gov.hmrc.calculator.model.taxcodes.EmergencyTaxCode
 import uk.gov.hmrc.calculator.model.taxcodes.KTaxCode
@@ -50,6 +53,7 @@ import uk.gov.hmrc.calculator.model.taxcodes.TaxCode
 import uk.gov.hmrc.calculator.utils.convertAmountFromYearlyToPayPeriod
 import uk.gov.hmrc.calculator.utils.convertListOfBandBreakdownForPayPeriod
 import uk.gov.hmrc.calculator.utils.convertWageToYearly
+import uk.gov.hmrc.calculator.utils.studentloan.convertBreakdownForPayPeriod
 import uk.gov.hmrc.calculator.utils.tapering.deductTapering
 import uk.gov.hmrc.calculator.utils.tapering.getTaperingAmount
 import uk.gov.hmrc.calculator.utils.tapering.shouldApplyTapering
@@ -69,6 +73,10 @@ class Calculator @JvmOverloads constructor(
     private val pensionMethod: AnnualPensionMethod? = null,
     private val pensionYearlyAmount: Double? = null,
     private val pensionPercentage: Double? = null,
+    private val hasStudentLoanPlanOne: Boolean = false,
+    private val hasStudentLoanPlanTwo: Boolean = false,
+    private val hasStudentLoanPlanFour: Boolean = false,
+    private val hasStudentLoanPostgraduatePlan: Boolean = false,
 ) {
 
     private val bandBreakdown: MutableList<BandBreakdown> = mutableListOf()
@@ -82,6 +90,7 @@ class Calculator @JvmOverloads constructor(
         InvalidTaxBandException::class,
         InvalidPensionException::class,
     )
+    @Suppress("LongMethod")
     fun run(): CalculatorResponse {
         if (!WageValidator.isAboveMinimumWages(wages) || !WageValidator.isBelowMaximumWages(wages)) {
             throw InvalidWagesException("Wages must be between 0 and 9999999.99")
@@ -124,6 +133,21 @@ class Calculator @JvmOverloads constructor(
                 Pair(taxCodeType.getTrueTaxFreeAmount(), null)
             }
 
+        val listOfUndergraduatePlan = mapOf(
+            StudentLoanRate.StudentLoanPlan.PLAN_ONE to hasStudentLoanPlanOne,
+            StudentLoanRate.StudentLoanPlan.PLAN_TWO to hasStudentLoanPlanTwo,
+            StudentLoanRate.StudentLoanPlan.PLAN_FOUR to hasStudentLoanPlanFour
+        )
+
+        val studentLoan = StudentLoanCalculation(
+            yearlyWageAfterPension,
+            listOfUndergraduatePlan,
+            hasStudentLoanPostgraduatePlan,
+        )
+
+        val (studentLoanBreakdown, studentLoanDeduction) =
+            Pair(studentLoan.listOfBreakdownResult, studentLoan.calculateTotalLoanDeduction())
+
         return createResponse(
             taxCodeType,
             yearlyWages,
@@ -132,6 +156,8 @@ class Calculator @JvmOverloads constructor(
             yearlyPensionContribution,
             yearlyWageAfterPension,
             taperingAmount,
+            studentLoanBreakdown,
+            studentLoanDeduction,
         )
     }
 
@@ -144,6 +170,8 @@ class Calculator @JvmOverloads constructor(
         yearlyPensionContribution: Double?,
         yearlyWageAfterPensionDeduction: Double,
         taperingAmountDeduction: Double?,
+        studentLoanBreakdown: MutableList<StudentLoanAmountBreakdown>,
+        finalStudentLoanAmount: Double,
     ): CalculatorResponse {
         val taxPayable = taxToPay(
             yearlyWageAfterPensionDeduction,
@@ -174,6 +202,8 @@ class Calculator @JvmOverloads constructor(
                 wageAfterPensionDeductionRaw =
                 yearlyWageAfterPensionDeduction.convertAmountFromYearlyToPayPeriod(WEEKLY),
                 taperingAmountRaw = taperingAmountDeduction?.convertAmountFromYearlyToPayPeriod(WEEKLY),
+                studentLoanBreakdownList = studentLoanBreakdown.convertBreakdownForPayPeriod(WEEKLY),
+                finalStudentLoanAmountRaw = finalStudentLoanAmount.convertAmountFromYearlyToPayPeriod(WEEKLY)
             ),
             fourWeekly = CalculatorResponsePayPeriod(
                 payPeriod = FOUR_WEEKLY,
@@ -188,6 +218,8 @@ class Calculator @JvmOverloads constructor(
                 wageAfterPensionDeductionRaw =
                 yearlyWageAfterPensionDeduction.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
                 taperingAmountRaw = taperingAmountDeduction?.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
+                studentLoanBreakdownList = studentLoanBreakdown.convertBreakdownForPayPeriod(FOUR_WEEKLY),
+                finalStudentLoanAmountRaw = finalStudentLoanAmount.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY)
             ),
             monthly = CalculatorResponsePayPeriod(
                 payPeriod = MONTHLY,
@@ -202,6 +234,8 @@ class Calculator @JvmOverloads constructor(
                 wageAfterPensionDeductionRaw =
                 yearlyWageAfterPensionDeduction.convertAmountFromYearlyToPayPeriod(MONTHLY),
                 taperingAmountRaw = taperingAmountDeduction?.convertAmountFromYearlyToPayPeriod(MONTHLY),
+                studentLoanBreakdownList = studentLoanBreakdown.convertBreakdownForPayPeriod(MONTHLY),
+                finalStudentLoanAmountRaw = finalStudentLoanAmount.convertAmountFromYearlyToPayPeriod(MONTHLY)
             ),
             yearly = CalculatorResponsePayPeriod(
                 payPeriod = YEARLY,
@@ -216,6 +250,8 @@ class Calculator @JvmOverloads constructor(
                 wageAfterPensionDeductionRaw =
                 yearlyWageAfterPensionDeduction.convertAmountFromYearlyToPayPeriod(YEARLY),
                 taperingAmountRaw = taperingAmountDeduction?.convertAmountFromYearlyToPayPeriod(YEARLY),
+                studentLoanBreakdownList = studentLoanBreakdown.convertBreakdownForPayPeriod(YEARLY),
+                finalStudentLoanAmountRaw = finalStudentLoanAmount.convertAmountFromYearlyToPayPeriod(YEARLY)
             )
         )
     }
