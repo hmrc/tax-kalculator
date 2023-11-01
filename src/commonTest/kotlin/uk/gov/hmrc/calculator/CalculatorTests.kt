@@ -956,9 +956,10 @@ internal class CalculatorTests {
     }
 
     @Test
-    fun `GIVEN TWENTY_TWENTY_THREE WHEN 125140 wage to apply tapering THEN calculates response`() {
+    fun `GIVEN TWENTY_TWENTY_THREE WHEN 125140 wage to apply tapering AND userSuppliedTaxCode false THEN calculates response`() {
         val result = Calculator(
             taxCode = "1257L",
+            userSuppliedTaxCode = false,
             wages = 125140.0,
             payPeriod = PayPeriod.YEARLY,
             taxYear = TaxYear.TWENTY_TWENTY_THREE,
@@ -1021,6 +1022,77 @@ internal class CalculatorTests {
         assertEquals(0.0, yearly.pensionContribution)
         assertEquals(125140.0, yearly.wageAfterPensionDeduction)
         assertEquals(12570.0, yearly.taperingAmountDeduction)
+        assertNull(yearly.studentLoanBreakdown)
+        assertEquals(0.0, yearly.finalStudentLoanAmount)
+    }
+
+    @Test
+    fun `GIVEN TWENTY_TWENTY_THREE WHEN 125140 wage to apply tapering AND userSuppliedTaxCode true THEN calculates response without tapering`() {
+        val result = Calculator(
+            taxCode = "1257L",
+            userSuppliedTaxCode = true,
+            wages = 125140.0,
+            payPeriod = PayPeriod.YEARLY,
+            taxYear = TaxYear.TWENTY_TWENTY_THREE,
+        ).run()
+        Logger.i(result.prettyPrintDataClass())
+
+        assertEquals(Country.ENGLAND, result.country)
+        assertFalse(result.isKCode)
+
+        val weekly = result.weekly
+        assertEquals(PayPeriod.WEEKLY, weekly.payPeriod)
+        assertEquals(115.80, weekly.employeesNI)
+        assertEquals(307.95, weekly.employersNI)
+        assertEquals(2406.54, weekly.wages)
+        assertEquals(241.73, weekly.taxFree)
+        assertEquals(720.85, weekly.taxToPay)
+        assertEquals(1569.89, weekly.takeHome)
+        assertEquals(0.0, weekly.pensionContribution)
+        assertEquals(2406.54, weekly.wageAfterPensionDeduction)
+        assertEquals(0.0, weekly.taperingAmountDeduction)
+        assertNull(weekly.studentLoanBreakdown)
+        assertEquals(0.0, weekly.finalStudentLoanAmount)
+
+        val fourWeekly = result.fourWeekly
+        assertEquals(PayPeriod.FOUR_WEEKLY, fourWeekly.payPeriod)
+        assertEquals(463.18, fourWeekly.employeesNI)
+        assertEquals(1231.81, fourWeekly.employersNI)
+        assertEquals(9626.15, fourWeekly.wages)
+        assertEquals(966.92, fourWeekly.taxFree)
+        assertEquals(2883.42, fourWeekly.taxToPay)
+        assertEquals(6279.55, fourWeekly.takeHome)
+        assertEquals(0.0, fourWeekly.pensionContribution)
+        assertEquals(9626.15, fourWeekly.wageAfterPensionDeduction)
+        assertEquals(0.0, fourWeekly.taperingAmountDeduction)
+        assertNull(fourWeekly.studentLoanBreakdown)
+        assertEquals(0.0, fourWeekly.finalStudentLoanAmount)
+
+        val monthly = result.monthly
+        assertEquals(PayPeriod.MONTHLY, monthly.payPeriod)
+        assertEquals(501.78, monthly.employeesNI)
+        assertEquals(1334.46, monthly.employersNI)
+        assertEquals(10428.33, monthly.wages)
+        assertEquals(1047.5, monthly.taxFree)
+        assertEquals(3123.70, monthly.taxToPay)
+        assertEquals(6802.85, monthly.takeHome)
+        assertEquals(0.0, monthly.pensionContribution)
+        assertEquals(10428.33, monthly.wageAfterPensionDeduction)
+        assertEquals(0.0, monthly.taperingAmountDeduction)
+        assertNull(monthly.studentLoanBreakdown)
+        assertEquals(0.0, monthly.finalStudentLoanAmount)
+
+        val yearly = result.yearly
+        assertEquals(PayPeriod.YEARLY, yearly.payPeriod)
+        assertEquals(6021.4, yearly.employeesNI)
+        assertEquals(16013.52, yearly.employersNI)
+        assertEquals(125140.0, yearly.wages)
+        assertEquals(12570.0, yearly.taxFree)
+        assertEquals(37484.4, yearly.taxToPay)
+        assertEquals(81634.2, yearly.takeHome)
+        assertEquals(0.0, yearly.pensionContribution)
+        assertEquals(125140.0, yearly.wageAfterPensionDeduction)
+        assertEquals(0.0, yearly.taperingAmountDeduction)
         assertNull(yearly.studentLoanBreakdown)
         assertEquals(0.0, yearly.finalStudentLoanAmount)
     }

@@ -65,6 +65,7 @@ import kotlin.jvm.JvmOverloads
 
 class Calculator @JvmOverloads constructor(
     private val taxCode: String,
+    private val userSuppliedTaxCode: Boolean = true,
     private val wages: Double,
     private val payPeriod: PayPeriod,
     private val isPensionAge: Boolean = false,
@@ -90,7 +91,7 @@ class Calculator @JvmOverloads constructor(
         InvalidTaxBandException::class,
         InvalidPensionException::class,
     )
-    @Suppress("LongMethod")
+    @Suppress("LongMethod", "ComplexMethod")
     fun run(): CalculatorResponse {
         if (!WageValidator.isAboveMinimumWages(wages) || !WageValidator.isBelowMaximumWages(wages)) {
             throw InvalidWagesException("Wages must be between 0 and 9999999.99")
@@ -124,7 +125,9 @@ class Calculator @JvmOverloads constructor(
         } else yearlyWages
 
         val (taxFreeAmount, taperingAmount) =
-            if (taxCodeType is StandardTaxCode && yearlyWageAfterPension.shouldApplyTapering()) {
+            if (taxCodeType is StandardTaxCode && !userSuppliedTaxCode &&
+                yearlyWageAfterPension.shouldApplyTapering()
+            ) {
                 Pair(
                     taxCodeType.getTrueTaxFreeAmount().deductTapering(yearlyWageAfterPension),
                     yearlyWageAfterPension.getTaperingAmount(taxCodeType.getTrueTaxFreeAmount())

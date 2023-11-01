@@ -22,6 +22,7 @@ Create an instance of `Calculator`, providing values as per the following exampl
 ```kotlin
 val calculator = Calculator(
     taxCode = "1257L",               // Required
+    userSuppliedTaxCode = false,     // Optional (Default: true)
     wages = 20000.0,                 // Required
     payPeriod = YEARLY,              // Required
     isPensionAge = false,            // Optional (Default: false)
@@ -42,6 +43,7 @@ val response = calculator.run()
 ```swift
 let calculator = Calculator(
     taxCode: "1257L",
+    userSuppliedTaxCode = false,
     wages: 20000.0,
     payPeriod: period,
     isPensionAge: false,
@@ -63,6 +65,7 @@ let calculation = try calculator.run()
 Returns an object of type `CalculatorResponse`. This class is broken up into `weekly`, `four_weekly`, `monthly` and `yearly`. Each of these members is of type `CalculatorResponsePayPeriod` and the members of this class are what will return the values (relative to their PayPeriod) needed for the app, they are:
 
 - `taxToPay` of type `Double` (This will be capped at a maximum of 50% of their wages)
+- `userSuppliedTaxCode` of type `Boolean` (If this value is `true`, tapering will not apply in the calculation)
 - `maxTaxAmountExceeded` of type `Boolean` (This will always be false unless taxToPay is adjusted for 50%)
 - `employeesNI` of type `Double`
 - `employersNI` of type `Double`
