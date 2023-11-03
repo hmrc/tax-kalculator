@@ -373,7 +373,7 @@ class Calculator @JvmOverloads constructor(
     }
 
     private fun shouldApplyStandardTapering(yearlyWageAfterPension: Double) = taxCodeType is StandardTaxCode &&
-            !userSuppliedTaxCode && yearlyWageAfterPension.shouldApplyTapering()
+        !userSuppliedTaxCode && yearlyWageAfterPension.shouldApplyTapering()
 
     private val taxCodeType: TaxCode by lazy {
         this.taxCode.toTaxCode()
