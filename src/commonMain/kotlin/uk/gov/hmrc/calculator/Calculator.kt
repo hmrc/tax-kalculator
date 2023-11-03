@@ -91,7 +91,7 @@ class Calculator @JvmOverloads constructor(
         InvalidTaxBandException::class,
         InvalidPensionException::class,
     )
-    @Suppress("LongMethod", "ComplexMethod")
+    @Suppress("LongMethod")
     fun run(): CalculatorResponse {
         if (!WageValidator.isAboveMinimumWages(wages) || !WageValidator.isBelowMaximumWages(wages)) {
             throw InvalidWagesException("Wages must be between 0 and 9999999.99")
@@ -125,9 +125,7 @@ class Calculator @JvmOverloads constructor(
         } else yearlyWages
 
         val (taxFreeAmount, taperingAmount) =
-            if (taxCodeType is StandardTaxCode && !userSuppliedTaxCode &&
-                yearlyWageAfterPension.shouldApplyTapering()
-            ) {
+            if (shouldApplyStandardTapering(yearlyWageAfterPension)) {
                 Pair(
                     taxCodeType.getTrueTaxFreeAmount().deductTapering(yearlyWageAfterPension),
                     yearlyWageAfterPension.getTaperingAmount(taxCodeType.getTrueTaxFreeAmount())
@@ -373,6 +371,9 @@ class Calculator @JvmOverloads constructor(
         }
         return amount
     }
+
+    private fun shouldApplyStandardTapering(yearlyWageAfterPension: Double) = taxCodeType is StandardTaxCode &&
+            !userSuppliedTaxCode && yearlyWageAfterPension.shouldApplyTapering()
 
     private val taxCodeType: TaxCode by lazy {
         this.taxCode.toTaxCode()
