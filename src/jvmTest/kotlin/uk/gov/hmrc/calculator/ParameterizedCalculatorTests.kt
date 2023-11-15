@@ -100,6 +100,7 @@ internal class ParameterizedCalculatorTests {
     ) {
         val response = Calculator(
             taxCode = inputTaxCode,
+            userSuppliedTaxCode = false,
             wages = inputWages,
             payPeriod = inputPayPeriod,
             taxYear = inputTaxYear,

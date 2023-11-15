@@ -65,6 +65,7 @@ import kotlin.jvm.JvmOverloads
 
 class Calculator @JvmOverloads constructor(
     private val taxCode: String,
+    private val userSuppliedTaxCode: Boolean = true,
     private val wages: Double,
     private val payPeriod: PayPeriod,
     private val isPensionAge: Boolean = false,
@@ -124,7 +125,7 @@ class Calculator @JvmOverloads constructor(
         } else yearlyWages
 
         val (taxFreeAmount, taperingAmount) =
-            if (taxCodeType is StandardTaxCode && yearlyWageAfterPension.shouldApplyTapering()) {
+            if (shouldApplyStandardTapering(yearlyWageAfterPension)) {
                 Pair(
                     taxCodeType.getTrueTaxFreeAmount().deductTapering(yearlyWageAfterPension),
                     yearlyWageAfterPension.getTaperingAmount(taxCodeType.getTrueTaxFreeAmount())
@@ -370,6 +371,9 @@ class Calculator @JvmOverloads constructor(
         }
         return amount
     }
+
+    private fun shouldApplyStandardTapering(yearlyWageAfterPension: Double) = taxCodeType is StandardTaxCode &&
+        !userSuppliedTaxCode && yearlyWageAfterPension.shouldApplyTapering()
 
     private val taxCodeType: TaxCode by lazy {
         this.taxCode.toTaxCode()
