@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,21 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.gov.hmrc.calculator.utils
+package uk.gov.hmrc.calculator.utils.validation
 
-import kotlin.math.floor
-import kotlin.math.round
+import uk.gov.hmrc.calculator.model.TaxYear
+import uk.gov.hmrc.calculator.model.pension.PensionAllowances.getPensionAllowances
 
-fun Double.formatMoney(): Double {
-    return this.decimalRound(2)
-}
+internal object PensionValidator {
 
-fun Double.decimalRound(places: Int): Double {
-    var multiplier = 1.0
-    repeat(places) { multiplier *= 10 }
-    return round(this * multiplier) / multiplier
-}
-
-fun Double.roundDownToWholeNumber(): Double {
-    return floor(this)
+    internal fun isValidYearlyPension(yearlyWage: Double, yearlyPension: Double, taxYear: TaxYear): Boolean {
+        return yearlyPension <= yearlyWage && yearlyPension <= getPensionAllowances(taxYear).standardLifetimeAllowance
+    }
 }

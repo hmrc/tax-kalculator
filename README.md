@@ -22,11 +22,19 @@ Create an instance of `Calculator`, providing values as per the following exampl
 ```kotlin
 val calculator = Calculator(
     taxCode = "1257L",               // Required
+    userSuppliedTaxCode = false,     // Optional (Default: true)
     wages = 20000.0,                 // Required
     payPeriod = YEARLY,              // Required
     isPensionAge = false,            // Optional (Default: false)
     howManyAWeek = null,             // Optional (Default: null)
-    taxYear = TaxYear.currentTaxYear // Optional (Default: Current Tax Year)
+    taxYear = TaxYear.currentTaxYear, // Optional (Default: Current Tax Year)
+    pensionMethod = PERCENTAGE,      // Optional (Default: null)
+    pensionYearlyAmount = null,       // Optional (Default: null)
+    pensionPercentage = 10.0,          // Optional (Default: null)
+    hasStudentLoanPlanOne = false,          // Optional (Default: false)
+    hasStudentLoanPlanTwo = false,          // Optional (Default: false)
+    hasStudentLoanPlanFour = false,          // Optional (Default: false)
+    hasStudentLoanPostgraduatePlan = false,          // Optional (Default: false)
 )
 
 val response = calculator.run()
@@ -35,11 +43,19 @@ val response = calculator.run()
 ```swift
 let calculator = Calculator(
     taxCode: "1257L",
+    userSuppliedTaxCode = false,
     wages: 20000.0,
     payPeriod: period,
     isPensionAge: false,
     howManyAWeek: KotlinDouble(double: 35),
-    taxYear: TaxYear.companion.currentTaxYear
+    taxYear: TaxYear.companion.currentTaxYear,
+    pensionMethod: pensionMethod,
+    pensionYearlyAmount: KotlinDouble(double: 0),
+    pensionPercentage: KotlinDouble(double: 10),
+    hasStudentLoanPlanOne: false,
+    hasStudentLoanPlanTwo: false,
+    hasStudentLoanPlanFour: false,
+    hasStudentLoanPostgraduatePlan: false
 )
 
 let calculation = try calculator.run()
@@ -49,6 +65,7 @@ let calculation = try calculator.run()
 Returns an object of type `CalculatorResponse`. This class is broken up into `weekly`, `four_weekly`, `monthly` and `yearly`. Each of these members is of type `CalculatorResponsePayPeriod` and the members of this class are what will return the values (relative to their PayPeriod) needed for the app, they are:
 
 - `taxToPay` of type `Double` (This will be capped at a maximum of 50% of their wages)
+- `userSuppliedTaxCode` of type `Boolean` (If this value is `true`, tapering will not apply in the calculation)
 - `maxTaxAmountExceeded` of type `Boolean` (This will always be false unless taxToPay is adjusted for 50%)
 - `employeesNI` of type `Double`
 - `employersNI` of type `Double`
@@ -57,6 +74,10 @@ Returns an object of type `CalculatorResponse`. This class is broken up into `we
 - `taxFree` of type `Double`
 - `totalDeductions` of type `Double`
 - `takeHome` of type `Double`
+- `pensionContribution` of type `Double` (This will return 0.0 if no Pension being added)
+- `taperingAmountDeduction` of type `Double` (This will return 0.0 if wage is below £100,002)
+- `studentLoanBreakdown` of type `List<StudentLoanAmountBreakdown>` (This will return null if no student loan plan)
+- `finalStudentLoanAmount` of type `Double` (This will return 0.0 if no student loan plan)
 
 > For tax breakdown this is the amount of tax per tax band which has two members, `percentage: Double` and `amount: Double`.
 
@@ -82,7 +103,7 @@ val year = CalculatorUtils.currentTaxYear()
 let year = CalculatorUtils.shared.currentTaxYear()
 ```
 
-## Validation
+### Validate
 
 ### Validate a tax code:
 #### Android
@@ -265,6 +286,44 @@ private val employerNIBands2022: List<EmployerNIBand> = listOf(
     EmployerNIBand(9100.0, 50270.00, 0.1505),
     EmployerNIBand(50270.0, -1.0, 0.1505)
 )
+```
+
+### Pension allowance
+Pension contribute has a life time and annual allowance, which are represented with the following data structures: 
+
+```kotlin
+internal data class PensionAllowance(
+  val standardLifetimeAllowance: Double,
+  val annualAllowance: Double
+)
+```
+In [`PensionAllowances.kt`](https://github.com/hmrc/tax-kalculator/blob/main/src/commonMain/kotlin/uk/gov/hmrc/calculator/model/pension/PensionAllowances.kt) update allowance as specified by the business.
+
+```kotlin
+private fun pensionAllowance2022() = PensionAllowance(1073100.0, 40000.0)
+
+private fun pensionAllowance2023() = PensionAllowance(1073100.0, 60000.0)
+```
+
+### Student Loan Rate
+Student loan rate has a Threshold and Recovery rate (in percentage), which are represented with the following data structures: 
+
+```kotlin
+internal data class StudentLoanRepayment(
+        val yearlyThreshold: Double,
+        val recoveryRatePercentage: Double,
+    )
+```
+
+In [`StudentLoanRate.kt`](https://github.com/hmrc/tax-kalculator/blob/main/src/commonMain/kotlin/uk/gov/hmrc/calculator/model.studentloans/StudentLoanRate.kt) update rate as specified by the business.
+
+```kotlin
+private fun studentLoanRepaymentRate2023() = mapOf(
+        StudentLoanPlan.PLAN_ONE to StudentLoanRepayment(22015.0, 0.09),
+        StudentLoanPlan.PLAN_TWO to StudentLoanRepayment(27295.0, 0.09),
+        StudentLoanPlan.PLAN_FOUR to StudentLoanRepayment(27660.0, 0.09),
+        StudentLoanPlan.POST_GRADUATE_PLAN to StudentLoanRepayment(21000.0, 0.06),
+    )
 ```
 
 ## License

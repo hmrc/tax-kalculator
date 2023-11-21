@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,21 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.gov.hmrc.calculator.utils
+package uk.gov.hmrc.calculator.model.pension
 
-import kotlin.math.floor
-import kotlin.math.round
-
-fun Double.formatMoney(): Double {
-    return this.decimalRound(2)
-}
-
-fun Double.decimalRound(places: Int): Double {
-    var multiplier = 1.0
-    repeat(places) { multiplier *= 10 }
-    return round(this * multiplier) / multiplier
-}
-
-fun Double.roundDownToWholeNumber(): Double {
-    return floor(this)
+enum class AnnualPensionMethod {
+    PERCENTAGE, AMOUNT_IN_POUNDS
 }
