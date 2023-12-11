@@ -25,6 +25,7 @@ internal object TaxBands {
         TaxYear.TWENTY_TWENTY -> if (country == SCOTLAND) scottish2020Bands() else restOfUK2020Bands()
         TaxYear.TWENTY_TWENTY_ONE -> if (country == SCOTLAND) scottish2021Bands() else restOfUK2021Bands()
         TaxYear.TWENTY_TWENTY_THREE -> if (country == SCOTLAND) scottish2023Bands() else restOfUK2023Bands()
+        TaxYear.TWENTY_TWENTY_FOUR_JANUARY -> if (country == SCOTLAND) scottish2024Bands() else restOfUK2024Bands()
         else -> if (country == SCOTLAND) scottish2022Bands() else restOfUK2022Bands()
     }
 
@@ -60,6 +61,14 @@ internal object TaxBands {
         TaxBand(125140.00, -1.0, 0.47)
     )
 
+    private fun scottish2024Bands() = listOf(
+        TaxBand(0.00, 2162.00, 0.19),
+        TaxBand(2162.00, 13118.00, 0.20),
+        TaxBand(13118.00, 31092.00, 0.21),
+        TaxBand(31092.00, 125140.00, 0.42),
+        TaxBand(125140.00, -1.0, 0.47)
+    )
+
     private fun restOfUK2020Bands() = listOf(
         TaxBand(0.00, 37500.00, 0.2),
         TaxBand(37500.0, 150000.00, 0.4),
@@ -79,6 +88,12 @@ internal object TaxBands {
     )
 
     private fun restOfUK2023Bands() = listOf(
+        TaxBand(0.0, 37700.00, 0.2),
+        TaxBand(37700.00, 125140.00, 0.4),
+        TaxBand(125140.0, -1.0, 0.45)
+    )
+
+    private fun restOfUK2024Bands() = listOf(
         TaxBand(0.0, 37700.00, 0.2),
         TaxBand(37700.00, 125140.00, 0.4),
         TaxBand(125140.0, -1.0, 0.45)

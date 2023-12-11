@@ -26,7 +26,8 @@ enum class TaxYear(private val value: Int) {
     TWENTY_TWENTY_TWO(2022),
     TWENTY_TWENTY_TWO_JULY_REVISED(2022),
     TWENTY_TWENTY_TWO_NOVEMBER_REVISED(2022),
-    TWENTY_TWENTY_THREE(2023);
+    TWENTY_TWENTY_THREE(2023),
+    TWENTY_TWENTY_FOUR_JANUARY(2024);
 
     companion object {
         @Throws(InvalidTaxYearException::class)
@@ -49,6 +50,8 @@ enum class TaxYear(private val value: Int) {
                     TWENTY_TWENTY_TWO_NOVEMBER_REVISED
                 } else if (year == TWENTY_TWENTY_TWO && DateService.isIn2022JulyRevisedPeriod) {
                     TWENTY_TWENTY_TWO_JULY_REVISED
+                } else if (DateService.isIn2024JanuaryPeriod) {
+                    TWENTY_TWENTY_FOUR_JANUARY
                 } else year
             }
     }
