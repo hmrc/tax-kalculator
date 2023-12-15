@@ -230,8 +230,8 @@ internal class ParameterizedCalculatorTests {
     }
 
     @ParameterizedTest(name = "tax_code={0}, wages={1}, pay_period={2}, tax_year={3}, is_pension_age={4}")
-    @CsvFileSource(resources = ["/data2024.csv"], numLinesToSkip = 1)
-    fun `Tax calculations 2024 January`(
+    @CsvFileSource(resources = ["/data2023_Jan_Revised.csv"], numLinesToSkip = 1)
+    fun `Tax calculations 2023 January Revised`(
         inputTaxCode: String,
         inputWages: Double,
         @ConvertWith(PayPeriodConverter::class) inputPayPeriod: PayPeriod,
