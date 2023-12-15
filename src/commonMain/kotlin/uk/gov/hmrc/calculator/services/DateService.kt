@@ -21,6 +21,7 @@ import com.soywiz.klock.DateTimeTz
 interface DateService {
     val isIn2022JulyRevisedPeriod: Boolean
     val isIn2022NovemberRevisedPeriod: Boolean
+    val isIn2023JanuaryRevisedPeriod: Boolean
     fun firstDayOfTaxYear(year: Int): DateTimeTz
 
     companion object {
@@ -32,6 +33,9 @@ interface DateService {
 
         val isIn2022NovemberRevisedPeriod: Boolean =
             DateServiceImpl().isIn2022NovemberRevisedPeriod
+
+        val isIn2023JanuaryRevisedPeriod: Boolean =
+            DateServiceImpl().isIn2023JanuaryRevisedPeriod
     }
 }
 
@@ -53,12 +57,23 @@ class DateServiceImpl(
             day = 6
         ).local
 
+    // Actual year set to 2024, but variable named "2023" because the date is still in 2023 tax year.
+    private val january2023RevisedStartDate: DateTimeTz =
+        DateTime(
+            year = 2024,
+            month = 1,
+            day = 6
+        ).local
+
     override val isIn2022JulyRevisedPeriod: Boolean =
         now() < novemberRevisedStartDate &&
             now() >= julyRevisedStartDate
 
     override val isIn2022NovemberRevisedPeriod: Boolean =
         now() >= novemberRevisedStartDate
+
+    override val isIn2023JanuaryRevisedPeriod: Boolean =
+        now() >= january2023RevisedStartDate
 
     override fun firstDayOfTaxYear(year: Int): DateTimeTz =
         DateTime(

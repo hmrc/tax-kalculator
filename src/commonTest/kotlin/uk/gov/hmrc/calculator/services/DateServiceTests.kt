@@ -123,4 +123,32 @@ class DateServiceTests {
         )
         assertTrue(sut.isIn2022NovemberRevisedPeriod)
     }
+
+    @Test
+    fun `WHEN date is before 6th January 2024 THEN isIn2023JanuaryRevisedPeriod return false`() {
+        sut = DateServiceImpl(
+            dateTimeService = MockDateTimeService(
+                DateTime.invoke(
+                    2024,
+                    Month.January,
+                    5
+                )
+            )
+        )
+        assertFalse(sut.isIn2023JanuaryRevisedPeriod)
+    }
+
+    @Test
+    fun `WHEN date is after 6th January 2024 THEN isIn2023JanuaryRevisedPeriod return true`() {
+        sut = DateServiceImpl(
+            dateTimeService = MockDateTimeService(
+                DateTime.invoke(
+                    2024,
+                    Month.January,
+                    6
+                )
+            )
+        )
+        assertTrue(sut.isIn2023JanuaryRevisedPeriod)
+    }
 }
