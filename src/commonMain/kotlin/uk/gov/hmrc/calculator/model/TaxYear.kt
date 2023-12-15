@@ -50,7 +50,7 @@ enum class TaxYear(private val value: Int) {
                     TWENTY_TWENTY_TWO_NOVEMBER_REVISED
                 } else if (year == TWENTY_TWENTY_TWO && DateService.isIn2022JulyRevisedPeriod) {
                     TWENTY_TWENTY_TWO_JULY_REVISED
-                } else if (year == TWENTY_TWENTY_THREE && DateService.isIn2024JanuaryPeriod) {
+                } else if (year == TWENTY_TWENTY_THREE && DateService.isIn2023JanuaryRevisedPeriod) {
                     TWENTY_TWENTY_THREE_JANUARY_REVISED
                 } else year
             }
