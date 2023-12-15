@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.9.3] - 2023-12-15Z
 - Added 2024 January National Insurance rate.
 
 ## [2.9.2] - 2023-06-12Z
