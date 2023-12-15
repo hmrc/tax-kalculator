@@ -19,6 +19,7 @@ import uk.gov.hmrc.calculator.model.Country
 import uk.gov.hmrc.calculator.model.Country.SCOTLAND
 import uk.gov.hmrc.calculator.model.TaxYear
 
+@Suppress("TooManyFunctions", "ComplexMethod")
 internal object TaxBands {
 
     fun getBands(taxYear: TaxYear, country: Country) = when (taxYear) {
