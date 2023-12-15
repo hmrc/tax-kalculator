@@ -57,6 +57,7 @@ class DateServiceImpl(
             day = 6
         ).local
 
+    // Actual year set to 2024, but variable named "2023" because the date is still in 2023 tax year.
     private val january2023RevisedStartDate: DateTimeTz =
         DateTime(
             year = 2024,
