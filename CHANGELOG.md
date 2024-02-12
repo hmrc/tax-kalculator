@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Added Tapering calculation.
 - Added Student Loan calculation.
 - Added `userSuppliedTaxCode` to calculation, only calculate tapering if this value is `false`.
+- Added 2024/25 rates.
 
 ## [2.9.3] - 2023-12-15Z
 - Added 2024 January National Insurance rate.

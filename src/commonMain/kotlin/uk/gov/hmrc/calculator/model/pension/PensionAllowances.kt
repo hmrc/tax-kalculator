@@ -26,6 +26,8 @@ internal object PensionAllowances {
         TaxYear.TWENTY_TWENTY_TWO_JULY_REVISED,
         TaxYear.TWENTY_TWENTY_TWO_NOVEMBER_REVISED -> pensionAllowance2022()
         TaxYear.TWENTY_TWENTY_THREE -> pensionAllowance2023()
+        TaxYear.TWENTY_TWENTY_THREE_JANUARY_REVISED -> pensionAllowance2023JanuaryRevised()
+        TaxYear.TWENTY_TWENTY_FOUR -> pensionAllowance2024()
     }
 
     private fun pensionAllowance2020() = PensionAllowance(1073100.0, 40000.0)
@@ -35,6 +37,10 @@ internal object PensionAllowances {
     private fun pensionAllowance2022() = PensionAllowance(1073100.0, 40000.0)
 
     private fun pensionAllowance2023() = PensionAllowance(1073100.0, 60000.0)
+
+    private fun pensionAllowance2023JanuaryRevised() = PensionAllowance(1073100.0, 60000.0)
+
+    private fun pensionAllowance2024() = PensionAllowance(1073100.0, 60000.0)
 
     internal data class PensionAllowance(
         val standardLifetimeAllowance: Double,

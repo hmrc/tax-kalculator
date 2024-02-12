@@ -128,7 +128,8 @@ class Calculator @JvmOverloads constructor(
             if (shouldApplyStandardTapering(yearlyWageAfterPension)) {
                 Pair(
                     taxCodeType.getTrueTaxFreeAmount().deductTapering(yearlyWageAfterPension),
-                    yearlyWageAfterPension.getTaperingAmount(taxCodeType.getTrueTaxFreeAmount())
+                    // for calculation purpose, we use the taxFreeAmount (which include the £9) to calculate.
+                    yearlyWageAfterPension.getTaperingAmount(taxCodeType.taxFreeAmount)
                 )
             } else {
                 Pair(taxCodeType.getTrueTaxFreeAmount(), null)

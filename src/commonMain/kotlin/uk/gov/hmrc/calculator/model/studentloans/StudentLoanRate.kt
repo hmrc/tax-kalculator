@@ -46,6 +46,20 @@ internal class StudentLoanRate(taxYear: TaxYear) {
         StudentLoanPlan.POST_GRADUATE_PLAN to StudentLoanRepayment(21000.0, 0.06),
     )
 
+    private fun studentLoanRepaymentRate2023JanuaryRevised() = mapOf(
+        StudentLoanPlan.PLAN_ONE to StudentLoanRepayment(22015.0, 0.09),
+        StudentLoanPlan.PLAN_TWO to StudentLoanRepayment(27295.0, 0.09),
+        StudentLoanPlan.PLAN_FOUR to StudentLoanRepayment(27660.0, 0.09),
+        StudentLoanPlan.POST_GRADUATE_PLAN to StudentLoanRepayment(21000.0, 0.06),
+    )
+
+    private fun studentLoanRepaymentRate2024() = mapOf(
+        StudentLoanPlan.PLAN_ONE to StudentLoanRepayment(24990.0, 0.09),
+        StudentLoanPlan.PLAN_TWO to StudentLoanRepayment(27295.0, 0.09),
+        StudentLoanPlan.PLAN_FOUR to StudentLoanRepayment(31395.0, 0.09),
+        StudentLoanPlan.POST_GRADUATE_PLAN to StudentLoanRepayment(21000.0, 0.06),
+    )
+
     internal val rate: Map<StudentLoanPlan, StudentLoanRepayment> = when (taxYear) {
         TaxYear.TWENTY_TWENTY -> studentLoanRepaymentRate2020()
         TaxYear.TWENTY_TWENTY_ONE -> studentLoanRepaymentRate2021()
@@ -53,6 +67,8 @@ internal class StudentLoanRate(taxYear: TaxYear) {
         TaxYear.TWENTY_TWENTY_TWO_JULY_REVISED,
         TaxYear.TWENTY_TWENTY_TWO_NOVEMBER_REVISED -> studentLoanRepaymentRate2022()
         TaxYear.TWENTY_TWENTY_THREE -> studentLoanRepaymentRate2023()
+        TaxYear.TWENTY_TWENTY_THREE_JANUARY_REVISED -> studentLoanRepaymentRate2023JanuaryRevised()
+        TaxYear.TWENTY_TWENTY_FOUR -> studentLoanRepaymentRate2024()
     }
 
     internal data class StudentLoanRepayment(

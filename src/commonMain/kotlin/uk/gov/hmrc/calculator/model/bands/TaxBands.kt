@@ -25,11 +25,16 @@ internal object TaxBands {
     fun getBands(taxYear: TaxYear, country: Country) = when (taxYear) {
         TaxYear.TWENTY_TWENTY -> if (country == SCOTLAND) scottish2020Bands() else restOfUK2020Bands()
         TaxYear.TWENTY_TWENTY_ONE -> if (country == SCOTLAND) scottish2021Bands() else restOfUK2021Bands()
+        TaxYear.TWENTY_TWENTY_TWO,
+        TaxYear.TWENTY_TWENTY_TWO_JULY_REVISED,
+        TaxYear.TWENTY_TWENTY_TWO_NOVEMBER_REVISED -> {
+            if (country == SCOTLAND) scottish2022Bands() else restOfUK2022Bands()
+        }
         TaxYear.TWENTY_TWENTY_THREE -> if (country == SCOTLAND) scottish2023Bands() else restOfUK2023Bands()
-        TaxYear.TWENTY_TWENTY_THREE_JANUARY_REVISED -> if (country == SCOTLAND) {
-            scottish2023BandsJanuaryRevised()
-        } else restOfUK2023BandsJanuaryRevised()
-        else -> if (country == SCOTLAND) scottish2022Bands() else restOfUK2022Bands()
+        TaxYear.TWENTY_TWENTY_THREE_JANUARY_REVISED -> {
+            if (country == SCOTLAND) scottish2023BandsJanuaryRevised() else restOfUK2023BandsJanuaryRevised()
+        }
+        TaxYear.TWENTY_TWENTY_FOUR -> if (country == SCOTLAND) scottish2024Bands() else restOfUK2024Bands()
     }
 
     private fun scottish2020Bands() = listOf(
@@ -72,6 +77,15 @@ internal object TaxBands {
         TaxBand(125140.00, -1.0, 0.47)
     )
 
+    private fun scottish2024Bands() = listOf(
+        TaxBand(0.00, 2306.00, 0.19),
+        TaxBand(2306.00, 13991.00, 0.20),
+        TaxBand(13991.00, 31092.00, 0.21),
+        TaxBand(31092.00, 62430.00, 0.42),
+        TaxBand(62430.00, 125140.00, 0.45),
+        TaxBand(125140.00, -1.0, 0.48)
+    )
+
     private fun restOfUK2020Bands() = listOf(
         TaxBand(0.00, 37500.00, 0.2),
         TaxBand(37500.0, 150000.00, 0.4),
@@ -97,6 +111,12 @@ internal object TaxBands {
     )
 
     private fun restOfUK2023BandsJanuaryRevised() = listOf(
+        TaxBand(0.0, 37700.00, 0.2),
+        TaxBand(37700.00, 125140.00, 0.4),
+        TaxBand(125140.0, -1.0, 0.45)
+    )
+
+    private fun restOfUK2024Bands() = listOf(
         TaxBand(0.0, 37700.00, 0.2),
         TaxBand(37700.00, 125140.00, 0.4),
         TaxBand(125140.0, -1.0, 0.45)
