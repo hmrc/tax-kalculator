@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,9 @@ enum class TaxYear(private val value: Int) {
     TWENTY_TWENTY_TWO(2022),
     TWENTY_TWENTY_TWO_JULY_REVISED(2022),
     TWENTY_TWENTY_TWO_NOVEMBER_REVISED(2022),
-    TWENTY_TWENTY_THREE(2023);
+    TWENTY_TWENTY_THREE(2023),
+    TWENTY_TWENTY_THREE_JANUARY_REVISED(2023),
+    TWENTY_TWENTY_FOUR(2024);
 
     companion object {
         @Throws(InvalidTaxYearException::class)
@@ -49,6 +51,8 @@ enum class TaxYear(private val value: Int) {
                     TWENTY_TWENTY_TWO_NOVEMBER_REVISED
                 } else if (year == TWENTY_TWENTY_TWO && DateService.isIn2022JulyRevisedPeriod) {
                     TWENTY_TWENTY_TWO_JULY_REVISED
+                } else if (year == TWENTY_TWENTY_THREE && DateService.isIn2023JanuaryRevisedPeriod) {
+                    TWENTY_TWENTY_THREE_JANUARY_REVISED
                 } else year
             }
     }
