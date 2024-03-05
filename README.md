@@ -226,6 +226,8 @@ bundle exec fastlane tag_release
 
 ## How to update rates for new tax years
 
+*Note:* As part of updating the rates, we should also check our dependencies are up-to-date. For build issues, make sure the project has updated to the right kotlin version for the version of Xcode you are running. See: https://kotlinlang.org/docs/multiplatform-compatibility-guide.html#version-compatibility 
+
 ### Tax Bands
 Each tax band is represented with the following data structure:
 
