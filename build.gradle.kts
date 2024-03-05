@@ -177,7 +177,7 @@ tasks.named<Jar>("jvmJar") {
 }
 
 tasks.getByName<KotlinNativeSimulatorTest>("iosX64Test") {
-    deviceId = "iPhone 14"
+    deviceId = "iPhone 15"
 }
 
 fun getDate(): String {
