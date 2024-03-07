@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.10.1] - 2024-03-07Z
+
 - Updated the Kotlin version for compatibility with Xcode 15.
 
 ## [2.10.0] - 2024-02-23Z
