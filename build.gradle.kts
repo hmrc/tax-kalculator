@@ -27,11 +27,11 @@ version = System.getenv("BITRISE_GIT_TAG") ?: ("SNAPSHOT-" + getDate())
 
 plugins {
     `maven-publish`
-    kotlin("multiplatform").version("1.7.22")
+    kotlin("multiplatform").version("1.9.20")
     java
     id("io.gitlab.arturbosch.detekt").version("1.6.0")
     id("com.chromaticnoise.multiplatform-swiftpackage").version("2.0.3")
-    id("org.jetbrains.kotlinx.kover") version "0.5.0"
+    id("org.jetbrains.kotlinx.kover") version "0.7.6"
 }
 
 repositories {
@@ -44,15 +44,14 @@ repositories {
 // Configure source sets
 kotlin {
     jvm()
-    val iosX64 = iosX64("ios")
-    val iosArm32 = iosArm32()
+    val iosX64 = iosX64()
     val iosArm64 = iosArm64()
     val iosSimulatorArm64 = iosSimulatorArm64()
 
     val xcFramework = XCFramework(Config.frameworkName)
 
     targets {
-        configure(listOf(iosX64, iosArm32, iosArm64, iosSimulatorArm64)) {
+        configure(listOf(iosX64, iosArm64, iosSimulatorArm64)) {
             binaries.framework {
                 baseName = Config.frameworkName
                 xcFramework.add(this)
@@ -66,67 +65,41 @@ kotlin {
     }
 
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                with(Dependencies.Common.Main) {
-                    implementation(kotlin(stdlib))
-                    implementation(klock)
-                    implementation(kermit)
-                }
-            }
-        }
-        val commonTest by getting {
-            dependencies {
-                with(Dependencies.Common.Test) {
-                    implementation(kotlin(common))
-                    implementation(kotlin(annotations))
-                    implementation(junit)
-                    runtimeOnly(jupiter)
-                }
+        commonMain.dependencies {
+            with(Dependencies.Common.Main) {
+                implementation(kotlin(stdlib))
+                implementation(klock)
+                implementation(kermit)
             }
         }
 
-        val jvmMain by getting {
-            dependencies {
-                with(Dependencies.JVM.Main) {
-                    implementation(kotlin(stdlib))
-                }
-            }
-        }
-        val jvmTest by getting {
-            dependencies {
-                with(Dependencies.JVM.Test) {
-                    implementation(kotlin(test))
-                    implementation(kotlin(junit))
-                    implementation(jupiter)
-                }
+        commonTest.dependencies {
+            with(Dependencies.Common.Test) {
+                implementation(kotlin(common))
+                implementation(kotlin(annotations))
+                implementation(junit)
+                runtimeOnly(jupiter)
             }
         }
 
-        val iosMain by getting {
-            dependencies {
-                with(Dependencies.IOS.Main) {
-                    implementation(kotlin(stdlib))
-                }
+        jvmMain.dependencies {
+            with(Dependencies.JVM.Main) {
+                implementation(kotlin(stdlib))
             }
         }
 
-        val iosTest by getting {}
-
-        val iosArm32Main by sourceSets.getting
-        val iosArm64Main by sourceSets.getting
-        val iosSimulatorArm64Main by sourceSets.getting
-
-        configure(listOf(iosArm32Main, iosArm64Main, iosSimulatorArm64Main)) {
-            dependsOn(iosMain)
+        jvmTest.dependencies {
+            with(Dependencies.JVM.Test) {
+                implementation(kotlin(test))
+                implementation(kotlin(junit))
+                implementation(jupiter)
+            }
         }
 
-        val iosArm32Test by sourceSets.getting
-        val iosArm64Test by sourceSets.getting
-        val iosSimulatorArm64Test by sourceSets.getting
-
-        configure(listOf(iosArm32Test, iosArm64Test, iosSimulatorArm64Test)) {
-            dependsOn(iosTest)
+        iosMain.dependencies {
+            with(Dependencies.IOS.Main) {
+                implementation(kotlin(stdlib))
+            }
         }
     }
 }
@@ -176,12 +149,15 @@ detekt {
     }
 }
 
-tasks.koverVerify {
-    rule {
-        name = "Coverage rate"
-        bound {
-            minValue = 95
-            valueType = kotlinx.kover.api.VerificationValueType.COVERED_LINES_PERCENTAGE
+koverReport {
+    defaults {
+        verify {
+            rule("Coverage rate") {
+                bound {
+                    minValue = 95
+                    aggregation = kotlinx.kover.gradle.plugin.dsl.AggregationType.COVERED_PERCENTAGE
+                }
+            }
         }
     }
 }
@@ -200,8 +176,8 @@ tasks.named<Jar>("jvmJar") {
     archiveFileName.set("${Config.artifactId}-$version.jar")
 }
 
-tasks.getByName<KotlinNativeSimulatorTest>("iosTest") {
-    deviceId = "iPhone 14"
+tasks.getByName<KotlinNativeSimulatorTest>("iosX64Test") {
+    deviceId = "iPhone 15"
 }
 
 fun getDate(): String {

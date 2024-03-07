@@ -15,7 +15,6 @@
  */
 package uk.gov.hmrc.calculator
 
-import uk.gov.hmrc.calculator.annotations.Throws
 import uk.gov.hmrc.calculator.exception.InvalidHoursException
 import uk.gov.hmrc.calculator.exception.InvalidPayPeriodException
 import uk.gov.hmrc.calculator.exception.InvalidPensionException
