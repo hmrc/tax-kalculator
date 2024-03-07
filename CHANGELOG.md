@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+- Updated the Kotlin version for compatibility with Xcode 15.
+
 ## [2.10.0] - 2024-02-23Z
 - Added Pension Contribution calculation.
 - Added Tapering calculation.
