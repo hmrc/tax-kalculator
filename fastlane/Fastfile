@@ -55,6 +55,8 @@ platform :android do
       tag = version.increment!(:patch)
     end
 
+    sh("git", "checkout", "-b", "tag/#{tag.to_string}")
+
     # build the XCFramework
     sh("cd .. && ./build_xcframework.sh #{tag.to_string}")
 
@@ -69,6 +71,9 @@ platform :android do
       message: "Bump version to #{tag} and tagging release"
     )
     push_to_git_remote
+
+    # creates a PR
+    sh("gh", "pr", "create", "--title", "Release tax-kalculator library #{tag.to_string}", "--body", "")
 
     # take tag and push to remote
     add_git_tag(tag: tag.to_string)
