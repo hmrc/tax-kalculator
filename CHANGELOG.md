@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.10.2] - 2024-03-08Z
+
 - Update Fastfile to create PR as part of release process.
 - Update National Insurance Rate for 2024/25.
 
