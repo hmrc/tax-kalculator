@@ -141,6 +141,7 @@ class Calculator @JvmOverloads constructor(
         )
 
         val studentLoan = StudentLoanCalculation(
+            taxYear,
             yearlyWageAfterPension,
             listOfUndergraduatePlan,
             hasStudentLoanPostgraduatePlan,
@@ -183,8 +184,8 @@ class Calculator @JvmOverloads constructor(
             Pair(0.0, 0.0)
         } else {
             Pair(
-                EmployeeNIBands(taxYear).bands.getTotalFromNIBands(yearlyWageAfterPensionDeduction),
-                EmployerNIBands(taxYear).bands.getTotalFromNIBands(yearlyWageAfterPensionDeduction)
+                EmployeeNIBands(taxYear).bands.getTotalFromNIBands(yearlyWages),
+                EmployerNIBands(taxYear).bands.getTotalFromNIBands(yearlyWages)
             )
         }
         return CalculatorResponse(

@@ -16,6 +16,7 @@
 package uk.gov.hmrc.calculator.model.studentloans
 
 import uk.gov.hmrc.calculator.model.StudentLoanAmountBreakdown
+import uk.gov.hmrc.calculator.model.TaxYear
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -27,7 +28,7 @@ class StudentLoanCalculationTests {
         val listOfUndergraduatePlan = listOfUndergraduatePlan(planOne = false, planTwo = false, planFour = false)
         val hasPostgraduatePlan = false
 
-        val result = StudentLoanCalculation(wage, listOfUndergraduatePlan, hasPostgraduatePlan).listOfBreakdownResult
+        val result = StudentLoanCalculation(TaxYear.TWENTY_TWENTY_FOUR, wage, listOfUndergraduatePlan, hasPostgraduatePlan).listOfBreakdownResult
 
         assertEquals(expectedBreakdown(0.0, 0.0, 0.0, 0.0), result)
     }
@@ -38,7 +39,7 @@ class StudentLoanCalculationTests {
         val listOfUndergraduatePlan = listOfUndergraduatePlan(planOne = false, planTwo = false, planFour = false)
         val hasPostgraduatePlan = false
 
-        val result = StudentLoanCalculation(wage, listOfUndergraduatePlan, hasPostgraduatePlan).calculateTotalLoanDeduction()
+        val result = StudentLoanCalculation(TaxYear.TWENTY_TWENTY_FOUR, wage, listOfUndergraduatePlan, hasPostgraduatePlan).calculateTotalLoanDeduction()
 
         assertEquals(0.0, result)
     }
@@ -49,7 +50,7 @@ class StudentLoanCalculationTests {
         val listOfUndergraduatePlan = listOfUndergraduatePlan(planOne = true, planTwo = false, planFour = false)
         val hasPostgraduatePlan = false
 
-        val result = StudentLoanCalculation(wage, listOfUndergraduatePlan, hasPostgraduatePlan).listOfBreakdownResult
+        val result = StudentLoanCalculation(TaxYear.TWENTY_TWENTY_FOUR, wage, listOfUndergraduatePlan, hasPostgraduatePlan).listOfBreakdownResult
 
         assertEquals(expectedBreakdown(0.0, 0.0, 0.0, 0.0), result)
     }
@@ -60,7 +61,7 @@ class StudentLoanCalculationTests {
         val listOfUndergraduatePlan = listOfUndergraduatePlan(planOne = true, planTwo = false, planFour = false)
         val hasPostgraduatePlan = false
 
-        val result = StudentLoanCalculation(wage, listOfUndergraduatePlan, hasPostgraduatePlan).calculateTotalLoanDeduction()
+        val result = StudentLoanCalculation(TaxYear.TWENTY_TWENTY_FOUR, wage, listOfUndergraduatePlan, hasPostgraduatePlan).calculateTotalLoanDeduction()
 
         assertEquals(0.0, result)
     }
@@ -71,9 +72,9 @@ class StudentLoanCalculationTests {
         val listOfUndergraduatePlan = listOfUndergraduatePlan(planOne = true, planTwo = false, planFour = false)
         val hasPostgraduatePlan = false
 
-        val result = StudentLoanCalculation(wage, listOfUndergraduatePlan, hasPostgraduatePlan).listOfBreakdownResult
+        val result = StudentLoanCalculation(TaxYear.TWENTY_TWENTY_FOUR, wage, listOfUndergraduatePlan, hasPostgraduatePlan).listOfBreakdownResult
 
-        assertEquals(expectedBreakdown(988.65, 0.0, 0.0, 0.0), result)
+        assertEquals(expectedBreakdown(720.9, 0.0, 0.0, 0.0), result)
     }
 
     @Test
@@ -82,9 +83,9 @@ class StudentLoanCalculationTests {
         val listOfUndergraduatePlan = listOfUndergraduatePlan(planOne = true, planTwo = false, planFour = false)
         val hasPostgraduatePlan = false
 
-        val result = StudentLoanCalculation(wage, listOfUndergraduatePlan, hasPostgraduatePlan).calculateTotalLoanDeduction()
+        val result = StudentLoanCalculation(TaxYear.TWENTY_TWENTY_FOUR, wage, listOfUndergraduatePlan, hasPostgraduatePlan).calculateTotalLoanDeduction()
 
-        assertEquals(988.65, result)
+        assertEquals(720.9, result)
     }
 
     @Test
@@ -93,7 +94,7 @@ class StudentLoanCalculationTests {
         val listOfUndergraduatePlan = listOfUndergraduatePlan(planOne = true, planTwo = true, planFour = false)
         val hasPostgraduatePlan = false
 
-        val result = StudentLoanCalculation(wage, listOfUndergraduatePlan, hasPostgraduatePlan).listOfBreakdownResult
+        val result = StudentLoanCalculation(TaxYear.TWENTY_TWENTY_FOUR, wage, listOfUndergraduatePlan, hasPostgraduatePlan).listOfBreakdownResult
 
         assertEquals(expectedBreakdown(0.0, 0.0, 0.0, 0.0), result)
     }
@@ -104,7 +105,7 @@ class StudentLoanCalculationTests {
         val listOfUndergraduatePlan = listOfUndergraduatePlan(planOne = true, planTwo = true, planFour = false)
         val hasPostgraduatePlan = false
 
-        val result = StudentLoanCalculation(wage, listOfUndergraduatePlan, hasPostgraduatePlan).calculateTotalLoanDeduction()
+        val result = StudentLoanCalculation(TaxYear.TWENTY_TWENTY_FOUR, wage, listOfUndergraduatePlan, hasPostgraduatePlan).calculateTotalLoanDeduction()
 
         assertEquals(0.0, result)
     }
@@ -115,9 +116,9 @@ class StudentLoanCalculationTests {
         val listOfUndergraduatePlan = listOfUndergraduatePlan(planOne = true, planTwo = true, planFour = false)
         val hasPostgraduatePlan = false
 
-        val result = StudentLoanCalculation(wage, listOfUndergraduatePlan, hasPostgraduatePlan).listOfBreakdownResult
+        val result = StudentLoanCalculation(TaxYear.TWENTY_TWENTY_FOUR, wage, listOfUndergraduatePlan, hasPostgraduatePlan).listOfBreakdownResult
 
-        assertEquals(expectedBreakdown(286.65, 0.0, 0.0, 0.0), result)
+        assertEquals(expectedBreakdown(18.9, 0.0, 0.0, 0.0), result)
     }
 
     @Test
@@ -126,9 +127,9 @@ class StudentLoanCalculationTests {
         val listOfUndergraduatePlan = listOfUndergraduatePlan(planOne = true, planTwo = true, planFour = false)
         val hasPostgraduatePlan = false
 
-        val result = StudentLoanCalculation(wage, listOfUndergraduatePlan, hasPostgraduatePlan).calculateTotalLoanDeduction()
+        val result = StudentLoanCalculation(TaxYear.TWENTY_TWENTY_FOUR, wage, listOfUndergraduatePlan, hasPostgraduatePlan).calculateTotalLoanDeduction()
 
-        assertEquals(286.65, result)
+        assertEquals(18.9, result)
     }
 
     @Test
@@ -137,9 +138,9 @@ class StudentLoanCalculationTests {
         val listOfUndergraduatePlan = listOfUndergraduatePlan(planOne = true, planTwo = true, planFour = false)
         val hasPostgraduatePlan = false
 
-        val result = StudentLoanCalculation(wage, listOfUndergraduatePlan, hasPostgraduatePlan).listOfBreakdownResult
+        val result = StudentLoanCalculation(TaxYear.TWENTY_TWENTY_FOUR, wage, listOfUndergraduatePlan, hasPostgraduatePlan).listOfBreakdownResult
 
-        assertEquals(expectedBreakdown(988.65, 0.0, 0.0, 0.0), result)
+        assertEquals(expectedBreakdown(720.9, 0.0, 0.0, 0.0), result)
     }
 
     @Test
@@ -148,9 +149,9 @@ class StudentLoanCalculationTests {
         val listOfUndergraduatePlan = listOfUndergraduatePlan(planOne = true, planTwo = true, planFour = false)
         val hasPostgraduatePlan = false
 
-        val result = StudentLoanCalculation(wage, listOfUndergraduatePlan, hasPostgraduatePlan).calculateTotalLoanDeduction()
+        val result = StudentLoanCalculation(TaxYear.TWENTY_TWENTY_FOUR, wage, listOfUndergraduatePlan, hasPostgraduatePlan).calculateTotalLoanDeduction()
 
-        assertEquals(988.65, result)
+        assertEquals(720.9, result)
     }
 
     @Test
@@ -159,7 +160,7 @@ class StudentLoanCalculationTests {
         val listOfUndergraduatePlan = listOfUndergraduatePlan(planOne = false, planTwo = true, planFour = false)
         val hasPostgraduatePlan = true
 
-        val result = StudentLoanCalculation(wage, listOfUndergraduatePlan, hasPostgraduatePlan).listOfBreakdownResult
+        val result = StudentLoanCalculation(TaxYear.TWENTY_TWENTY_FOUR, wage, listOfUndergraduatePlan, hasPostgraduatePlan).listOfBreakdownResult
 
         assertEquals(expectedBreakdown(0.0, 0.0, 0.0, 180.0), result)
     }
@@ -170,7 +171,7 @@ class StudentLoanCalculationTests {
         val listOfUndergraduatePlan = listOfUndergraduatePlan(planOne = false, planTwo = true, planFour = false)
         val hasPostgraduatePlan = true
 
-        val result = StudentLoanCalculation(wage, listOfUndergraduatePlan, hasPostgraduatePlan).calculateTotalLoanDeduction()
+        val result = StudentLoanCalculation(TaxYear.TWENTY_TWENTY_FOUR, wage, listOfUndergraduatePlan, hasPostgraduatePlan).calculateTotalLoanDeduction()
 
         assertEquals(180.0, result)
     }
@@ -181,7 +182,7 @@ class StudentLoanCalculationTests {
         val listOfUndergraduatePlan = listOfUndergraduatePlan(planOne = false, planTwo = true, planFour = false)
         val hasPostgraduatePlan = true
 
-        val result = StudentLoanCalculation(wage, listOfUndergraduatePlan, hasPostgraduatePlan).listOfBreakdownResult
+        val result = StudentLoanCalculation(TaxYear.TWENTY_TWENTY_FOUR, wage, listOfUndergraduatePlan, hasPostgraduatePlan).listOfBreakdownResult
 
         assertEquals(expectedBreakdown(0.0, 135.45, 0.0, 468.0), result)
     }
@@ -192,7 +193,7 @@ class StudentLoanCalculationTests {
         val listOfUndergraduatePlan = listOfUndergraduatePlan(planOne = false, planTwo = true, planFour = false)
         val hasPostgraduatePlan = true
 
-        val result = StudentLoanCalculation(wage, listOfUndergraduatePlan, hasPostgraduatePlan).calculateTotalLoanDeduction()
+        val result = StudentLoanCalculation(TaxYear.TWENTY_TWENTY_FOUR, wage, listOfUndergraduatePlan, hasPostgraduatePlan).calculateTotalLoanDeduction()
 
         assertEquals(603.45, result)
     }
@@ -203,9 +204,9 @@ class StudentLoanCalculationTests {
         val listOfUndergraduatePlan = listOfUndergraduatePlan(planOne = true, planTwo = true, planFour = true)
         val hasPostgraduatePlan = true
 
-        val result = StudentLoanCalculation(wage, listOfUndergraduatePlan, hasPostgraduatePlan).listOfBreakdownResult
+        val result = StudentLoanCalculation(TaxYear.TWENTY_TWENTY_FOUR, wage, listOfUndergraduatePlan, hasPostgraduatePlan).listOfBreakdownResult
 
-        assertEquals(expectedBreakdown(610.65, 0.0, 0.0, 468.0), result)
+        assertEquals(expectedBreakdown(342.9, 0.0, 0.0, 468.0), result)
     }
 
     @Test
@@ -214,9 +215,9 @@ class StudentLoanCalculationTests {
         val listOfUndergraduatePlan = listOfUndergraduatePlan(planOne = true, planTwo = true, planFour = true)
         val hasPostgraduatePlan = true
 
-        val result = StudentLoanCalculation(wage, listOfUndergraduatePlan, hasPostgraduatePlan).calculateTotalLoanDeduction()
+        val result = StudentLoanCalculation(TaxYear.TWENTY_TWENTY_FOUR, wage, listOfUndergraduatePlan, hasPostgraduatePlan).calculateTotalLoanDeduction()
 
-        assertEquals(1078.65, result)
+        assertEquals(810.9, result)
     }
 
     companion object {

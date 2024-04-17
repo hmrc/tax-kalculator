@@ -19,6 +19,7 @@ import uk.gov.hmrc.calculator.model.StudentLoanAmountBreakdown
 import uk.gov.hmrc.calculator.model.TaxYear
 
 internal class StudentLoanCalculation(
+    taxYear: TaxYear,
     yearlyWageAfterPension: Double,
     listOfUndergraduatePlan: Map<StudentLoanRate.StudentLoanPlan, Boolean>,
     hasPostgraduatePlan: Boolean,
@@ -34,7 +35,7 @@ internal class StudentLoanCalculation(
     )
 
     init {
-        val studentLoanRate = StudentLoanRate(TaxYear.currentTaxYear).rate
+        val studentLoanRate = StudentLoanRate(taxYear).rate
 
         calculateUndergraduateWithPlan(
             yearlyWageAfterPension,
