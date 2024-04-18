@@ -291,20 +291,19 @@ private val employerNIBands2022: List<EmployerNIBand> = listOf(
 ```
 
 ### Pension allowance
-Pension contribute has a life time and annual allowance, which are represented with the following data structures: 
+Pension contribute has a annual allowance, which are represented with the following data structures: 
 
 ```kotlin
 internal data class PensionAllowance(
-  val standardLifetimeAllowance: Double,
   val annualAllowance: Double
 )
 ```
 In [`PensionAllowances.kt`](https://github.com/hmrc/tax-kalculator/blob/main/src/commonMain/kotlin/uk/gov/hmrc/calculator/model/pension/PensionAllowances.kt) update allowance as specified by the business.
 
 ```kotlin
-private fun pensionAllowance2022() = PensionAllowance(1073100.0, 40000.0)
+private fun pensionAllowance2022() = PensionAllowance(40000.0)
 
-private fun pensionAllowance2023() = PensionAllowance(1073100.0, 60000.0)
+private fun pensionAllowance2023() = PensionAllowance(60000.0)
 ```
 
 ### Student Loan Rate

@@ -20,7 +20,11 @@ import uk.gov.hmrc.calculator.model.pension.PensionAllowances.getPensionAllowanc
 
 internal object PensionValidator {
 
-    internal fun isValidYearlyPension(yearlyWage: Double, yearlyPension: Double, taxYear: TaxYear): Boolean {
-        return yearlyPension <= yearlyWage && yearlyPension <= getPensionAllowances(taxYear).standardLifetimeAllowance
+    internal fun isValidYearlyPension(yearlyWage: Double, yearlyPension: Double): Boolean {
+        return yearlyPension <= yearlyWage
+    }
+
+    fun isAboveAnnualAllowance(yearlyPension: Double, taxYear: TaxYear): Boolean {
+        return yearlyPension > getPensionAllowances(taxYear).annualAllowance
     }
 }

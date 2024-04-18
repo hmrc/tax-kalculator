@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - Fix National Insurance calculation to use correct wage.
 - Fix Student Loan internal calculation to use provided tax year instead of latest tax year only.
+- Removed `standardLifetimeAllowance` for Pension validation.
+- Allow Pension to go above `annualAllowance`.
+- Fix Student Loan internal calculation to use yearly wage instead of deducting pension.
 
 ## [2.10.2] - 2024-03-08Z
 

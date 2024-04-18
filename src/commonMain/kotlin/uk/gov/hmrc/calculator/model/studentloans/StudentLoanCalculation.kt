@@ -20,7 +20,7 @@ import uk.gov.hmrc.calculator.model.TaxYear
 
 internal class StudentLoanCalculation(
     taxYear: TaxYear,
-    yearlyWageAfterPension: Double,
+    yearlyWage: Double,
     listOfUndergraduatePlan: Map<StudentLoanRate.StudentLoanPlan, Boolean>,
     hasPostgraduatePlan: Boolean,
 ) {
@@ -38,36 +38,36 @@ internal class StudentLoanCalculation(
         val studentLoanRate = StudentLoanRate(taxYear).rate
 
         calculateUndergraduateWithPlan(
-            yearlyWageAfterPension,
+            yearlyWage,
             listOfUndergraduatePlan,
             studentLoanRate
         )
 
         calculatePostgraduateWithPlan(
-            yearlyWageAfterPension,
+            yearlyWage,
             hasPostgraduatePlan,
             studentLoanRate
         )
     }
 
     private fun calculateStudentLoan(
-        yearlyWageAfterPension: Double,
+        yearlyWage: Double,
         studentLoanRepayment: StudentLoanRate.StudentLoanRepayment,
     ): Double {
-        return if (yearlyWageAfterPension > studentLoanRepayment.yearlyThreshold) {
-            val amountToCalculateLoan = yearlyWageAfterPension - studentLoanRepayment.yearlyThreshold
+        return if (yearlyWage > studentLoanRepayment.yearlyThreshold) {
+            val amountToCalculateLoan = yearlyWage - studentLoanRepayment.yearlyThreshold
             amountToCalculateLoan * studentLoanRepayment.recoveryRatePercentage
         } else 0.0
     }
 
     private fun calculateUndergraduateWithPlan(
-        yearlyWageAfterPension: Double,
+        yearlyWage: Double,
         listOfUndergraduatePlan: Map<StudentLoanRate.StudentLoanPlan, Boolean>,
         studentLoanRate: Map<StudentLoanRate.StudentLoanPlan, StudentLoanRate.StudentLoanRepayment>,
     ) {
         listOfUndergraduatePlan.forEach { (plan, hasStudentLoan) ->
             val rate = studentLoanRate[plan]!!
-            val loanAmount = calculateStudentLoan(yearlyWageAfterPension, rate)
+            val loanAmount = calculateStudentLoan(yearlyWage, rate)
 
             // This will calculate and add all "true" student loan amount to the list.
             listOfUndergraduateResult.add(StudentLoanPlanAmount(plan, loanAmount, rate.yearlyThreshold, hasStudentLoan))
@@ -76,12 +76,12 @@ internal class StudentLoanCalculation(
     }
 
     private fun calculatePostgraduateWithPlan(
-        yearlyWageAfterPension: Double,
+        yearlyWage: Double,
         hasPostgraduatePlan: Boolean,
         studentLoanRate: Map<StudentLoanRate.StudentLoanPlan, StudentLoanRate.StudentLoanRepayment>,
     ) {
         val rate = studentLoanRate[StudentLoanRate.StudentLoanPlan.POST_GRADUATE_PLAN]!!
-        val loanAmount = calculateStudentLoan(yearlyWageAfterPension, rate)
+        val loanAmount = calculateStudentLoan(yearlyWage, rate)
 
         listOfPostgraduateResult.add(
             StudentLoanPlanAmount(

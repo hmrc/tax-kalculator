@@ -23,29 +23,42 @@ import kotlin.test.assertTrue
 class PensionValidatorTests {
 
     @Test
-    fun `GIVEN valid pension WHEN isValidYearlyPension THEN return true`() {
+    fun `GIVEN pension is lower then wage WHEN isValidYearlyPension THEN return true`() {
         val wage = 20000.0
         val pension = 2000.0
-        val taxYear = TaxYear.TWENTY_TWENTY_THREE
 
-        assertTrue(PensionValidator.isValidYearlyPension(wage, pension, taxYear))
+        assertTrue(PensionValidator.isValidYearlyPension(wage, pension))
     }
 
     @Test
     fun `GIVEN pension is greater then wages WHEN isValidYearlyPension THEN return false`() {
         val wage = 20000.0
         val pension = 20001.0
-        val taxYear = TaxYear.TWENTY_TWENTY_THREE
 
-        assertFalse(PensionValidator.isValidYearlyPension(wage, pension, taxYear))
+        assertFalse(PensionValidator.isValidYearlyPension(wage, pension))
     }
 
     @Test
-    fun `GIVEN pension is greater then standardLifetimeAllowance THEN return false`() {
-        val wage = 1073500.0
-        val pension = 1073500.0
-        val taxYear = TaxYear.TWENTY_TWENTY_THREE
+    fun `GIVEN pension is same as wage WHEN isValidYearlyPension THEN return true`() {
+        val wage = 20000.0
+        val pension = 20000.0
 
-        assertFalse(PensionValidator.isValidYearlyPension(wage, pension, taxYear))
+        assertTrue(PensionValidator.isValidYearlyPension(wage, pension))
+    }
+
+    @Test
+    fun `GIVEN pension is lower then annualAllowance THEN return false`() {
+        val pension = 50000.0
+        val taxYear = TaxYear.TWENTY_TWENTY_FOUR
+
+        assertFalse(PensionValidator.isAboveAnnualAllowance(pension, taxYear))
+    }
+
+    @Test
+    fun `GIVEN pension is greater then annualAllowance THEN return true`() {
+        val pension = 61000.0
+        val taxYear = TaxYear.TWENTY_TWENTY_FOUR
+
+        assertTrue(PensionValidator.isAboveAnnualAllowance(pension, taxYear))
     }
 }

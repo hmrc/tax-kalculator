@@ -37,7 +37,6 @@ import uk.gov.hmrc.calculator.model.bands.EmployeeNIBands
 import uk.gov.hmrc.calculator.model.bands.EmployerNIBands
 import uk.gov.hmrc.calculator.model.bands.TaxBands
 import uk.gov.hmrc.calculator.model.pension.AnnualPensionMethod
-import uk.gov.hmrc.calculator.model.pension.PensionAllowances.getPensionAllowances
 import uk.gov.hmrc.calculator.model.pension.calculateYearlyPension
 import uk.gov.hmrc.calculator.model.studentloans.StudentLoanCalculation
 import uk.gov.hmrc.calculator.model.studentloans.StudentLoanRate
@@ -109,18 +108,13 @@ class Calculator @JvmOverloads constructor(
         )
 
         yearlyPensionContribution?.let { yearlyPension ->
-            if (!PensionValidator.isValidYearlyPension(yearlyWages, yearlyPension, taxYear)) {
-                throw InvalidPensionException(
-                    "Pension must be lower then your yearly wage, " +
-                        "and lower then ${getPensionAllowances(taxYear).standardLifetimeAllowance}"
-                )
+            if (!PensionValidator.isValidYearlyPension(yearlyWages, yearlyPension)) {
+                throw InvalidPensionException("Pension must be lower then your yearly wage")
             }
         }
 
         val yearlyWageAfterPension = if (yearlyPensionContribution != null) {
-            val pensionAnnualAllowance = getPensionAllowances(taxYear).annualAllowance
-            val deductPension = minOf(yearlyPensionContribution, pensionAnnualAllowance)
-            yearlyWages - deductPension
+            yearlyWages - yearlyPensionContribution
         } else yearlyWages
 
         val (taxFreeAmount, taperingAmount) =
@@ -142,7 +136,7 @@ class Calculator @JvmOverloads constructor(
 
         val studentLoan = StudentLoanCalculation(
             taxYear,
-            yearlyWageAfterPension,
+            yearlyWages,
             listOfUndergraduatePlan,
             hasStudentLoanPostgraduatePlan,
         )
