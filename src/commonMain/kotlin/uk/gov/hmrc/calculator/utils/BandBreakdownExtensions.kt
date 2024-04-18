@@ -17,7 +17,9 @@ package uk.gov.hmrc.calculator.utils
 
 import uk.gov.hmrc.calculator.model.BandBreakdown
 import uk.gov.hmrc.calculator.model.PayPeriod
+import kotlin.jvm.JvmSynthetic
 
+@JvmSynthetic
 internal fun List<BandBreakdown>.convertListOfBandBreakdownForPayPeriod(payPeriod: PayPeriod): List<BandBreakdown> =
     this.map { bandBreakdown ->
         BandBreakdown(

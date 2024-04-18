@@ -103,6 +103,33 @@ val year = CalculatorUtils.currentTaxYear()
 let year = CalculatorUtils.shared.currentTaxYear()
 ```
 
+### Wage Converter
+#### Android
+```kotlin
+val yearlyWage = WageConverterUtils.convertHourlyWageToYearly(hourlyWage = 10.0, hoursWorked = 10.0)
+val yearlyWage = WageConverterUtils.convertDailyWageToYearly(dailyWage = 10.0, daysWorked = 10.0)
+val yearlyWage = WageConverterUtils.convertWeeklyWageToYearly(weeklyWage = 10.0)
+val yearlyWage = WageConverterUtils.convertFourWeeklyWageToYearly(fourWeeklyWage = 10.0)
+val yearlyWage = WageConverterUtils.convertMonthlyWageToYearly(monthlyWage = 10.0)
+
+val weeklyWage = WageConverterUtils.convertYearlyWageToWeekly(yearlyWage = 30000.0)
+val fourWeeklyWage = WageConverterUtils.convertYearlyWageToFourWeekly(yearlyWage = 30000.0)
+val monthlyWage = WageConverterUtils.convertYearlyWageToMonthly(yearlyWage = 30000.0)
+```
+
+### iOS
+```swift
+let yearlyWage = WageConverterUtils.share.convertHourlyWageToYearly(hourlyWage = 10.0, hoursWorked = 10.0)
+let yearlyWage = WageConverterUtils.share.convertDailyWageToYearly(dailyWage = 10.0, daysWorked = 10.0)
+let yearlyWage = WageConverterUtils.share.convertWeeklyWageToYearly(weeklyWage = 10.0)
+let yearlyWage = WageConverterUtils.share.convertFourWeeklyWageToYearly(fourWeeklyWage = 10.0)
+let yearlyWage = WageConverterUtils.share.convertMonthlyWageToYearly(monthlyWage = 10.0)
+
+let weeklyWage = WageConverterUtils.share.convertYearlyWageToWeekly(yearlyWage = 30000.0)
+let fourWeeklyWage = WageConverterUtils.share.convertYearlyWageToFourWeekly(yearlyWage = 30000.0)
+let monthlyWage = WageConverterUtils.share.convertYearlyWageToMonthly(yearlyWage = 30000.0)
+```
+
 ### Validate
 
 ### Validate a tax code:
@@ -148,7 +175,7 @@ val isValidHoursPerDay = HoursDaysValidator.isValidHoursPerDay(hours = 20) // tr
 val isAboveMinimumHoursPerDay = HoursDaysValidator.isAboveMinimumHoursPerDay(hours = 1.0) // true
 val isBelowMaximumHoursPerDay = HoursDaysValidator.isBelowMaximumHoursPerDay(hours = 25.0) // false
 ```
-#### Android
+#### iOS
 ```swift
 let isValidHoursPerWeek = HoursDaysValidator.shared.isValidHoursPerWeek(hours: 20) // true
 let isAboveMinimumHoursPerWeek = HoursDaysValidator.shared.isAboveMinimumHoursPerWeek(hours: 1.0) // true
@@ -156,6 +183,19 @@ let isBelowMaximumHoursPerWeek = HoursDaysValidator.shared.isBelowMaximumHoursPe
 let isValidHoursPerDay = HoursDaysValidator.shared.isValidHoursPerDay(hours: 20) // true
 let isAboveMinimumHoursPerDay = HoursDaysValidator.shared.isAboveMinimumHoursPerDay(hours: 1.0) // true
 let isBelowMaximumHoursPerDay = HoursDaysValidator.shared.isBelowMaximumHoursPerDay(hours: 25.0) // false
+```
+
+### Validate Pension:
+#### Android
+```kotlin
+val isValidYearlyPension = PensionValidator.isValidYearlyPension(yearlyWage = 30000.0, yearlyPension = 40000.0) // false
+val isAboveAnnualAllowance = PensionValidator.isAboveAnnualAllowance(yearlyPension = 30000.0, taxYear = TaxYear.currentTaxYear) // false
+```
+
+#### iOS
+```swift
+let isValidYearlyPension = PensionValidator.share.isValidYearlyPension(yearlyWage = 30000.0, yearlyPension = 40000.0) // false
+let isAboveAnnualAllowance = PensionValidator.share.isAboveAnnualAllowance(yearlyPension = 30000.0, taxYear = TaxYear.currentTaxYear) // false
 ```
 
 ## Development

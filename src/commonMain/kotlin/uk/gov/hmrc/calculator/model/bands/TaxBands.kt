@@ -18,11 +18,13 @@ package uk.gov.hmrc.calculator.model.bands
 import uk.gov.hmrc.calculator.model.Country
 import uk.gov.hmrc.calculator.model.Country.SCOTLAND
 import uk.gov.hmrc.calculator.model.TaxYear
+import kotlin.jvm.JvmSynthetic
 
 @Suppress("TooManyFunctions", "ComplexMethod")
 internal object TaxBands {
 
-    fun getBands(taxYear: TaxYear, country: Country) = when (taxYear) {
+    @JvmSynthetic
+    internal fun getBands(taxYear: TaxYear, country: Country) = when (taxYear) {
         TaxYear.TWENTY_TWENTY -> if (country == SCOTLAND) scottish2020Bands() else restOfUK2020Bands()
         TaxYear.TWENTY_TWENTY_ONE -> if (country == SCOTLAND) scottish2021Bands() else restOfUK2021Bands()
         TaxYear.TWENTY_TWENTY_TWO,

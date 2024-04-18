@@ -17,6 +17,7 @@ package uk.gov.hmrc.calculator.model.studentloans
 
 import uk.gov.hmrc.calculator.model.StudentLoanAmountBreakdown
 import uk.gov.hmrc.calculator.model.TaxYear
+import kotlin.jvm.JvmSynthetic
 
 internal class StudentLoanCalculation(
     taxYear: TaxYear,
@@ -118,6 +119,7 @@ internal class StudentLoanCalculation(
         }
     }
 
+    @JvmSynthetic
     internal fun calculateTotalLoanDeduction() = listOfBreakdownResult.sumOf { it.amount }
 
     internal data class StudentLoanPlanAmount(

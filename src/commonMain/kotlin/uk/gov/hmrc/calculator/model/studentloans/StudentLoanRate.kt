@@ -16,6 +16,7 @@
 package uk.gov.hmrc.calculator.model.studentloans
 
 import uk.gov.hmrc.calculator.model.TaxYear
+import kotlin.jvm.JvmSynthetic
 
 internal class StudentLoanRate(taxYear: TaxYear) {
 
@@ -60,6 +61,7 @@ internal class StudentLoanRate(taxYear: TaxYear) {
         StudentLoanPlan.POST_GRADUATE_PLAN to StudentLoanRepayment(21000.0, 0.06),
     )
 
+    @JvmSynthetic
     internal val rate: Map<StudentLoanPlan, StudentLoanRepayment> = when (taxYear) {
         TaxYear.TWENTY_TWENTY -> studentLoanRepaymentRate2020()
         TaxYear.TWENTY_TWENTY_ONE -> studentLoanRepaymentRate2021()
