@@ -213,7 +213,6 @@ internal class ParameterizedCalculatorTests {
         inputIsPensionAge: Boolean,
         @ConvertWith(AnnualPensionMethodConverter::class) inputPensionMethod: AnnualPensionMethod,
         inputPensionAmount: Double?,
-        inputPensionPercentage: Double?,
         @ConvertWith(CountryConverter::class) expectedCountry: Country,
         expectedYearlyNiEmployee: Double,
         expectedYearlyNiEmployer: Double,
@@ -231,8 +230,7 @@ internal class ParameterizedCalculatorTests {
             payPeriod = inputPayPeriod,
             taxYear = inputTaxYear,
             pensionMethod = inputPensionMethod,
-            pensionYearlyAmount = inputPensionAmount,
-            pensionPercentage = inputPensionPercentage,
+            pensionContributionAmount = inputPensionAmount,
             isPensionAge = inputIsPensionAge
         ).run()
 
@@ -399,7 +397,6 @@ internal class ParameterizedCalculatorTests {
         inputIsPensionAge: Boolean,
         @ConvertWith(AnnualPensionMethodConverter::class) inputPensionMethod: AnnualPensionMethod,
         inputPensionAmount: Double?,
-        inputPensionPercentage: Double?,
         @ConvertWith(CountryConverter::class) expectedCountry: Country,
         expectedYearlyNiEmployee: Double,
         expectedYearlyNiEmployer: Double,
@@ -417,8 +414,7 @@ internal class ParameterizedCalculatorTests {
             payPeriod = inputPayPeriod,
             taxYear = inputTaxYear,
             pensionMethod = inputPensionMethod,
-            pensionYearlyAmount = inputPensionAmount,
-            pensionPercentage = inputPensionPercentage,
+            pensionContributionAmount = inputPensionAmount,
             isPensionAge = inputIsPensionAge
         ).run()
 

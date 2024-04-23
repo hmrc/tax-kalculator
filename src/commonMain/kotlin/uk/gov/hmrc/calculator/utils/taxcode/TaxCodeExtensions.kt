@@ -18,7 +18,10 @@ package uk.gov.hmrc.calculator.utils.taxcode
 import uk.gov.hmrc.calculator.exception.InvalidTaxCodeException
 import uk.gov.hmrc.calculator.model.Country
 import uk.gov.hmrc.calculator.model.taxcodes.NTCode
+import uk.gov.hmrc.calculator.model.taxcodes.ScottishTaxCode
 import uk.gov.hmrc.calculator.model.taxcodes.TaxCode
+import uk.gov.hmrc.calculator.model.taxcodes.WelshTaxCode
+import uk.gov.hmrc.calculator.utils.clarification.Clarification
 import uk.gov.hmrc.calculator.utils.toCountry
 import kotlin.jvm.JvmSynthetic
 
@@ -56,4 +59,23 @@ internal fun String.extractDoubleFromEmergencyTaxCode(): Double =
 internal fun TaxCode.getTrueTaxFreeAmount(): Double {
     val amount = this.taxFreeAmount
     return if (amount > 0) amount - 9 else 0.0
+}
+
+@Suppress("ComplexMethod")
+@JvmSynthetic
+internal fun TaxCode.getTaxCodeClarification(
+    isScottishTaxCode: Boolean,
+    isWelshTaxCode: Boolean,
+): Clarification? {
+    val clarification = when {
+        (this is ScottishTaxCode) && isScottishTaxCode -> Clarification.SCOTTISH_INCOME_APPLIED
+        (this is ScottishTaxCode) && !isScottishTaxCode -> Clarification.SCOTTISH_CODE_BUT_OTHER_RATE
+        (this !is ScottishTaxCode) && isScottishTaxCode -> Clarification.NON_SCOTTISH_CODE_BUT_SCOTTISH_RATE
+        (this is WelshTaxCode) && isWelshTaxCode -> Clarification.WELSH_INCOME_APPLIED
+        (this is WelshTaxCode) && !isWelshTaxCode -> Clarification.WELSH_CODE_BUT_OTHER_RATE
+        (this !is WelshTaxCode) && isWelshTaxCode -> Clarification.NON_WELSH_CODE_BUT_WELSH_RATE
+        else -> null
+    }
+
+    return clarification
 }

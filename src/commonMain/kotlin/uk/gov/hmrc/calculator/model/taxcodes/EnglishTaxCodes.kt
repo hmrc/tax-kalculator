@@ -56,7 +56,7 @@ internal class TCode(private val taxFreeAmountWithoutTrailingZero: Double) :
     EnglishTaxCode,
     AdjustedTaxFreeTCode {
     override val taxFreeAmount: Double
-        get() = taxFreeAmountWithoutTrailingZero * 10 + 9
+        get() = taxFreeAmountWithoutTrailingZero * 10
 }
 
 internal class LCode(private val taxFreeAmountWithoutTrailingZero: Double) :
@@ -100,7 +100,7 @@ internal class KCode(private val amountToAddToWagesFromCode: Double) :
     EnglishTaxCode,
     KTaxCode {
     override val amountToAddToWages: Double
-        get() = amountToAddToWagesFromCode * 10 + 9
+        get() = amountToAddToWagesFromCode * 10
     override val taxFreeAmount: Double
         get() = 0.0
 }

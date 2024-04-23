@@ -64,7 +64,7 @@ internal class STCode(private val taxFreeAmountWithoutTrailingZero: Double) :
     ScottishTaxCode,
     AdjustedTaxFreeTCode {
     override val taxFreeAmount: Double
-        get() = taxFreeAmountWithoutTrailingZero * 10 + 9
+        get() = taxFreeAmountWithoutTrailingZero * 10
 }
 
 internal class SLCode(private val taxFreeAmountWithoutTrailingZero: Double) :
@@ -103,7 +103,7 @@ internal class SKCode(private val amountToAddToWagesFromCode: Double) :
     ScottishTaxCode,
     KTaxCode {
     override val amountToAddToWages: Double
-        get() = amountToAddToWagesFromCode * 10 + 9
+        get() = amountToAddToWagesFromCode * 10
     override val taxFreeAmount: Double
         get() = 0.0
 }

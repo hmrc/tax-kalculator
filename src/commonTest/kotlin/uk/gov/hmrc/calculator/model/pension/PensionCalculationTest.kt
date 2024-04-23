@@ -26,56 +26,51 @@ class PensionCalculationTest {
         val result = calculateYearlyPension(
             1000.0,
             pensionMethod = null,
-            pensionYearlyAmount = 10.0,
-            pensionPercentage = null,
+            pensionContributionAmount = 10.0,
         )
 
         assertNull(result)
     }
 
     @Test
-    fun `GIVEN pensionMethod PERCENTAGE AND pensionPercentage null WHEN calculateYearlyPension THEN return null`() {
+    fun `GIVEN pensionMethod PERCENTAGE AND pensionContributionAmount null WHEN calculateYearlyPension THEN return null`() {
         val result = calculateYearlyPension(
             1000.0,
             pensionMethod = AnnualPensionMethod.PERCENTAGE,
-            pensionYearlyAmount = 10.0,
-            pensionPercentage = null,
+            pensionContributionAmount = null,
         )
 
         assertNull(result)
     }
 
     @Test
-    fun `GIVEN pensionMethod AMOUNT_IN_POUNDS AND pensionYearlyAmount null WHEN calculateYearlyPension THEN return null`() {
+    fun `GIVEN pensionMethod AMOUNT_IN_POUNDS AND pensionContributionAmount null WHEN calculateYearlyPension THEN return null`() {
         val result = calculateYearlyPension(
             1000.0,
             pensionMethod = AnnualPensionMethod.AMOUNT_IN_POUNDS,
-            pensionYearlyAmount = null,
-            pensionPercentage = 10.0,
+            pensionContributionAmount = null,
         )
 
         assertNull(result)
     }
 
     @Test
-    fun `GIVEN pensionMethod PERCENTAGE AND pensionPercentage 10 percent WHEN calculateYearlyPension THEN return pension amount`() {
+    fun `GIVEN pensionMethod PERCENTAGE AND pensionContributionAmount 10 percent WHEN calculateYearlyPension THEN return pension amount`() {
         val result = calculateYearlyPension(
             1000.0,
             pensionMethod = AnnualPensionMethod.PERCENTAGE,
-            pensionYearlyAmount = null,
-            pensionPercentage = 10.0,
+            pensionContributionAmount = 10.0,
         )
 
         assertEquals(100.0, result)
     }
 
     @Test
-    fun `GIVEN pensionMethod AMOUNT_IN_POUNDS AND pensionYearlyAmount is 100 WHEN calculateYearlyPension THEN return pension amount`() {
+    fun `GIVEN pensionMethod AMOUNT_IN_POUNDS AND pensionContributionAmount is 100 WHEN calculateYearlyPension THEN return pension amount`() {
         val result = calculateYearlyPension(
             1000.0,
             pensionMethod = AnnualPensionMethod.AMOUNT_IN_POUNDS,
-            pensionYearlyAmount = 100.0,
-            pensionPercentage = null,
+            pensionContributionAmount = 100.0,
         )
 
         assertEquals(100.0, result)
