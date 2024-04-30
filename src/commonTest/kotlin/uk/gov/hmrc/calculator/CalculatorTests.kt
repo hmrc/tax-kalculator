@@ -1407,10 +1407,10 @@ internal class CalculatorTests {
     }
 
     @Test
-    fun `GIVEN tax code is scottish tax code AND isScottishTaxCode true WHEN calculate THEN clarification contains SCOTTISH_INCOME_APPLIED`() {
+    fun `GIVEN tax code is scottish tax code AND userPaysScottishTax true WHEN calculate THEN clarification contains SCOTTISH_INCOME_APPLIED`() {
         val result = Calculator(
             taxCode = "S1257L",
-            isScottishTaxCode = true,
+            userPaysScottishTax = true,
             wages = 30000.0,
             payPeriod = PayPeriod.YEARLY,
             taxYear = TaxYear.TWENTY_TWENTY_THREE,
@@ -1424,10 +1424,10 @@ internal class CalculatorTests {
     }
 
     @Test
-    fun `GIVEN tax code is scottish tax code AND isScottishTaxCode false WHEN calculate THEN clarification contains SCOTTISH_CODE_BUT_OTHER_RATE`() {
+    fun `GIVEN tax code is scottish tax code AND userPaysScottishTax false WHEN calculate THEN clarification contains SCOTTISH_CODE_BUT_OTHER_RATE`() {
         val result = Calculator(
             taxCode = "S1257L",
-            isScottishTaxCode = false,
+            userPaysScottishTax = false,
             wages = 30000.0,
             payPeriod = PayPeriod.YEARLY,
             taxYear = TaxYear.TWENTY_TWENTY_THREE,
@@ -1441,10 +1441,10 @@ internal class CalculatorTests {
     }
 
     @Test
-    fun `GIVEN tax code is not scottish tax code AND isScottishTaxCode true WHEN calculate THEN clarification contains NON_SCOTTISH_CODE_BUT_SCOTTISH_RATE`() {
+    fun `GIVEN tax code is not scottish tax code AND userPaysScottishTax true WHEN calculate THEN clarification contains NON_SCOTTISH_CODE_BUT_SCOTTISH_RATE`() {
         val result = Calculator(
             taxCode = "1257L",
-            isScottishTaxCode = true,
+            userPaysScottishTax = true,
             wages = 30000.0,
             payPeriod = PayPeriod.YEARLY,
             taxYear = TaxYear.TWENTY_TWENTY_THREE,
@@ -1453,57 +1453,6 @@ internal class CalculatorTests {
         ).run()
 
         val listOfExpectedResult = mutableListOf(Clarification.NON_SCOTTISH_CODE_BUT_SCOTTISH_RATE)
-
-        assertEquals(listOfExpectedResult, result.listOfClarification)
-    }
-
-    @Test
-    fun `GIVEN tax code is welsh tax code AND isWelshTaxCode true WHEN calculate THEN clarification contains WELSH_INCOME_APPLIED`() {
-        val result = Calculator(
-            taxCode = "C1257L",
-            isWelshTaxCode = true,
-            wages = 30000.0,
-            payPeriod = PayPeriod.YEARLY,
-            taxYear = TaxYear.TWENTY_TWENTY_THREE,
-            hasStudentLoanPlanTwo = true,
-            hasStudentLoanPostgraduatePlan = true,
-        ).run()
-
-        val listOfExpectedResult = mutableListOf(Clarification.WELSH_INCOME_APPLIED)
-
-        assertEquals(listOfExpectedResult, result.listOfClarification)
-    }
-
-    @Test
-    fun `GIVEN tax code is welsh tax code AND isWelshTaxCode false WHEN calculate THEN clarification contains WELSH_CODE_BUT_OTHER_RATE`() {
-        val result = Calculator(
-            taxCode = "C1257L",
-            isWelshTaxCode = false,
-            wages = 30000.0,
-            payPeriod = PayPeriod.YEARLY,
-            taxYear = TaxYear.TWENTY_TWENTY_THREE,
-            hasStudentLoanPlanTwo = true,
-            hasStudentLoanPostgraduatePlan = true,
-        ).run()
-
-        val listOfExpectedResult = mutableListOf(Clarification.WELSH_CODE_BUT_OTHER_RATE)
-
-        assertEquals(listOfExpectedResult, result.listOfClarification)
-    }
-
-    @Test
-    fun `GIVEN tax code is not welsh tax code AND isWelshTaxCode true WHEN calculate THEN clarification contains NON_WELSH_CODE_BUT_WELSH_RATE`() {
-        val result = Calculator(
-            taxCode = "1257L",
-            isWelshTaxCode = true,
-            wages = 30000.0,
-            payPeriod = PayPeriod.YEARLY,
-            taxYear = TaxYear.TWENTY_TWENTY_THREE,
-            hasStudentLoanPlanTwo = true,
-            hasStudentLoanPostgraduatePlan = true,
-        ).run()
-
-        val listOfExpectedResult = mutableListOf(Clarification.NON_WELSH_CODE_BUT_WELSH_RATE)
 
         assertEquals(listOfExpectedResult, result.listOfClarification)
     }

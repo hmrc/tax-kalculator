@@ -15,22 +15,35 @@
  */
 package uk.gov.hmrc.calculator.utils.validation
 
+import uk.gov.hmrc.calculator.model.PayPeriod
 import uk.gov.hmrc.calculator.model.TaxYear
 import uk.gov.hmrc.calculator.model.pension.PensionAllowances.getPensionAllowances
+import uk.gov.hmrc.calculator.utils.convertWageToYearly
 import uk.gov.hmrc.calculator.utils.validation.HoursDaysValidator.isTwoDecimalPlacesOrFewer
 import kotlin.jvm.JvmSynthetic
 
 object PensionValidator {
 
-    fun isValidYearlyPension(yearlyPension: Double, wage: Double, taxYear: TaxYear): MutableList<PensionError> {
+    fun isValidMonthlyPension(
+        monthlyPension: Double,
+        monthlyWage: Double,
+        taxYear: TaxYear,
+    ): MutableList<PensionError> {
+        val yearlyPension = monthlyPension.convertWageToYearly(PayPeriod.MONTHLY)
+        val yearlyWage = monthlyWage.convertWageToYearly(PayPeriod.MONTHLY)
+
+        return isValidYearlyPension(yearlyPension, yearlyWage, taxYear)
+    }
+
+    fun isValidYearlyPension(yearlyPension: Double, yearlyWage: Double, taxYear: TaxYear): MutableList<PensionError> {
         val listOfError = mutableListOf<PensionError>()
 
         if (!yearlyPension.isTwoDecimalPlacesOrFewer() || !isPensionValidFormat(yearlyPension)) {
             listOfError.add(PensionError.INVALID_FORMAT)
         }
         if (isPensionBelowZero(yearlyPension)) listOfError.add(PensionError.BELOW_ZERO)
-        if (!isPensionLowerThenWage(yearlyPension, wage)) listOfError.add(PensionError.ABOVE_HUNDRED_PERCENT)
-        if (isAboveAnnualAllowance(yearlyPension, taxYear)) listOfError.add(PensionError.ABOVE_ANNUAL_ALLOWANCE)
+        if (!isPensionLowerThenWage(yearlyPension, yearlyWage)) listOfError.add(PensionError.ABOVE_HUNDRED_PERCENT)
+        if (isPensionAboveAnnualAllowance(yearlyPension, taxYear)) listOfError.add(PensionError.ABOVE_ANNUAL_ALLOWANCE)
 
         listOfError.sortBy { it.priority }
         return listOfError
@@ -50,7 +63,7 @@ object PensionValidator {
     }
 
     @JvmSynthetic
-    internal fun isAboveAnnualAllowance(yearlyPension: Double, taxYear: TaxYear): Boolean {
+    internal fun isPensionAboveAnnualAllowance(yearlyPension: Double, taxYear: TaxYear): Boolean {
         return yearlyPension > getPensionAllowances(taxYear).annualAllowance
     }
 

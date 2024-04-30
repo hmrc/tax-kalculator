@@ -22,8 +22,8 @@ Create an instance of `Calculator`, providing values as per the following exampl
 ```kotlin
 val calculator = Calculator(
     taxCode = "1257L",               // Required
-    isScottishTaxCode = false,       // Optional (Default: false)
-    isWelshTaxCode = false,          // Optional (Default: false)
+    userPaysScottishTax = false,       // Optional (Default: false)
+    userPaysWelshTax = false,          // Optional (Default: false)
     userSuppliedTaxCode = false,     // Optional (Default: true)
     wages = 20000.0,                 // Required
     payPeriod = YEARLY,              // Required
@@ -44,8 +44,8 @@ val response = calculator.run()
 ```swift
 let calculator = Calculator(
     taxCode: "1257L",
-    isScottishTaxCode: false,
-    isWelshTaxCode: false,
+    userPaysScottishTax: false,
+    userPaysWelshTax: false,
     userSuppliedTaxCode = false,
     wages: 20000.0,
     payPeriod: period,
@@ -190,13 +190,19 @@ let isBelowMaximumHoursPerDay = HoursDaysValidator.shared.isBelowMaximumHoursPer
 ### Validate Pension:
 #### Android
 ```kotlin
-val isValidPension = PensionValidator.isValidYearlyPension(yearlyPension = 40000.0, yearlyWage = 30000.0, taxYear = TaxYear.currentTaxYear) // listOf()
+val isValidPension = PensionValidator.isValidMonthlyPension(monthlyPension = 250.0, monthlyWage = 2500.0, taxYear = TaxYear.currentTaxYear) // listOf()
+val isInvalidPension = PensionValidator.isValidMonthlyPension(monthlyPension = 5900.0, monthlyWage = 2500.0, taxYear = TaxYear.currentTaxYear) // listOf(ABOVE_HUNDRED_PERCENT, ABOVE_ANNUAL_ALLOWANCE)
+
+val isValidPension = PensionValidator.isValidYearlyPension(yearlyPension = 3000.0, yearlyWage = 30000.0, taxYear = TaxYear.currentTaxYear) // listOf()
 val isInvalidPension = PensionValidator.isValidYearlyPension(yearlyPension = 70000.0, yearlyWage = 30000.0, taxYear = TaxYear.currentTaxYear) // listOf(ABOVE_HUNDRED_PERCENT, ABOVE_ANNUAL_ALLOWANCE)
 ```
 
 #### iOS
 ```swift
-let isValidPension = PensionValidator.share.isValidYearlyPension(yearlyPension = 40000.0, yearlyWage = 30000.0, taxYear = TaxYear.currentTaxYear) // listOf()
+let isValidPension = PensionValidator.share.isValidMonthlyPension(monthlyPension = 250.0, monthlyWage = 2500.0, taxYear = TaxYear.currentTaxYear) // listOf()
+let isInvalidPension = PensionValidator.share.isValidMonthlyPension(monthlyPension = 5900.0, monthlyWage = 2500.0, taxYear = TaxYear.currentTaxYear) // listOf(ABOVE_HUNDRED_PERCENT, ABOVE_ANNUAL_ALLOWANCE)
+
+let isValidPension = PensionValidator.share.isValidYearlyPension(yearlyPension = 3000.0, yearlyWage = 30000.0, taxYear = TaxYear.currentTaxYear) // listOf()
 let isInvalidPension = PensionValidator.share.isValidYearlyPension(yearlyPension = 70000.0, yearlyWage = 30000.0, taxYear = TaxYear.currentTaxYear) // listOf(ABOVE_HUNDRED_PERCENT, ABOVE_ANNUAL_ALLOWANCE)
 ```
 

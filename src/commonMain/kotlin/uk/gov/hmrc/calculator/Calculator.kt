@@ -55,7 +55,8 @@ import uk.gov.hmrc.calculator.utils.convertWageToYearly
 import uk.gov.hmrc.calculator.utils.studentloan.convertBreakdownForPayPeriod
 import uk.gov.hmrc.calculator.utils.tapering.deductTapering
 import uk.gov.hmrc.calculator.utils.tapering.getTaperingAmount
-import uk.gov.hmrc.calculator.utils.tapering.shouldApplyTapering
+import uk.gov.hmrc.calculator.utils.tapering.isAboveHundredThousand
+import uk.gov.hmrc.calculator.utils.tapering.shouldApplyStandardTapering
 import uk.gov.hmrc.calculator.utils.taxcode.getTaxCodeClarification
 import uk.gov.hmrc.calculator.utils.taxcode.getTrueTaxFreeAmount
 import uk.gov.hmrc.calculator.utils.taxcode.toTaxCode
@@ -65,8 +66,7 @@ import kotlin.jvm.JvmOverloads
 
 class Calculator @JvmOverloads constructor(
     private val taxCode: String,
-    private val isScottishTaxCode: Boolean = false,
-    private val isWelshTaxCode: Boolean = false,
+    private val userPaysScottishTax: Boolean = false,
     private val userSuppliedTaxCode: Boolean = true,
     private val wages: Double,
     private val payPeriod: PayPeriod,
@@ -124,7 +124,7 @@ class Calculator @JvmOverloads constructor(
                 listOfClarification.add(Clarification.PENSION_EXCEED_INCOME)
                 throw InvalidPensionException("Pension must be lower then your yearly wage")
             }
-            if (PensionValidator.isAboveAnnualAllowance(yearlyPension, taxYear)) {
+            if (PensionValidator.isPensionAboveAnnualAllowance(yearlyPension, taxYear)) {
                 listOfClarification.add(Clarification.PENSION_EXCEED_ANNUAL_ALLOWANCE)
             }
         }
@@ -134,8 +134,8 @@ class Calculator @JvmOverloads constructor(
         } else yearlyWages
 
         val (taxFreeAmount, taperingAmount) =
-            if (yearlyWageAfterPension.shouldApplyTapering()) {
-                if (shouldApplyStandardTapering(yearlyWageAfterPension)) {
+            if (yearlyWageAfterPension.isAboveHundredThousand()) {
+                if (yearlyWageAfterPension.shouldApplyStandardTapering(taxCodeType, userSuppliedTaxCode)) {
                     listOfClarification.add(Clarification.INCOME_OVER_100K_WITH_TAPERING)
                     Pair(
                         taxCodeType.getTrueTaxFreeAmount().deductTapering(yearlyWageAfterPension),
@@ -175,7 +175,9 @@ class Calculator @JvmOverloads constructor(
 
         if (hasIncomeBelowStudentLoan) listOfClarification.add(Clarification.INCOME_BELOW_STUDENT_LOAN)
 
-        taxCodeType.getTaxCodeClarification(isScottishTaxCode, isWelshTaxCode)?.let { listOfClarification.add(it) }
+        taxCodeType.getTaxCodeClarification(userPaysScottishTax)?.let {
+            listOfClarification.add(it)
+        }
 
         return createResponse(
             taxCodeType,
@@ -402,9 +404,6 @@ class Calculator @JvmOverloads constructor(
         }
         return amount
     }
-
-    private fun shouldApplyStandardTapering(yearlyWageAfterPension: Double) = taxCodeType is StandardTaxCode &&
-        !userSuppliedTaxCode && yearlyWageAfterPension.shouldApplyTapering()
 
     private val taxCodeType: TaxCode by lazy {
         this.taxCode.toTaxCode()
