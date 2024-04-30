@@ -279,10 +279,12 @@ internal class ParameterizedCalculatorTests {
             payPeriod = inputPayPeriod,
             taxYear = inputTaxYear,
             isPensionAge = inputIsPensionAge,
-            hasStudentLoanPlanOne = inputHasPlanOne,
-            hasStudentLoanPlanTwo = inputHasPlanTwo,
-            hasStudentLoanPlanFour = inputHasPlanFour,
-            hasStudentLoanPostgraduatePlan = inputHasPostgraduatePlan,
+            studentLoanPlans = Calculator.StudentLoanPlans(
+                inputHasPlanOne,
+                inputHasPlanTwo,
+                inputHasPlanFour,
+                inputHasPostgraduatePlan,
+            )
         ).run()
 
         checkResults(
@@ -463,10 +465,12 @@ internal class ParameterizedCalculatorTests {
             payPeriod = inputPayPeriod,
             taxYear = inputTaxYear,
             isPensionAge = inputIsPensionAge,
-            hasStudentLoanPlanOne = inputHasPlanOne,
-            hasStudentLoanPlanTwo = inputHasPlanTwo,
-            hasStudentLoanPlanFour = inputHasPlanFour,
-            hasStudentLoanPostgraduatePlan = inputHasPostgraduatePlan,
+            studentLoanPlans = Calculator.StudentLoanPlans(
+                inputHasPlanOne,
+                inputHasPlanTwo,
+                inputHasPlanFour,
+                inputHasPostgraduatePlan,
+            )
         ).run()
 
         checkResults(

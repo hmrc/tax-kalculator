@@ -32,10 +32,7 @@ val calculator = Calculator(
     taxYear = TaxYear.currentTaxYear, // Optional (Default: Current Tax Year)
     pensionMethod = PERCENTAGE,      // Optional (Default: null)
     pensionContributionAmount = 10.0,       // Optional (Default: null)
-    hasStudentLoanPlanOne = false,          // Optional (Default: false)
-    hasStudentLoanPlanTwo = false,          // Optional (Default: false)
-    hasStudentLoanPlanFour = false,          // Optional (Default: false)
-    hasStudentLoanPostgraduatePlan = false,          // Optional (Default: false)
+    studentLoanPlans = StudentLoanPlans(hasPlanOne = false, hasPlanTwo = false, hasPlanFour = false, hasPostgraduatePlan = false) // Optional (Default: null)
 )
 
 val response = calculator.run()
@@ -54,10 +51,7 @@ let calculator = Calculator(
     taxYear: TaxYear.companion.currentTaxYear,
     pensionMethod: pensionMethod,
     pensionContributionAmount: KotlinDouble(double: 10),
-    hasStudentLoanPlanOne: false,
-    hasStudentLoanPlanTwo: false,
-    hasStudentLoanPlanFour: false,
-    hasStudentLoanPostgraduatePlan: false
+    studentLoanPlans = StudentLoanPlans(hasPlanOne: false, hasPlanTwo: false, hasPlanFour: false, hasPostgraduatePlan: false) // Optional (Default: null)
 )
 
 let calculation = try calculator.run()

@@ -39,7 +39,6 @@ import uk.gov.hmrc.calculator.model.bands.TaxBands
 import uk.gov.hmrc.calculator.model.pension.AnnualPensionMethod
 import uk.gov.hmrc.calculator.model.pension.calculateYearlyPension
 import uk.gov.hmrc.calculator.model.studentloans.StudentLoanCalculation
-import uk.gov.hmrc.calculator.model.studentloans.StudentLoanRate
 import uk.gov.hmrc.calculator.model.taxcodes.AdjustedTaxFreeTCode
 import uk.gov.hmrc.calculator.model.taxcodes.EmergencyTaxCode
 import uk.gov.hmrc.calculator.model.taxcodes.KTaxCode
@@ -75,10 +74,7 @@ class Calculator @JvmOverloads constructor(
     private val taxYear: TaxYear = TaxYear.currentTaxYear,
     private val pensionMethod: AnnualPensionMethod? = null,
     private val pensionContributionAmount: Double? = null,
-    private val hasStudentLoanPlanOne: Boolean = false,
-    private val hasStudentLoanPlanTwo: Boolean = false,
-    private val hasStudentLoanPlanFour: Boolean = false,
-    private val hasStudentLoanPostgraduatePlan: Boolean = false,
+    private val studentLoanPlans: StudentLoanPlans? = null,
 ) {
 
     private val bandBreakdown: MutableList<BandBreakdown> = mutableListOf()
@@ -150,30 +146,20 @@ class Calculator @JvmOverloads constructor(
                 Pair(taxCodeType.getTrueTaxFreeAmount(), null)
             }
 
-        val listOfUndergraduatePlan = mapOf(
-            StudentLoanRate.StudentLoanPlan.PLAN_ONE to hasStudentLoanPlanOne,
-            StudentLoanRate.StudentLoanPlan.PLAN_TWO to hasStudentLoanPlanTwo,
-            StudentLoanRate.StudentLoanPlan.PLAN_FOUR to hasStudentLoanPlanFour
-        )
-
         val studentLoan = StudentLoanCalculation(
             taxYear,
             yearlyWages,
-            listOfUndergraduatePlan,
-            hasStudentLoanPostgraduatePlan,
+            studentLoanPlans,
         )
 
-        val (studentLoanBreakdown, studentLoanDeduction) =
-            Pair(studentLoan.listOfBreakdownResult, studentLoan.calculateTotalLoanDeduction())
+        val (studentLoanBreakdown, studentLoanDeduction, earnTooLowToPayStudentLoan) =
+            Triple(
+                studentLoan.listOfBreakdownResult,
+                studentLoan.calculateTotalLoanDeduction(),
+                studentLoan.earnTooLowToPayStudentLoan
+            )
 
-        val hasIncomeBelowStudentLoan = listOf(
-            hasStudentLoanPlanOne,
-            hasStudentLoanPlanTwo,
-            hasStudentLoanPlanFour,
-            hasStudentLoanPostgraduatePlan
-        ).any { it && studentLoanDeduction == 0.0 }
-
-        if (hasIncomeBelowStudentLoan) listOfClarification.add(Clarification.INCOME_BELOW_STUDENT_LOAN)
+        if (earnTooLowToPayStudentLoan) listOfClarification.add(Clarification.INCOME_BELOW_STUDENT_LOAN)
 
         taxCodeType.getTaxCodeClarification(userPaysScottishTax)?.let {
             listOfClarification.add(it)
@@ -408,4 +394,11 @@ class Calculator @JvmOverloads constructor(
     private val taxCodeType: TaxCode by lazy {
         this.taxCode.toTaxCode()
     }
+
+    data class StudentLoanPlans(
+        val hasPlanOne: Boolean = false,
+        val hasPlanTwo: Boolean = false,
+        val hasPlanFour: Boolean = false,
+        val hasPostgraduatePlan: Boolean = false,
+    )
 }

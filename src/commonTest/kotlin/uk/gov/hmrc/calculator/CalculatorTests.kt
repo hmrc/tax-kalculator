@@ -1105,8 +1105,10 @@ internal class CalculatorTests {
             wages = 28800.0,
             payPeriod = PayPeriod.YEARLY,
             taxYear = TaxYear.TWENTY_TWENTY_THREE,
-            hasStudentLoanPlanTwo = true,
-            hasStudentLoanPostgraduatePlan = true,
+            studentLoanPlans = Calculator.StudentLoanPlans(
+                hasPlanTwo = true,
+                hasPostgraduatePlan = true
+            )
         ).run()
         Logger.i(result.prettyPrintDataClass())
 
@@ -1374,8 +1376,10 @@ internal class CalculatorTests {
             wages = 15000.0,
             payPeriod = PayPeriod.YEARLY,
             taxYear = TaxYear.TWENTY_TWENTY_THREE,
-            hasStudentLoanPlanTwo = true,
-            hasStudentLoanPostgraduatePlan = true,
+            studentLoanPlans = Calculator.StudentLoanPlans(
+                hasPlanTwo = true,
+                hasPostgraduatePlan = true
+            )
         ).run()
 
         val listOfExpectedResult = mutableListOf(
@@ -1393,8 +1397,10 @@ internal class CalculatorTests {
             payPeriod = PayPeriod.YEARLY,
             isPensionAge = true,
             taxYear = TaxYear.TWENTY_TWENTY_THREE,
-            hasStudentLoanPlanTwo = true,
-            hasStudentLoanPostgraduatePlan = true,
+            studentLoanPlans = Calculator.StudentLoanPlans(
+                hasPlanTwo = true,
+                hasPostgraduatePlan = true
+            )
         ).run()
 
         val listOfExpectedResult = mutableListOf(
@@ -1414,8 +1420,10 @@ internal class CalculatorTests {
             wages = 30000.0,
             payPeriod = PayPeriod.YEARLY,
             taxYear = TaxYear.TWENTY_TWENTY_THREE,
-            hasStudentLoanPlanTwo = true,
-            hasStudentLoanPostgraduatePlan = true,
+            studentLoanPlans = Calculator.StudentLoanPlans(
+                hasPlanTwo = true,
+                hasPostgraduatePlan = true
+            )
         ).run()
 
         val listOfExpectedResult = mutableListOf(Clarification.SCOTTISH_INCOME_APPLIED)
@@ -1431,8 +1439,10 @@ internal class CalculatorTests {
             wages = 30000.0,
             payPeriod = PayPeriod.YEARLY,
             taxYear = TaxYear.TWENTY_TWENTY_THREE,
-            hasStudentLoanPlanTwo = true,
-            hasStudentLoanPostgraduatePlan = true,
+            studentLoanPlans = Calculator.StudentLoanPlans(
+                hasPlanTwo = true,
+                hasPostgraduatePlan = true
+            )
         ).run()
 
         val listOfExpectedResult = mutableListOf(Clarification.SCOTTISH_CODE_BUT_OTHER_RATE)
@@ -1448,8 +1458,10 @@ internal class CalculatorTests {
             wages = 30000.0,
             payPeriod = PayPeriod.YEARLY,
             taxYear = TaxYear.TWENTY_TWENTY_THREE,
-            hasStudentLoanPlanTwo = true,
-            hasStudentLoanPostgraduatePlan = true,
+            studentLoanPlans = Calculator.StudentLoanPlans(
+                hasPlanTwo = true,
+                hasPostgraduatePlan = true
+            )
         ).run()
 
         val listOfExpectedResult = mutableListOf(Clarification.NON_SCOTTISH_CODE_BUT_SCOTTISH_RATE)
