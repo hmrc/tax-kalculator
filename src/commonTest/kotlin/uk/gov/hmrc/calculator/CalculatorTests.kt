@@ -23,7 +23,7 @@ import uk.gov.hmrc.calculator.exception.InvalidWagesException
 import uk.gov.hmrc.calculator.model.Country
 import uk.gov.hmrc.calculator.model.PayPeriod
 import uk.gov.hmrc.calculator.model.TaxYear
-import uk.gov.hmrc.calculator.model.pension.AnnualPensionMethod
+import uk.gov.hmrc.calculator.model.pension.PensionMethod
 import uk.gov.hmrc.calculator.model.taxcodes.TaxCode
 import uk.gov.hmrc.calculator.utils.clarification.Clarification
 import uk.gov.hmrc.calculator.utils.prettyPrintDataClass
@@ -459,8 +459,7 @@ internal class CalculatorTests {
             wages = 48000.0,
             payPeriod = PayPeriod.YEARLY,
             taxYear = TaxYear.TWENTY_TWENTY_THREE,
-            pensionMethod = AnnualPensionMethod.PERCENTAGE,
-            pensionContributionAmount = 10.0
+            pensionContribution = Calculator.PensionContribution(PensionMethod.PERCENTAGE, 10.0)
         ).run()
         Logger.i(result.prettyPrintDataClass())
 
@@ -525,14 +524,13 @@ internal class CalculatorTests {
     }
 
     @Test
-    fun `GIVEN TWENTY_TWENTY_THREE WHEN 48000 AND 4800 yearly pension contribution THEN calculates response`() {
+    fun `GIVEN TWENTY_TWENTY_THREE WHEN 48000 AND 400 monthly pension contribution THEN calculates response`() {
         val result = Calculator(
             taxCode = "1257L",
             wages = 48000.0,
             payPeriod = PayPeriod.YEARLY,
             taxYear = TaxYear.TWENTY_TWENTY_THREE,
-            pensionMethod = AnnualPensionMethod.AMOUNT_IN_POUNDS,
-            pensionContributionAmount = 4800.0
+            pensionContribution = Calculator.PensionContribution(PensionMethod.MONTHLY_AMOUNT_IN_POUNDS, 400.0)
         ).run()
         Logger.i(result.prettyPrintDataClass())
 
@@ -597,14 +595,13 @@ internal class CalculatorTests {
     }
 
     @Test
-    fun `GIVEN TWENTY_TWENTY_THREE WHEN 100000 wage AND 60000 yearly pension contribution THEN calculates response`() {
+    fun `GIVEN TWENTY_TWENTY_THREE WHEN 100000 wage AND 5000 monthly pension contribution THEN calculates response`() {
         val result = Calculator(
             taxCode = "1257L",
             wages = 100000.0,
             payPeriod = PayPeriod.YEARLY,
             taxYear = TaxYear.TWENTY_TWENTY_THREE,
-            pensionMethod = AnnualPensionMethod.AMOUNT_IN_POUNDS,
-            pensionContributionAmount = 60000.0
+            pensionContribution = Calculator.PensionContribution(PensionMethod.MONTHLY_AMOUNT_IN_POUNDS, 5000.0)
         ).run()
         Logger.i(result.prettyPrintDataClass())
 
@@ -675,8 +672,7 @@ internal class CalculatorTests {
             wages = 100000.0,
             payPeriod = PayPeriod.YEARLY,
             taxYear = TaxYear.TWENTY_TWENTY_THREE,
-            pensionMethod = AnnualPensionMethod.PERCENTAGE,
-            pensionContributionAmount = 60.0
+            pensionContribution = Calculator.PensionContribution(PensionMethod.PERCENTAGE, 60.0)
         ).run()
         Logger.i(result.prettyPrintDataClass())
 
@@ -741,14 +737,13 @@ internal class CalculatorTests {
     }
 
     @Test
-    fun `GIVEN TWENTY_TWENTY_THREE WHEN 100000 wage AND 65000 yearly pension contribution THEN calculates response`() {
+    fun `GIVEN TWENTY_TWENTY_THREE WHEN 100000 wage AND 5420 monthly pension contribution THEN calculates response`() {
         val result = Calculator(
             taxCode = "1257L",
             wages = 100000.0,
             payPeriod = PayPeriod.YEARLY,
             taxYear = TaxYear.TWENTY_TWENTY_THREE,
-            pensionMethod = AnnualPensionMethod.AMOUNT_IN_POUNDS,
-            pensionContributionAmount = 65000.0
+            pensionContribution = Calculator.PensionContribution(PensionMethod.MONTHLY_AMOUNT_IN_POUNDS, 5420.0)
         ).run()
         Logger.i(result.prettyPrintDataClass())
 
@@ -761,10 +756,10 @@ internal class CalculatorTests {
         assertEquals(241.23, weekly.employersNI)
         assertEquals(1923.08, weekly.wages)
         assertEquals(241.73, weekly.taxFree)
-        assertEquals(86.23, weekly.taxToPay)
-        assertEquals(480.72, weekly.takeHome)
-        assertEquals(1250.00, weekly.pensionContribution)
-        assertEquals(673.08, weekly.wageAfterPensionDeduction)
+        assertEquals(86.08, weekly.taxToPay)
+        assertEquals(480.1, weekly.takeHome)
+        assertEquals(1250.77, weekly.pensionContribution)
+        assertEquals(672.31, weekly.wageAfterPensionDeduction)
         assertEquals(0.0, weekly.taperingAmountDeduction)
         assertNull(weekly.studentLoanBreakdown)
         assertEquals(0.0, weekly.finalStudentLoanAmount)
@@ -775,10 +770,10 @@ internal class CalculatorTests {
         assertEquals(964.94, fourWeekly.employersNI)
         assertEquals(7692.31, fourWeekly.wages)
         assertEquals(966.92, fourWeekly.taxFree)
-        assertEquals(344.94, fourWeekly.taxToPay)
-        assertEquals(1922.86, fourWeekly.takeHome)
-        assertEquals(5000.00, fourWeekly.pensionContribution)
-        assertEquals(2692.31, fourWeekly.wageAfterPensionDeduction)
+        assertEquals(344.32, fourWeekly.taxToPay)
+        assertEquals(1920.4, fourWeekly.takeHome)
+        assertEquals(5003.08, fourWeekly.pensionContribution)
+        assertEquals(2689.23, fourWeekly.wageAfterPensionDeduction)
         assertEquals(0.0, fourWeekly.taperingAmountDeduction)
         assertNull(fourWeekly.studentLoanBreakdown)
         assertEquals(0.0, fourWeekly.finalStudentLoanAmount)
@@ -789,10 +784,10 @@ internal class CalculatorTests {
         assertEquals(1045.35, monthly.employersNI)
         assertEquals(8333.33, monthly.wages)
         assertEquals(1047.50, monthly.taxFree)
-        assertEquals(373.68, monthly.taxToPay)
-        assertEquals(2083.1, monthly.takeHome)
-        assertEquals(5416.67, monthly.pensionContribution)
-        assertEquals(2916.67, monthly.wageAfterPensionDeduction)
+        assertEquals(373.02, monthly.taxToPay)
+        assertEquals(2080.43, monthly.takeHome)
+        assertEquals(5420.0, monthly.pensionContribution)
+        assertEquals(2913.33, monthly.wageAfterPensionDeduction)
         assertEquals(0.0, monthly.taperingAmountDeduction)
         assertNull(monthly.studentLoanBreakdown)
         assertEquals(0.0, monthly.finalStudentLoanAmount)
@@ -803,10 +798,10 @@ internal class CalculatorTests {
         assertEquals(12544.2, yearly.employersNI)
         assertEquals(100000.00, yearly.wages)
         assertEquals(12570.0, yearly.taxFree)
-        assertEquals(4484.20, yearly.taxToPay)
-        assertEquals(24997.2, yearly.takeHome)
-        assertEquals(65000.0, yearly.pensionContribution)
-        assertEquals(35000.0, yearly.wageAfterPensionDeduction)
+        assertEquals(4476.20, yearly.taxToPay)
+        assertEquals(24965.2, yearly.takeHome)
+        assertEquals(65040.0, yearly.pensionContribution)
+        assertEquals(34960.0, yearly.wageAfterPensionDeduction)
         assertEquals(0.0, yearly.taperingAmountDeduction)
         assertNull(yearly.studentLoanBreakdown)
         assertEquals(0.0, yearly.finalStudentLoanAmount)
@@ -819,8 +814,7 @@ internal class CalculatorTests {
             wages = 100000.0,
             payPeriod = PayPeriod.YEARLY,
             taxYear = TaxYear.TWENTY_TWENTY_THREE,
-            pensionMethod = AnnualPensionMethod.PERCENTAGE,
-            pensionContributionAmount = 65.0
+            pensionContribution = Calculator.PensionContribution(PensionMethod.PERCENTAGE, 65.0)
         ).run()
         Logger.i(result.prettyPrintDataClass())
 
@@ -885,14 +879,13 @@ internal class CalculatorTests {
     }
 
     @Test
-    fun `GIVEN TWENTY_TWENTY_THREE WHEN 24579 wage AND 12000 yearly pension contribution THEN calculates response`() {
+    fun `GIVEN TWENTY_TWENTY_THREE WHEN 24579 wage AND 1000 monthly pension contribution THEN calculates response`() {
         val result = Calculator(
             taxCode = "1257L",
             wages = 24579.0,
             payPeriod = PayPeriod.YEARLY,
             taxYear = TaxYear.TWENTY_TWENTY_THREE,
-            pensionMethod = AnnualPensionMethod.AMOUNT_IN_POUNDS,
-            pensionContributionAmount = 12000.0
+            pensionContribution = Calculator.PensionContribution(PensionMethod.MONTHLY_AMOUNT_IN_POUNDS, 1000.0)
         ).run()
         Logger.i(result.prettyPrintDataClass())
 
@@ -1252,8 +1245,7 @@ internal class CalculatorTests {
                 wages = 40000.0,
                 payPeriod = PayPeriod.YEARLY,
                 taxYear = TaxYear.fromInt(2023),
-                pensionMethod = AnnualPensionMethod.AMOUNT_IN_POUNDS,
-                pensionContributionAmount = 45000.0
+                pensionContribution = Calculator.PensionContribution(PensionMethod.MONTHLY_AMOUNT_IN_POUNDS, 45000.0)
             ).run()
         }
     }
@@ -1266,8 +1258,7 @@ internal class CalculatorTests {
                 wages = 40000.0,
                 payPeriod = PayPeriod.YEARLY,
                 taxYear = TaxYear.fromInt(2023),
-                pensionMethod = AnnualPensionMethod.PERCENTAGE,
-                pensionContributionAmount = 120.0
+                pensionContribution = Calculator.PensionContribution(PensionMethod.PERCENTAGE, 120.0)
             ).run()
         }
     }

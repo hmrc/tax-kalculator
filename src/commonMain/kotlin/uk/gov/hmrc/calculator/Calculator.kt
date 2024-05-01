@@ -36,7 +36,7 @@ import uk.gov.hmrc.calculator.model.bands.Band
 import uk.gov.hmrc.calculator.model.bands.EmployeeNIBands
 import uk.gov.hmrc.calculator.model.bands.EmployerNIBands
 import uk.gov.hmrc.calculator.model.bands.TaxBands
-import uk.gov.hmrc.calculator.model.pension.AnnualPensionMethod
+import uk.gov.hmrc.calculator.model.pension.PensionMethod
 import uk.gov.hmrc.calculator.model.pension.calculateYearlyPension
 import uk.gov.hmrc.calculator.model.studentloans.StudentLoanCalculation
 import uk.gov.hmrc.calculator.model.taxcodes.AdjustedTaxFreeTCode
@@ -72,8 +72,7 @@ class Calculator @JvmOverloads constructor(
     private val isPensionAge: Boolean = false,
     private val howManyAWeek: Double? = null,
     private val taxYear: TaxYear = TaxYear.currentTaxYear,
-    private val pensionMethod: AnnualPensionMethod? = null,
-    private val pensionContributionAmount: Double? = null,
+    private val pensionContribution: PensionContribution? = null,
     private val studentLoanPlans: StudentLoanPlans? = null,
 ) {
 
@@ -109,11 +108,7 @@ class Calculator @JvmOverloads constructor(
             (taxCodeType as KTaxCode).amountToAddToWages
         } else null
 
-        val yearlyPensionContribution = calculateYearlyPension(
-            yearlyWages,
-            pensionMethod,
-            pensionContributionAmount,
-        )
+        val yearlyPensionContribution = pensionContribution?.let { calculateYearlyPension(yearlyWages, it) }
 
         yearlyPensionContribution?.let { yearlyPension ->
             if (!PensionValidator.isPensionLowerThenWage(yearlyPension, yearlyWages)) {
@@ -400,5 +395,10 @@ class Calculator @JvmOverloads constructor(
         val hasPlanTwo: Boolean = false,
         val hasPlanFour: Boolean = false,
         val hasPostgraduatePlan: Boolean = false,
+    )
+
+    data class PensionContribution(
+        val method: PensionMethod? = null,
+        val contributionAmount: Double? = null,
     )
 }

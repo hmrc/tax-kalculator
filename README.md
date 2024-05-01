@@ -30,8 +30,7 @@ val calculator = Calculator(
     isPensionAge = false,            // Optional (Default: false)
     howManyAWeek = null,             // Optional (Default: null)
     taxYear = TaxYear.currentTaxYear, // Optional (Default: Current Tax Year)
-    pensionMethod = PERCENTAGE,      // Optional (Default: null)
-    pensionContributionAmount = 10.0,       // Optional (Default: null)
+    pensionContribution = PensionContribution(method = PERCENTAGE, contributionAmount = 10.0), // Optional (Default: null)
     studentLoanPlans = StudentLoanPlans(hasPlanOne = false, hasPlanTwo = false, hasPlanFour = false, hasPostgraduatePlan = false) // Optional (Default: null)
 )
 
@@ -49,9 +48,8 @@ let calculator = Calculator(
     isPensionAge: false,
     howManyAWeek: KotlinDouble(double: 35),
     taxYear: TaxYear.companion.currentTaxYear,
-    pensionMethod: pensionMethod,
-    pensionContributionAmount: KotlinDouble(double: 10),
-    studentLoanPlans = StudentLoanPlans(hasPlanOne: false, hasPlanTwo: false, hasPlanFour: false, hasPostgraduatePlan: false) // Optional (Default: null)
+    pensionContribution: PensionContribution(method: PERCENTAGE, contributionAmount: 10.0), // Optional (Default: null)
+    studentLoanPlans: StudentLoanPlans(hasPlanOne: false, hasPlanTwo: false, hasPlanFour: false, hasPostgraduatePlan: false) // Optional (Default: null)
 )
 
 let calculation = try calculator.run()

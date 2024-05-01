@@ -26,7 +26,7 @@ import uk.gov.hmrc.calculator.model.CalculatorResponse
 import uk.gov.hmrc.calculator.model.Country
 import uk.gov.hmrc.calculator.model.PayPeriod
 import uk.gov.hmrc.calculator.model.TaxYear
-import uk.gov.hmrc.calculator.model.pension.AnnualPensionMethod
+import uk.gov.hmrc.calculator.model.pension.PensionMethod
 import uk.gov.hmrc.calculator.utils.prettyPrintDataClass
 
 internal class ParameterizedCalculatorTests {
@@ -211,7 +211,7 @@ internal class ParameterizedCalculatorTests {
         @ConvertWith(PayPeriodConverter::class) inputPayPeriod: PayPeriod,
         @ConvertWith(TaxYearConverter::class) inputTaxYear: TaxYear,
         inputIsPensionAge: Boolean,
-        @ConvertWith(AnnualPensionMethodConverter::class) inputPensionMethod: AnnualPensionMethod,
+        @ConvertWith(PensionMethodConverter::class) inputPensionMethod: PensionMethod,
         inputPensionAmount: Double?,
         @ConvertWith(CountryConverter::class) expectedCountry: Country,
         expectedYearlyNiEmployee: Double,
@@ -229,8 +229,7 @@ internal class ParameterizedCalculatorTests {
             wages = inputWages,
             payPeriod = inputPayPeriod,
             taxYear = inputTaxYear,
-            pensionMethod = inputPensionMethod,
-            pensionContributionAmount = inputPensionAmount,
+            pensionContribution = Calculator.PensionContribution(inputPensionMethod, inputPensionAmount),
             isPensionAge = inputIsPensionAge
         ).run()
 
@@ -397,7 +396,7 @@ internal class ParameterizedCalculatorTests {
         @ConvertWith(PayPeriodConverter::class) inputPayPeriod: PayPeriod,
         @ConvertWith(TaxYearConverter::class) inputTaxYear: TaxYear,
         inputIsPensionAge: Boolean,
-        @ConvertWith(AnnualPensionMethodConverter::class) inputPensionMethod: AnnualPensionMethod,
+        @ConvertWith(PensionMethodConverter::class) inputPensionMethod: PensionMethod,
         inputPensionAmount: Double?,
         @ConvertWith(CountryConverter::class) expectedCountry: Country,
         expectedYearlyNiEmployee: Double,
@@ -415,8 +414,7 @@ internal class ParameterizedCalculatorTests {
             wages = inputWages,
             payPeriod = inputPayPeriod,
             taxYear = inputTaxYear,
-            pensionMethod = inputPensionMethod,
-            pensionContributionAmount = inputPensionAmount,
+            pensionContribution = Calculator.PensionContribution(inputPensionMethod, inputPensionAmount),
             isPensionAge = inputIsPensionAge
         ).run()
 
@@ -582,7 +580,7 @@ internal class ParameterizedCalculatorTests {
         override fun convert(source: Any, context: ParameterContext?) = TaxYear.valueOf(source as String)
     }
 
-    class AnnualPensionMethodConverter : ArgumentConverter {
-        override fun convert(source: Any?, context: ParameterContext?) = AnnualPensionMethod.valueOf(source as String)
+    class PensionMethodConverter : ArgumentConverter {
+        override fun convert(source: Any?, context: ParameterContext?) = PensionMethod.valueOf(source as String)
     }
 }
