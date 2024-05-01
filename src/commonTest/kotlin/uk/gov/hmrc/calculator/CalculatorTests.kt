@@ -1459,4 +1459,19 @@ internal class CalculatorTests {
 
         assertEquals(listOfExpectedResult, result.listOfClarification)
     }
+
+    @Test
+    fun `GIVEN pension exceed annual allowance WHEN calculate THEN clarification contains PENSION_EXCEED_ANNUAL_ALLOWANCE`() {
+        val result = Calculator(
+            taxCode = "1257L",
+            wages = 90000.0,
+            payPeriod = PayPeriod.YEARLY,
+            taxYear = TaxYear.TWENTY_TWENTY_THREE,
+            pensionContribution = Calculator.PensionContribution(PensionMethod.MONTHLY_AMOUNT_IN_POUNDS, 5420.0)
+        ).run()
+
+        val listOfExpectedResult = mutableListOf(Clarification.PENSION_EXCEED_ANNUAL_ALLOWANCE)
+
+        assertEquals(listOfExpectedResult, result.listOfClarification)
+    }
 }

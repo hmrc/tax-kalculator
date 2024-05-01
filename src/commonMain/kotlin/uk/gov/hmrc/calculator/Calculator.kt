@@ -94,15 +94,14 @@ class Calculator @JvmOverloads constructor(
         InvalidTaxBandException::class,
         InvalidPensionException::class,
     )
-    @Suppress("LongMethod", "ComplexMethod")
+
     fun run(): CalculatorResponse {
         if (!WageValidator.isAboveMinimumWages(wages) || !WageValidator.isBelowMaximumWages(wages)) {
             throw InvalidWagesException("Wages must be between 0 and 9999999.99")
         }
-        val yearlyWages = wages.convertWageToYearly(
-            payPeriod,
-            howManyAWeek
-        )
+
+        val yearlyWages = wages.convertWageToYearly(payPeriod, howManyAWeek)
+
         val amountToAddToWages = if (taxCodeType is KTaxCode) {
             listOfClarification.add(Clarification.K_CODE)
             (taxCodeType as KTaxCode).amountToAddToWages
@@ -110,42 +109,13 @@ class Calculator @JvmOverloads constructor(
 
         val yearlyPensionContribution = pensionContribution?.let { calculateYearlyPension(yearlyWages, it) }
 
-        yearlyPensionContribution?.let { yearlyPension ->
-            if (!PensionValidator.isPensionLowerThenWage(yearlyPension, yearlyWages)) {
-                listOfClarification.add(Clarification.PENSION_EXCEED_INCOME)
-                throw InvalidPensionException("Pension must be lower then your yearly wage")
-            }
-            if (PensionValidator.isPensionAboveAnnualAllowance(yearlyPension, taxYear)) {
-                listOfClarification.add(Clarification.PENSION_EXCEED_ANNUAL_ALLOWANCE)
-            }
-        }
+        validatePensionContribution(yearlyPensionContribution, yearlyWages)
 
-        val yearlyWageAfterPension = if (yearlyPensionContribution != null) {
-            yearlyWages - yearlyPensionContribution
-        } else yearlyWages
+        val yearlyWageAfterPension = yearlyPensionContribution?.let { yearlyWages - it } ?: yearlyWages
 
-        val (taxFreeAmount, taperingAmount) =
-            if (yearlyWageAfterPension.isAboveHundredThousand()) {
-                if (yearlyWageAfterPension.shouldApplyStandardTapering(taxCodeType, userSuppliedTaxCode)) {
-                    listOfClarification.add(Clarification.INCOME_OVER_100K_WITH_TAPERING)
-                    Pair(
-                        taxCodeType.getTrueTaxFreeAmount().deductTapering(yearlyWageAfterPension),
-                        // for calculation purpose, we use the taxFreeAmount (which include the £9) to calculate.
-                        yearlyWageAfterPension.getTaperingAmount(taxCodeType.taxFreeAmount)
-                    )
-                } else {
-                    listOfClarification.add(Clarification.INCOME_OVER_100K)
-                    Pair(taxCodeType.getTrueTaxFreeAmount(), null)
-                }
-            } else {
-                Pair(taxCodeType.getTrueTaxFreeAmount(), null)
-            }
+        val (taxFreeAmount, taperingAmount) = getTaxFreeAndTaperingAmount(yearlyWageAfterPension)
 
-        val studentLoan = StudentLoanCalculation(
-            taxYear,
-            yearlyWages,
-            studentLoanPlans,
-        )
+        val studentLoan = StudentLoanCalculation(taxYear, yearlyWages, studentLoanPlans)
 
         val (studentLoanBreakdown, studentLoanDeduction, earnTooLowToPayStudentLoan) =
             Triple(
@@ -156,9 +126,7 @@ class Calculator @JvmOverloads constructor(
 
         if (earnTooLowToPayStudentLoan) listOfClarification.add(Clarification.INCOME_BELOW_STUDENT_LOAN)
 
-        taxCodeType.getTaxCodeClarification(userPaysScottishTax)?.let {
-            listOfClarification.add(it)
-        }
+        taxCodeType.getTaxCodeClarification(userPaysScottishTax)?.let { listOfClarification.add(it) }
 
         return createResponse(
             taxCodeType,
@@ -172,6 +140,36 @@ class Calculator @JvmOverloads constructor(
             studentLoanDeduction,
             listOfClarification,
         )
+    }
+
+    private fun getTaxFreeAndTaperingAmount(yearlyWageAfterPension: Double): Pair<Double, Double?> {
+        return if (yearlyWageAfterPension.isAboveHundredThousand()) {
+            if (yearlyWageAfterPension.shouldApplyStandardTapering(taxCodeType, userSuppliedTaxCode)) {
+                listOfClarification.add(Clarification.INCOME_OVER_100K_WITH_TAPERING)
+                Pair(
+                    taxCodeType.getTrueTaxFreeAmount().deductTapering(yearlyWageAfterPension),
+                    // for calculation purpose, we use the taxFreeAmount (which include the £9) to calculate.
+                    yearlyWageAfterPension.getTaperingAmount(taxCodeType.taxFreeAmount)
+                )
+            } else {
+                listOfClarification.add(Clarification.INCOME_OVER_100K)
+                Pair(taxCodeType.getTrueTaxFreeAmount(), null)
+            }
+        } else {
+            Pair(taxCodeType.getTrueTaxFreeAmount(), null)
+        }
+    }
+
+    private fun validatePensionContribution(yearlyPensionContribution: Double?, yearlyWages: Double) {
+        yearlyPensionContribution?.let { yearlyPension ->
+            if (!PensionValidator.isPensionLowerThenWage(yearlyPension, yearlyWages)) {
+                listOfClarification.add(Clarification.PENSION_EXCEED_INCOME)
+                throw InvalidPensionException("Pension must be lower then your yearly wage")
+            }
+            if (PensionValidator.isPensionAboveAnnualAllowance(yearlyPension, taxYear)) {
+                listOfClarification.add(Clarification.PENSION_EXCEED_ANNUAL_ALLOWANCE)
+            }
+        }
     }
 
     @Suppress("LongMethod", "LongParameterList")
