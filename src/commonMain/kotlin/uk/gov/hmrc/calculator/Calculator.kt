@@ -117,12 +117,9 @@ class Calculator @JvmOverloads constructor(
 
         val studentLoan = StudentLoanCalculation(taxYear, yearlyWages, studentLoanPlans)
 
-        val (studentLoanBreakdown, studentLoanDeduction, earnTooLowToPayStudentLoan) =
-            Triple(
-                studentLoan.listOfBreakdownResult,
-                studentLoan.calculateTotalLoanDeduction(),
-                studentLoan.earnTooLowToPayStudentLoan
-            )
+        val (studentLoanBreakdown, studentLoanDeduction, earnTooLowToPayStudentLoan) = with(studentLoan) {
+            Triple(listOfBreakdownResult, calculateTotalLoanDeduction(), earnTooLowToPayStudentLoan)
+        }
 
         if (earnTooLowToPayStudentLoan) listOfClarification.add(Clarification.INCOME_BELOW_STUDENT_LOAN)
 
