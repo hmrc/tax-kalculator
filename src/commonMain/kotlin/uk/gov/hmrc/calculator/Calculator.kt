@@ -108,19 +108,13 @@ class Calculator @JvmOverloads constructor(
         } else null
 
         val yearlyPensionContribution = pensionContribution?.let { calculateYearlyPension(yearlyWages, it) }
-
         validatePensionContribution(yearlyPensionContribution, yearlyWages)
-
         val yearlyWageAfterPension = yearlyPensionContribution?.let { yearlyWages - it } ?: yearlyWages
-
         val (taxFreeAmount, taperingAmount) = getTaxFreeAndTaperingAmount(yearlyWageAfterPension)
 
         val studentLoan = StudentLoanCalculation(taxYear, yearlyWages, studentLoanPlans)
-
-        val (studentLoanBreakdown, studentLoanDeduction) = with(studentLoan) {
-            Pair(listOfBreakdownResult, calculateTotalLoanDeduction())
-        }
-
+        val studentLoanBreakdown = studentLoan.listOfBreakdownResult
+        val studentLoanDeduction = studentLoan.calculateTotalLoanDeduction()
         if (studentLoan.earnTooLowToPayStudentLoan) listOfClarification.add(Clarification.INCOME_BELOW_STUDENT_LOAN)
 
         taxCodeType.getTaxCodeClarification(userPaysScottishTax)?.let { listOfClarification.add(it) }
