@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Added Clarification response list.
 - Added more validation to `PensionValidator`. 
 - Remove £9 from K and T tax code.
+- Refactor Pension Contribution/Student Loan constructor
+- Refactor Pension Contribution internal calculation to monthly instead of yearly.
 
 ## [2.10.2] - 2024-03-08Z
 
