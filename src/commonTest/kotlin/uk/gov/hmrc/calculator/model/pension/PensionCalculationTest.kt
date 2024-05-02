@@ -18,39 +18,8 @@ package uk.gov.hmrc.calculator.model.pension
 import uk.gov.hmrc.calculator.Calculator
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertNull
 
 class PensionCalculationTest {
-
-    @Test
-    fun `GIVEN pensionMethod null WHEN calculateYearlyPension THEN return null`() {
-        val result = calculateYearlyPension(
-            1000.0,
-            pensionContribution = Calculator.PensionContribution(null, 10.0)
-        )
-
-        assertNull(result)
-    }
-
-    @Test
-    fun `GIVEN pensionMethod PERCENTAGE AND pensionContributionAmount null WHEN calculateYearlyPension THEN return null`() {
-        val result = calculateYearlyPension(
-            1000.0,
-            pensionContribution = Calculator.PensionContribution(PensionMethod.PERCENTAGE, null)
-        )
-
-        assertNull(result)
-    }
-
-    @Test
-    fun `GIVEN pensionMethod MONTHLY_AMOUNT_IN_POUNDS AND pensionContributionAmount null WHEN calculateYearlyPension THEN return null`() {
-        val result = calculateYearlyPension(
-            1000.0,
-            pensionContribution = Calculator.PensionContribution(PensionMethod.MONTHLY_AMOUNT_IN_POUNDS, null)
-        )
-
-        assertNull(result)
-    }
 
     @Test
     fun `GIVEN pensionMethod PERCENTAGE AND pensionContributionAmount 10 percent WHEN calculateYearlyPension THEN return pension amount`() {

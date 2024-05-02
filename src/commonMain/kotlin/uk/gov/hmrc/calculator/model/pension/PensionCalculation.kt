@@ -24,16 +24,15 @@ import kotlin.jvm.JvmSynthetic
 internal fun calculateYearlyPension(
     yearlyWage: Double,
     pensionContribution: Calculator.PensionContribution,
-): Double? {
+): Double {
     return when (pensionContribution.method) {
         PensionMethod.MONTHLY_AMOUNT_IN_POUNDS -> {
-            pensionContribution.contributionAmount?.convertWageToYearly(PayPeriod.MONTHLY)
+            pensionContribution.contributionAmount.convertWageToYearly(PayPeriod.MONTHLY)
         }
         PensionMethod.PERCENTAGE -> {
-            pensionContribution.contributionAmount?.let { percentage ->
+            pensionContribution.contributionAmount.let { percentage ->
                 yearlyWage * (percentage.div(100))
             }
         }
-        else -> null
     }
 }

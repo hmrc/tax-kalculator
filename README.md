@@ -23,7 +23,6 @@ Create an instance of `Calculator`, providing values as per the following exampl
 val calculator = Calculator(
     taxCode = "1257L",               // Required
     userPaysScottishTax = false,       // Optional (Default: false)
-    userPaysWelshTax = false,          // Optional (Default: false)
     userSuppliedTaxCode = false,     // Optional (Default: true)
     wages = 20000.0,                 // Required
     payPeriod = YEARLY,              // Required
@@ -41,7 +40,6 @@ val response = calculator.run()
 let calculator = Calculator(
     taxCode: "1257L",
     userPaysScottishTax: false,
-    userPaysWelshTax: false,
     userSuppliedTaxCode = false,
     wages: 20000.0,
     payPeriod: period,

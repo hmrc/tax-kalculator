@@ -36,10 +36,10 @@ internal fun Double.getTaperingAmount(maximumTaperingAmount: Double): Double {
 }
 
 @JvmSynthetic
-internal fun Double.isAboveHundredThousand() = this > TAPERING_THRESHOLD
+internal fun Double.yearlyWageIsAboveHundredThousand() = this > TAPERING_THRESHOLD
 
 @JvmSynthetic
 internal fun Double.shouldApplyStandardTapering(taxCodeType: TaxCode, userSuppliedTaxCode: Boolean) =
-    taxCodeType is StandardTaxCode && !userSuppliedTaxCode && this.isAboveHundredThousand()
+    taxCodeType is StandardTaxCode && !userSuppliedTaxCode && this.yearlyWageIsAboveHundredThousand()
 
 private const val TAPERING_THRESHOLD = 100000.0

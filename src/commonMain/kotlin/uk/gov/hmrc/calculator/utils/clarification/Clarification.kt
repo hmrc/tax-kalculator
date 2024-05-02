@@ -16,7 +16,7 @@
 package uk.gov.hmrc.calculator.utils.clarification
 
 // Description added for readability clarifying what each Clarification enum represent, no real usage in code yet.
-enum class Clarification(private val description: String? = null) {
+enum class Clarification(private val description: String) {
     NO_TAX_CODE_SUPPLIED("Did not provide a tax code."),
     HAVE_STATE_PENSION("Have state pension."),
     SCOTTISH_INCOME_APPLIED("Applied Scottish Income Tax rates."),

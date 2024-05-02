@@ -54,8 +54,8 @@ import uk.gov.hmrc.calculator.utils.convertWageToYearly
 import uk.gov.hmrc.calculator.utils.studentloan.convertBreakdownForPayPeriod
 import uk.gov.hmrc.calculator.utils.tapering.deductTapering
 import uk.gov.hmrc.calculator.utils.tapering.getTaperingAmount
-import uk.gov.hmrc.calculator.utils.tapering.isAboveHundredThousand
 import uk.gov.hmrc.calculator.utils.tapering.shouldApplyStandardTapering
+import uk.gov.hmrc.calculator.utils.tapering.yearlyWageIsAboveHundredThousand
 import uk.gov.hmrc.calculator.utils.taxcode.getTaxCodeClarification
 import uk.gov.hmrc.calculator.utils.taxcode.getTrueTaxFreeAmount
 import uk.gov.hmrc.calculator.utils.taxcode.toTaxCode
@@ -134,7 +134,7 @@ class Calculator @JvmOverloads constructor(
     }
 
     private fun getTaxFreeAndTaperingAmount(yearlyWageAfterPension: Double): Pair<Double, Double?> {
-        return if (yearlyWageAfterPension.isAboveHundredThousand()) {
+        return if (yearlyWageAfterPension.yearlyWageIsAboveHundredThousand()) {
             if (yearlyWageAfterPension.shouldApplyStandardTapering(taxCodeType, userSuppliedTaxCode)) {
                 listOfClarification.add(Clarification.INCOME_OVER_100K_WITH_TAPERING)
                 Pair(
@@ -387,7 +387,7 @@ class Calculator @JvmOverloads constructor(
     )
 
     data class PensionContribution(
-        val method: PensionMethod? = null,
-        val contributionAmount: Double? = null,
+        val method: PensionMethod,
+        val contributionAmount: Double,
     )
 }
