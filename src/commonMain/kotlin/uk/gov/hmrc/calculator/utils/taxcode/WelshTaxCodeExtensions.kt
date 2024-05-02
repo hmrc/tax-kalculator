@@ -27,7 +27,9 @@ import uk.gov.hmrc.calculator.model.taxcodes.WelshEmergencyCode
 import uk.gov.hmrc.calculator.model.taxcodes.WelshMCode
 import uk.gov.hmrc.calculator.model.taxcodes.WelshNCode
 import uk.gov.hmrc.calculator.model.taxcodes.WelshTaxCode
+import kotlin.jvm.JvmSynthetic
 
+@JvmSynthetic
 internal fun String.matchWelshTaxCode(): WelshTaxCode {
     return when (this.take(3)) {
         "C0T" -> C0T()

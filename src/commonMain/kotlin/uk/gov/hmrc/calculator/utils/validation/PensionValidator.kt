@@ -18,9 +18,9 @@ package uk.gov.hmrc.calculator.utils.validation
 import uk.gov.hmrc.calculator.model.TaxYear
 import uk.gov.hmrc.calculator.model.pension.PensionAllowances.getPensionAllowances
 
-internal object PensionValidator {
+object PensionValidator {
 
-    internal fun isValidYearlyPension(yearlyWage: Double, yearlyPension: Double): Boolean {
+    fun isValidYearlyPension(yearlyWage: Double, yearlyPension: Double): Boolean {
         return yearlyPension <= yearlyWage
     }
 

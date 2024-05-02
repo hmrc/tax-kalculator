@@ -15,6 +15,9 @@
  */
 package uk.gov.hmrc.calculator.model.pension
 
+import kotlin.jvm.JvmSynthetic
+
+@JvmSynthetic
 internal fun calculateYearlyPension(
     yearlyWage: Double,
     pensionMethod: AnnualPensionMethod? = null,

@@ -20,7 +20,9 @@ import uk.gov.hmrc.calculator.model.Country
 import uk.gov.hmrc.calculator.model.taxcodes.NTCode
 import uk.gov.hmrc.calculator.model.taxcodes.TaxCode
 import uk.gov.hmrc.calculator.utils.toCountry
+import kotlin.jvm.JvmSynthetic
 
+@JvmSynthetic
 internal fun String.toTaxCode(): TaxCode {
     if (isBlank()) throw InvalidTaxCodeException("Tax code cannot be empty")
 
@@ -34,6 +36,7 @@ internal fun String.toTaxCode(): TaxCode {
     }
 }
 
+@JvmSynthetic
 internal fun String.extractDoubleFromEmergencyTaxCode(): Double =
     this
         .removePrefix("S")
@@ -49,6 +52,7 @@ internal fun String.extractDoubleFromEmergencyTaxCode(): Double =
 /*
     Tax-free amount without the "£9"
 */
+@JvmSynthetic
 internal fun TaxCode.getTrueTaxFreeAmount(): Double {
     val amount = this.taxFreeAmount
     return if (amount > 0) amount - 9 else 0.0

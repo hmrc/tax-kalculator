@@ -15,6 +15,9 @@
  */
 package uk.gov.hmrc.calculator.utils.tapering
 
+import kotlin.jvm.JvmSynthetic
+
+@JvmSynthetic
 internal fun Double.deductTapering(yearlyWageAfterPension: Double): Double {
     val taperingAmountToDeduct = yearlyWageAfterPension.getTaperingAmount(this)
     val amountAfterTaperingDeduction = this - taperingAmountToDeduct
@@ -24,11 +27,13 @@ internal fun Double.deductTapering(yearlyWageAfterPension: Double): Double {
     return if (amountAfterTaperingDeduction <= 0) 0.0 else amountAfterTaperingDeduction
 }
 
+@JvmSynthetic
 internal fun Double.getTaperingAmount(maximumTaperingAmount: Double): Double {
     val taperingAmount = (this - TAPERING_THRESHOLD) / 2.0
     return if (taperingAmount >= maximumTaperingAmount) maximumTaperingAmount else taperingAmount
 }
 
+@JvmSynthetic
 internal fun Double.shouldApplyTapering() = this > TAPERING_THRESHOLD
 
 private const val TAPERING_THRESHOLD = 100000.0

@@ -27,7 +27,9 @@ import uk.gov.hmrc.calculator.model.taxcodes.KCode
 import uk.gov.hmrc.calculator.model.taxcodes.LCode
 import uk.gov.hmrc.calculator.model.taxcodes.TCode
 import uk.gov.hmrc.calculator.model.taxcodes.ZeroT
+import kotlin.jvm.JvmSynthetic
 
+@JvmSynthetic
 internal fun String.matchEnglishTaxCode(): EnglishTaxCode {
     return when (this.take(2)) {
         "0T" -> ZeroT()

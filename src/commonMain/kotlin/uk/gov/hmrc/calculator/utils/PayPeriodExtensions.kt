@@ -26,7 +26,9 @@ import uk.gov.hmrc.calculator.model.PayPeriod.MONTHLY
 import uk.gov.hmrc.calculator.model.PayPeriod.WEEKLY
 import uk.gov.hmrc.calculator.model.PayPeriod.YEARLY
 import uk.gov.hmrc.calculator.utils.validation.HoursDaysValidator
+import kotlin.jvm.JvmSynthetic
 
+@JvmSynthetic
 internal fun Double.convertWageToYearly(
     payPeriod: PayPeriod,
     hoursOrDaysWorkedForPayPeriod: Double? = null
@@ -41,18 +43,7 @@ internal fun Double.convertWageToYearly(
     }
 }
 
-private fun Double.hourlyToYearly(hoursWorked: Double?): Double {
-    return if (hoursWorked != null && HoursDaysValidator.isValidHoursPerWeek(hoursWorked))
-        this * hoursWorked * 52
-    else throw InvalidHoursException("The number of hours must be between 1 and 168 when PayPeriod is HOURLY")
-}
-
-private fun Double.dailyToYearly(daysWorked: Double?): Double {
-    return if (daysWorked != null && HoursDaysValidator.isValidDaysPerWeek(daysWorked))
-        this * daysWorked * 52
-    else throw InvalidDaysException("The number of days must be between 1 and 7 when PayPeriod is DAILY")
-}
-
+@JvmSynthetic
 internal fun Double.convertAmountFromYearlyToPayPeriod(
     payPeriod: PayPeriod
 ): Double {
@@ -63,4 +54,16 @@ internal fun Double.convertAmountFromYearlyToPayPeriod(
         YEARLY -> this
         else -> throw InvalidPayPeriodException("$payPeriod is not supported")
     }
+}
+
+private fun Double.hourlyToYearly(hoursWorked: Double?): Double {
+    return if (hoursWorked != null && HoursDaysValidator.isValidHoursPerWeek(hoursWorked))
+        this * hoursWorked * 52
+    else throw InvalidHoursException("The number of hours must be between 1 and 168 when PayPeriod is HOURLY")
+}
+
+private fun Double.dailyToYearly(daysWorked: Double?): Double {
+    return if (daysWorked != null && HoursDaysValidator.isValidDaysPerWeek(daysWorked))
+        this * daysWorked * 52
+    else throw InvalidDaysException("The number of days must be between 1 and 7 when PayPeriod is DAILY")
 }

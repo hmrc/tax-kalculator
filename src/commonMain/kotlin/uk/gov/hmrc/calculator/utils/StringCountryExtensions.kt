@@ -20,7 +20,9 @@ import uk.gov.hmrc.calculator.model.Country.ENGLAND
 import uk.gov.hmrc.calculator.model.Country.NONE
 import uk.gov.hmrc.calculator.model.Country.SCOTLAND
 import uk.gov.hmrc.calculator.model.Country.WALES
+import kotlin.jvm.JvmSynthetic
 
+@JvmSynthetic
 internal fun String.toCountry(): Country {
     return when (this) {
         "NT" -> NONE

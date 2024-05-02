@@ -16,10 +16,12 @@
 package uk.gov.hmrc.calculator.model.pension
 
 import uk.gov.hmrc.calculator.model.TaxYear
+import kotlin.jvm.JvmSynthetic
 
 internal object PensionAllowances {
 
-    fun getPensionAllowances(taxYear: TaxYear) = when (taxYear) {
+    @JvmSynthetic
+    internal fun getPensionAllowances(taxYear: TaxYear) = when (taxYear) {
         TaxYear.TWENTY_TWENTY -> pensionAllowance2020()
         TaxYear.TWENTY_TWENTY_ONE -> pensionAllowance2021()
         TaxYear.TWENTY_TWENTY_TWO,
