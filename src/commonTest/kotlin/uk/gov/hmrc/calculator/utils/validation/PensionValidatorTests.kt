@@ -17,48 +17,173 @@ package uk.gov.hmrc.calculator.utils.validation
 
 import uk.gov.hmrc.calculator.model.TaxYear
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class PensionValidatorTests {
 
     @Test
-    fun `GIVEN pension is lower then wage WHEN isValidYearlyPension THEN return true`() {
+    fun `GIVEN pension is lower then wage WHEN isPensionLowerThenWage THEN return true`() {
         val wage = 20000.0
         val pension = 2000.0
 
-        assertTrue(PensionValidator.isValidYearlyPension(wage, pension))
+        assertTrue(PensionValidator.isPensionLowerThenWage(pension, wage))
     }
 
     @Test
-    fun `GIVEN pension is greater then wages WHEN isValidYearlyPension THEN return false`() {
+    fun `GIVEN pension is greater then wages WHEN isPensionLowerThenWage THEN return false`() {
         val wage = 20000.0
         val pension = 20001.0
 
-        assertFalse(PensionValidator.isValidYearlyPension(wage, pension))
+        assertFalse(PensionValidator.isPensionLowerThenWage(pension, wage))
     }
 
     @Test
-    fun `GIVEN pension is same as wage WHEN isValidYearlyPension THEN return true`() {
+    fun `GIVEN pension is same as wage WHEN isPensionLowerThenWage THEN return true`() {
         val wage = 20000.0
         val pension = 20000.0
 
-        assertTrue(PensionValidator.isValidYearlyPension(wage, pension))
+        assertTrue(PensionValidator.isPensionLowerThenWage(pension, wage))
     }
 
     @Test
-    fun `GIVEN pension is lower then annualAllowance THEN return false`() {
+    fun `GIVEN no error WHEN isValidYearlyPension THEN return empty list of error`() {
+        val wage = 150000.0
         val pension = 50000.0
         val taxYear = TaxYear.TWENTY_TWENTY_FOUR
 
-        assertFalse(PensionValidator.isAboveAnnualAllowance(pension, taxYear))
+        val listOfError = emptyList<PensionValidator.PensionError>()
+
+        assertEquals(listOfError, PensionValidator.isValidYearlyPension(pension, wage, taxYear))
     }
 
     @Test
-    fun `GIVEN pension is greater then annualAllowance THEN return true`() {
+    fun `GIVEN pension is invalid format WHEN isValidYearlyPension THEN return list of error`() {
+        val wage = 150000.0
+        val pension = 50000.123
+        val taxYear = TaxYear.TWENTY_TWENTY_FOUR
+
+        val listOfError = mutableListOf(PensionValidator.PensionError.INVALID_FORMAT)
+
+        assertEquals(listOfError, PensionValidator.isValidYearlyPension(pension, wage, taxYear))
+    }
+
+    @Test
+    fun `GIVEN pension is zero WHEN isValidYearlyPension THEN return list of error`() {
+        val wage = 150000.0
+        val pension = 0.0
+        val taxYear = TaxYear.TWENTY_TWENTY_FOUR
+
+        val listOfError = mutableListOf(PensionValidator.PensionError.BELOW_ZERO)
+
+        assertEquals(listOfError, PensionValidator.isValidYearlyPension(pension, wage, taxYear))
+    }
+
+    @Test
+    fun `GIVEN pension above wage WHEN isValidYearlyPension THEN return list of error`() {
+        val wage = 40000.0
+        val pension = 50000.0
+        val taxYear = TaxYear.TWENTY_TWENTY_FOUR
+
+        val listOfError = mutableListOf(PensionValidator.PensionError.ABOVE_HUNDRED_PERCENT)
+
+        assertEquals(listOfError, PensionValidator.isValidYearlyPension(pension, wage, taxYear))
+    }
+
+    @Test
+    fun `GIVEN pension is greater then annualAllowance WHEN isValidYearlyPension THEN return list of error`() {
+        val wage = 150000.0
         val pension = 61000.0
         val taxYear = TaxYear.TWENTY_TWENTY_FOUR
 
-        assertTrue(PensionValidator.isAboveAnnualAllowance(pension, taxYear))
+        val listOfError = mutableListOf(PensionValidator.PensionError.ABOVE_ANNUAL_ALLOWANCE)
+
+        assertEquals(listOfError, PensionValidator.isValidYearlyPension(pension, wage, taxYear))
+    }
+
+    @Test
+    fun `GIVEN multiple error WHEN isValidYearlyPension THEN return list of error in order`() {
+        val wage = 50000.0
+        val pension = 61000.1234
+        val taxYear = TaxYear.TWENTY_TWENTY_FOUR
+
+        val listOfError = mutableListOf(
+            PensionValidator.PensionError.INVALID_FORMAT,
+            PensionValidator.PensionError.ABOVE_HUNDRED_PERCENT,
+            PensionValidator.PensionError.ABOVE_ANNUAL_ALLOWANCE,
+        )
+
+        assertEquals(listOfError, PensionValidator.isValidYearlyPension(pension, wage, taxYear))
+    }
+
+    @Test
+    fun `GIVEN no error WHEN isValidMonthlyPension THEN return empty list of error`() {
+        val monthlyWage = 12500.0
+        val monthlyPension = 4166.67
+        val taxYear = TaxYear.TWENTY_TWENTY_FOUR
+
+        val listOfError = emptyList<PensionValidator.PensionError>()
+
+        assertEquals(listOfError, PensionValidator.isValidMonthlyPension(monthlyPension, monthlyWage, taxYear))
+    }
+
+    @Test
+    fun `GIVEN pension is invalid format WHEN isValidMonthlyPension THEN return list of error`() {
+        val monthlyWage = 12500.0
+        val monthlyPension = 4166.123
+        val taxYear = TaxYear.TWENTY_TWENTY_FOUR
+
+        val listOfError = mutableListOf(PensionValidator.PensionError.INVALID_FORMAT)
+
+        assertEquals(listOfError, PensionValidator.isValidMonthlyPension(monthlyPension, monthlyWage, taxYear))
+    }
+
+    @Test
+    fun `GIVEN pension is zero WHEN isValidMonthlyPension THEN return list of error`() {
+        val monthlyWage = 12500.0
+        val monthlyPension = 0.0
+        val taxYear = TaxYear.TWENTY_TWENTY_FOUR
+
+        val listOfError = mutableListOf(PensionValidator.PensionError.BELOW_ZERO)
+
+        assertEquals(listOfError, PensionValidator.isValidMonthlyPension(monthlyPension, monthlyWage, taxYear))
+    }
+
+    @Test
+    fun `GIVEN pension above wage WHEN isValidMonthlyPension THEN return list of error`() {
+        val monthlyWage = 3333.33
+        val monthlyPension = 4166.67
+        val taxYear = TaxYear.TWENTY_TWENTY_FOUR
+
+        val listOfError = mutableListOf(PensionValidator.PensionError.ABOVE_HUNDRED_PERCENT)
+
+        assertEquals(listOfError, PensionValidator.isValidMonthlyPension(monthlyPension, monthlyWage, taxYear))
+    }
+
+    @Test
+    fun `GIVEN pension is greater then annualAllowance WHEN isValidMonthlyPension THEN return list of error`() {
+        val monthlyWage = 12500.0
+        val monthlyPension = 5083.33
+        val taxYear = TaxYear.TWENTY_TWENTY_FOUR
+
+        val listOfError = mutableListOf(PensionValidator.PensionError.ABOVE_ANNUAL_ALLOWANCE)
+
+        assertEquals(listOfError, PensionValidator.isValidMonthlyPension(monthlyPension, monthlyWage, taxYear))
+    }
+
+    @Test
+    fun `GIVEN multiple error WHEN isValidMonthlyPension THEN return list of error in order`() {
+        val monthlyWage = 4166.67
+        val monthlyPension = 5083.1234
+        val taxYear = TaxYear.TWENTY_TWENTY_FOUR
+
+        val listOfError = mutableListOf(
+            PensionValidator.PensionError.INVALID_FORMAT,
+            PensionValidator.PensionError.ABOVE_HUNDRED_PERCENT,
+            PensionValidator.PensionError.ABOVE_ANNUAL_ALLOWANCE,
+        )
+
+        assertEquals(listOfError, PensionValidator.isValidMonthlyPension(monthlyPension, monthlyWage, taxYear))
     }
 }

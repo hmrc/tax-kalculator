@@ -23,8 +23,9 @@ import uk.gov.hmrc.calculator.exception.InvalidWagesException
 import uk.gov.hmrc.calculator.model.Country
 import uk.gov.hmrc.calculator.model.PayPeriod
 import uk.gov.hmrc.calculator.model.TaxYear
-import uk.gov.hmrc.calculator.model.pension.AnnualPensionMethod
+import uk.gov.hmrc.calculator.model.pension.PensionMethod
 import uk.gov.hmrc.calculator.model.taxcodes.TaxCode
+import uk.gov.hmrc.calculator.utils.clarification.Clarification
 import uk.gov.hmrc.calculator.utils.prettyPrintDataClass
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -458,8 +459,7 @@ internal class CalculatorTests {
             wages = 48000.0,
             payPeriod = PayPeriod.YEARLY,
             taxYear = TaxYear.TWENTY_TWENTY_THREE,
-            pensionMethod = AnnualPensionMethod.PERCENTAGE,
-            pensionPercentage = 10.0
+            pensionContribution = Calculator.PensionContribution(PensionMethod.PERCENTAGE, 10.0)
         ).run()
         Logger.i(result.prettyPrintDataClass())
 
@@ -524,14 +524,13 @@ internal class CalculatorTests {
     }
 
     @Test
-    fun `GIVEN TWENTY_TWENTY_THREE WHEN 48000 AND 4800 yearly pension contribution THEN calculates response`() {
+    fun `GIVEN TWENTY_TWENTY_THREE WHEN 48000 AND 400 monthly pension contribution THEN calculates response`() {
         val result = Calculator(
             taxCode = "1257L",
             wages = 48000.0,
             payPeriod = PayPeriod.YEARLY,
             taxYear = TaxYear.TWENTY_TWENTY_THREE,
-            pensionMethod = AnnualPensionMethod.AMOUNT_IN_POUNDS,
-            pensionYearlyAmount = 4800.0
+            pensionContribution = Calculator.PensionContribution(PensionMethod.MONTHLY_AMOUNT_IN_POUNDS, 400.0)
         ).run()
         Logger.i(result.prettyPrintDataClass())
 
@@ -596,14 +595,13 @@ internal class CalculatorTests {
     }
 
     @Test
-    fun `GIVEN TWENTY_TWENTY_THREE WHEN 100000 wage AND 60000 yearly pension contribution THEN calculates response`() {
+    fun `GIVEN TWENTY_TWENTY_THREE WHEN 100000 wage AND 5000 monthly pension contribution THEN calculates response`() {
         val result = Calculator(
             taxCode = "1257L",
             wages = 100000.0,
             payPeriod = PayPeriod.YEARLY,
             taxYear = TaxYear.TWENTY_TWENTY_THREE,
-            pensionMethod = AnnualPensionMethod.AMOUNT_IN_POUNDS,
-            pensionYearlyAmount = 60000.0
+            pensionContribution = Calculator.PensionContribution(PensionMethod.MONTHLY_AMOUNT_IN_POUNDS, 5000.0)
         ).run()
         Logger.i(result.prettyPrintDataClass())
 
@@ -674,8 +672,7 @@ internal class CalculatorTests {
             wages = 100000.0,
             payPeriod = PayPeriod.YEARLY,
             taxYear = TaxYear.TWENTY_TWENTY_THREE,
-            pensionMethod = AnnualPensionMethod.PERCENTAGE,
-            pensionPercentage = 60.0
+            pensionContribution = Calculator.PensionContribution(PensionMethod.PERCENTAGE, 60.0)
         ).run()
         Logger.i(result.prettyPrintDataClass())
 
@@ -740,14 +737,13 @@ internal class CalculatorTests {
     }
 
     @Test
-    fun `GIVEN TWENTY_TWENTY_THREE WHEN 100000 wage AND 65000 yearly pension contribution THEN calculates response`() {
+    fun `GIVEN TWENTY_TWENTY_THREE WHEN 100000 wage AND 5420 monthly pension contribution THEN calculates response`() {
         val result = Calculator(
             taxCode = "1257L",
             wages = 100000.0,
             payPeriod = PayPeriod.YEARLY,
             taxYear = TaxYear.TWENTY_TWENTY_THREE,
-            pensionMethod = AnnualPensionMethod.AMOUNT_IN_POUNDS,
-            pensionYearlyAmount = 65000.0
+            pensionContribution = Calculator.PensionContribution(PensionMethod.MONTHLY_AMOUNT_IN_POUNDS, 5420.0)
         ).run()
         Logger.i(result.prettyPrintDataClass())
 
@@ -760,10 +756,10 @@ internal class CalculatorTests {
         assertEquals(241.23, weekly.employersNI)
         assertEquals(1923.08, weekly.wages)
         assertEquals(241.73, weekly.taxFree)
-        assertEquals(86.23, weekly.taxToPay)
-        assertEquals(480.72, weekly.takeHome)
-        assertEquals(1250.00, weekly.pensionContribution)
-        assertEquals(673.08, weekly.wageAfterPensionDeduction)
+        assertEquals(86.08, weekly.taxToPay)
+        assertEquals(480.1, weekly.takeHome)
+        assertEquals(1250.77, weekly.pensionContribution)
+        assertEquals(672.31, weekly.wageAfterPensionDeduction)
         assertEquals(0.0, weekly.taperingAmountDeduction)
         assertNull(weekly.studentLoanBreakdown)
         assertEquals(0.0, weekly.finalStudentLoanAmount)
@@ -774,10 +770,10 @@ internal class CalculatorTests {
         assertEquals(964.94, fourWeekly.employersNI)
         assertEquals(7692.31, fourWeekly.wages)
         assertEquals(966.92, fourWeekly.taxFree)
-        assertEquals(344.94, fourWeekly.taxToPay)
-        assertEquals(1922.86, fourWeekly.takeHome)
-        assertEquals(5000.00, fourWeekly.pensionContribution)
-        assertEquals(2692.31, fourWeekly.wageAfterPensionDeduction)
+        assertEquals(344.32, fourWeekly.taxToPay)
+        assertEquals(1920.4, fourWeekly.takeHome)
+        assertEquals(5003.08, fourWeekly.pensionContribution)
+        assertEquals(2689.23, fourWeekly.wageAfterPensionDeduction)
         assertEquals(0.0, fourWeekly.taperingAmountDeduction)
         assertNull(fourWeekly.studentLoanBreakdown)
         assertEquals(0.0, fourWeekly.finalStudentLoanAmount)
@@ -788,10 +784,10 @@ internal class CalculatorTests {
         assertEquals(1045.35, monthly.employersNI)
         assertEquals(8333.33, monthly.wages)
         assertEquals(1047.50, monthly.taxFree)
-        assertEquals(373.68, monthly.taxToPay)
-        assertEquals(2083.1, monthly.takeHome)
-        assertEquals(5416.67, monthly.pensionContribution)
-        assertEquals(2916.67, monthly.wageAfterPensionDeduction)
+        assertEquals(373.02, monthly.taxToPay)
+        assertEquals(2080.43, monthly.takeHome)
+        assertEquals(5420.0, monthly.pensionContribution)
+        assertEquals(2913.33, monthly.wageAfterPensionDeduction)
         assertEquals(0.0, monthly.taperingAmountDeduction)
         assertNull(monthly.studentLoanBreakdown)
         assertEquals(0.0, monthly.finalStudentLoanAmount)
@@ -802,10 +798,10 @@ internal class CalculatorTests {
         assertEquals(12544.2, yearly.employersNI)
         assertEquals(100000.00, yearly.wages)
         assertEquals(12570.0, yearly.taxFree)
-        assertEquals(4484.20, yearly.taxToPay)
-        assertEquals(24997.2, yearly.takeHome)
-        assertEquals(65000.0, yearly.pensionContribution)
-        assertEquals(35000.0, yearly.wageAfterPensionDeduction)
+        assertEquals(4476.20, yearly.taxToPay)
+        assertEquals(24965.2, yearly.takeHome)
+        assertEquals(65040.0, yearly.pensionContribution)
+        assertEquals(34960.0, yearly.wageAfterPensionDeduction)
         assertEquals(0.0, yearly.taperingAmountDeduction)
         assertNull(yearly.studentLoanBreakdown)
         assertEquals(0.0, yearly.finalStudentLoanAmount)
@@ -818,8 +814,7 @@ internal class CalculatorTests {
             wages = 100000.0,
             payPeriod = PayPeriod.YEARLY,
             taxYear = TaxYear.TWENTY_TWENTY_THREE,
-            pensionMethod = AnnualPensionMethod.PERCENTAGE,
-            pensionPercentage = 65.0
+            pensionContribution = Calculator.PensionContribution(PensionMethod.PERCENTAGE, 65.0)
         ).run()
         Logger.i(result.prettyPrintDataClass())
 
@@ -884,14 +879,13 @@ internal class CalculatorTests {
     }
 
     @Test
-    fun `GIVEN TWENTY_TWENTY_THREE WHEN 24579 wage AND 12000 yearly pension contribution THEN calculates response`() {
+    fun `GIVEN TWENTY_TWENTY_THREE WHEN 24579 wage AND 1000 monthly pension contribution THEN calculates response`() {
         val result = Calculator(
             taxCode = "1257L",
             wages = 24579.0,
             payPeriod = PayPeriod.YEARLY,
             taxYear = TaxYear.TWENTY_TWENTY_THREE,
-            pensionMethod = AnnualPensionMethod.AMOUNT_IN_POUNDS,
-            pensionYearlyAmount = 12000.0
+            pensionContribution = Calculator.PensionContribution(PensionMethod.MONTHLY_AMOUNT_IN_POUNDS, 1000.0)
         ).run()
         Logger.i(result.prettyPrintDataClass())
 
@@ -1104,8 +1098,10 @@ internal class CalculatorTests {
             wages = 28800.0,
             payPeriod = PayPeriod.YEARLY,
             taxYear = TaxYear.TWENTY_TWENTY_THREE,
-            hasStudentLoanPlanTwo = true,
-            hasStudentLoanPostgraduatePlan = true,
+            studentLoanPlans = Calculator.StudentLoanPlans(
+                hasPlanTwo = true,
+                hasPostgraduatePlan = true
+            )
         ).run()
         Logger.i(result.prettyPrintDataClass())
 
@@ -1249,8 +1245,7 @@ internal class CalculatorTests {
                 wages = 40000.0,
                 payPeriod = PayPeriod.YEARLY,
                 taxYear = TaxYear.fromInt(2023),
-                pensionMethod = AnnualPensionMethod.AMOUNT_IN_POUNDS,
-                pensionYearlyAmount = 45000.0
+                pensionContribution = Calculator.PensionContribution(PensionMethod.MONTHLY_AMOUNT_IN_POUNDS, 45000.0)
             ).run()
         }
     }
@@ -1263,8 +1258,7 @@ internal class CalculatorTests {
                 wages = 40000.0,
                 payPeriod = PayPeriod.YEARLY,
                 taxYear = TaxYear.fromInt(2023),
-                pensionMethod = AnnualPensionMethod.PERCENTAGE,
-                pensionPercentage = 120.0
+                pensionContribution = Calculator.PensionContribution(PensionMethod.PERCENTAGE, 120.0)
             ).run()
         }
     }
@@ -1299,5 +1293,185 @@ internal class CalculatorTests {
             "1257L",
             TaxCode.getDefaultTaxCode(TaxYear.TWENTY_TWENTY_TWO)
         )
+    }
+
+    @Test
+    fun `GIVEN userSuppliedTaxCode false WHEN calculate THEN clarification contain NO_TAX_CODE_SUPPLIED`() {
+        val result = Calculator(
+            taxCode = "1257L",
+            userSuppliedTaxCode = false,
+            wages = 28800.0,
+            payPeriod = PayPeriod.YEARLY,
+            taxYear = TaxYear.TWENTY_TWENTY_THREE,
+        ).run()
+
+        assertTrue(result.listOfClarification.contains(Clarification.NO_TAX_CODE_SUPPLIED))
+    }
+
+    @Test
+    fun `GIVEN isPensionAge true WHEN calculate THEN clarification contain HAVE_STATE_PENSION`() {
+        val result = Calculator(
+            taxCode = "1257L",
+            wages = 28800.0,
+            payPeriod = PayPeriod.YEARLY,
+            isPensionAge = true,
+            taxYear = TaxYear.TWENTY_TWENTY_THREE,
+        ).run()
+
+        assertTrue(result.listOfClarification.contains(Clarification.HAVE_STATE_PENSION))
+    }
+
+    @Test
+    fun `GIVEN tapering applied WHEN calculate THEN clarification contain INCOME_OVER_100K_WITH_TAPERING`() {
+        val result = Calculator(
+            taxCode = "1257L",
+            userSuppliedTaxCode = false,
+            wages = 125140.0,
+            payPeriod = PayPeriod.YEARLY,
+            taxYear = TaxYear.TWENTY_TWENTY_THREE,
+        ).run()
+
+        assertTrue(result.listOfClarification.contains(Clarification.INCOME_OVER_100K_WITH_TAPERING))
+    }
+
+    @Test
+    fun `GIVEN tapering not apply AND wage is over 100k WHEN calculate THEN clarification contain INCOME_OVER_100K`() {
+        val result = Calculator(
+            taxCode = "1257L",
+            userSuppliedTaxCode = true,
+            wages = 125140.0,
+            payPeriod = PayPeriod.YEARLY,
+            taxYear = TaxYear.TWENTY_TWENTY_THREE,
+        ).run()
+
+        assertTrue(result.listOfClarification.contains(Clarification.INCOME_OVER_100K))
+    }
+
+    @Test
+    fun `GIVEN tax code is k code WHEN calculate THEN clarification contain K_CODE`() {
+        val result = Calculator(
+            taxCode = "K1257X",
+            wages = 28800.0,
+            payPeriod = PayPeriod.YEARLY,
+            isPensionAge = true,
+            taxYear = TaxYear.TWENTY_TWENTY_THREE,
+        ).run()
+
+        assertTrue(result.listOfClarification.contains(Clarification.K_CODE))
+    }
+
+    @Test
+    fun `GIVEN has student loan AND wage is below yearlyThreshold WHEN calculate THEN clarification contain contains INCOME_BELOW_STUDENT_LOAN`() {
+        val result = Calculator(
+            taxCode = "1257L",
+            wages = 15000.0,
+            payPeriod = PayPeriod.YEARLY,
+            taxYear = TaxYear.TWENTY_TWENTY_THREE,
+            studentLoanPlans = Calculator.StudentLoanPlans(
+                hasPlanTwo = true,
+                hasPostgraduatePlan = true
+            )
+        ).run()
+
+        val listOfExpectedResult = mutableListOf(
+            Clarification.INCOME_BELOW_STUDENT_LOAN,
+        )
+        assertEquals(listOfExpectedResult, result.listOfClarification)
+    }
+
+    @Test
+    fun `GIVEN multiple clarifications met WHEN calculate THEN return a list of clarifications`() {
+        val result = Calculator(
+            taxCode = "K1257X",
+            userSuppliedTaxCode = false,
+            wages = 125140.0,
+            payPeriod = PayPeriod.YEARLY,
+            isPensionAge = true,
+            taxYear = TaxYear.TWENTY_TWENTY_THREE,
+            studentLoanPlans = Calculator.StudentLoanPlans(
+                hasPlanTwo = true,
+                hasPostgraduatePlan = true
+            )
+        ).run()
+
+        val listOfExpectedResult = mutableListOf(
+            Clarification.NO_TAX_CODE_SUPPLIED,
+            Clarification.HAVE_STATE_PENSION,
+            Clarification.K_CODE,
+            Clarification.INCOME_OVER_100K,
+        )
+        assertEquals(listOfExpectedResult, result.listOfClarification)
+    }
+
+    @Test
+    fun `GIVEN tax code is scottish tax code AND userPaysScottishTax true WHEN calculate THEN clarification contains SCOTTISH_INCOME_APPLIED`() {
+        val result = Calculator(
+            taxCode = "S1257L",
+            userPaysScottishTax = true,
+            wages = 30000.0,
+            payPeriod = PayPeriod.YEARLY,
+            taxYear = TaxYear.TWENTY_TWENTY_THREE,
+            studentLoanPlans = Calculator.StudentLoanPlans(
+                hasPlanTwo = true,
+                hasPostgraduatePlan = true
+            )
+        ).run()
+
+        val listOfExpectedResult = mutableListOf(Clarification.SCOTTISH_INCOME_APPLIED)
+
+        assertEquals(listOfExpectedResult, result.listOfClarification)
+    }
+
+    @Test
+    fun `GIVEN tax code is scottish tax code AND userPaysScottishTax false WHEN calculate THEN clarification contains SCOTTISH_CODE_BUT_OTHER_RATE`() {
+        val result = Calculator(
+            taxCode = "S1257L",
+            userPaysScottishTax = false,
+            wages = 30000.0,
+            payPeriod = PayPeriod.YEARLY,
+            taxYear = TaxYear.TWENTY_TWENTY_THREE,
+            studentLoanPlans = Calculator.StudentLoanPlans(
+                hasPlanTwo = true,
+                hasPostgraduatePlan = true
+            )
+        ).run()
+
+        val listOfExpectedResult = mutableListOf(Clarification.SCOTTISH_CODE_BUT_OTHER_RATE)
+
+        assertEquals(listOfExpectedResult, result.listOfClarification)
+    }
+
+    @Test
+    fun `GIVEN tax code is not scottish tax code AND userPaysScottishTax true WHEN calculate THEN clarification contains NON_SCOTTISH_CODE_BUT_SCOTTISH_RATE`() {
+        val result = Calculator(
+            taxCode = "1257L",
+            userPaysScottishTax = true,
+            wages = 30000.0,
+            payPeriod = PayPeriod.YEARLY,
+            taxYear = TaxYear.TWENTY_TWENTY_THREE,
+            studentLoanPlans = Calculator.StudentLoanPlans(
+                hasPlanTwo = true,
+                hasPostgraduatePlan = true
+            )
+        ).run()
+
+        val listOfExpectedResult = mutableListOf(Clarification.NON_SCOTTISH_CODE_BUT_SCOTTISH_RATE)
+
+        assertEquals(listOfExpectedResult, result.listOfClarification)
+    }
+
+    @Test
+    fun `GIVEN pension exceed annual allowance WHEN calculate THEN clarification contains PENSION_EXCEED_ANNUAL_ALLOWANCE`() {
+        val result = Calculator(
+            taxCode = "1257L",
+            wages = 90000.0,
+            payPeriod = PayPeriod.YEARLY,
+            taxYear = TaxYear.TWENTY_TWENTY_THREE,
+            pensionContribution = Calculator.PensionContribution(PensionMethod.MONTHLY_AMOUNT_IN_POUNDS, 5420.0)
+        ).run()
+
+        val listOfExpectedResult = mutableListOf(Clarification.PENSION_EXCEED_ANNUAL_ALLOWANCE)
+
+        assertEquals(listOfExpectedResult, result.listOfClarification)
     }
 }

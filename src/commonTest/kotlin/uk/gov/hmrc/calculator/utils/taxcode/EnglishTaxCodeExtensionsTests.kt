@@ -102,7 +102,7 @@ class EnglishTaxCodeExtensionsTests {
     @Test
     fun `English TCode`() {
         assertTrue("150T".toTaxCode() is TCode)
-        assertEquals(1509.0, "150T".toTaxCode().taxFreeAmount)
+        assertEquals(1500.0, "150T".toTaxCode().taxFreeAmount)
         assertEquals(ENGLAND, "150T".toTaxCode().country)
     }
 
@@ -174,7 +174,7 @@ class EnglishTaxCodeExtensionsTests {
         val taxCode: KCode = "K100".toTaxCode() as KCode
         assertEquals(0.0, taxCode.taxFreeAmount)
         assertEquals(ENGLAND, taxCode.country)
-        assertEquals(1009.0, taxCode.amountToAddToWages)
+        assertEquals(1000.0, taxCode.amountToAddToWages)
     }
     @Test
     fun `England K100X`() {
@@ -182,7 +182,7 @@ class EnglishTaxCodeExtensionsTests {
         val taxCode: KCode = "K100X".toTaxCode() as KCode
         assertEquals(0.0, taxCode.taxFreeAmount)
         assertEquals(ENGLAND, taxCode.country)
-        assertEquals(1009.0, taxCode.amountToAddToWages)
+        assertEquals(1000.0, taxCode.amountToAddToWages)
     }
 
     @Test
@@ -191,7 +191,7 @@ class EnglishTaxCodeExtensionsTests {
         assertTrue(taxCode is KCode)
         assertEquals(0.0, taxCode.taxFreeAmount)
         assertEquals(ENGLAND, taxCode.country)
-        assertEquals(1009.0, taxCode.amountToAddToWages)
+        assertEquals(1000.0, taxCode.amountToAddToWages)
     }
 
     @Test

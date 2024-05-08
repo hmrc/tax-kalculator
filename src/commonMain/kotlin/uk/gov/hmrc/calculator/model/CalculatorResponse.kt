@@ -15,6 +15,7 @@
  */
 package uk.gov.hmrc.calculator.model
 
+import uk.gov.hmrc.calculator.utils.clarification.Clarification
 import uk.gov.hmrc.calculator.utils.formatMoney
 import uk.gov.hmrc.calculator.utils.roundDownToWholeNumber
 
@@ -100,5 +101,6 @@ data class CalculatorResponse(
     val weekly: CalculatorResponsePayPeriod,
     val fourWeekly: CalculatorResponsePayPeriod,
     val monthly: CalculatorResponsePayPeriod,
-    val yearly: CalculatorResponsePayPeriod
+    val yearly: CalculatorResponsePayPeriod,
+    val listOfClarification: MutableList<Clarification>,
 )

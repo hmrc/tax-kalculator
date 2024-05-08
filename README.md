@@ -22,19 +22,15 @@ Create an instance of `Calculator`, providing values as per the following exampl
 ```kotlin
 val calculator = Calculator(
     taxCode = "1257L",               // Required
+    userPaysScottishTax = false,       // Optional (Default: false)
     userSuppliedTaxCode = false,     // Optional (Default: true)
     wages = 20000.0,                 // Required
     payPeriod = YEARLY,              // Required
     isPensionAge = false,            // Optional (Default: false)
     howManyAWeek = null,             // Optional (Default: null)
     taxYear = TaxYear.currentTaxYear, // Optional (Default: Current Tax Year)
-    pensionMethod = PERCENTAGE,      // Optional (Default: null)
-    pensionYearlyAmount = null,       // Optional (Default: null)
-    pensionPercentage = 10.0,          // Optional (Default: null)
-    hasStudentLoanPlanOne = false,          // Optional (Default: false)
-    hasStudentLoanPlanTwo = false,          // Optional (Default: false)
-    hasStudentLoanPlanFour = false,          // Optional (Default: false)
-    hasStudentLoanPostgraduatePlan = false,          // Optional (Default: false)
+    pensionContribution = PensionContribution(method = PERCENTAGE, contributionAmount = 10.0), // Optional (Default: null)
+    studentLoanPlans = StudentLoanPlans(hasPlanOne = false, hasPlanTwo = false, hasPlanFour = false, hasPostgraduatePlan = false) // Optional (Default: null)
 )
 
 val response = calculator.run()
@@ -43,19 +39,15 @@ val response = calculator.run()
 ```swift
 let calculator = Calculator(
     taxCode: "1257L",
+    userPaysScottishTax: false,
     userSuppliedTaxCode = false,
     wages: 20000.0,
     payPeriod: period,
     isPensionAge: false,
     howManyAWeek: KotlinDouble(double: 35),
     taxYear: TaxYear.companion.currentTaxYear,
-    pensionMethod: pensionMethod,
-    pensionYearlyAmount: KotlinDouble(double: 0),
-    pensionPercentage: KotlinDouble(double: 10),
-    hasStudentLoanPlanOne: false,
-    hasStudentLoanPlanTwo: false,
-    hasStudentLoanPlanFour: false,
-    hasStudentLoanPostgraduatePlan: false
+    pensionContribution: PensionContribution(method: PERCENTAGE, contributionAmount: 10.0), // Optional (Default: null)
+    studentLoanPlans: StudentLoanPlans(hasPlanOne: false, hasPlanTwo: false, hasPlanFour: false, hasPostgraduatePlan: false) // Optional (Default: null)
 )
 
 let calculation = try calculator.run()
@@ -188,14 +180,20 @@ let isBelowMaximumHoursPerDay = HoursDaysValidator.shared.isBelowMaximumHoursPer
 ### Validate Pension:
 #### Android
 ```kotlin
-val isValidYearlyPension = PensionValidator.isValidYearlyPension(yearlyWage = 30000.0, yearlyPension = 40000.0) // false
-val isAboveAnnualAllowance = PensionValidator.isAboveAnnualAllowance(yearlyPension = 30000.0, taxYear = TaxYear.currentTaxYear) // false
+val isValidPension = PensionValidator.isValidMonthlyPension(monthlyPension = 250.0, monthlyWage = 2500.0, taxYear = TaxYear.currentTaxYear) // listOf()
+val isInvalidPension = PensionValidator.isValidMonthlyPension(monthlyPension = 5900.0, monthlyWage = 2500.0, taxYear = TaxYear.currentTaxYear) // listOf(ABOVE_HUNDRED_PERCENT, ABOVE_ANNUAL_ALLOWANCE)
+
+val isValidPension = PensionValidator.isValidYearlyPension(yearlyPension = 3000.0, yearlyWage = 30000.0, taxYear = TaxYear.currentTaxYear) // listOf()
+val isInvalidPension = PensionValidator.isValidYearlyPension(yearlyPension = 70000.0, yearlyWage = 30000.0, taxYear = TaxYear.currentTaxYear) // listOf(ABOVE_HUNDRED_PERCENT, ABOVE_ANNUAL_ALLOWANCE)
 ```
 
 #### iOS
 ```swift
-let isValidYearlyPension = PensionValidator.share.isValidYearlyPension(yearlyWage = 30000.0, yearlyPension = 40000.0) // false
-let isAboveAnnualAllowance = PensionValidator.share.isAboveAnnualAllowance(yearlyPension = 30000.0, taxYear = TaxYear.currentTaxYear) // false
+let isValidPension = PensionValidator.share.isValidMonthlyPension(monthlyPension = 250.0, monthlyWage = 2500.0, taxYear = TaxYear.currentTaxYear) // listOf()
+let isInvalidPension = PensionValidator.share.isValidMonthlyPension(monthlyPension = 5900.0, monthlyWage = 2500.0, taxYear = TaxYear.currentTaxYear) // listOf(ABOVE_HUNDRED_PERCENT, ABOVE_ANNUAL_ALLOWANCE)
+
+let isValidPension = PensionValidator.share.isValidYearlyPension(yearlyPension = 3000.0, yearlyWage = 30000.0, taxYear = TaxYear.currentTaxYear) // listOf()
+let isInvalidPension = PensionValidator.share.isValidYearlyPension(yearlyPension = 70000.0, yearlyWage = 30000.0, taxYear = TaxYear.currentTaxYear) // listOf(ABOVE_HUNDRED_PERCENT, ABOVE_ANNUAL_ALLOWANCE)
 ```
 
 ## Development

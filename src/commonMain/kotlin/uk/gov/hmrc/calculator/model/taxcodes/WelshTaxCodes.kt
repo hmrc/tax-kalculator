@@ -55,7 +55,7 @@ internal class CTCode(private val taxFreeAmountWithoutTrailingZero: Double) :
     WelshTaxCode,
     AdjustedTaxFreeTCode {
     override val taxFreeAmount: Double
-        get() = taxFreeAmountWithoutTrailingZero * 10 + 9
+        get() = taxFreeAmountWithoutTrailingZero * 10
 }
 
 internal class CLCode(private val taxFreeAmountWithoutTrailingZero: Double) :
@@ -94,7 +94,7 @@ internal class CKCode(private val amountToAddToWagesFromCode: Double) :
     WelshTaxCode,
     KTaxCode {
     override val amountToAddToWages: Double
-        get() = amountToAddToWagesFromCode * 10 + 9
+        get() = amountToAddToWagesFromCode * 10
     override val taxFreeAmount: Double
         get() = 0.0
 }

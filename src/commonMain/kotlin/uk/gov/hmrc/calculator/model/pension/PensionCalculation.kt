@@ -15,22 +15,24 @@
  */
 package uk.gov.hmrc.calculator.model.pension
 
+import uk.gov.hmrc.calculator.Calculator
+import uk.gov.hmrc.calculator.model.PayPeriod
+import uk.gov.hmrc.calculator.utils.convertWageToYearly
 import kotlin.jvm.JvmSynthetic
 
 @JvmSynthetic
 internal fun calculateYearlyPension(
     yearlyWage: Double,
-    pensionMethod: AnnualPensionMethod? = null,
-    pensionYearlyAmount: Double? = null,
-    pensionPercentage: Double? = null,
-): Double? {
-    return when (pensionMethod) {
-        AnnualPensionMethod.AMOUNT_IN_POUNDS -> pensionYearlyAmount
-        AnnualPensionMethod.PERCENTAGE -> {
-            pensionPercentage?.let { percentage ->
+    pensionContribution: Calculator.PensionContribution,
+): Double {
+    return when (pensionContribution.method) {
+        PensionMethod.MONTHLY_AMOUNT_IN_POUNDS -> {
+            pensionContribution.contributionAmount.convertWageToYearly(PayPeriod.MONTHLY)
+        }
+        PensionMethod.PERCENTAGE -> {
+            pensionContribution.contributionAmount.let { percentage ->
                 yearlyWage * (percentage.div(100))
             }
         }
-        else -> null
     }
 }

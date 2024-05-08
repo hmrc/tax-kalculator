@@ -15,6 +15,8 @@
  */
 package uk.gov.hmrc.calculator.utils.tapering
 
+import uk.gov.hmrc.calculator.model.taxcodes.StandardTaxCode
+import uk.gov.hmrc.calculator.model.taxcodes.TaxCode
 import kotlin.jvm.JvmSynthetic
 
 @JvmSynthetic
@@ -34,6 +36,10 @@ internal fun Double.getTaperingAmount(maximumTaperingAmount: Double): Double {
 }
 
 @JvmSynthetic
-internal fun Double.shouldApplyTapering() = this > TAPERING_THRESHOLD
+internal fun Double.yearlyWageIsAboveHundredThousand() = this > TAPERING_THRESHOLD
+
+@JvmSynthetic
+internal fun Double.shouldApplyStandardTapering(taxCodeType: TaxCode, userSuppliedTaxCode: Boolean) =
+    taxCodeType is StandardTaxCode && !userSuppliedTaxCode && this.yearlyWageIsAboveHundredThousand()
 
 private const val TAPERING_THRESHOLD = 100000.0
