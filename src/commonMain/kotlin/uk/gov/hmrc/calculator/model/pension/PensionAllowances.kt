@@ -16,10 +16,12 @@
 package uk.gov.hmrc.calculator.model.pension
 
 import uk.gov.hmrc.calculator.model.TaxYear
+import kotlin.jvm.JvmSynthetic
 
 internal object PensionAllowances {
 
-    fun getPensionAllowances(taxYear: TaxYear) = when (taxYear) {
+    @JvmSynthetic
+    internal fun getPensionAllowances(taxYear: TaxYear) = when (taxYear) {
         TaxYear.TWENTY_TWENTY -> pensionAllowance2020()
         TaxYear.TWENTY_TWENTY_ONE -> pensionAllowance2021()
         TaxYear.TWENTY_TWENTY_TWO,
@@ -30,20 +32,17 @@ internal object PensionAllowances {
         TaxYear.TWENTY_TWENTY_FOUR -> pensionAllowance2024()
     }
 
-    private fun pensionAllowance2020() = PensionAllowance(1073100.0, 40000.0)
+    private fun pensionAllowance2020() = PensionAllowance(40000.0)
 
-    private fun pensionAllowance2021() = PensionAllowance(1073100.0, 40000.0)
+    private fun pensionAllowance2021() = PensionAllowance(40000.0)
 
-    private fun pensionAllowance2022() = PensionAllowance(1073100.0, 40000.0)
+    private fun pensionAllowance2022() = PensionAllowance(40000.0)
 
-    private fun pensionAllowance2023() = PensionAllowance(1073100.0, 60000.0)
+    private fun pensionAllowance2023() = PensionAllowance(60000.0)
 
-    private fun pensionAllowance2023JanuaryRevised() = PensionAllowance(1073100.0, 60000.0)
+    private fun pensionAllowance2023JanuaryRevised() = PensionAllowance(60000.0)
 
-    private fun pensionAllowance2024() = PensionAllowance(1073100.0, 60000.0)
+    private fun pensionAllowance2024() = PensionAllowance(60000.0)
 
-    internal data class PensionAllowance(
-        val standardLifetimeAllowance: Double,
-        val annualAllowance: Double
-    )
+    internal data class PensionAllowance(val annualAllowance: Double)
 }

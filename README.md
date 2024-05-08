@@ -22,19 +22,15 @@ Create an instance of `Calculator`, providing values as per the following exampl
 ```kotlin
 val calculator = Calculator(
     taxCode = "1257L",               // Required
+    userPaysScottishTax = false,       // Optional (Default: false)
     userSuppliedTaxCode = false,     // Optional (Default: true)
     wages = 20000.0,                 // Required
     payPeriod = YEARLY,              // Required
     isPensionAge = false,            // Optional (Default: false)
     howManyAWeek = null,             // Optional (Default: null)
     taxYear = TaxYear.currentTaxYear, // Optional (Default: Current Tax Year)
-    pensionMethod = PERCENTAGE,      // Optional (Default: null)
-    pensionYearlyAmount = null,       // Optional (Default: null)
-    pensionPercentage = 10.0,          // Optional (Default: null)
-    hasStudentLoanPlanOne = false,          // Optional (Default: false)
-    hasStudentLoanPlanTwo = false,          // Optional (Default: false)
-    hasStudentLoanPlanFour = false,          // Optional (Default: false)
-    hasStudentLoanPostgraduatePlan = false,          // Optional (Default: false)
+    pensionContribution = PensionContribution(method = PERCENTAGE, contributionAmount = 10.0), // Optional (Default: null)
+    studentLoanPlans = StudentLoanPlans(hasPlanOne = false, hasPlanTwo = false, hasPlanFour = false, hasPostgraduatePlan = false) // Optional (Default: null)
 )
 
 val response = calculator.run()
@@ -43,19 +39,15 @@ val response = calculator.run()
 ```swift
 let calculator = Calculator(
     taxCode: "1257L",
+    userPaysScottishTax: false,
     userSuppliedTaxCode = false,
     wages: 20000.0,
     payPeriod: period,
     isPensionAge: false,
     howManyAWeek: KotlinDouble(double: 35),
     taxYear: TaxYear.companion.currentTaxYear,
-    pensionMethod: pensionMethod,
-    pensionYearlyAmount: KotlinDouble(double: 0),
-    pensionPercentage: KotlinDouble(double: 10),
-    hasStudentLoanPlanOne: false,
-    hasStudentLoanPlanTwo: false,
-    hasStudentLoanPlanFour: false,
-    hasStudentLoanPostgraduatePlan: false
+    pensionContribution: PensionContribution(method: PERCENTAGE, contributionAmount: 10.0), // Optional (Default: null)
+    studentLoanPlans: StudentLoanPlans(hasPlanOne: false, hasPlanTwo: false, hasPlanFour: false, hasPostgraduatePlan: false) // Optional (Default: null)
 )
 
 let calculation = try calculator.run()
@@ -103,6 +95,33 @@ val year = CalculatorUtils.currentTaxYear()
 let year = CalculatorUtils.shared.currentTaxYear()
 ```
 
+### Wage Converter
+#### Android
+```kotlin
+val yearlyWage = WageConverterUtils.convertHourlyWageToYearly(hourlyWage = 10.0, hoursWorked = 10.0)
+val yearlyWage = WageConverterUtils.convertDailyWageToYearly(dailyWage = 10.0, daysWorked = 10.0)
+val yearlyWage = WageConverterUtils.convertWeeklyWageToYearly(weeklyWage = 10.0)
+val yearlyWage = WageConverterUtils.convertFourWeeklyWageToYearly(fourWeeklyWage = 10.0)
+val yearlyWage = WageConverterUtils.convertMonthlyWageToYearly(monthlyWage = 10.0)
+
+val weeklyWage = WageConverterUtils.convertYearlyWageToWeekly(yearlyWage = 30000.0)
+val fourWeeklyWage = WageConverterUtils.convertYearlyWageToFourWeekly(yearlyWage = 30000.0)
+val monthlyWage = WageConverterUtils.convertYearlyWageToMonthly(yearlyWage = 30000.0)
+```
+
+### iOS
+```swift
+let yearlyWage = WageConverterUtils.share.convertHourlyWageToYearly(hourlyWage = 10.0, hoursWorked = 10.0)
+let yearlyWage = WageConverterUtils.share.convertDailyWageToYearly(dailyWage = 10.0, daysWorked = 10.0)
+let yearlyWage = WageConverterUtils.share.convertWeeklyWageToYearly(weeklyWage = 10.0)
+let yearlyWage = WageConverterUtils.share.convertFourWeeklyWageToYearly(fourWeeklyWage = 10.0)
+let yearlyWage = WageConverterUtils.share.convertMonthlyWageToYearly(monthlyWage = 10.0)
+
+let weeklyWage = WageConverterUtils.share.convertYearlyWageToWeekly(yearlyWage = 30000.0)
+let fourWeeklyWage = WageConverterUtils.share.convertYearlyWageToFourWeekly(yearlyWage = 30000.0)
+let monthlyWage = WageConverterUtils.share.convertYearlyWageToMonthly(yearlyWage = 30000.0)
+```
+
 ### Validate
 
 ### Validate a tax code:
@@ -148,7 +167,7 @@ val isValidHoursPerDay = HoursDaysValidator.isValidHoursPerDay(hours = 20) // tr
 val isAboveMinimumHoursPerDay = HoursDaysValidator.isAboveMinimumHoursPerDay(hours = 1.0) // true
 val isBelowMaximumHoursPerDay = HoursDaysValidator.isBelowMaximumHoursPerDay(hours = 25.0) // false
 ```
-#### Android
+#### iOS
 ```swift
 let isValidHoursPerWeek = HoursDaysValidator.shared.isValidHoursPerWeek(hours: 20) // true
 let isAboveMinimumHoursPerWeek = HoursDaysValidator.shared.isAboveMinimumHoursPerWeek(hours: 1.0) // true
@@ -156,6 +175,25 @@ let isBelowMaximumHoursPerWeek = HoursDaysValidator.shared.isBelowMaximumHoursPe
 let isValidHoursPerDay = HoursDaysValidator.shared.isValidHoursPerDay(hours: 20) // true
 let isAboveMinimumHoursPerDay = HoursDaysValidator.shared.isAboveMinimumHoursPerDay(hours: 1.0) // true
 let isBelowMaximumHoursPerDay = HoursDaysValidator.shared.isBelowMaximumHoursPerDay(hours: 25.0) // false
+```
+
+### Validate Pension:
+#### Android
+```kotlin
+val isValidPension = PensionValidator.isValidMonthlyPension(monthlyPension = 250.0, monthlyWage = 2500.0, taxYear = TaxYear.currentTaxYear) // listOf()
+val isInvalidPension = PensionValidator.isValidMonthlyPension(monthlyPension = 5900.0, monthlyWage = 2500.0, taxYear = TaxYear.currentTaxYear) // listOf(ABOVE_HUNDRED_PERCENT, ABOVE_ANNUAL_ALLOWANCE)
+
+val isValidPension = PensionValidator.isValidYearlyPension(yearlyPension = 3000.0, yearlyWage = 30000.0, taxYear = TaxYear.currentTaxYear) // listOf()
+val isInvalidPension = PensionValidator.isValidYearlyPension(yearlyPension = 70000.0, yearlyWage = 30000.0, taxYear = TaxYear.currentTaxYear) // listOf(ABOVE_HUNDRED_PERCENT, ABOVE_ANNUAL_ALLOWANCE)
+```
+
+#### iOS
+```swift
+let isValidPension = PensionValidator.share.isValidMonthlyPension(monthlyPension = 250.0, monthlyWage = 2500.0, taxYear = TaxYear.currentTaxYear) // listOf()
+let isInvalidPension = PensionValidator.share.isValidMonthlyPension(monthlyPension = 5900.0, monthlyWage = 2500.0, taxYear = TaxYear.currentTaxYear) // listOf(ABOVE_HUNDRED_PERCENT, ABOVE_ANNUAL_ALLOWANCE)
+
+let isValidPension = PensionValidator.share.isValidYearlyPension(yearlyPension = 3000.0, yearlyWage = 30000.0, taxYear = TaxYear.currentTaxYear) // listOf()
+let isInvalidPension = PensionValidator.share.isValidYearlyPension(yearlyPension = 70000.0, yearlyWage = 30000.0, taxYear = TaxYear.currentTaxYear) // listOf(ABOVE_HUNDRED_PERCENT, ABOVE_ANNUAL_ALLOWANCE)
 ```
 
 ## Development
@@ -291,20 +329,19 @@ private val employerNIBands2022: List<EmployerNIBand> = listOf(
 ```
 
 ### Pension allowance
-Pension contribute has a life time and annual allowance, which are represented with the following data structures: 
+Pension contribute has a annual allowance, which are represented with the following data structures: 
 
 ```kotlin
 internal data class PensionAllowance(
-  val standardLifetimeAllowance: Double,
   val annualAllowance: Double
 )
 ```
 In [`PensionAllowances.kt`](https://github.com/hmrc/tax-kalculator/blob/main/src/commonMain/kotlin/uk/gov/hmrc/calculator/model/pension/PensionAllowances.kt) update allowance as specified by the business.
 
 ```kotlin
-private fun pensionAllowance2022() = PensionAllowance(1073100.0, 40000.0)
+private fun pensionAllowance2022() = PensionAllowance(40000.0)
 
-private fun pensionAllowance2023() = PensionAllowance(1073100.0, 60000.0)
+private fun pensionAllowance2023() = PensionAllowance(60000.0)
 ```
 
 ### Student Loan Rate

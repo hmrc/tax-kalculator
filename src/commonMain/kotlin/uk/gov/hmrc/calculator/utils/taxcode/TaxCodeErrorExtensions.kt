@@ -17,7 +17,9 @@ package uk.gov.hmrc.calculator.utils.taxcode
 
 import uk.gov.hmrc.calculator.model.TaxCodeValidationResponse
 import uk.gov.hmrc.calculator.model.ValidationError
+import kotlin.jvm.JvmSynthetic
 
+@JvmSynthetic
 internal fun String.invalidTaxCodeErrorGeneration(): TaxCodeValidationResponse {
     return if (!this.replace("[^\\d.]".toRegex(), "").matches("^[0-9]{1,4}".toRegex()))
         TaxCodeValidationResponse(false, ValidationError.WrongTaxCodeNumber)

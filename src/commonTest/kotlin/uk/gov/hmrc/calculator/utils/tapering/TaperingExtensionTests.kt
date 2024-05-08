@@ -56,12 +56,12 @@ class TaperingExtensionTests {
     }
 
     @Test
-    fun `GIVEN wage is below tapering threshold WHEN shouldApplyTapering THEN return false`() {
-        assertFalse(90000.0.shouldApplyTapering())
+    fun `GIVEN wage is below tapering threshold WHEN yearlyWageIsAboveHundredThousand THEN return false`() {
+        assertFalse(90000.0.yearlyWageIsAboveHundredThousand())
     }
 
     @Test
-    fun `GIVEN wage is above tapering threshold WHEN shouldApplyTapering THEN return true`() {
-        assertTrue(110000.0.shouldApplyTapering())
+    fun `GIVEN wage is above tapering threshold WHEN yearlyWageIsAboveHundredThousand THEN return true`() {
+        assertTrue(110000.0.yearlyWageIsAboveHundredThousand())
     }
 }

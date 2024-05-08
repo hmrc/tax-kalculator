@@ -15,6 +15,6 @@
  */
 package uk.gov.hmrc.calculator.model.pension
 
-enum class AnnualPensionMethod {
-    PERCENTAGE, AMOUNT_IN_POUNDS
+enum class PensionMethod {
+    PERCENTAGE, MONTHLY_AMOUNT_IN_POUNDS
 }

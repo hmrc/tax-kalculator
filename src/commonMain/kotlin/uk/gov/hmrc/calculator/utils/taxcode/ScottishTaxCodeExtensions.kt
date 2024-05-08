@@ -28,7 +28,9 @@ import uk.gov.hmrc.calculator.model.taxcodes.ScottishEmergencyCode
 import uk.gov.hmrc.calculator.model.taxcodes.ScottishMCode
 import uk.gov.hmrc.calculator.model.taxcodes.ScottishNCode
 import uk.gov.hmrc.calculator.model.taxcodes.ScottishTaxCode
+import kotlin.jvm.JvmSynthetic
 
+@JvmSynthetic
 internal fun String.matchScottishTaxCode(): ScottishTaxCode {
     return when (this.take(3)) {
         "S0T" -> S0T()
@@ -40,6 +42,7 @@ internal fun String.matchScottishTaxCode(): ScottishTaxCode {
     }
 }
 
+@JvmSynthetic
 internal fun String.matchOtherScottishTaxCode(): ScottishTaxCode {
     return when {
         "^S[0-9]{1,4}T".toRegex().matches(this) ->

@@ -16,6 +16,7 @@
 package uk.gov.hmrc.calculator.model.bands
 
 import uk.gov.hmrc.calculator.model.TaxYear
+import kotlin.jvm.JvmSynthetic
 
 internal class EmployerNIBands(taxYear: TaxYear) {
 
@@ -49,6 +50,7 @@ internal class EmployerNIBands(taxYear: TaxYear) {
         EmployerNIBand(50270.0, -1.0, 0.138)
     )
 
+    @JvmSynthetic
     internal val bands: List<EmployerNIBand> = when (taxYear) {
         TaxYear.TWENTY_TWENTY -> employerNIBands2020
         TaxYear.TWENTY_TWENTY_ONE -> employerNIBands2021

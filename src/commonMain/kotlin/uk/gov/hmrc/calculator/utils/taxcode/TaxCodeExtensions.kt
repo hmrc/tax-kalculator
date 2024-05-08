@@ -18,9 +18,13 @@ package uk.gov.hmrc.calculator.utils.taxcode
 import uk.gov.hmrc.calculator.exception.InvalidTaxCodeException
 import uk.gov.hmrc.calculator.model.Country
 import uk.gov.hmrc.calculator.model.taxcodes.NTCode
+import uk.gov.hmrc.calculator.model.taxcodes.ScottishTaxCode
 import uk.gov.hmrc.calculator.model.taxcodes.TaxCode
+import uk.gov.hmrc.calculator.utils.clarification.Clarification
 import uk.gov.hmrc.calculator.utils.toCountry
+import kotlin.jvm.JvmSynthetic
 
+@JvmSynthetic
 internal fun String.toTaxCode(): TaxCode {
     if (isBlank()) throw InvalidTaxCodeException("Tax code cannot be empty")
 
@@ -34,6 +38,7 @@ internal fun String.toTaxCode(): TaxCode {
     }
 }
 
+@JvmSynthetic
 internal fun String.extractDoubleFromEmergencyTaxCode(): Double =
     this
         .removePrefix("S")
@@ -49,7 +54,21 @@ internal fun String.extractDoubleFromEmergencyTaxCode(): Double =
 /*
     Tax-free amount without the "£9"
 */
+@JvmSynthetic
 internal fun TaxCode.getTrueTaxFreeAmount(): Double {
     val amount = this.taxFreeAmount
     return if (amount > 0) amount - 9 else 0.0
+}
+
+@Suppress("ComplexMethod")
+@JvmSynthetic
+internal fun TaxCode.getTaxCodeClarification(userPaysScottishTax: Boolean): Clarification? {
+    val clarification = when {
+        (this is ScottishTaxCode) && userPaysScottishTax -> Clarification.SCOTTISH_INCOME_APPLIED
+        (this is ScottishTaxCode) && !userPaysScottishTax -> Clarification.SCOTTISH_CODE_BUT_OTHER_RATE
+        (this !is ScottishTaxCode) && userPaysScottishTax -> Clarification.NON_SCOTTISH_CODE_BUT_SCOTTISH_RATE
+        else -> null
+    }
+
+    return clarification
 }

@@ -15,12 +15,62 @@
  */
 package uk.gov.hmrc.calculator.utils.validation
 
+import uk.gov.hmrc.calculator.model.PayPeriod
 import uk.gov.hmrc.calculator.model.TaxYear
 import uk.gov.hmrc.calculator.model.pension.PensionAllowances.getPensionAllowances
+import uk.gov.hmrc.calculator.utils.convertWageToYearly
+import uk.gov.hmrc.calculator.utils.validation.HoursDaysValidator.isTwoDecimalPlacesOrFewer
+import kotlin.jvm.JvmSynthetic
 
-internal object PensionValidator {
+object PensionValidator {
 
-    internal fun isValidYearlyPension(yearlyWage: Double, yearlyPension: Double, taxYear: TaxYear): Boolean {
-        return yearlyPension <= yearlyWage && yearlyPension <= getPensionAllowances(taxYear).standardLifetimeAllowance
+    fun isValidMonthlyPension(
+        monthlyPension: Double,
+        monthlyWage: Double,
+        taxYear: TaxYear,
+    ): MutableList<PensionError> {
+        val yearlyPension = monthlyPension.convertWageToYearly(PayPeriod.MONTHLY)
+        val yearlyWage = monthlyWage.convertWageToYearly(PayPeriod.MONTHLY)
+
+        return isValidYearlyPension(yearlyPension, yearlyWage, taxYear)
+    }
+
+    fun isValidYearlyPension(yearlyPension: Double, yearlyWage: Double, taxYear: TaxYear): MutableList<PensionError> {
+        val listOfError = mutableListOf<PensionError>()
+
+        if (!yearlyPension.isTwoDecimalPlacesOrFewer() || !isPensionValidFormat(yearlyPension)) {
+            listOfError.add(PensionError.INVALID_FORMAT)
+        }
+        if (isPensionBelowZero(yearlyPension)) listOfError.add(PensionError.BELOW_ZERO)
+        if (!isPensionLowerThenWage(yearlyPension, yearlyWage)) listOfError.add(PensionError.ABOVE_HUNDRED_PERCENT)
+        if (isPensionAboveAnnualAllowance(yearlyPension, taxYear)) listOfError.add(PensionError.ABOVE_ANNUAL_ALLOWANCE)
+
+        listOfError.sortBy { it.priority }
+        return listOfError
+    }
+
+    private fun isPensionValidFormat(yearlyPension: Double): Boolean {
+        return "([0-9])+(\\.\\d{1,2})".toRegex().matches(yearlyPension.toString())
+    }
+
+    private fun isPensionBelowZero(yearlyPension: Double): Boolean {
+        return yearlyPension <= 0.0
+    }
+
+    @JvmSynthetic
+    internal fun isPensionLowerThenWage(yearlyPension: Double, yearlyWage: Double): Boolean {
+        return yearlyPension <= yearlyWage
+    }
+
+    @JvmSynthetic
+    internal fun isPensionAboveAnnualAllowance(yearlyPension: Double, taxYear: TaxYear): Boolean {
+        return yearlyPension > getPensionAllowances(taxYear).annualAllowance
+    }
+
+    enum class PensionError(val priority: Int) {
+        INVALID_FORMAT(1),
+        BELOW_ZERO(2),
+        ABOVE_HUNDRED_PERCENT(3),
+        ABOVE_ANNUAL_ALLOWANCE(4),
     }
 }

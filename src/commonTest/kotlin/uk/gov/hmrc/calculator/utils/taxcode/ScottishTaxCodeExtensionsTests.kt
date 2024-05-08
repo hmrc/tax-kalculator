@@ -126,7 +126,7 @@ class ScottishTaxCodeExtensionsTests {
     @Test
     fun `Scotland STCode`() {
         assertTrue("S150T".toTaxCode() is STCode)
-        assertEquals(1509.0, "S150T".toTaxCode().taxFreeAmount)
+        assertEquals(1500.0, "S150T".toTaxCode().taxFreeAmount)
         assertEquals(SCOTLAND, "S150T".toTaxCode().country)
     }
 
@@ -221,7 +221,7 @@ class ScottishTaxCodeExtensionsTests {
         val taxCode: SKCode = "SK100".toTaxCode() as SKCode
         assertEquals(0.0, taxCode.taxFreeAmount)
         assertEquals(SCOTLAND, taxCode.country)
-        assertEquals(1009.0, taxCode.amountToAddToWages)
+        assertEquals(1000.0, taxCode.amountToAddToWages)
     }
 
     @Test

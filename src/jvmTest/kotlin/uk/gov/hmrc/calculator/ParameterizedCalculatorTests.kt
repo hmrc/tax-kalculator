@@ -26,7 +26,7 @@ import uk.gov.hmrc.calculator.model.CalculatorResponse
 import uk.gov.hmrc.calculator.model.Country
 import uk.gov.hmrc.calculator.model.PayPeriod
 import uk.gov.hmrc.calculator.model.TaxYear
-import uk.gov.hmrc.calculator.model.pension.AnnualPensionMethod
+import uk.gov.hmrc.calculator.model.pension.PensionMethod
 import uk.gov.hmrc.calculator.utils.prettyPrintDataClass
 
 internal class ParameterizedCalculatorTests {
@@ -211,9 +211,8 @@ internal class ParameterizedCalculatorTests {
         @ConvertWith(PayPeriodConverter::class) inputPayPeriod: PayPeriod,
         @ConvertWith(TaxYearConverter::class) inputTaxYear: TaxYear,
         inputIsPensionAge: Boolean,
-        @ConvertWith(AnnualPensionMethodConverter::class) inputPensionMethod: AnnualPensionMethod,
-        inputPensionAmount: Double?,
-        inputPensionPercentage: Double?,
+        @ConvertWith(PensionMethodConverter::class) inputPensionMethod: PensionMethod,
+        inputPensionAmount: Double,
         @ConvertWith(CountryConverter::class) expectedCountry: Country,
         expectedYearlyNiEmployee: Double,
         expectedYearlyNiEmployer: Double,
@@ -230,9 +229,7 @@ internal class ParameterizedCalculatorTests {
             wages = inputWages,
             payPeriod = inputPayPeriod,
             taxYear = inputTaxYear,
-            pensionMethod = inputPensionMethod,
-            pensionYearlyAmount = inputPensionAmount,
-            pensionPercentage = inputPensionPercentage,
+            pensionContribution = Calculator.PensionContribution(inputPensionMethod, inputPensionAmount),
             isPensionAge = inputIsPensionAge
         ).run()
 
@@ -281,10 +278,12 @@ internal class ParameterizedCalculatorTests {
             payPeriod = inputPayPeriod,
             taxYear = inputTaxYear,
             isPensionAge = inputIsPensionAge,
-            hasStudentLoanPlanOne = inputHasPlanOne,
-            hasStudentLoanPlanTwo = inputHasPlanTwo,
-            hasStudentLoanPlanFour = inputHasPlanFour,
-            hasStudentLoanPostgraduatePlan = inputHasPostgraduatePlan,
+            studentLoanPlans = Calculator.StudentLoanPlans(
+                inputHasPlanOne,
+                inputHasPlanTwo,
+                inputHasPlanFour,
+                inputHasPostgraduatePlan,
+            )
         ).run()
 
         checkResults(
@@ -397,9 +396,8 @@ internal class ParameterizedCalculatorTests {
         @ConvertWith(PayPeriodConverter::class) inputPayPeriod: PayPeriod,
         @ConvertWith(TaxYearConverter::class) inputTaxYear: TaxYear,
         inputIsPensionAge: Boolean,
-        @ConvertWith(AnnualPensionMethodConverter::class) inputPensionMethod: AnnualPensionMethod,
-        inputPensionAmount: Double?,
-        inputPensionPercentage: Double?,
+        @ConvertWith(PensionMethodConverter::class) inputPensionMethod: PensionMethod,
+        inputPensionAmount: Double,
         @ConvertWith(CountryConverter::class) expectedCountry: Country,
         expectedYearlyNiEmployee: Double,
         expectedYearlyNiEmployer: Double,
@@ -416,9 +414,7 @@ internal class ParameterizedCalculatorTests {
             wages = inputWages,
             payPeriod = inputPayPeriod,
             taxYear = inputTaxYear,
-            pensionMethod = inputPensionMethod,
-            pensionYearlyAmount = inputPensionAmount,
-            pensionPercentage = inputPensionPercentage,
+            pensionContribution = Calculator.PensionContribution(inputPensionMethod, inputPensionAmount),
             isPensionAge = inputIsPensionAge
         ).run()
 
@@ -467,10 +463,12 @@ internal class ParameterizedCalculatorTests {
             payPeriod = inputPayPeriod,
             taxYear = inputTaxYear,
             isPensionAge = inputIsPensionAge,
-            hasStudentLoanPlanOne = inputHasPlanOne,
-            hasStudentLoanPlanTwo = inputHasPlanTwo,
-            hasStudentLoanPlanFour = inputHasPlanFour,
-            hasStudentLoanPostgraduatePlan = inputHasPostgraduatePlan,
+            studentLoanPlans = Calculator.StudentLoanPlans(
+                inputHasPlanOne,
+                inputHasPlanTwo,
+                inputHasPlanFour,
+                inputHasPostgraduatePlan,
+            )
         ).run()
 
         checkResults(
@@ -582,7 +580,7 @@ internal class ParameterizedCalculatorTests {
         override fun convert(source: Any, context: ParameterContext?) = TaxYear.valueOf(source as String)
     }
 
-    class AnnualPensionMethodConverter : ArgumentConverter {
-        override fun convert(source: Any?, context: ParameterContext?) = AnnualPensionMethod.valueOf(source as String)
+    class PensionMethodConverter : ArgumentConverter {
+        override fun convert(source: Any?, context: ParameterContext?) = PensionMethod.valueOf(source as String)
     }
 }
