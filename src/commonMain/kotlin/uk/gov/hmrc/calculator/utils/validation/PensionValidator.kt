@@ -60,7 +60,8 @@ object PensionValidator {
         } else monthlyPension
 
         if (isPensionBelowZero(inputValue)) listOfError.add(PensionError.BELOW_ZERO)
-        if (isPensionPercentageAboveHundred(inputValue, pensionMethod)) listOfError.add(PensionError.ABOVE_HUNDRED_PERCENT)
+        if (isPensionPercentageAboveHundred(inputValue, pensionMethod))
+            listOfError.add(PensionError.ABOVE_HUNDRED_PERCENT)
         isPensionInputValidDecimal(inputValue, pensionMethod)?.let { listOfError.add(it) }
 
         listOfError.sortBy { it.priority }
