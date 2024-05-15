@@ -50,7 +50,7 @@ object PensionValidator {
         return listOfError
     }
 
-    fun isValidInputPensionInput(
+    fun validateValidInputPensionInput(
         monthlyPension: Double,
         pensionMethod: PensionMethod,
     ): MutableList<PensionError> {

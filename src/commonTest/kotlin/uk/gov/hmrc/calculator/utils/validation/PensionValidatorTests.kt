@@ -189,42 +189,42 @@ class PensionValidatorTests {
     }
 
     @Test
-    fun `GIVEN amount is less then zero WHEN isValidInputPensionInput THEN return BELOW_ZERO`() {
+    fun `GIVEN amount is less then zero WHEN validateValidInputPensionInput THEN return BELOW_ZERO`() {
         val monthlyPension = -10.0
         val pensionMethod = PensionMethod.MONTHLY_AMOUNT_IN_POUNDS
 
         val listOfError = mutableListOf(PensionValidator.PensionError.BELOW_ZERO)
 
-        assertEquals(listOfError, PensionValidator.isValidInputPensionInput(monthlyPension, pensionMethod))
+        assertEquals(listOfError, PensionValidator.validateValidInputPensionInput(monthlyPension, pensionMethod))
     }
 
     @Test
-    fun `GIVEN amount is above 100 AND pension method is percentage WHEN isValidInputPensionInput THEN return ABOVE_HUNDRED_PERCENT`() {
+    fun `GIVEN amount is above 100 AND pension method is percentage WHEN validateValidInputPensionInput THEN return ABOVE_HUNDRED_PERCENT`() {
         val monthlyPension = 1000.0
         val pensionMethod = PensionMethod.PERCENTAGE
 
         val listOfError = mutableListOf(PensionValidator.PensionError.ABOVE_HUNDRED_PERCENT)
 
-        assertEquals(listOfError, PensionValidator.isValidInputPensionInput(monthlyPension, pensionMethod))
+        assertEquals(listOfError, PensionValidator.validateValidInputPensionInput(monthlyPension, pensionMethod))
     }
 
     @Test
-    fun `GIVEN amount has more then two decimals AND pension method is percentage WHEN isValidInputPensionInput THEN return INVALID_PERCENTAGE_DECIMAL`() {
+    fun `GIVEN amount has more then two decimals AND pension method is percentage WHEN validateValidInputPensionInput THEN return INVALID_PERCENTAGE_DECIMAL`() {
         val monthlyPension = 30.123
         val pensionMethod = PensionMethod.PERCENTAGE
 
         val listOfError = mutableListOf(PensionValidator.PensionError.INVALID_PERCENTAGE_DECIMAL)
 
-        assertEquals(listOfError, PensionValidator.isValidInputPensionInput(monthlyPension, pensionMethod))
+        assertEquals(listOfError, PensionValidator.validateValidInputPensionInput(monthlyPension, pensionMethod))
     }
 
     @Test
-    fun `GIVEN amount has more then two decimals AND pension method is month amount in pounds WHEN isValidInputPensionInput THEN return INVALID_AMOUNT_DECIMAL`() {
+    fun `GIVEN amount has more then two decimals AND pension method is month amount in pounds WHEN validateValidInputPensionInput THEN return INVALID_AMOUNT_DECIMAL`() {
         val monthlyPension = 1000.123
         val pensionMethod = PensionMethod.MONTHLY_AMOUNT_IN_POUNDS
 
         val listOfError = mutableListOf(PensionValidator.PensionError.INVALID_AMOUNT_DECIMAL)
 
-        assertEquals(listOfError, PensionValidator.isValidInputPensionInput(monthlyPension, pensionMethod))
+        assertEquals(listOfError, PensionValidator.validateValidInputPensionInput(monthlyPension, pensionMethod))
     }
 }
