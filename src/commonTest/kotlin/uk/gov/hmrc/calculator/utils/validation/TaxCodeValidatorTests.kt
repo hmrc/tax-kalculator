@@ -61,20 +61,20 @@ class TaxCodeValidatorTests {
     }
 
     @Test
-    fun `GIVEN english tax code AND isPayingScottishRate false WHEN isTaxCodeMatchingRate THEN return null`() {
-        val result = TaxCodeValidator.isTaxCodeMatchingRate("1257L", false)
+    fun `GIVEN english tax code AND isPayingScottishRate false WHEN validateTaxCodeMatchingRate THEN return null`() {
+        val result = TaxCodeValidator.validateTaxCodeMatchingRate("1257L", false)
         assertNull(result)
     }
 
     @Test
-    fun `GIVEN english tax code AND isPayingScottishRate true WHEN isTaxCodeMatchingRate THEN return NonScottishCodeButScottishRate`() {
-        val result = TaxCodeValidator.isTaxCodeMatchingRate("1257L", true)
+    fun `GIVEN english tax code AND isPayingScottishRate true WHEN validateTaxCodeMatchingRate THEN return NonScottishCodeButScottishRate`() {
+        val result = TaxCodeValidator.validateTaxCodeMatchingRate("1257L", true)
         assertEquals(ValidationError.NonScottishCodeButScottishRate, result!!.errorType)
     }
 
     @Test
-    fun `GIVEN scottish tax code AND isPayingScottishRate false WHEN isTaxCodeMatchingRate THEN return ScottishCodeButOtherRate`() {
-        val result = TaxCodeValidator.isTaxCodeMatchingRate("S1257L", false)
+    fun `GIVEN scottish tax code AND isPayingScottishRate false WHEN validateTaxCodeMatchingRate THEN return ScottishCodeButOtherRate`() {
+        val result = TaxCodeValidator.validateTaxCodeMatchingRate("S1257L", false)
         assertEquals(ValidationError.ScottishCodeButOtherRate, result!!.errorType)
     }
 }

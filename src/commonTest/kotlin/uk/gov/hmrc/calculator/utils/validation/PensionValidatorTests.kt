@@ -87,7 +87,7 @@ class PensionValidatorTests {
         val pension = 50000.0
         val taxYear = TaxYear.TWENTY_TWENTY_FOUR
 
-        val listOfError = mutableListOf(PensionValidator.PensionError.PENSION_ABOVE_WAGE)
+        val listOfError = mutableListOf(PensionValidator.PensionError.ABOVE_WAGE)
 
         assertEquals(listOfError, PensionValidator.isValidYearlyPension(pension, wage, taxYear))
     }
@@ -111,7 +111,7 @@ class PensionValidatorTests {
 
         val listOfError = mutableListOf(
             PensionValidator.PensionError.INVALID_FORMAT,
-            PensionValidator.PensionError.PENSION_ABOVE_WAGE,
+            PensionValidator.PensionError.ABOVE_WAGE,
             PensionValidator.PensionError.ABOVE_ANNUAL_ALLOWANCE,
         )
 
@@ -157,7 +157,7 @@ class PensionValidatorTests {
         val monthlyPension = 4166.67
         val taxYear = TaxYear.TWENTY_TWENTY_FOUR
 
-        val listOfError = mutableListOf(PensionValidator.PensionError.PENSION_ABOVE_WAGE)
+        val listOfError = mutableListOf(PensionValidator.PensionError.ABOVE_WAGE)
 
         assertEquals(listOfError, PensionValidator.isValidMonthlyPension(monthlyPension, monthlyWage, taxYear))
     }
@@ -181,7 +181,7 @@ class PensionValidatorTests {
 
         val listOfError = mutableListOf(
             PensionValidator.PensionError.INVALID_FORMAT,
-            PensionValidator.PensionError.PENSION_ABOVE_WAGE,
+            PensionValidator.PensionError.ABOVE_WAGE,
             PensionValidator.PensionError.ABOVE_ANNUAL_ALLOWANCE,
         )
 

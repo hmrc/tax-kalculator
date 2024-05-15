@@ -33,7 +33,7 @@ object TaxCodeValidator {
         }
     }
 
-    fun isTaxCodeMatchingRate(taxCode: String, isPayingScottishRate: Boolean): TaxCodeValidationResponse? {
+    fun validateTaxCodeMatchingRate(taxCode: String, isPayingScottishRate: Boolean): TaxCodeValidationResponse? {
         return try {
             return when (taxCode.toTaxCode().getTaxCodeClarification(isPayingScottishRate)) {
                 Clarification.SCOTTISH_CODE_BUT_OTHER_RATE ->
