@@ -16,6 +16,7 @@
 package uk.gov.hmrc.calculator.utils.validation
 
 import uk.gov.hmrc.calculator.model.TaxYear
+import uk.gov.hmrc.calculator.model.pension.PensionMethod
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -86,7 +87,7 @@ class PensionValidatorTests {
         val pension = 50000.0
         val taxYear = TaxYear.TWENTY_TWENTY_FOUR
 
-        val listOfError = mutableListOf(PensionValidator.PensionError.ABOVE_HUNDRED_PERCENT)
+        val listOfError = mutableListOf(PensionValidator.PensionError.PENSION_ABOVE_WAGE)
 
         assertEquals(listOfError, PensionValidator.isValidYearlyPension(pension, wage, taxYear))
     }
@@ -110,7 +111,7 @@ class PensionValidatorTests {
 
         val listOfError = mutableListOf(
             PensionValidator.PensionError.INVALID_FORMAT,
-            PensionValidator.PensionError.ABOVE_HUNDRED_PERCENT,
+            PensionValidator.PensionError.PENSION_ABOVE_WAGE,
             PensionValidator.PensionError.ABOVE_ANNUAL_ALLOWANCE,
         )
 
@@ -156,7 +157,7 @@ class PensionValidatorTests {
         val monthlyPension = 4166.67
         val taxYear = TaxYear.TWENTY_TWENTY_FOUR
 
-        val listOfError = mutableListOf(PensionValidator.PensionError.ABOVE_HUNDRED_PERCENT)
+        val listOfError = mutableListOf(PensionValidator.PensionError.PENSION_ABOVE_WAGE)
 
         assertEquals(listOfError, PensionValidator.isValidMonthlyPension(monthlyPension, monthlyWage, taxYear))
     }
@@ -180,10 +181,50 @@ class PensionValidatorTests {
 
         val listOfError = mutableListOf(
             PensionValidator.PensionError.INVALID_FORMAT,
-            PensionValidator.PensionError.ABOVE_HUNDRED_PERCENT,
+            PensionValidator.PensionError.PENSION_ABOVE_WAGE,
             PensionValidator.PensionError.ABOVE_ANNUAL_ALLOWANCE,
         )
 
         assertEquals(listOfError, PensionValidator.isValidMonthlyPension(monthlyPension, monthlyWage, taxYear))
+    }
+
+    @Test
+    fun `GIVEN amount is less then zero WHEN isValidInputPensionInput THEN return BELOW_ZERO`() {
+        val monthlyPension = -10.0
+        val pensionMethod = PensionMethod.MONTHLY_AMOUNT_IN_POUNDS
+
+        val listOfError = mutableListOf(PensionValidator.PensionError.BELOW_ZERO)
+
+        assertEquals(listOfError, PensionValidator.isValidInputPensionInput(monthlyPension, pensionMethod))
+    }
+
+    @Test
+    fun `GIVEN amount is above 100 AND pension method is percentage WHEN isValidInputPensionInput THEN return ABOVE_HUNDRED_PERCENT`() {
+        val monthlyPension = 1000.0
+        val pensionMethod = PensionMethod.PERCENTAGE
+
+        val listOfError = mutableListOf(PensionValidator.PensionError.ABOVE_HUNDRED_PERCENT)
+
+        assertEquals(listOfError, PensionValidator.isValidInputPensionInput(monthlyPension, pensionMethod))
+    }
+
+    @Test
+    fun `GIVEN amount has more then two decimals AND pension method is percentage WHEN isValidInputPensionInput THEN return INVALID_PERCENTAGE_DECIMAL`() {
+        val monthlyPension = 30.123
+        val pensionMethod = PensionMethod.PERCENTAGE
+
+        val listOfError = mutableListOf(PensionValidator.PensionError.INVALID_PERCENTAGE_DECIMAL)
+
+        assertEquals(listOfError, PensionValidator.isValidInputPensionInput(monthlyPension, pensionMethod))
+    }
+
+    @Test
+    fun `GIVEN amount has more then two decimals AND pension method is month amount in pounds WHEN isValidInputPensionInput THEN return INVALID_AMOUNT_DECIMAL`() {
+        val monthlyPension = 1000.123
+        val pensionMethod = PensionMethod.MONTHLY_AMOUNT_IN_POUNDS
+
+        val listOfError = mutableListOf(PensionValidator.PensionError.INVALID_AMOUNT_DECIMAL)
+
+        assertEquals(listOfError, PensionValidator.isValidInputPensionInput(monthlyPension, pensionMethod))
     }
 }

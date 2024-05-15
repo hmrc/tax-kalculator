@@ -16,5 +16,10 @@
 package uk.gov.hmrc.calculator.model
 
 enum class ValidationError {
-    WrongTaxCodeNumber, WrongTaxCodePrefix, WrongTaxCodeSuffix, Other
+    WrongTaxCodeNumber,
+    WrongTaxCodePrefix,
+    WrongTaxCodeSuffix,
+    ScottishCodeButOtherRate,
+    NonScottishCodeButScottishRate,
+    Other
 }

@@ -1322,6 +1322,19 @@ internal class CalculatorTests {
     }
 
     @Test
+    fun `GIVEN isPensionAge false WHEN calculate THEN clarification contain HAVE_NO_STATE_PENSION`() {
+        val result = Calculator(
+            taxCode = "1257L",
+            wages = 28800.0,
+            payPeriod = PayPeriod.YEARLY,
+            isPensionAge = false,
+            taxYear = TaxYear.TWENTY_TWENTY_THREE,
+        ).run()
+
+        assertTrue(result.listOfClarification.contains(Clarification.HAVE_NO_STATE_PENSION))
+    }
+
+    @Test
     fun `GIVEN tapering applied WHEN calculate THEN clarification contain INCOME_OVER_100K_WITH_TAPERING`() {
         val result = Calculator(
             taxCode = "1257L",
@@ -1374,6 +1387,7 @@ internal class CalculatorTests {
         ).run()
 
         val listOfExpectedResult = mutableListOf(
+            Clarification.HAVE_NO_STATE_PENSION,
             Clarification.INCOME_BELOW_STUDENT_LOAN,
         )
         assertEquals(listOfExpectedResult, result.listOfClarification)
@@ -1417,7 +1431,10 @@ internal class CalculatorTests {
             )
         ).run()
 
-        val listOfExpectedResult = mutableListOf(Clarification.SCOTTISH_INCOME_APPLIED)
+        val listOfExpectedResult = mutableListOf(
+            Clarification.HAVE_NO_STATE_PENSION,
+            Clarification.SCOTTISH_INCOME_APPLIED,
+        )
 
         assertEquals(listOfExpectedResult, result.listOfClarification)
     }
@@ -1436,7 +1453,10 @@ internal class CalculatorTests {
             )
         ).run()
 
-        val listOfExpectedResult = mutableListOf(Clarification.SCOTTISH_CODE_BUT_OTHER_RATE)
+        val listOfExpectedResult = mutableListOf(
+            Clarification.HAVE_NO_STATE_PENSION,
+            Clarification.SCOTTISH_CODE_BUT_OTHER_RATE,
+        )
 
         assertEquals(listOfExpectedResult, result.listOfClarification)
     }
@@ -1455,7 +1475,10 @@ internal class CalculatorTests {
             )
         ).run()
 
-        val listOfExpectedResult = mutableListOf(Clarification.NON_SCOTTISH_CODE_BUT_SCOTTISH_RATE)
+        val listOfExpectedResult = mutableListOf(
+            Clarification.HAVE_NO_STATE_PENSION,
+            Clarification.NON_SCOTTISH_CODE_BUT_SCOTTISH_RATE,
+        )
 
         assertEquals(listOfExpectedResult, result.listOfClarification)
     }
@@ -1470,7 +1493,10 @@ internal class CalculatorTests {
             pensionContribution = Calculator.PensionContribution(PensionMethod.MONTHLY_AMOUNT_IN_POUNDS, 5420.0)
         ).run()
 
-        val listOfExpectedResult = mutableListOf(Clarification.PENSION_EXCEED_ANNUAL_ALLOWANCE)
+        val listOfExpectedResult = mutableListOf(
+            Clarification.HAVE_NO_STATE_PENSION,
+            Clarification.PENSION_EXCEED_ANNUAL_ALLOWANCE,
+        )
 
         assertEquals(listOfExpectedResult, result.listOfClarification)
     }

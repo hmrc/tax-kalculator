@@ -18,6 +18,7 @@ package uk.gov.hmrc.calculator.utils.validation
 import uk.gov.hmrc.calculator.model.PayPeriod
 import uk.gov.hmrc.calculator.model.TaxYear
 import uk.gov.hmrc.calculator.model.pension.PensionAllowances.getPensionAllowances
+import uk.gov.hmrc.calculator.model.pension.PensionMethod
 import uk.gov.hmrc.calculator.utils.convertWageToYearly
 import uk.gov.hmrc.calculator.utils.validation.HoursDaysValidator.isTwoDecimalPlacesOrFewer
 import kotlin.jvm.JvmSynthetic
@@ -42,8 +43,25 @@ object PensionValidator {
             listOfError.add(PensionError.INVALID_FORMAT)
         }
         if (isPensionBelowZero(yearlyPension)) listOfError.add(PensionError.BELOW_ZERO)
-        if (!isPensionLowerThenWage(yearlyPension, yearlyWage)) listOfError.add(PensionError.ABOVE_HUNDRED_PERCENT)
+        if (!isPensionLowerThenWage(yearlyPension, yearlyWage)) listOfError.add(PensionError.PENSION_ABOVE_WAGE)
         if (isPensionAboveAnnualAllowance(yearlyPension, taxYear)) listOfError.add(PensionError.ABOVE_ANNUAL_ALLOWANCE)
+
+        listOfError.sortBy { it.priority }
+        return listOfError
+    }
+
+    fun isValidInputPensionInput(
+        monthlyPension: Double,
+        pensionMethod: PensionMethod,
+    ): MutableList<PensionError> {
+        val listOfError = mutableListOf<PensionError>()
+        val inputValue = if (pensionMethod == PensionMethod.MONTHLY_AMOUNT_IN_POUNDS) {
+            monthlyPension.convertWageToYearly(PayPeriod.MONTHLY)
+        } else monthlyPension
+
+        if (isPensionBelowZero(inputValue)) listOfError.add(PensionError.BELOW_ZERO)
+        if (isPensionPercentageAboveHundred(inputValue, pensionMethod)) listOfError.add(PensionError.ABOVE_HUNDRED_PERCENT)
+        isPensionInputValidDecimal(inputValue, pensionMethod)?.let { listOfError.add(it) }
 
         listOfError.sortBy { it.priority }
         return listOfError
@@ -55,6 +73,17 @@ object PensionValidator {
 
     private fun isPensionBelowZero(yearlyPension: Double): Boolean {
         return yearlyPension <= 0.0
+    }
+
+    private fun isPensionPercentageAboveHundred(monthlyPension: Double, pensionMethod: PensionMethod): Boolean {
+        return monthlyPension > 100.0 && pensionMethod == PensionMethod.PERCENTAGE
+    }
+
+    private fun isPensionInputValidDecimal(monthlyPension: Double, pensionMethod: PensionMethod): PensionError? {
+        return if (!monthlyPension.isTwoDecimalPlacesOrFewer()) {
+            if (pensionMethod == PensionMethod.PERCENTAGE) PensionError.INVALID_PERCENTAGE_DECIMAL
+            else PensionError.INVALID_AMOUNT_DECIMAL
+        } else null
     }
 
     @JvmSynthetic
@@ -69,8 +98,11 @@ object PensionValidator {
 
     enum class PensionError(val priority: Int) {
         INVALID_FORMAT(1),
-        BELOW_ZERO(2),
-        ABOVE_HUNDRED_PERCENT(3),
-        ABOVE_ANNUAL_ALLOWANCE(4),
+        INVALID_AMOUNT_DECIMAL(2),
+        INVALID_PERCENTAGE_DECIMAL(3),
+        BELOW_ZERO(4),
+        PENSION_ABOVE_WAGE(5),
+        ABOVE_HUNDRED_PERCENT(6),
+        ABOVE_ANNUAL_ALLOWANCE(7),
     }
 }

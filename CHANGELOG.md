@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+- Added `HAVE_NO_STATE_PENSION` Clarification.
+- Added new tax code validator to validate tax code matching rate.
+- Added new pension validator to validate Pension input.
 
 ## [2.11.0] - 2024-05-13Z
 - Fix National Insurance calculation to use correct wage.
