@@ -19,43 +19,62 @@ import uk.gov.hmrc.calculator.model.ValidationError
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class TaxCodeValidatorTests {
     @Test
-    fun `Validate valid 1250L tax code`() {
+    fun `GIVEN valid 1250L tax code WHEN isValidTaxCode THEN isValid return true`() {
         assertTrue(TaxCodeValidator.isValidTaxCode("1250L").isValid)
     }
 
     @Test
-    fun `Validate valid K100 tax code`() {
+    fun `GIVEN valid K100 tax code WHEN isValidTaxCode THEN isValid return true`() {
         assertTrue(TaxCodeValidator.isValidTaxCode("K100").isValid)
     }
     @Test
-    fun `Validate valid K100X tax code`() {
+    fun `GIVEN valid K100X tax code WHEN isValidTaxCode THEN isValid return true`() {
         assertTrue(TaxCodeValidator.isValidTaxCode("K100X").isValid)
     }
 
     @Test
-    fun `Validate invalid tax code WrongTaxCodeNumber`() {
+    fun `GIVEN wrong tax code number WHEN isValidTaxCode THEN return WrongTaxCodeNumber AND isValid return false`() {
         assertFalse(TaxCodeValidator.isValidTaxCode("HELLO").isValid)
         assertEquals(ValidationError.WrongTaxCodeNumber, TaxCodeValidator.isValidTaxCode("HELLO").errorType)
     }
 
     @Test
-    fun `Validate invalid tax code Other`() {
+    fun `GIVEN other invalid tax code WHEN isValidTaxCode THEN return Other AND isValid return false`() {
         assertFalse(TaxCodeValidator.isValidTaxCode("110").isValid)
         assertEquals(ValidationError.Other, TaxCodeValidator.isValidTaxCode("110").errorType)
     }
 
     @Test
-    fun `Validate invalid tax code Prefix`() {
+    fun `GIVEN invalid tax code prefix WHEN isValidTaxCode THEN return WrongTaxCodePrefix AND isValid return false`() {
         assertFalse(TaxCodeValidator.isValidTaxCode("OO9999").isValid)
         assertEquals(ValidationError.WrongTaxCodePrefix, TaxCodeValidator.isValidTaxCode("OO9999").errorType)
     }
     @Test
-    fun `Validate invalid tax code Suffix`() {
+    fun `GIVEN invalid tax code suffix WHEN isValidTaxCode THEN return WrongTaxCodeSuffix AND isValid return false`() {
         assertFalse(TaxCodeValidator.isValidTaxCode("9999R").isValid)
         assertEquals(ValidationError.WrongTaxCodeSuffix, TaxCodeValidator.isValidTaxCode("9999R").errorType)
+    }
+
+    @Test
+    fun `GIVEN english tax code AND isPayingScottishRate false WHEN validateTaxCodeMatchingRate THEN return null`() {
+        val result = TaxCodeValidator.validateTaxCodeMatchingRate("1257L", false)
+        assertNull(result)
+    }
+
+    @Test
+    fun `GIVEN english tax code AND isPayingScottishRate true WHEN validateTaxCodeMatchingRate THEN return NonScottishCodeButScottishRate`() {
+        val result = TaxCodeValidator.validateTaxCodeMatchingRate("1257L", true)
+        assertEquals(ValidationError.NonScottishCodeButScottishRate, result!!.errorType)
+    }
+
+    @Test
+    fun `GIVEN scottish tax code AND isPayingScottishRate false WHEN validateTaxCodeMatchingRate THEN return ScottishCodeButOtherRate`() {
+        val result = TaxCodeValidator.validateTaxCodeMatchingRate("S1257L", false)
+        assertEquals(ValidationError.ScottishCodeButOtherRate, result!!.errorType)
     }
 }

@@ -19,6 +19,7 @@ package uk.gov.hmrc.calculator.utils.clarification
 enum class Clarification(private val description: String) {
     NO_TAX_CODE_SUPPLIED("Did not provide a tax code."),
     HAVE_STATE_PENSION("Have state pension."),
+    HAVE_NO_STATE_PENSION("Have no state pension."),
     SCOTTISH_INCOME_APPLIED("Applied Scottish Income Tax rates."),
     SCOTTISH_CODE_BUT_OTHER_RATE("Applied Scottish Income Tax rates because you used a Scottish tax code."),
     NON_SCOTTISH_CODE_BUT_SCOTTISH_RATE("Applied Scottish Income Tax rates as you said you pay Scottish Income Tax."),

@@ -82,7 +82,9 @@ class Calculator @JvmOverloads constructor(
 
     init {
         if (!userSuppliedTaxCode) listOfClarification.add(Clarification.NO_TAX_CODE_SUPPLIED)
-        if (isPensionAge) listOfClarification.add(Clarification.HAVE_STATE_PENSION)
+        val pensionClarification = if (isPensionAge)
+            Clarification.HAVE_STATE_PENSION else Clarification.HAVE_NO_STATE_PENSION
+        listOfClarification.add(pensionClarification)
     }
 
     @Throws(

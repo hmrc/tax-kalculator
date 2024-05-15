@@ -17,6 +17,9 @@ package uk.gov.hmrc.calculator.utils.validation
 
 import uk.gov.hmrc.calculator.exception.InvalidTaxCodeException
 import uk.gov.hmrc.calculator.model.TaxCodeValidationResponse
+import uk.gov.hmrc.calculator.model.ValidationError
+import uk.gov.hmrc.calculator.utils.clarification.Clarification
+import uk.gov.hmrc.calculator.utils.taxcode.getTaxCodeClarification
 import uk.gov.hmrc.calculator.utils.taxcode.invalidTaxCodeErrorGeneration
 import uk.gov.hmrc.calculator.utils.taxcode.toTaxCode
 
@@ -25,6 +28,20 @@ object TaxCodeValidator {
         return try {
             taxCode.toTaxCode()
             TaxCodeValidationResponse(true)
+        } catch (e: InvalidTaxCodeException) {
+            taxCode.invalidTaxCodeErrorGeneration()
+        }
+    }
+
+    fun validateTaxCodeMatchingRate(taxCode: String, isPayingScottishRate: Boolean): TaxCodeValidationResponse? {
+        return try {
+            return when (taxCode.toTaxCode().getTaxCodeClarification(isPayingScottishRate)) {
+                Clarification.SCOTTISH_CODE_BUT_OTHER_RATE ->
+                    TaxCodeValidationResponse(true, ValidationError.ScottishCodeButOtherRate)
+                Clarification.NON_SCOTTISH_CODE_BUT_SCOTTISH_RATE ->
+                    TaxCodeValidationResponse(true, ValidationError.NonScottishCodeButScottishRate)
+                else -> null
+            }
         } catch (e: InvalidTaxCodeException) {
             taxCode.invalidTaxCodeErrorGeneration()
         }
