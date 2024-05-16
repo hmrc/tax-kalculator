@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.11.1] - 2024-05-16Z
 - Added `HAVE_NO_STATE_PENSION` Clarification.
 - Added new tax code validator to validate tax code matching rate.
 - Added new pension validator to validate Pension input.
