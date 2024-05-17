@@ -21,7 +21,7 @@ import uk.gov.hmrc.calculator.utils.roundDownToWholeNumber
 
 data class BandBreakdown(
     val percentage: Double,
-    val amount: Double
+    val amount: Double,
 )
 
 data class StudentLoanAmountBreakdown(
@@ -42,19 +42,24 @@ class CalculatorResponsePayPeriod(
     private var wageAfterPensionDeductionRaw: Double,
     private var taperingAmountRaw: Double? = null,
     val studentLoanBreakdownList: List<StudentLoanAmountBreakdown>,
-    private var finalStudentLoanAmountRaw: Double,
+    finalStudentLoanAmountRaw: Double,
+    finalPostgraduateLoanAmountRaw: Double,
 ) {
     private val maxTaxAmount = (wagesRaw / 2).formatMoney()
     val taxToPay = if (taxToPayForPayPeriod > maxTaxAmount) maxTaxAmount else taxToPayForPayPeriod.formatMoney()
     val maxTaxAmountExceeded = (taxToPayForPayPeriod > maxTaxAmount)
     val pensionContribution = pensionContributionRaw?.formatMoney() ?: 0.0.formatMoney()
     val finalStudentLoanAmount = finalStudentLoanAmountRaw.roundDownToWholeNumber()
-    val totalDeductions = (taxToPay + employeesNIRaw + pensionContribution + finalStudentLoanAmount).formatMoney()
+    val finalPostgraduateLoanAmount = finalPostgraduateLoanAmountRaw.roundDownToWholeNumber()
+    val otherAmount = pensionContribution + finalStudentLoanAmount + finalPostgraduateLoanAmount
+    val totalDeductions = (taxToPay + employeesNIRaw + otherAmount).formatMoney()
     val takeHome = (wagesRaw - totalDeductions).formatMoney()
     val taxBreakdown = if (maxTaxAmountExceeded) null else taxBreakdownForPayPeriod
     val wageAfterPensionDeduction = wageAfterPensionDeductionRaw.formatMoney()
     val taperingAmountDeduction = taperingAmountRaw?.formatMoney() ?: 0.0.formatMoney()
-    val studentLoanBreakdown = if (finalStudentLoanAmount > 0) studentLoanBreakdownList else null
+    val studentLoanBreakdown = if (finalStudentLoanAmount > 0 || finalPostgraduateLoanAmount > 0) {
+        studentLoanBreakdownList
+    } else null
 
     val employeesNI: Double by lazy {
         employeesNIRaw.formatMoney()
@@ -78,20 +83,21 @@ class CalculatorResponsePayPeriod(
 
     override fun toString(): String {
         return "CalculatorResponsePayPeriod(payPeriod=$payPeriod," +
-            "taxToPayForPayPeriod=$taxToPayForPayPeriod," +
-            "employeesNIRaw=$employeesNIRaw," +
-            "employersNIRaw=$employersNIRaw," +
-            "wagesRaw=$wagesRaw," +
-            "taxBreakdownForPayPeriod=$taxBreakdownForPayPeriod," +
-            "taxFreeRaw=$taxFreeRaw," +
-            "takeHome=$takeHome," +
-            "totalDeductions=$totalDeductions," +
-            "kCodeAdjustmentRaw=$kCodeAdjustmentRaw," +
-            "pensionContributionRaw=$pensionContributionRaw," +
-            "wageAfterPensionDeductionRaw=$wageAfterPensionDeductionRaw," +
-            "taperingAmountDeductionRaw=$taperingAmountRaw," +
-            "studentLoanBreakdown=$studentLoanBreakdown," +
-            "finalStudentLoanAmount=$finalStudentLoanAmount)"
+                "taxToPayForPayPeriod=$taxToPayForPayPeriod," +
+                "employeesNIRaw=$employeesNIRaw," +
+                "employersNIRaw=$employersNIRaw," +
+                "wagesRaw=$wagesRaw," +
+                "taxBreakdownForPayPeriod=$taxBreakdownForPayPeriod," +
+                "taxFreeRaw=$taxFreeRaw," +
+                "takeHome=$takeHome," +
+                "totalDeductions=$totalDeductions," +
+                "kCodeAdjustmentRaw=$kCodeAdjustmentRaw," +
+                "pensionContributionRaw=$pensionContributionRaw," +
+                "wageAfterPensionDeductionRaw=$wageAfterPensionDeductionRaw," +
+                "taperingAmountDeductionRaw=$taperingAmountRaw," +
+                "studentLoanBreakdown=$studentLoanBreakdown," +
+                "finalStudentLoanAmount=$finalStudentLoanAmount," +
+                "finalPostgraduateLoanAmount=$finalPostgraduateLoanAmount)"
     }
 }
 

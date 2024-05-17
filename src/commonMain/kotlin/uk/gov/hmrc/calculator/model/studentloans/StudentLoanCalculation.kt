@@ -156,6 +156,21 @@ internal class StudentLoanCalculation(
     @JvmSynthetic
     internal fun calculateTotalLoanDeduction() = listOfBreakdownResult.sumOf { it.amount }
 
+    @JvmSynthetic
+    internal fun calculateTotalStudentLoanDeduction(): Double {
+        val listOfStudentLoan = listOfBreakdownResult.filter {
+            it.plan != StudentLoanRate.StudentLoanPlan.POST_GRADUATE_PLAN.value
+        }
+        return listOfStudentLoan.sumOf { it.amount }
+    }
+
+    @JvmSynthetic
+    internal fun calculateTotalPostgraduateLoanDeduction(): Double {
+        return listOfBreakdownResult.first {
+            it.plan == StudentLoanRate.StudentLoanPlan.POST_GRADUATE_PLAN.value
+        }.amount
+    }
+
     internal data class StudentLoanPlanAmount(
         val plan: StudentLoanRate.StudentLoanPlan,
         val amount: Double,
