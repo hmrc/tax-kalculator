@@ -16,13 +16,16 @@
 package uk.gov.hmrc.calculator.model.studentloans
 
 import uk.gov.hmrc.calculator.Calculator
+import uk.gov.hmrc.calculator.model.PayPeriod
 import uk.gov.hmrc.calculator.model.StudentLoanAmountBreakdown
 import uk.gov.hmrc.calculator.model.TaxYear
+import uk.gov.hmrc.calculator.utils.convertWageToYearly
+import uk.gov.hmrc.calculator.utils.roundDownToWholeNumber
 import kotlin.jvm.JvmSynthetic
 
 internal class StudentLoanCalculation(
     taxYear: TaxYear,
-    yearlyWage: Double,
+    monthlyWage: Double,
     studentLoanPlans: Calculator.StudentLoanPlans?,
 ) {
 
@@ -30,6 +33,9 @@ internal class StudentLoanCalculation(
     private val listOfPostgraduateResult = mutableListOf<StudentLoanPlanAmount>()
 
     var earnTooLowToPayStudentLoan = false
+    var totalStudentLoanAmount = 0.0
+    var totalPostgraduateLoanAmount = 0.0
+
     val listOfBreakdownResult = mutableListOf(
         StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.PLAN_ONE.value, 0.0),
         StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.PLAN_TWO.value, 0.0),
@@ -56,64 +62,65 @@ internal class StudentLoanCalculation(
 
         val hasPostgraduatePlan = studentLoanPlans?.hasPostgraduatePlan ?: false
 
-        calculateUndergraduateWithPlan(
-            yearlyWage,
-            listOfUndergraduatePlan,
-            studentLoanRate
-        )
+        calculateUndergraduateWithPlan(monthlyWage, listOfUndergraduatePlan, studentLoanRate)
 
-        calculatePostgraduateWithPlan(
-            yearlyWage,
-            hasPostgraduatePlan,
-            studentLoanRate
-        )
+        calculatePostgraduateWithPlan(monthlyWage, hasPostgraduatePlan, studentLoanRate)
 
         updateIfUserEarnTooLow(listOfUndergraduatePlan, hasPostgraduatePlan)
     }
 
-    private fun calculateStudentLoan(
-        yearlyWage: Double,
+    private fun calculateMonthlyStudentLoan(
+        monthlyWage: Double,
         studentLoanRepayment: StudentLoanRate.StudentLoanRepayment,
     ): Double {
-        return if (yearlyWage > studentLoanRepayment.yearlyThreshold) {
-            val amountToCalculateLoan = yearlyWage - studentLoanRepayment.yearlyThreshold
-            amountToCalculateLoan * studentLoanRepayment.recoveryRatePercentage
+        return if (monthlyWage > studentLoanRepayment.getMonthlyThreshold) {
+            val amountToCalculateLoan = monthlyWage - studentLoanRepayment.getMonthlyThreshold
+            val loanAmount = amountToCalculateLoan * studentLoanRepayment.recoveryRatePercentage
+            loanAmount.roundDownToWholeNumber()
         } else 0.0
     }
 
     private fun calculateUndergraduateWithPlan(
-        yearlyWage: Double,
+        monthlyWage: Double,
         listOfUndergraduatePlan: Map<StudentLoanRate.StudentLoanPlan, Boolean>,
         studentLoanRate: Map<StudentLoanRate.StudentLoanPlan, StudentLoanRate.StudentLoanRepayment>,
     ) {
         listOfUndergraduatePlan.forEach { (plan, hasStudentLoan) ->
             val rate = studentLoanRate[plan]!!
-            val loanAmount = calculateStudentLoan(yearlyWage, rate)
+            val monthlyLoanAmount = calculateMonthlyStudentLoan(monthlyWage, rate)
+            val yearlyLoanAmount = monthlyLoanAmount.convertWageToYearly(PayPeriod.MONTHLY)
 
             // This will calculate and add all "true" student loan amount to the list.
-            listOfUndergraduateResult.add(StudentLoanPlanAmount(plan, loanAmount, rate.yearlyThreshold, hasStudentLoan))
+            listOfUndergraduateResult.add(
+                StudentLoanPlanAmount(plan, yearlyLoanAmount, rate.yearlyThreshold, hasStudentLoan)
+            )
             addLowestUndergraduateLoanToBreakdown()
         }
+
+        totalStudentLoanAmount = calculateTotalStudentLoanDeduction()
     }
 
     private fun calculatePostgraduateWithPlan(
-        yearlyWage: Double,
+        monthlyWage: Double,
         hasPostgraduatePlan: Boolean,
         studentLoanRate: Map<StudentLoanRate.StudentLoanPlan, StudentLoanRate.StudentLoanRepayment>,
     ) {
         val rate = studentLoanRate[StudentLoanRate.StudentLoanPlan.POST_GRADUATE_PLAN]!!
-        val loanAmount = calculateStudentLoan(yearlyWage, rate)
+        val monthlyLoanAmount = calculateMonthlyStudentLoan(monthlyWage, rate)
+        val yearlyLoanAmount = monthlyLoanAmount.convertWageToYearly(PayPeriod.MONTHLY)
 
         listOfPostgraduateResult.add(
             StudentLoanPlanAmount(
                 StudentLoanRate.StudentLoanPlan.POST_GRADUATE_PLAN,
-                loanAmount,
+                yearlyLoanAmount,
                 rate.yearlyThreshold,
                 hasPostgraduatePlan,
             )
         )
 
         addPostgraduateLoanToBreakdown()
+
+        totalPostgraduateLoanAmount = calculateTotalPostgraduateLoanDeduction()
     }
 
     // This filter the listOfUndergraduateResult and only pass the lowest
@@ -156,16 +163,14 @@ internal class StudentLoanCalculation(
     @JvmSynthetic
     internal fun calculateTotalLoanDeduction() = listOfBreakdownResult.sumOf { it.amount }
 
-    @JvmSynthetic
-    internal fun calculateTotalStudentLoanDeduction(): Double {
+    private fun calculateTotalStudentLoanDeduction(): Double {
         val listOfStudentLoan = listOfBreakdownResult.filter {
             it.plan != StudentLoanRate.StudentLoanPlan.POST_GRADUATE_PLAN.value
         }
         return listOfStudentLoan.sumOf { it.amount }
     }
 
-    @JvmSynthetic
-    internal fun calculateTotalPostgraduateLoanDeduction(): Double {
+    private fun calculateTotalPostgraduateLoanDeduction(): Double {
         return listOfBreakdownResult.first {
             it.plan == StudentLoanRate.StudentLoanPlan.POST_GRADUATE_PLAN.value
         }.amount

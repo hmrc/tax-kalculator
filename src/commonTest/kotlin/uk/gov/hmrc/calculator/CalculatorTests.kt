@@ -1286,15 +1286,15 @@ internal class CalculatorTests {
         assertEquals(28800.0, yearly.wages)
         assertEquals(12570.0, yearly.taxFree)
         assertEquals(3244.20, yearly.taxToPay)
-        assertEquals(23005.2, yearly.takeHome)
+        assertEquals(23008.2, yearly.takeHome)
         assertEquals(0.0, yearly.pensionContribution)
         assertEquals(28800.0, yearly.wageAfterPensionDeduction)
         assertEquals(0.0, yearly.taperingAmountDeduction)
-        assertEquals(135.0, yearly.studentLoanBreakdown!![1].amount) // plan 2
+        assertEquals(132.0, yearly.studentLoanBreakdown!![1].amount) // plan 2
         assertEquals(468.0, yearly.studentLoanBreakdown!![3].amount) // postgraduate plan
-        assertEquals(135.0, yearly.finalStudentLoanAmount)
+        assertEquals(132.0, yearly.finalStudentLoanAmount)
         assertEquals(468.0, yearly.finalPostgraduateLoanAmount)
-        assertEquals(603.0, yearly.otherAmount)
+        assertEquals(600.0, yearly.otherAmount)
     }
 
     @Test

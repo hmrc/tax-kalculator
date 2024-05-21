@@ -114,10 +114,9 @@ class Calculator @JvmOverloads constructor(
         val yearlyWageAfterPension = yearlyPensionContribution?.let { yearlyWages - it } ?: yearlyWages
         val (taxFreeAmount, taperingAmount) = getTaxFreeAndTaperingAmount(yearlyWageAfterPension)
 
-        val studentLoan = StudentLoanCalculation(taxYear, yearlyWages, studentLoanPlans)
-        val studentLoanBreakdown = studentLoan.listOfBreakdownResult
-        val studentLoanDeduction = studentLoan.calculateTotalStudentLoanDeduction()
-        val postgraduateLoanDeduction = studentLoan.calculateTotalPostgraduateLoanDeduction()
+        val studentLoan = StudentLoanCalculation(
+            taxYear, yearlyWages.convertAmountFromYearlyToPayPeriod(MONTHLY), studentLoanPlans
+        )
         if (studentLoan.earnTooLowToPayStudentLoan) listOfClarification.add(Clarification.INCOME_BELOW_STUDENT_LOAN)
 
         taxCodeType.getTaxCodeClarification(userPaysScottishTax)?.let { listOfClarification.add(it) }
@@ -130,9 +129,9 @@ class Calculator @JvmOverloads constructor(
             yearlyPensionContribution,
             yearlyWageAfterPension,
             taperingAmount,
-            studentLoanBreakdown,
-            studentLoanDeduction,
-            postgraduateLoanDeduction,
+            studentLoan.listOfBreakdownResult,
+            studentLoan.totalStudentLoanAmount,
+            studentLoan.totalPostgraduateLoanAmount,
             listOfClarification,
         )
     }

@@ -25,7 +25,7 @@ class StudentLoanCalculationTests {
 
     @Test
     fun `GIVEN no student loan WHEN init THEN listOfBreakdownResult return default breakdown`() {
-        val wage = 30000.00
+        val wage = 2500.00
         val studentLoanPlans = Calculator.StudentLoanPlans(
             hasPlanOne = false, hasPlanTwo = false, hasPlanFour = false, hasPostgraduatePlan = false
         )
@@ -37,7 +37,7 @@ class StudentLoanCalculationTests {
 
     @Test
     fun `GIVEN no student loan WHEN calculateTotalLoanDeduction THEN return zero`() {
-        val wage = 30000.00
+        val wage = 2500.00
         val studentLoanPlans = Calculator.StudentLoanPlans(
             hasPlanOne = false, hasPlanTwo = false, hasPlanFour = false, hasPostgraduatePlan = false
         )
@@ -49,7 +49,7 @@ class StudentLoanCalculationTests {
 
     @Test
     fun `GIVEN one undergraduate plan AND wage under threshold WHEN init THEN return default breakdown`() {
-        val wage = 10000.00
+        val wage = 833.00
         val studentLoanPlans = Calculator.StudentLoanPlans(
             hasPlanOne = true, hasPlanTwo = false, hasPlanFour = false, hasPostgraduatePlan = false
         )
@@ -61,7 +61,7 @@ class StudentLoanCalculationTests {
 
     @Test
     fun `GIVEN one undergraduate plan AND wage under threshold WHEN calculateTotalLoanDeduction THEN return zero`() {
-        val wage = 10000.00
+        val wage = 833.00
         val studentLoanPlans = Calculator.StudentLoanPlans(
             hasPlanOne = true, hasPlanTwo = false, hasPlanFour = false, hasPostgraduatePlan = false
         )
@@ -73,31 +73,31 @@ class StudentLoanCalculationTests {
 
     @Test
     fun `GIVEN one undergraduate plan AND wage above threshold WHEN init THEN return breakdown with loan`() {
-        val wage = 33000.00
+        val wage = 2750.00
         val studentLoanPlans = Calculator.StudentLoanPlans(
             hasPlanOne = true, hasPlanTwo = false, hasPlanFour = false, hasPostgraduatePlan = false
         )
 
         val result = StudentLoanCalculation(TaxYear.TWENTY_TWENTY_FOUR, wage, studentLoanPlans).listOfBreakdownResult
 
-        assertEquals(expectedBreakdown(720.9, 0.0, 0.0, 0.0), result)
+        assertEquals(expectedBreakdown(720.0, 0.0, 0.0, 0.0), result)
     }
 
     @Test
     fun `GIVEN one undergraduate plan AND wage above threshold WHEN calculateTotalLoanDeduction THEN loan amount`() {
-        val wage = 33000.00
+        val wage = 2750.00
         val studentLoanPlans = Calculator.StudentLoanPlans(
             hasPlanOne = true, hasPlanTwo = false, hasPlanFour = false, hasPostgraduatePlan = false
         )
 
         val result = StudentLoanCalculation(TaxYear.TWENTY_TWENTY_FOUR, wage, studentLoanPlans).calculateTotalLoanDeduction()
 
-        assertEquals(720.9, result)
+        assertEquals(720.0, result)
     }
 
     @Test
     fun `GIVEN multiple undergraduate plan AND wage under threshold WHEN init THEN return default breakdown`() {
-        val wage = 10000.00
+        val wage = 833.00
         val studentLoanPlans = Calculator.StudentLoanPlans(
             hasPlanOne = true, hasPlanTwo = true, hasPlanFour = false, hasPostgraduatePlan = false
         )
@@ -109,7 +109,7 @@ class StudentLoanCalculationTests {
 
     @Test
     fun `GIVEN multiple undergraduate plan AND wage under threshold WHEN calculateTotalLoanDeduction THEN return zero`() {
-        val wage = 10000.00
+        val wage = 833.00
         val studentLoanPlans = Calculator.StudentLoanPlans(
             hasPlanOne = true, hasPlanTwo = true, hasPlanFour = false, hasPostgraduatePlan = false
         )
@@ -121,19 +121,19 @@ class StudentLoanCalculationTests {
 
     @Test
     fun `GIVEN multiple undergraduate plan AND wage only above one threshold WHEN init THEN return breakdown with loan`() {
-        val wage = 25200.00
+        val wage = 2093.72
         val studentLoanPlans = Calculator.StudentLoanPlans(
             hasPlanOne = true, hasPlanTwo = true, hasPlanFour = false, hasPostgraduatePlan = false
         )
 
         val result = StudentLoanCalculation(TaxYear.TWENTY_TWENTY_FOUR, wage, studentLoanPlans).listOfBreakdownResult
 
-        assertEquals(expectedBreakdown(18.9, 0.0, 0.0, 0.0), result)
+        assertEquals(expectedBreakdown(18.0, 0.0, 0.0, 0.0), result)
     }
 
     @Test
     fun `GIVEN multiple undergraduate plan AND wage only above one threshold WHEN calculateTotalLoanDeduction THEN loan amount`() {
-        val wage = 25200.00
+        val wage = 2100.00
         val studentLoanPlans = Calculator.StudentLoanPlans(
             hasPlanOne = true, hasPlanTwo = true, hasPlanFour = false, hasPostgraduatePlan = false
         )
@@ -145,31 +145,31 @@ class StudentLoanCalculationTests {
 
     @Test
     fun `GIVEN multiple undergraduate plan AND wage above both threshold WHEN init THEN return breakdown with the lowest threshold loan`() {
-        val wage = 33000.00
+        val wage = 2750.00
         val studentLoanPlans = Calculator.StudentLoanPlans(
             hasPlanOne = true, hasPlanTwo = true, hasPlanFour = false, hasPostgraduatePlan = false
         )
 
         val result = StudentLoanCalculation(TaxYear.TWENTY_TWENTY_FOUR, wage, studentLoanPlans).listOfBreakdownResult
 
-        assertEquals(expectedBreakdown(720.9, 0.0, 0.0, 0.0), result)
+        assertEquals(expectedBreakdown(720.0, 0.0, 0.0, 0.0), result)
     }
 
     @Test
     fun `GIVEN multiple undergraduate plan AND wage above both threshold WHEN calculateTotalLoanDeduction THEN loan amount`() {
-        val wage = 33000.00
+        val wage = 2750.00
         val studentLoanPlans = Calculator.StudentLoanPlans(
             hasPlanOne = true, hasPlanTwo = true, hasPlanFour = false, hasPostgraduatePlan = false
         )
 
         val result = StudentLoanCalculation(TaxYear.TWENTY_TWENTY_FOUR, wage, studentLoanPlans).calculateTotalLoanDeduction()
 
-        assertEquals(720.9, result)
+        assertEquals(720.0, result)
     }
 
     @Test
     fun `GIVEN under AND post graduate plan AND wage only above post graduate threshold WHEN init THEN return breakdown with post graduate loan`() {
-        val wage = 24000.00
+        val wage = 2000.00
         val studentLoanPlans = Calculator.StudentLoanPlans(
             hasPlanOne = false, hasPlanTwo = true, hasPlanFour = false, hasPostgraduatePlan = true
         )
@@ -181,7 +181,7 @@ class StudentLoanCalculationTests {
 
     @Test
     fun `GIVEN under AND post graduate plan AND wage only above post graduate threshold WHEN calculateTotalLoanDeduction THEN loan amount`() {
-        val wage = 24000.00
+        val wage = 2000.00
         val studentLoanPlans = Calculator.StudentLoanPlans(
             hasPlanOne = false, hasPlanTwo = true, hasPlanFour = false, hasPostgraduatePlan = true
         )
@@ -193,7 +193,7 @@ class StudentLoanCalculationTests {
 
     @Test
     fun `GIVEN under AND post graduate plan AND wage above both threshold WHEN init THEN result breakdown with both loan`() {
-        val wage = 28800.00
+        val wage = 2400.00
         val studentLoanPlans = Calculator.StudentLoanPlans(
             hasPlanOne = false, hasPlanTwo = true, hasPlanFour = false, hasPostgraduatePlan = true
         )
@@ -205,7 +205,7 @@ class StudentLoanCalculationTests {
 
     @Test
     fun `GIVEN under AND post graduate plan AND wage above both threshold WHEN calculateTotalLoanDeduction THEN sum of both loan amount`() {
-        val wage = 28800.00
+        val wage = 2400.00
         val studentLoanPlans = Calculator.StudentLoanPlans(
             hasPlanOne = false, hasPlanTwo = true, hasPlanFour = false, hasPostgraduatePlan = true
         )
@@ -217,7 +217,7 @@ class StudentLoanCalculationTests {
 
     @Test
     fun `GIVEN all plans AND wage above all threshold WHEN calculateTotalLoanDeduction WHEN init THEN result breakdown with lowest threshold and post grad loan`() {
-        val wage = 28800.00
+        val wage = 2400.00
         val studentLoanPlans = Calculator.StudentLoanPlans(
             hasPlanOne = true, hasPlanTwo = true, hasPlanFour = true, hasPostgraduatePlan = true
         )
@@ -229,7 +229,7 @@ class StudentLoanCalculationTests {
 
     @Test
     fun `GIVEN all plans AND wage above all threshold WHEN calculateTotalLoanDeduction THEN sum of lowest threshold and post grad loan amount`() {
-        val wage = 28800.00
+        val wage = 2400.00
         val studentLoanPlans = Calculator.StudentLoanPlans(
             hasPlanOne = true, hasPlanTwo = true, hasPlanFour = true, hasPostgraduatePlan = true
         )

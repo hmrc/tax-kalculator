@@ -31,3 +31,9 @@ fun Double.decimalRound(places: Int): Double {
 fun Double.roundDownToWholeNumber(): Double {
     return floor(this)
 }
+
+fun Double.roundDownToTwoDecimals(): Double {
+    var multiplier = 1.0
+    repeat(2) { multiplier *= 10 }
+    return floor(this * multiplier) / multiplier
+}

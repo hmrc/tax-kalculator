@@ -1,0 +1,57 @@
+/*
+ * Copyright 2024 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package uk.gov.hmrc.calculator.parameterizedtests
+
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.CsvFileSource
+import uk.gov.hmrc.calculator.Calculator
+import uk.gov.hmrc.calculator.model.PayPeriod
+import uk.gov.hmrc.calculator.model.TaxYear
+import uk.gov.hmrc.calculator.utils.prettyPrintDataClass
+import kotlin.test.assertEquals
+
+class StudentLoanParameterizedTests {
+
+    @ParameterizedTest(name = "wages={0}")
+    @CsvFileSource(resources = ["/studentloan/data2024_student_loan.csv"], numLinesToSkip = 1)
+    fun `Student Loan calculation 2024`(
+        inputWage: Double,
+        inputHasPlanOne: Boolean,
+        inputHasPlanTwo: Boolean,
+        inputHasPlanFour: Boolean,
+        inputHasPostgraduatePlan: Boolean,
+        expectedYearlyStudentLoan: Double,
+        expectedYearlyPostgraduateLoan: Double,
+    ) {
+        val response = Calculator(
+            taxCode = "1257L",
+            wages = inputWage,
+            payPeriod = PayPeriod.YEARLY,
+            taxYear = TaxYear.TWENTY_TWENTY_FOUR,
+            studentLoanPlans = Calculator.StudentLoanPlans(
+                inputHasPlanOne,
+                inputHasPlanTwo,
+                inputHasPlanFour,
+                inputHasPostgraduatePlan,
+            )
+        ).run()
+
+        val yearlyPeriod = response.yearly
+        println(yearlyPeriod.prettyPrintDataClass())
+        assertEquals(expectedYearlyStudentLoan, yearlyPeriod.finalStudentLoanAmount)
+        assertEquals(expectedYearlyPostgraduateLoan, yearlyPeriod.finalPostgraduateLoanAmount)
+    }
+}

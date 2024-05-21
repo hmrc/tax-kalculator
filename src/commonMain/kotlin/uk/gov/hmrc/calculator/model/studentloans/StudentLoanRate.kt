@@ -15,7 +15,11 @@
  */
 package uk.gov.hmrc.calculator.model.studentloans
 
+import uk.gov.hmrc.calculator.model.PayPeriod
 import uk.gov.hmrc.calculator.model.TaxYear
+import uk.gov.hmrc.calculator.utils.convertAmountFromYearlyToPayPeriod
+import uk.gov.hmrc.calculator.utils.roundDownToTwoDecimals
+import uk.gov.hmrc.calculator.utils.roundDownToWholeNumber
 import kotlin.jvm.JvmSynthetic
 
 internal class StudentLoanRate(taxYear: TaxYear) {
@@ -76,7 +80,11 @@ internal class StudentLoanRate(taxYear: TaxYear) {
     internal data class StudentLoanRepayment(
         val yearlyThreshold: Double,
         val recoveryRatePercentage: Double,
-    )
+    ) {
+        val getMonthlyThreshold = yearlyThreshold
+            .convertAmountFromYearlyToPayPeriod(PayPeriod.MONTHLY)
+            .roundDownToTwoDecimals()
+    }
 
     internal enum class StudentLoanPlan(val value: String) {
         PLAN_ONE("planOne"),

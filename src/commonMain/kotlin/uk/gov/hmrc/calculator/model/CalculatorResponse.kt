@@ -97,7 +97,8 @@ class CalculatorResponsePayPeriod(
                 "taperingAmountDeductionRaw=$taperingAmountRaw," +
                 "studentLoanBreakdown=$studentLoanBreakdown," +
                 "finalStudentLoanAmount=$finalStudentLoanAmount," +
-                "finalPostgraduateLoanAmount=$finalPostgraduateLoanAmount)"
+                "finalPostgraduateLoanAmount=$finalPostgraduateLoanAmount," +
+                "otherAmount=$otherAmount)"
     }
 }
 
