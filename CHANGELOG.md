@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.11.2] - 2024-05-22Z
 - Splitting student loan to student and postgraduate loan.
 - Added new Clarification to describe student loan status.
 - Added new "otherAmount" which combined student/postgrad/pension value.
