@@ -154,10 +154,10 @@ internal class StudentLoanCalculation(
             hasStudentLoanPlan && hasPostgraduatePlan -> {
                 clarificationForBothLoans()
             }
-            hasStudentLoanPlan && calculateTotalStudentLoanDeduction() == 0.0 -> {
+            hasStudentLoanPlan && getStudentLoanDeduction() == 0.0 -> {
                 Clarification.INCOME_BELOW_STUDENT_LOAN
             }
-            hasPostgraduatePlan && calculateTotalPostgraduateLoanDeduction() == 0.0 -> {
+            hasPostgraduatePlan && getPostgraduateLoanDeduction() == 0.0 -> {
                 Clarification.INCOME_BELOW_POSTGRAD_LOAN
             }
             else -> null
@@ -167,23 +167,27 @@ internal class StudentLoanCalculation(
     }
 
     private fun clarificationForBothLoans(): Clarification? {
-        return if (calculateTotalStudentLoanDeduction() == 0.0) {
-            if (calculateTotalPostgraduateLoanDeduction() > 0.0) {
+        return if (getStudentLoanDeduction() == 0.0) {
+            if (getPostgraduateLoanDeduction() > 0.0) {
                 Clarification.INCOME_BELOW_STUDENT_BUT_ABOVE_POSTGRAD_LOAN
             } else Clarification.INCOME_BELOW_STUDENT_AND_POSTGRAD_LOAN
         } else null
     }
 
     @JvmSynthetic
-    internal fun calculateTotalStudentLoanDeduction(): Double {
+    internal fun getStudentLoanDeduction(): Double {
         val listOfStudentLoan = listOfBreakdownResult.filter {
             it.plan != StudentLoanRate.StudentLoanPlan.POST_GRADUATE_PLAN.value
         }
-        return listOfStudentLoan.sumOf { it.amount }
+        val studentLoanWithAmount = listOfStudentLoan.filter {
+            it.amount != 0.0
+        }
+
+        return if (studentLoanWithAmount.isNotEmpty()) studentLoanWithAmount.first().amount else 0.0
     }
 
     @JvmSynthetic
-    internal fun calculateTotalPostgraduateLoanDeduction(): Double {
+    internal fun getPostgraduateLoanDeduction(): Double {
         return listOfBreakdownResult.first {
             it.plan == StudentLoanRate.StudentLoanPlan.POST_GRADUATE_PLAN.value
         }.amount

@@ -116,8 +116,8 @@ class Calculator @JvmOverloads constructor(
 
         val studentLoan = StudentLoanCalculation(taxYear, yearlyWages, studentLoanPlans)
         val studentLoanBreakdown = studentLoan.listOfBreakdownResult
-        val studentLoanDeduction = studentLoan.calculateTotalStudentLoanDeduction()
-        val postgraduateLoanDeduction = studentLoan.calculateTotalPostgraduateLoanDeduction()
+        val studentLoanDeduction = studentLoan.getStudentLoanDeduction()
+        val postgraduateLoanDeduction = studentLoan.getPostgraduateLoanDeduction()
         studentLoan.studentLoanClarification?.let { listOfClarification.add(it) }
 
         taxCodeType.getTaxCodeClarification(userPaysScottishTax)?.let { listOfClarification.add(it) }
