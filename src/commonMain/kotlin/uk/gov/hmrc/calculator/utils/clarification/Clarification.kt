@@ -23,7 +23,12 @@ enum class Clarification(private val description: String) {
     SCOTTISH_INCOME_APPLIED("Applied Scottish Income Tax rates."),
     SCOTTISH_CODE_BUT_OTHER_RATE("Applied Scottish Income Tax rates because you used a Scottish tax code."),
     NON_SCOTTISH_CODE_BUT_SCOTTISH_RATE("Applied Scottish Income Tax rates as you said you pay Scottish Income Tax."),
+    INCOME_BELOW_STUDENT_AND_POSTGRAD_LOAN("Income is below the level needed to start repaying student/postgrad loan."),
     INCOME_BELOW_STUDENT_LOAN("Income is below the level needed to start repaying student loan."),
+    INCOME_BELOW_POSTGRAD_LOAN("Income is below the level needed to start repaying postgrad loan."),
+    INCOME_BELOW_STUDENT_BUT_ABOVE_POSTGRAD_LOAN(
+        "Income is below the level needed to start repaying student loan, but high enough to repay postgrad loan"
+    ),
     PENSION_EXCEED_INCOME("Pension contribution amount is higher than income."),
     PENSION_EXCEED_ANNUAL_ALLOWANCE("Pension contribution amount is higher than annual allowance."),
     INCOME_OVER_100K("Income over £100k"),

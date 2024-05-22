@@ -18,6 +18,7 @@ package uk.gov.hmrc.calculator.model.studentloans
 import uk.gov.hmrc.calculator.Calculator
 import uk.gov.hmrc.calculator.model.StudentLoanAmountBreakdown
 import uk.gov.hmrc.calculator.model.TaxYear
+import uk.gov.hmrc.calculator.utils.clarification.Clarification
 import kotlin.jvm.JvmSynthetic
 
 internal class StudentLoanCalculation(
@@ -29,7 +30,7 @@ internal class StudentLoanCalculation(
     private val listOfUndergraduateResult = mutableListOf<StudentLoanPlanAmount>()
     private val listOfPostgraduateResult = mutableListOf<StudentLoanPlanAmount>()
 
-    var earnTooLowToPayStudentLoan = false
+    var studentLoanClarification: Clarification? = null
     val listOfBreakdownResult = mutableListOf(
         StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.PLAN_ONE.value, 0.0),
         StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.PLAN_TWO.value, 0.0),
@@ -68,7 +69,7 @@ internal class StudentLoanCalculation(
             studentLoanRate
         )
 
-        updateIfUserEarnTooLow(listOfUndergraduatePlan, hasPostgraduatePlan)
+        updateStudentLoanClarification(listOfUndergraduatePlan, hasPostgraduatePlan)
     }
 
     private fun calculateStudentLoan(
@@ -139,22 +140,58 @@ internal class StudentLoanCalculation(
         }
     }
 
-    private fun updateIfUserEarnTooLow(
+    private fun updateStudentLoanClarification(
         listOfUndergraduatePlan: Map<StudentLoanRate.StudentLoanPlan, Boolean>,
         hasPostgraduatePlan: Boolean,
     ) {
-        val hasStudentLoan = listOf(
+        val hasStudentLoanPlan = listOf(
             listOfUndergraduatePlan[StudentLoanRate.StudentLoanPlan.PLAN_ONE],
             listOfUndergraduatePlan[StudentLoanRate.StudentLoanPlan.PLAN_TWO],
             listOfUndergraduatePlan[StudentLoanRate.StudentLoanPlan.PLAN_FOUR],
-            hasPostgraduatePlan
         ).any { it!! }
 
-        earnTooLowToPayStudentLoan = hasStudentLoan && calculateTotalLoanDeduction() == 0.0
+        val clarification = when {
+            hasStudentLoanPlan && hasPostgraduatePlan -> {
+                clarificationForBothLoans()
+            }
+            hasStudentLoanPlan && getStudentLoanDeduction() == 0.0 -> {
+                Clarification.INCOME_BELOW_STUDENT_LOAN
+            }
+            hasPostgraduatePlan && getPostgraduateLoanDeduction() == 0.0 -> {
+                Clarification.INCOME_BELOW_POSTGRAD_LOAN
+            }
+            else -> null
+        }
+
+        studentLoanClarification = clarification
+    }
+
+    private fun clarificationForBothLoans(): Clarification? {
+        return if (getStudentLoanDeduction() == 0.0) {
+            if (getPostgraduateLoanDeduction() > 0.0) {
+                Clarification.INCOME_BELOW_STUDENT_BUT_ABOVE_POSTGRAD_LOAN
+            } else Clarification.INCOME_BELOW_STUDENT_AND_POSTGRAD_LOAN
+        } else null
     }
 
     @JvmSynthetic
-    internal fun calculateTotalLoanDeduction() = listOfBreakdownResult.sumOf { it.amount }
+    internal fun getStudentLoanDeduction(): Double {
+        val listOfStudentLoan = listOfBreakdownResult.filter {
+            it.plan != StudentLoanRate.StudentLoanPlan.POST_GRADUATE_PLAN.value
+        }
+        val studentLoanWithAmount = listOfStudentLoan.filter {
+            it.amount != 0.0
+        }
+
+        return if (studentLoanWithAmount.isNotEmpty()) studentLoanWithAmount.first().amount else 0.0
+    }
+
+    @JvmSynthetic
+    internal fun getPostgraduateLoanDeduction(): Double {
+        return listOfBreakdownResult.first {
+            it.plan == StudentLoanRate.StudentLoanPlan.POST_GRADUATE_PLAN.value
+        }.amount
+    }
 
     internal data class StudentLoanPlanAmount(
         val plan: StudentLoanRate.StudentLoanPlan,
