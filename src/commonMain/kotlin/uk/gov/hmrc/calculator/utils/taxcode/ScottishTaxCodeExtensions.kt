@@ -21,6 +21,7 @@ import uk.gov.hmrc.calculator.model.taxcodes.SBR
 import uk.gov.hmrc.calculator.model.taxcodes.SD0
 import uk.gov.hmrc.calculator.model.taxcodes.SD1
 import uk.gov.hmrc.calculator.model.taxcodes.SD2
+import uk.gov.hmrc.calculator.model.taxcodes.SD3
 import uk.gov.hmrc.calculator.model.taxcodes.SKCode
 import uk.gov.hmrc.calculator.model.taxcodes.SLCode
 import uk.gov.hmrc.calculator.model.taxcodes.STCode
@@ -38,6 +39,7 @@ internal fun String.matchScottishTaxCode(): ScottishTaxCode {
         "SD0" -> SD0()
         "SD1" -> SD1()
         "SD2" -> SD2()
+        "SD3" -> SD3()
         else -> this.matchOtherScottishTaxCode()
     }
 }

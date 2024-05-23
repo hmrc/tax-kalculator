@@ -60,6 +60,13 @@ internal class SD2 :
         get() = 4
 }
 
+internal class SD3 :
+    ScottishTaxCode,
+    SingleBandTax {
+    override val taxAllAtBand: Int
+        get() = 5
+}
+
 internal class STCode(private val taxFreeAmountWithoutTrailingZero: Double) :
     ScottishTaxCode,
     AdjustedTaxFreeTCode {

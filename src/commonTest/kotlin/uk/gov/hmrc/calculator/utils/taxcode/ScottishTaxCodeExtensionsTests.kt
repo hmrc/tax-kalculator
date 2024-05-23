@@ -22,6 +22,7 @@ import uk.gov.hmrc.calculator.model.taxcodes.SBR
 import uk.gov.hmrc.calculator.model.taxcodes.SD0
 import uk.gov.hmrc.calculator.model.taxcodes.SD1
 import uk.gov.hmrc.calculator.model.taxcodes.SD2
+import uk.gov.hmrc.calculator.model.taxcodes.SD3
 import uk.gov.hmrc.calculator.model.taxcodes.SKCode
 import uk.gov.hmrc.calculator.model.taxcodes.SLCode
 import uk.gov.hmrc.calculator.model.taxcodes.STCode
@@ -106,7 +107,7 @@ class ScottishTaxCodeExtensionsTests {
     }
 
     @Test
-    fun `Scotland top`() {
+    fun `Scotland advanced`() {
         assertTrue("SD2".toTaxCode() is SD2)
         val taxCode: SD2 = "SD2".toTaxCode() as SD2
         assertEquals(SCOTLAND, taxCode.country)
@@ -115,11 +116,29 @@ class ScottishTaxCodeExtensionsTests {
     }
 
     @Test
-    fun `Scotland top ignore additional code`() {
+    fun `Scotland advanced ignore additional code`() {
         assertTrue("SD2ABC".toTaxCode() is SD2)
         val taxCode: SD2 = "SD2ABC".toTaxCode() as SD2
         assertEquals(SCOTLAND, taxCode.country)
         assertEquals(4, taxCode.taxAllAtBand)
+        assertEquals(0.0, taxCode.taxFreeAmount)
+    }
+
+    @Test
+    fun `Scotland top`() {
+        assertTrue("SD3".toTaxCode() is SD3)
+        val taxCode: SD3 = "SD3".toTaxCode() as SD3
+        assertEquals(SCOTLAND, taxCode.country)
+        assertEquals(5, taxCode.taxAllAtBand)
+        assertEquals(0.0, taxCode.taxFreeAmount)
+    }
+
+    @Test
+    fun `Scotland top ignore additional code`() {
+        assertTrue("SD3ABC".toTaxCode() is SD3)
+        val taxCode: SD3 = "SD3ABC".toTaxCode() as SD3
+        assertEquals(SCOTLAND, taxCode.country)
+        assertEquals(5, taxCode.taxAllAtBand)
         assertEquals(0.0, taxCode.taxFreeAmount)
     }
 
@@ -140,7 +159,7 @@ class ScottishTaxCodeExtensionsTests {
     @Test
     fun `Scotland invalid`() {
         assertFailsWith<InvalidTaxCodeException> {
-            "SD3".toTaxCode()
+            "SD4".toTaxCode()
         }
     }
 
