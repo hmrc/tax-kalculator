@@ -49,8 +49,8 @@ class CalculatorResponsePayPeriod(
     val taxToPay = if (taxToPayForPayPeriod > maxTaxAmount) maxTaxAmount else taxToPayForPayPeriod.formatMoney()
     val maxTaxAmountExceeded = (taxToPayForPayPeriod > maxTaxAmount)
     val pensionContribution = pensionContributionRaw?.formatMoney() ?: 0.0.formatMoney()
-    val finalStudentLoanAmount = finalStudentLoanAmountRaw.roundDownToWholeNumber()
-    val finalPostgraduateLoanAmount = finalPostgraduateLoanAmountRaw.roundDownToWholeNumber()
+    val finalStudentLoanAmount = finalStudentLoanAmountRaw.formatMoney().roundDownToWholeNumber()
+    val finalPostgraduateLoanAmount = finalPostgraduateLoanAmountRaw.formatMoney().roundDownToWholeNumber()
     val otherAmount = pensionContribution + finalStudentLoanAmount + finalPostgraduateLoanAmount
     val totalDeductions = (taxToPay + employeesNIRaw + otherAmount).formatMoney()
     val takeHome = (wagesRaw - totalDeductions).formatMoney()

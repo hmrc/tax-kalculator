@@ -78,7 +78,8 @@ internal class StudentLoanCalculation(
     ): Double {
         return if (yearlyWage > studentLoanRepayment.yearlyThreshold) {
             val amountToCalculateLoan = yearlyWage - studentLoanRepayment.yearlyThreshold
-            amountToCalculateLoan * studentLoanRepayment.recoveryRatePercentage
+            val yearlyLoanAmount = amountToCalculateLoan * studentLoanRepayment.recoveryRatePercentage
+            if (yearlyLoanAmount >= MINIMUM_YEARLY_STUDENT_LOAN_AMOUNT) yearlyLoanAmount else 0.0
         } else 0.0
     }
 
@@ -199,4 +200,8 @@ internal class StudentLoanCalculation(
         val planThreshold: Double,
         val hasPlan: Boolean,
     )
+
+    companion object {
+        private const val MINIMUM_YEARLY_STUDENT_LOAN_AMOUNT = 12.0
+    }
 }
