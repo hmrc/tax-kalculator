@@ -32,17 +32,17 @@ internal object PensionAllowances {
         TaxYear.TWENTY_TWENTY_FOUR -> pensionAllowance2024()
     }
 
-    private fun pensionAllowance2020() = PensionAllowance(40000.0)
+    private fun pensionAllowance2020() = PensionAllowance(10000.0)
 
-    private fun pensionAllowance2021() = PensionAllowance(40000.0)
+    private fun pensionAllowance2021() = PensionAllowance(10000.0)
 
-    private fun pensionAllowance2022() = PensionAllowance(40000.0)
+    private fun pensionAllowance2022() = PensionAllowance(10000.0)
 
-    private fun pensionAllowance2023() = PensionAllowance(60000.0)
+    private fun pensionAllowance2023() = PensionAllowance(10000.0)
 
-    private fun pensionAllowance2023JanuaryRevised() = PensionAllowance(60000.0)
+    private fun pensionAllowance2023JanuaryRevised() = PensionAllowance(10000.0)
 
-    private fun pensionAllowance2024() = PensionAllowance(60000.0)
+    private fun pensionAllowance2024() = PensionAllowance(10000.0)
 
     internal data class PensionAllowance(val annualAllowance: Double)
 }

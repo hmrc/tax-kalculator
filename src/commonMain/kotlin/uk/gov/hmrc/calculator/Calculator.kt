@@ -160,6 +160,8 @@ class Calculator @JvmOverloads constructor(
             }
             if (PensionValidator.isPensionAboveAnnualAllowance(yearlyPension, taxYear)) {
                 listOfClarification.add(Clarification.PENSION_EXCEED_ANNUAL_ALLOWANCE)
+            } else {
+                listOfClarification.add(Clarification.PENSION_BELOW_ANNUAL_ALLOWANCE)
             }
         }
     }

@@ -31,6 +31,7 @@ enum class Clarification(private val description: String) {
     ),
     PENSION_EXCEED_INCOME("Pension contribution amount is higher than income."),
     PENSION_EXCEED_ANNUAL_ALLOWANCE("Pension contribution amount is higher than annual allowance."),
+    PENSION_BELOW_ANNUAL_ALLOWANCE("Pension contribution amount is below than annual allowance."),
     INCOME_OVER_100K("Income over £100k"),
     INCOME_OVER_100K_WITH_TAPERING("Income over £100K with default 1257L tax code."),
     K_CODE("Tax code started with K.")
