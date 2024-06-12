@@ -25,41 +25,41 @@ class PensionAllowancesTest {
     fun `GIVEN year is 2020 WHEN getPensionAllowances THEN return populated object`() {
         val result = PensionAllowances.getPensionAllowances(TaxYear.TWENTY_TWENTY)
 
-        assertEquals(40000.0, result.annualAllowance)
+        assertEquals(10000.0, result.annualAllowance)
     }
 
     @Test
     fun `GIVEN year is 2021 WHEN getPensionAllowances THEN return populated object`() {
         val result = PensionAllowances.getPensionAllowances(TaxYear.TWENTY_TWENTY_ONE)
 
-        assertEquals(40000.0, result.annualAllowance)
+        assertEquals(10000.0, result.annualAllowance)
     }
 
     @Test
     fun `GIVEN year is 2022 WHEN getPensionAllowances THEN return populated object`() {
         val result = PensionAllowances.getPensionAllowances(TaxYear.TWENTY_TWENTY_TWO)
 
-        assertEquals(40000.0, result.annualAllowance)
+        assertEquals(10000.0, result.annualAllowance)
     }
 
     @Test
     fun `GIVEN year is 2023 WHEN getPensionAllowances THEN return populated object`() {
         val result = PensionAllowances.getPensionAllowances(TaxYear.TWENTY_TWENTY_THREE)
 
-        assertEquals(60000.0, result.annualAllowance)
+        assertEquals(10000.0, result.annualAllowance)
     }
 
     @Test
     fun `GIVEN year is 2023 revised WHEN getPensionAllowances THEN return populated object`() {
         val result = PensionAllowances.getPensionAllowances(TaxYear.TWENTY_TWENTY_THREE_JANUARY_REVISED)
 
-        assertEquals(60000.0, result.annualAllowance)
+        assertEquals(10000.0, result.annualAllowance)
     }
 
     @Test
     fun `GIVEN year is 2024 WHEN getPensionAllowances THEN return populated object`() {
         val result = PensionAllowances.getPensionAllowances(TaxYear.TWENTY_TWENTY_FOUR)
 
-        assertEquals(60000.0, result.annualAllowance)
+        assertEquals(10000.0, result.annualAllowance)
     }
 }

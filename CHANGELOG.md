@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - Fix Student Loan rounding issue, and added new parameterized test for Student Loan.
 - Fix Scottish Tax Rate by adding allowing SD3 tax code for Scottish top rate.
+- Added Clarification for Pension Allowance, and adjusted Pension Allowance amount.
 
 ## [2.11.2] - 2024-05-22Z
 - Splitting student loan to student and postgraduate loan.
