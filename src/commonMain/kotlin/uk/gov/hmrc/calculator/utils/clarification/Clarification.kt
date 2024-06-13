@@ -19,7 +19,7 @@ package uk.gov.hmrc.calculator.utils.clarification
 enum class Clarification(val priority: Int, private val description: String) {
     HAVE_STATE_PENSION(1, "Have state pension."),
     HAVE_NO_STATE_PENSION(2, "Have no state pension."),
-    INCOME_OVER_100K_WITH_TAPERING(3, "Income over £100K with default 1257L tax code."),
+    INCOME_OVER_100K_WITH_TAPERING(3, "Income over £100K with default 1257L tax code, tapering applied."),
     NO_TAX_CODE_SUPPLIED(4, "Did not provide a tax code."),
     SCOTTISH_INCOME_APPLIED(5, "Applied Scottish Income Tax rates."),
     SCOTTISH_CODE_BUT_OTHER_RATE(6, "Applied Scottish Income Tax rates because you used a Scottish tax code."),
@@ -34,6 +34,6 @@ enum class Clarification(val priority: Int, private val description: String) {
         14,
         "Income is below the level needed to start repaying student loan, but high enough to repay postgrad loan"
     ),
-    INCOME_OVER_100K(15, "Income over £100k"),
+    INCOME_OVER_100K(15, "Income over £100k with user specified 1257L tax code, no tapering."),
     PENSION_EXCEED_INCOME(16, "Pension contribution amount is higher than income."),
 }
