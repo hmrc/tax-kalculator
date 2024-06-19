@@ -40,10 +40,13 @@ internal fun Double.yearlyWageIsAboveHundredThousand() = this > TAPERING_THRESHO
 
 @JvmSynthetic
 internal fun Double.shouldApplyStandardTapering(taxCodeType: TaxCode, userSuppliedTaxCode: Boolean) =
-    taxCodeType is StandardTaxCode && !userSuppliedTaxCode && this.yearlyWageIsAboveHundredThousand()
+    isStandardTaxCodeAndAboveHundredThousand(taxCodeType, this) && !userSuppliedTaxCode
 
 @JvmSynthetic
 internal fun Double.shouldApplyDefaultTaxCode(taxCodeType: TaxCode, userSuppliedTaxCode: Boolean) =
-    taxCodeType is StandardTaxCode && userSuppliedTaxCode && this.yearlyWageIsAboveHundredThousand()
+    isStandardTaxCodeAndAboveHundredThousand(taxCodeType, this) && userSuppliedTaxCode
+
+private fun isStandardTaxCodeAndAboveHundredThousand(taxCodeType: TaxCode, yearlyWageAfterPension: Double) =
+    taxCodeType is StandardTaxCode && yearlyWageAfterPension.yearlyWageIsAboveHundredThousand()
 
 private const val TAPERING_THRESHOLD = 100000.0
