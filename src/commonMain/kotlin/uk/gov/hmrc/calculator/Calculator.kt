@@ -54,8 +54,8 @@ import uk.gov.hmrc.calculator.utils.convertWageToYearly
 import uk.gov.hmrc.calculator.utils.studentloan.convertBreakdownForPayPeriod
 import uk.gov.hmrc.calculator.utils.tapering.deductTapering
 import uk.gov.hmrc.calculator.utils.tapering.getTaperingAmount
+import uk.gov.hmrc.calculator.utils.tapering.shouldApplyDefaultTaxCode
 import uk.gov.hmrc.calculator.utils.tapering.shouldApplyStandardTapering
-import uk.gov.hmrc.calculator.utils.tapering.yearlyWageIsAboveHundredThousand
 import uk.gov.hmrc.calculator.utils.taxcode.getTaxCodeClarification
 import uk.gov.hmrc.calculator.utils.taxcode.getTrueTaxFreeAmount
 import uk.gov.hmrc.calculator.utils.taxcode.toTaxCode
@@ -135,20 +135,20 @@ class Calculator @JvmOverloads constructor(
     }
 
     private fun getTaxFreeAndTaperingAmount(yearlyWageAfterPension: Double): Pair<Double, Double?> {
-        return if (yearlyWageAfterPension.yearlyWageIsAboveHundredThousand()) {
-            if (yearlyWageAfterPension.shouldApplyStandardTapering(taxCodeType, userSuppliedTaxCode)) {
+        return when {
+            yearlyWageAfterPension.shouldApplyStandardTapering(taxCodeType, userSuppliedTaxCode) -> {
                 listOfClarification.add(Clarification.INCOME_OVER_100K_WITH_TAPERING)
                 Pair(
                     taxCodeType.getTrueTaxFreeAmount().deductTapering(yearlyWageAfterPension),
                     // for calculation purpose, we use the taxFreeAmount (which include the £9) to calculate.
                     yearlyWageAfterPension.getTaperingAmount(taxCodeType.taxFreeAmount)
                 )
-            } else {
+            }
+            yearlyWageAfterPension.shouldApplyDefaultTaxCode(taxCodeType, userSuppliedTaxCode) -> {
                 listOfClarification.add(Clarification.INCOME_OVER_100K)
                 Pair(taxCodeType.getTrueTaxFreeAmount(), null)
             }
-        } else {
-            Pair(taxCodeType.getTrueTaxFreeAmount(), null)
+            else -> Pair(taxCodeType.getTrueTaxFreeAmount(), null)
         }
     }
 
@@ -193,6 +193,7 @@ class Calculator @JvmOverloads constructor(
                 EmployerNIBands(taxYear).bands.getTotalFromNIBands(yearlyWages)
             )
         }
+        listOfClarification.sortBy { it.priority }
         return CalculatorResponse(
             country = taxCode.country,
             isKCode = taxCode is KTaxCode,

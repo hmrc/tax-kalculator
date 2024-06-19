@@ -1489,6 +1489,20 @@ internal class CalculatorTests {
     }
 
     @Test
+    fun `GIVEN tapering not apply AND wage is over 100k AND correct tax code applied WHEN calculate THEN clarification does not contain 100K clarification`() {
+        val result = Calculator(
+            taxCode = "0T",
+            userSuppliedTaxCode = true,
+            wages = 125140.0,
+            payPeriod = PayPeriod.YEARLY,
+            taxYear = TaxYear.TWENTY_TWENTY_THREE,
+        ).run()
+
+        assertFalse(result.listOfClarification.contains(Clarification.INCOME_OVER_100K))
+        assertFalse(result.listOfClarification.contains(Clarification.INCOME_OVER_100K_WITH_TAPERING))
+    }
+
+    @Test
     fun `GIVEN tax code is k code WHEN calculate THEN clarification contain K_CODE`() {
         val result = Calculator(
             taxCode = "K1257X",
@@ -1595,12 +1609,31 @@ internal class CalculatorTests {
         ).run()
 
         val listOfExpectedResult = mutableListOf(
-            Clarification.NO_TAX_CODE_SUPPLIED,
             Clarification.HAVE_STATE_PENSION,
+            Clarification.NO_TAX_CODE_SUPPLIED,
             Clarification.K_CODE,
-            Clarification.INCOME_OVER_100K,
         )
         assertEquals(listOfExpectedResult, result.listOfClarification)
+    }
+
+    @Test
+    fun `GIVEN multiple clarifications met WHEN calculate THEN return a list of clarifications with the correct priority`() {
+        val result = Calculator(
+            taxCode = "K1257X",
+            userSuppliedTaxCode = false,
+            wages = 125140.0,
+            payPeriod = PayPeriod.YEARLY,
+            isPensionAge = true,
+            taxYear = TaxYear.TWENTY_TWENTY_THREE,
+            studentLoanPlans = Calculator.StudentLoanPlans(
+                hasPlanTwo = true,
+                hasPostgraduatePlan = true
+            )
+        ).run()
+
+        assertEquals(1, result.listOfClarification[0].priority)
+        assertEquals(4, result.listOfClarification[1].priority)
+        assertEquals(8, result.listOfClarification[2].priority)
     }
 
     @Test
