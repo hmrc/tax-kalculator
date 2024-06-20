@@ -70,8 +70,12 @@ Returns an object of type `CalculatorResponse`. This class is broken up into `we
 - `taperingAmountDeduction` of type `Double` (This will return 0.0 if wage is below £100,002)
 - `studentLoanBreakdown` of type `List<StudentLoanAmountBreakdown>` (This will return null if no student loan plan)
 - `finalStudentLoanAmount` of type `Double` (This will return 0.0 if no student loan plan)
+- `finalPostgraduateLoanAmount` of type `Double` (This will return 0.0 if no postgraduate loan plan)
+- `otherAmount` of type `Double` (This will return 0.0 if no other amount)
 
 > For tax breakdown this is the amount of tax per tax band which has two members, `percentage: Double` and `amount: Double`.
+
+> `otherAmount` is the sum of `pensionContribution`, `finalStudentLoanAmount` and `finalPostgraduateLoanAmount`.
 
 ## Utilities
 
