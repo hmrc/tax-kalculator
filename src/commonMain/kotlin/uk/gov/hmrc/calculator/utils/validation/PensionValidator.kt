@@ -30,10 +30,17 @@ object PensionValidator {
         monthlyWage: Double,
         taxYear: TaxYear,
     ): MutableList<PensionError> {
+        val listOfError = mutableListOf<PensionError>()
         val yearlyPension = monthlyPension.convertWageToYearly(PayPeriod.MONTHLY)
         val yearlyWage = monthlyWage.convertWageToYearly(PayPeriod.MONTHLY)
 
-        return isValidYearlyPension(yearlyPension, yearlyWage, taxYear)
+        if (!monthlyPension.isTwoDecimalPlacesOrFewer() || !isPensionValidFormat(monthlyPension)) {
+            listOfError.add(PensionError.INVALID_FORMAT)
+        }
+        listOfError.addAll(validatePensionWithinRange(yearlyPension, yearlyWage, taxYear))
+
+        listOfError.sortBy { it.priority }
+        return listOfError
     }
 
     fun isValidYearlyPension(yearlyPension: Double, yearlyWage: Double, taxYear: TaxYear): MutableList<PensionError> {
@@ -42,9 +49,7 @@ object PensionValidator {
         if (!yearlyPension.isTwoDecimalPlacesOrFewer() || !isPensionValidFormat(yearlyPension)) {
             listOfError.add(PensionError.INVALID_FORMAT)
         }
-        if (isPensionBelowZero(yearlyPension)) listOfError.add(PensionError.BELOW_ZERO)
-        if (!isPensionLowerThenWage(yearlyPension, yearlyWage)) listOfError.add(PensionError.ABOVE_WAGE)
-        if (isPensionAboveAnnualAllowance(yearlyPension, taxYear)) listOfError.add(PensionError.ABOVE_ANNUAL_ALLOWANCE)
+        listOfError.addAll(validatePensionWithinRange(yearlyPension, yearlyWage, taxYear))
 
         listOfError.sortBy { it.priority }
         return listOfError
@@ -62,9 +67,22 @@ object PensionValidator {
         if (isPensionBelowZero(inputValue)) listOfError.add(PensionError.BELOW_ZERO)
         if (isPensionPercentageAboveHundred(inputValue, pensionMethod))
             listOfError.add(PensionError.ABOVE_HUNDRED_PERCENT)
-        validatePensionInputValidDecimal(inputValue, pensionMethod)?.let { listOfError.add(it) }
+        validatePensionInputValidDecimal(monthlyPension, pensionMethod)?.let { listOfError.add(it) }
 
         listOfError.sortBy { it.priority }
+        return listOfError
+    }
+
+    private fun validatePensionWithinRange(
+        yearlyPension: Double,
+        yearlyWage: Double,
+        taxYear: TaxYear
+    ): MutableList<PensionError> {
+        val listOfError = mutableListOf<PensionError>()
+        if (isPensionBelowZero(yearlyPension)) listOfError.add(PensionError.BELOW_ZERO)
+        if (!isPensionLowerThenWage(yearlyPension, yearlyWage)) listOfError.add(PensionError.ABOVE_WAGE)
+        if (isPensionAboveAnnualAllowance(yearlyPension, taxYear)) listOfError.add(PensionError.ABOVE_ANNUAL_ALLOWANCE)
+
         return listOfError
     }
 

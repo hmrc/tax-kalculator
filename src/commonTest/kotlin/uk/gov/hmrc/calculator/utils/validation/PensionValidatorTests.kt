@@ -195,6 +195,16 @@ class PensionValidatorTests {
     }
 
     @Test
+    fun `GIVEN no error WHEN validateValidInputPensionInput THEN return empty list`() {
+        val monthlyPension = 833.55
+        val pensionMethod = PensionMethod.MONTHLY_AMOUNT_IN_POUNDS
+
+        val listOfError = emptyList<PensionValidator.PensionError>()
+
+        assertEquals(listOfError, PensionValidator.validateValidInputPensionInput(monthlyPension, pensionMethod))
+    }
+
+    @Test
     fun `GIVEN amount is less then zero WHEN validateValidInputPensionInput THEN return BELOW_ZERO`() {
         val monthlyPension = -10.0
         val pensionMethod = PensionMethod.MONTHLY_AMOUNT_IN_POUNDS
