@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+- Fix PensionValidator to perform format check on input, instead of the calculated value.
 
 ## [2.12.0] - 2024-06-20Z
 - Fix Student Loan rounding issue, and added new parameterized test for Student Loan.
