@@ -23,6 +23,7 @@ import uk.gov.hmrc.calculator.model.TaxYear
 import uk.gov.hmrc.calculator.utils.prettyPrintDataClass
 import kotlin.test.assertEquals
 
+@Suppress("LongParameterList")
 class StudentLoanParameterizedTests {
 
     @ParameterizedTest(name = "wages={0}")
