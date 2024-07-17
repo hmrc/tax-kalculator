@@ -553,19 +553,25 @@ internal class ParameterizedCalculatorTests {
         val yearlyPeriod = response.yearly
         println(inputTaxCode)
         println(yearlyPeriod.prettyPrintDataClass())
-        println("expectedYearlyNiEmployer=$expectedYearlyNiEmployer, " +
-                "yearlyPeriod.employersNI=$yearlyPeriod.employersNI")
+        println(
+            "expectedYearlyNiEmployer=$expectedYearlyNiEmployer, " +
+                "yearlyPeriod.employersNI=$yearlyPeriod.employersNI"
+        )
         assertEquals(PayPeriod.YEARLY, yearlyPeriod.payPeriod)
         assertEquals(expectedYearlyNiEmployee, yearlyPeriod.employeesNI, "Yearly employee NI did not match")
         assertEquals(expectedYearlyNiEmployer, yearlyPeriod.employersNI, "Yearly employer NI did not match")
         assertEquals(expectedYearlyIncomeTax, yearlyPeriod.taxToPay, "Yearly income tax did not match")
-        assertEquals(expectedYearlyTotalDeduction, yearlyPeriod.totalDeductions,
-            "Yearly total deductions did not match")
+        assertEquals(
+            expectedYearlyTotalDeduction, yearlyPeriod.totalDeductions,
+            "Yearly total deductions did not match"
+        )
         assertEquals(expectedYearlyTakeHome, yearlyPeriod.takeHome, "Yearly take home did not match")
         assertEquals(expectedYearlyWages, yearlyPeriod.wages, "Yearly wages did not match")
         assertEquals(expectedYearlyTaxFreeAmount, yearlyPeriod.taxFree, "Yearly tax free amount did not match")
-        assertEquals(expectedYearlyKCodeAdjustment, yearlyPeriod.kCodeAdjustment,
-            "Yearly K code adjustment did not match")
+        assertEquals(
+            expectedYearlyKCodeAdjustment, yearlyPeriod.kCodeAdjustment,
+            "Yearly K code adjustment did not match"
+        )
         assertFalse(yearlyPeriod.maxTaxAmountExceeded)
 
         assertEquals(PayPeriod.MONTHLY, response.monthly.payPeriod)
