@@ -29,7 +29,7 @@ plugins {
     `maven-publish`
     kotlin("multiplatform").version("1.9.20")
     java
-    id("io.gitlab.arturbosch.detekt").version("1.6.0")
+    id("io.gitlab.arturbosch.detekt").version("1.17.0")
     id("com.chromaticnoise.multiplatform-swiftpackage").version("2.0.3")
     id("org.jetbrains.kotlinx.kover") version "0.7.6"
 }
