@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.12.2] - 2024-07-17Z
 - Format README to fix swift package release.
 
 ## [2.12.1] - 2024-06-27Z
