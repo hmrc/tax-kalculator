@@ -63,6 +63,7 @@ import uk.gov.hmrc.calculator.utils.validation.PensionValidator
 import uk.gov.hmrc.calculator.utils.validation.WageValidator
 import kotlin.jvm.JvmOverloads
 
+@Suppress("LongParameterList")
 class Calculator @JvmOverloads constructor(
     private val taxCode: String,
     private val userPaysScottishTax: Boolean = false,

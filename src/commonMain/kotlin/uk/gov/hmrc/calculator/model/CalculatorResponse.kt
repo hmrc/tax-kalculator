@@ -29,6 +29,7 @@ data class StudentLoanAmountBreakdown(
     var amount: Double,
 )
 
+@Suppress("LongParameterList")
 class CalculatorResponsePayPeriod(
     val payPeriod: PayPeriod,
     val taxToPayForPayPeriod: Double,

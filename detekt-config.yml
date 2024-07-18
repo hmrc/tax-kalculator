@@ -59,7 +59,7 @@ complexity:
     ignoreSimpleWhenEntries: false
   LabeledExpression:
     active: false
-    ignoredLabels: ""
+    ignoredLabels: [""]
   LargeClass:
     active: true
     threshold: 600
@@ -132,7 +132,7 @@ exceptions:
   active: true
   ExceptionRaisedInUnexpectedLocation:
     active: false
-    methodNames: 'toString,hashCode,equals,finalize'
+    methodNames: ['toString,hashCode,equals,finalize']
   InstanceOfCheckForException:
     active: false
     excludes: "**/test/**,**/androidTest/**,**/*.Test.kt,**/*.Spec.kt,**/*.Spek.kt"
@@ -146,14 +146,14 @@ exceptions:
     active: false
   SwallowedException:
     active: false
-    ignoredExceptionTypes: 'InterruptedException,NumberFormatException,ParseException,MalformedURLException'
+    ignoredExceptionTypes: ['InterruptedException,NumberFormatException,ParseException,MalformedURLException']
   ThrowingExceptionFromFinally:
     active: false
   ThrowingExceptionInMain:
     active: false
   ThrowingExceptionsWithoutMessageOrCause:
     active: false
-    exceptions: 'IllegalArgumentException,IllegalStateException,IOException'
+    exceptions: ['IllegalArgumentException,IllegalStateException,IOException']
   ThrowingNewInstanceOfSameException:
     active: false
   TooGenericExceptionCaught:
@@ -177,106 +177,6 @@ exceptions:
      - Throwable
      - RuntimeException
 
-formatting:
-  active: true
-  android: false
-  autoCorrect: true
-  AnnotationOnSeparateLine:
-    active: false
-  ChainWrapping:
-    active: true
-    autoCorrect: true
-  CommentSpacing:
-    active: true
-    autoCorrect: true
-  Filename:
-    active: true
-  FinalNewline:
-    active: true
-    autoCorrect: true
-  ImportOrdering:
-    active: false
-  Indentation:
-    active: false
-    indentSize: 4
-    continuationIndentSize: 4
-  MaximumLineLength:
-    active: true
-    maxLineLength: 120
-  ModifierOrdering:
-    active: true
-    autoCorrect: true
-  MultiLineIfElse:
-    active: true
-    autoCorrect: true
-  NoBlankLineBeforeRbrace:
-    active: true
-    autoCorrect: true
-  NoConsecutiveBlankLines:
-    active: true
-    autoCorrect: true
-  NoEmptyClassBody:
-    active: true
-    autoCorrect: true
-  NoLineBreakAfterElse:
-    active: true
-    autoCorrect: true
-  NoLineBreakBeforeAssignment:
-    active: true
-    autoCorrect: true
-  NoMultipleSpaces:
-    active: true
-    autoCorrect: true
-  NoSemicolons:
-    active: true
-    autoCorrect: true
-  NoTrailingSpaces:
-    active: true
-    autoCorrect: true
-  NoUnitReturn:
-    active: true
-    autoCorrect: true
-  NoUnusedImports:
-    active: true
-    autoCorrect: true
-  NoWildcardImports:
-    active: true
-    autoCorrect: true
-  PackageName:
-    active: true
-    autoCorrect: true
-  ParameterListWrapping:
-    active: true
-    autoCorrect: true
-    indentSize: 4
-  SpacingAroundColon:
-    active: true
-    autoCorrect: true
-  SpacingAroundComma:
-    active: true
-    autoCorrect: true
-  SpacingAroundCurly:
-    active: true
-    autoCorrect: true
-  SpacingAroundDot:
-    active: true
-    autoCorrect: true
-  SpacingAroundKeyword:
-    active: true
-    autoCorrect: true
-  SpacingAroundOperators:
-    active: true
-    autoCorrect: true
-  SpacingAroundParens:
-    active: true
-    autoCorrect: true
-  SpacingAroundRangeOperator:
-    active: true
-    autoCorrect: true
-  StringTemplate:
-    active: true
-    autoCorrect: true
-
 naming:
   active: true
   ClassNaming:
@@ -296,7 +196,7 @@ naming:
   ForbiddenClassName:
     active: false
     excludes: "**/test/**,**/androidTest/**,**/*.Test.kt,**/*.Spec.kt,**/*.Spek.kt"
-    forbiddenName: ''
+    forbiddenName: ['']
   FunctionMaxLength:
     active: false
     excludes: "**/test/**,**/androidTest/**,**/*.Test.kt,**/*.Spec.kt,**/*.Spek.kt"
@@ -414,7 +314,7 @@ style:
     active: false
   DataClassContainsFunctions:
     active: false
-    conversionFunctionPrefix: 'to'
+    conversionFunctionPrefix: ['to']
   DataClassShouldBeImmutable:
     active: false
   EqualsNullCall:
@@ -431,14 +331,14 @@ style:
     values: 'TODO:,FIXME:,STOPSHIP:'
   ForbiddenImport:
     active: false
-    imports: ''
+    imports: ['']
   ForbiddenVoid:
     active: false
     ignoreOverridden: false
   FunctionOnlyReturningConstant:
     active: false
     ignoreOverridableFunction: true
-    excludedFunctions: 'describeContents'
+    excludedFunctions: ['describeContents']
   LibraryCodeMustSpecifyReturnType:
     active: false
   LoopWithTooManyJumpStatements:
@@ -447,7 +347,7 @@ style:
   MagicNumber:
     active: false
     excludes: "**/test/**,**/androidTest/**,**/*.Test.kt,**/*.Spec.kt,**/*.Spek.kt"
-    ignoreNumbers: '-1,0,1,2'
+    ignoreNumbers: ['-1,0,1,2']
     ignoreHashCodeFunction: true
     ignorePropertyDeclaration: false
     ignoreConstantDeclaration: true
@@ -489,7 +389,7 @@ style:
   ReturnCount:
     active: true
     max: 2
-    excludedFunctions: "equals"
+    excludedFunctions: ["equals"]
     excludeLabeled: false
     excludeReturnFromLambda: true
   SafeCast:
@@ -542,4 +442,4 @@ style:
   WildcardImport:
     active: true
     excludes: "**/test/**,**/androidTest/**,**/*.Test.kt,**/*.Spec.kt,**/*.Spek.kt"
-    excludeImports: 'java.util.*,kotlinx.android.synthetic.*'
+    excludeImports: ['java.util.*,kotlinx.android.synthetic.*']

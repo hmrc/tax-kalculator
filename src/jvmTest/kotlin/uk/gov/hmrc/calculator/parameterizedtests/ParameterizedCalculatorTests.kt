@@ -30,6 +30,7 @@ import uk.gov.hmrc.calculator.model.TaxYear
 import uk.gov.hmrc.calculator.model.pension.PensionMethod
 import uk.gov.hmrc.calculator.utils.prettyPrintDataClass
 
+@Suppress("LongParameterList", "TooManyFunctions")
 internal class ParameterizedCalculatorTests {
 
     @ParameterizedTest(name = "tax_code={0}, wages={1}, pay_period={2}, tax_year={3}, is_pension_age={4}")
@@ -552,16 +553,25 @@ internal class ParameterizedCalculatorTests {
         val yearlyPeriod = response.yearly
         println(inputTaxCode)
         println(yearlyPeriod.prettyPrintDataClass())
-        println("expectedYearlyNiEmployer=$expectedYearlyNiEmployer, yearlyPeriod.employersNI=$yearlyPeriod.employersNI")
+        println(
+            "expectedYearlyNiEmployer=$expectedYearlyNiEmployer, " +
+                "yearlyPeriod.employersNI=$yearlyPeriod.employersNI"
+        )
         assertEquals(PayPeriod.YEARLY, yearlyPeriod.payPeriod)
         assertEquals(expectedYearlyNiEmployee, yearlyPeriod.employeesNI, "Yearly employee NI did not match")
         assertEquals(expectedYearlyNiEmployer, yearlyPeriod.employersNI, "Yearly employer NI did not match")
         assertEquals(expectedYearlyIncomeTax, yearlyPeriod.taxToPay, "Yearly income tax did not match")
-        assertEquals(expectedYearlyTotalDeduction, yearlyPeriod.totalDeductions, "Yearly total deductions did not match")
+        assertEquals(
+            expectedYearlyTotalDeduction, yearlyPeriod.totalDeductions,
+            "Yearly total deductions did not match"
+        )
         assertEquals(expectedYearlyTakeHome, yearlyPeriod.takeHome, "Yearly take home did not match")
         assertEquals(expectedYearlyWages, yearlyPeriod.wages, "Yearly wages did not match")
         assertEquals(expectedYearlyTaxFreeAmount, yearlyPeriod.taxFree, "Yearly tax free amount did not match")
-        assertEquals(expectedYearlyKCodeAdjustment, yearlyPeriod.kCodeAdjustment, "Yearly K code adjustment did not match")
+        assertEquals(
+            expectedYearlyKCodeAdjustment, yearlyPeriod.kCodeAdjustment,
+            "Yearly K code adjustment did not match"
+        )
         assertFalse(yearlyPeriod.maxTaxAmountExceeded)
 
         assertEquals(PayPeriod.MONTHLY, response.monthly.payPeriod)
