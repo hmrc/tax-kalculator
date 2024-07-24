@@ -51,6 +51,19 @@ internal fun String.extractDoubleFromEmergencyTaxCode(): Double =
         .removeSuffix("T")
         .toDouble()
 
+@JvmSynthetic
+internal fun String.convertTaxCodeToScottishTaxCode(): String {
+    val removedPrefix = this
+        .removePrefix("S")
+        .removePrefix("C")
+        .removePrefix("K")
+        .removePrefix("BR")
+        .removePrefix("D")
+        .removePrefix("NT")
+
+    return "S$removedPrefix"
+}
+
 /*
     Tax-free amount without the "£9"
 */
