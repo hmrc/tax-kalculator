@@ -45,6 +45,7 @@ class CalculatorResponsePayPeriod(
     val studentLoanBreakdownList: List<StudentLoanAmountBreakdown>,
     finalStudentLoanAmountRaw: Double,
     finalPostgraduateLoanAmountRaw: Double,
+    taxableIncomeRaw: Double,
 ) {
     private val maxTaxAmount = (wagesRaw / 2).formatMoney()
     val taxToPay = if (taxToPayForPayPeriod > maxTaxAmount) maxTaxAmount else taxToPayForPayPeriod.formatMoney()
@@ -61,6 +62,7 @@ class CalculatorResponsePayPeriod(
     val studentLoanBreakdown = if (finalStudentLoanAmount > 0 || finalPostgraduateLoanAmount > 0) {
         studentLoanBreakdownList
     } else null
+    val taxableIncome = taxableIncomeRaw.formatMoney()
 
     val employeesNI: Double by lazy {
         employeesNIRaw.formatMoney()
@@ -99,7 +101,8 @@ class CalculatorResponsePayPeriod(
             "studentLoanBreakdown=$studentLoanBreakdown," +
             "finalStudentLoanAmount=$finalStudentLoanAmount," +
             "finalPostgraduateLoanAmount=$finalPostgraduateLoanAmount," +
-            "otherAmount=$otherAmount)"
+            "otherAmount=$otherAmount," +
+            "taxableIncome=$taxableIncome)"
     }
 }
 

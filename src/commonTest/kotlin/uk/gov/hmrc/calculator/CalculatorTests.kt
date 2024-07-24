@@ -529,6 +529,7 @@ internal class CalculatorTests {
         assertEquals(0.0, weekly.finalStudentLoanAmount)
         assertEquals(0.0, weekly.finalPostgraduateLoanAmount)
         assertEquals(92.31, weekly.otherAmount)
+        assertEquals(589.04, weekly.taxableIncome)
 
         val fourWeekly = result.fourWeekly
         assertEquals(PayPeriod.FOUR_WEEKLY, fourWeekly.payPeriod)
@@ -545,6 +546,7 @@ internal class CalculatorTests {
         assertEquals(0.0, fourWeekly.finalStudentLoanAmount)
         assertEquals(0.0, fourWeekly.finalPostgraduateLoanAmount)
         assertEquals(369.23, fourWeekly.otherAmount)
+        assertEquals(2356.15, fourWeekly.taxableIncome)
 
         val monthly = result.monthly
         assertEquals(PayPeriod.MONTHLY, monthly.payPeriod)
@@ -561,6 +563,7 @@ internal class CalculatorTests {
         assertEquals(0.0, monthly.finalStudentLoanAmount)
         assertEquals(0.0, monthly.finalPostgraduateLoanAmount)
         assertEquals(400.0, monthly.otherAmount)
+        assertEquals(2552.50, monthly.taxableIncome)
 
         val yearly = result.yearly
         assertEquals(PayPeriod.YEARLY, yearly.payPeriod)
@@ -577,6 +580,7 @@ internal class CalculatorTests {
         assertEquals(0.0, yearly.finalStudentLoanAmount)
         assertEquals(0.0, yearly.finalPostgraduateLoanAmount)
         assertEquals(4800.0, yearly.otherAmount)
+        assertEquals(30630.0, yearly.taxableIncome)
     }
 
     @Test
@@ -608,6 +612,7 @@ internal class CalculatorTests {
         assertEquals(0.0, weekly.finalStudentLoanAmount)
         assertEquals(0.0, weekly.finalPostgraduateLoanAmount)
         assertEquals(92.31, weekly.otherAmount)
+        assertEquals(589.04, weekly.taxableIncome)
 
         val fourWeekly = result.fourWeekly
         assertEquals(PayPeriod.FOUR_WEEKLY, fourWeekly.payPeriod)
@@ -624,6 +629,7 @@ internal class CalculatorTests {
         assertEquals(0.0, fourWeekly.finalStudentLoanAmount)
         assertEquals(0.0, fourWeekly.finalPostgraduateLoanAmount)
         assertEquals(369.23, fourWeekly.otherAmount)
+        assertEquals(2356.15, fourWeekly.taxableIncome)
 
         val monthly = result.monthly
         assertEquals(PayPeriod.MONTHLY, monthly.payPeriod)
@@ -640,6 +646,7 @@ internal class CalculatorTests {
         assertEquals(0.0, monthly.finalStudentLoanAmount)
         assertEquals(0.0, monthly.finalPostgraduateLoanAmount)
         assertEquals(400.0, monthly.otherAmount)
+        assertEquals(2552.50, monthly.taxableIncome)
 
         val yearly = result.yearly
         assertEquals(PayPeriod.YEARLY, yearly.payPeriod)
@@ -656,6 +663,7 @@ internal class CalculatorTests {
         assertEquals(0.0, yearly.finalStudentLoanAmount)
         assertEquals(0.0, yearly.finalPostgraduateLoanAmount)
         assertEquals(4800.0, yearly.otherAmount)
+        assertEquals(30630.0, yearly.taxableIncome)
     }
 
     @Test
@@ -687,6 +695,7 @@ internal class CalculatorTests {
         assertEquals(0.0, weekly.finalStudentLoanAmount)
         assertEquals(0.0, weekly.finalPostgraduateLoanAmount)
         assertEquals(1153.85, weekly.otherAmount)
+        assertEquals(527.50, weekly.taxableIncome)
 
         val fourWeekly = result.fourWeekly
         assertEquals(PayPeriod.FOUR_WEEKLY, fourWeekly.payPeriod)
@@ -703,6 +712,7 @@ internal class CalculatorTests {
         assertEquals(0.0, fourWeekly.finalStudentLoanAmount)
         assertEquals(0.0, fourWeekly.finalPostgraduateLoanAmount)
         assertEquals(4615.38, fourWeekly.otherAmount)
+        assertEquals(2110.0, fourWeekly.taxableIncome)
 
         val monthly = result.monthly
         assertEquals(PayPeriod.MONTHLY, monthly.payPeriod)
@@ -719,6 +729,7 @@ internal class CalculatorTests {
         assertEquals(0.0, monthly.finalStudentLoanAmount)
         assertEquals(0.0, monthly.finalPostgraduateLoanAmount)
         assertEquals(5000.00, monthly.otherAmount)
+        assertEquals(2285.83, monthly.taxableIncome)
 
         val yearly = result.yearly
         assertEquals(PayPeriod.YEARLY, yearly.payPeriod)
@@ -735,6 +746,7 @@ internal class CalculatorTests {
         assertEquals(0.0, yearly.finalStudentLoanAmount)
         assertEquals(0.0, yearly.finalPostgraduateLoanAmount)
         assertEquals(60000.0, yearly.otherAmount)
+        assertEquals(27430.0, yearly.taxableIncome)
     }
 
     @Test
@@ -766,6 +778,7 @@ internal class CalculatorTests {
         assertEquals(0.0, weekly.finalStudentLoanAmount)
         assertEquals(0.0, weekly.finalPostgraduateLoanAmount)
         assertEquals(1153.85, weekly.otherAmount)
+        assertEquals(527.50, weekly.taxableIncome)
 
         val fourWeekly = result.fourWeekly
         assertEquals(PayPeriod.FOUR_WEEKLY, fourWeekly.payPeriod)
@@ -782,6 +795,7 @@ internal class CalculatorTests {
         assertEquals(0.0, fourWeekly.finalStudentLoanAmount)
         assertEquals(0.0, fourWeekly.finalPostgraduateLoanAmount)
         assertEquals(4615.38, fourWeekly.otherAmount)
+        assertEquals(2110.0, fourWeekly.taxableIncome)
 
         val monthly = result.monthly
         assertEquals(PayPeriod.MONTHLY, monthly.payPeriod)
@@ -798,6 +812,7 @@ internal class CalculatorTests {
         assertEquals(0.0, monthly.finalStudentLoanAmount)
         assertEquals(0.0, monthly.finalPostgraduateLoanAmount)
         assertEquals(5000.0, monthly.otherAmount)
+        assertEquals(2285.83, monthly.taxableIncome)
 
         val yearly = result.yearly
         assertEquals(PayPeriod.YEARLY, yearly.payPeriod)
@@ -814,6 +829,7 @@ internal class CalculatorTests {
         assertEquals(0.0, yearly.finalStudentLoanAmount)
         assertEquals(0.0, yearly.finalPostgraduateLoanAmount)
         assertEquals(60000.0, yearly.otherAmount)
+        assertEquals(27430.0, yearly.taxableIncome)
     }
 
     @Test
@@ -845,6 +861,7 @@ internal class CalculatorTests {
         assertEquals(0.0, weekly.finalStudentLoanAmount)
         assertEquals(0.0, weekly.finalPostgraduateLoanAmount)
         assertEquals(1250.77, weekly.otherAmount)
+        assertEquals(430.58, weekly.taxableIncome)
 
         val fourWeekly = result.fourWeekly
         assertEquals(PayPeriod.FOUR_WEEKLY, fourWeekly.payPeriod)
@@ -861,6 +878,7 @@ internal class CalculatorTests {
         assertEquals(0.0, fourWeekly.finalStudentLoanAmount)
         assertEquals(0.0, fourWeekly.finalPostgraduateLoanAmount)
         assertEquals(5003.08, fourWeekly.otherAmount)
+        assertEquals(1722.31, fourWeekly.taxableIncome)
 
         val monthly = result.monthly
         assertEquals(PayPeriod.MONTHLY, monthly.payPeriod)
@@ -877,6 +895,7 @@ internal class CalculatorTests {
         assertEquals(0.0, monthly.finalStudentLoanAmount)
         assertEquals(0.0, monthly.finalPostgraduateLoanAmount)
         assertEquals(5420.0, monthly.otherAmount)
+        assertEquals(1865.83, monthly.taxableIncome)
 
         val yearly = result.yearly
         assertEquals(PayPeriod.YEARLY, yearly.payPeriod)
@@ -893,6 +912,7 @@ internal class CalculatorTests {
         assertEquals(0.0, yearly.finalStudentLoanAmount)
         assertEquals(0.0, yearly.finalPostgraduateLoanAmount)
         assertEquals(65040.0, yearly.otherAmount)
+        assertEquals(22390.0, yearly.taxableIncome)
     }
 
     @Test
@@ -924,6 +944,7 @@ internal class CalculatorTests {
         assertEquals(0.0, weekly.finalStudentLoanAmount)
         assertEquals(0.0, weekly.finalPostgraduateLoanAmount)
         assertEquals(1250.0, weekly.otherAmount)
+        assertEquals(431.35, weekly.taxableIncome)
 
         val fourWeekly = result.fourWeekly
         assertEquals(PayPeriod.FOUR_WEEKLY, fourWeekly.payPeriod)
@@ -940,6 +961,7 @@ internal class CalculatorTests {
         assertEquals(0.0, fourWeekly.finalStudentLoanAmount)
         assertEquals(0.0, fourWeekly.finalPostgraduateLoanAmount)
         assertEquals(5000.0, fourWeekly.otherAmount)
+        assertEquals(1725.38, fourWeekly.taxableIncome)
 
         val monthly = result.monthly
         assertEquals(PayPeriod.MONTHLY, monthly.payPeriod)
@@ -956,6 +978,7 @@ internal class CalculatorTests {
         assertEquals(0.0, monthly.finalStudentLoanAmount)
         assertEquals(0.0, monthly.finalPostgraduateLoanAmount)
         assertEquals(5416.67, monthly.otherAmount)
+        assertEquals(1869.17, monthly.taxableIncome)
 
         val yearly = result.yearly
         assertEquals(PayPeriod.YEARLY, yearly.payPeriod)
@@ -972,6 +995,7 @@ internal class CalculatorTests {
         assertEquals(0.0, yearly.finalStudentLoanAmount)
         assertEquals(0.0, yearly.finalPostgraduateLoanAmount)
         assertEquals(65000.0, yearly.otherAmount)
+        assertEquals(22430.0, yearly.taxableIncome)
     }
 
     @Test
@@ -1003,6 +1027,7 @@ internal class CalculatorTests {
         assertEquals(0.0, weekly.finalStudentLoanAmount)
         assertEquals(0.0, weekly.finalPostgraduateLoanAmount)
         assertEquals(230.77, weekly.otherAmount)
+        assertEquals(0.17, weekly.taxableIncome)
 
         val fourWeekly = result.fourWeekly
         assertEquals(PayPeriod.FOUR_WEEKLY, fourWeekly.payPeriod)
@@ -1019,6 +1044,7 @@ internal class CalculatorTests {
         assertEquals(0.0, fourWeekly.finalStudentLoanAmount)
         assertEquals(0.0, fourWeekly.finalPostgraduateLoanAmount)
         assertEquals(923.08, fourWeekly.otherAmount)
+        assertEquals(0.69, fourWeekly.taxableIncome)
 
         val monthly = result.monthly
         assertEquals(PayPeriod.MONTHLY, monthly.payPeriod)
@@ -1035,6 +1061,7 @@ internal class CalculatorTests {
         assertEquals(0.0, monthly.finalStudentLoanAmount)
         assertEquals(0.0, monthly.finalPostgraduateLoanAmount)
         assertEquals(1000.0, monthly.otherAmount)
+        assertEquals(0.75, monthly.taxableIncome)
 
         val yearly = result.yearly
         assertEquals(PayPeriod.YEARLY, yearly.payPeriod)
@@ -1051,6 +1078,7 @@ internal class CalculatorTests {
         assertEquals(0.0, yearly.finalStudentLoanAmount)
         assertEquals(0.0, yearly.finalPostgraduateLoanAmount)
         assertEquals(12000.0, yearly.otherAmount)
+        assertEquals(9.0, yearly.taxableIncome)
     }
 
     @Test
@@ -1082,6 +1110,7 @@ internal class CalculatorTests {
         assertEquals(0.0, weekly.finalStudentLoanAmount)
         assertEquals(0.0, weekly.finalPostgraduateLoanAmount)
         assertEquals(0.0, weekly.otherAmount)
+        assertEquals(2406.54, weekly.taxableIncome)
 
         val fourWeekly = result.fourWeekly
         assertEquals(PayPeriod.FOUR_WEEKLY, fourWeekly.payPeriod)
@@ -1098,6 +1127,7 @@ internal class CalculatorTests {
         assertEquals(0.0, fourWeekly.finalStudentLoanAmount)
         assertEquals(0.0, fourWeekly.finalPostgraduateLoanAmount)
         assertEquals(0.0, fourWeekly.otherAmount)
+        assertEquals(9626.15, fourWeekly.taxableIncome)
 
         val monthly = result.monthly
         assertEquals(PayPeriod.MONTHLY, monthly.payPeriod)
@@ -1114,6 +1144,7 @@ internal class CalculatorTests {
         assertEquals(0.0, monthly.finalStudentLoanAmount)
         assertEquals(0.0, monthly.finalPostgraduateLoanAmount)
         assertEquals(0.0, monthly.otherAmount)
+        assertEquals(10428.33, monthly.taxableIncome)
 
         val yearly = result.yearly
         assertEquals(PayPeriod.YEARLY, yearly.payPeriod)
@@ -1130,6 +1161,7 @@ internal class CalculatorTests {
         assertEquals(0.0, yearly.finalStudentLoanAmount)
         assertEquals(0.0, yearly.finalPostgraduateLoanAmount)
         assertEquals(0.0, yearly.otherAmount)
+        assertEquals(125140.0, yearly.taxableIncome)
     }
 
     @Test
@@ -1161,6 +1193,7 @@ internal class CalculatorTests {
         assertEquals(0.0, weekly.finalStudentLoanAmount)
         assertEquals(0.0, weekly.finalPostgraduateLoanAmount)
         assertEquals(0.0, weekly.otherAmount)
+        assertEquals(2164.81, weekly.taxableIncome)
 
         val fourWeekly = result.fourWeekly
         assertEquals(PayPeriod.FOUR_WEEKLY, fourWeekly.payPeriod)
@@ -1177,6 +1210,7 @@ internal class CalculatorTests {
         assertEquals(0.0, fourWeekly.finalStudentLoanAmount)
         assertEquals(0.0, fourWeekly.finalPostgraduateLoanAmount)
         assertEquals(0.0, fourWeekly.otherAmount)
+        assertEquals(8659.23, fourWeekly.taxableIncome)
 
         val monthly = result.monthly
         assertEquals(PayPeriod.MONTHLY, monthly.payPeriod)
@@ -1193,6 +1227,7 @@ internal class CalculatorTests {
         assertEquals(0.0, monthly.finalStudentLoanAmount)
         assertEquals(0.0, monthly.finalPostgraduateLoanAmount)
         assertEquals(0.0, monthly.otherAmount)
+        assertEquals(9380.83, monthly.taxableIncome)
 
         val yearly = result.yearly
         assertEquals(PayPeriod.YEARLY, yearly.payPeriod)
@@ -1209,6 +1244,7 @@ internal class CalculatorTests {
         assertEquals(0.0, yearly.finalStudentLoanAmount)
         assertEquals(0.0, yearly.finalPostgraduateLoanAmount)
         assertEquals(0.0, yearly.otherAmount)
+        assertEquals(112570.0, yearly.taxableIncome)
     }
 
     @Test
@@ -1244,6 +1280,7 @@ internal class CalculatorTests {
         assertEquals(2.0, weekly.finalStudentLoanAmount)
         assertEquals(9.0, weekly.finalPostgraduateLoanAmount)
         assertEquals(11.0, weekly.otherAmount)
+        assertEquals(312.12, weekly.taxableIncome)
 
         val fourWeekly = result.fourWeekly
         assertEquals(PayPeriod.FOUR_WEEKLY, fourWeekly.payPeriod)
@@ -1261,6 +1298,7 @@ internal class CalculatorTests {
         assertEquals(10.0, fourWeekly.finalStudentLoanAmount)
         assertEquals(36.0, fourWeekly.finalPostgraduateLoanAmount)
         assertEquals(46.0, fourWeekly.otherAmount)
+        assertEquals(1248.46, fourWeekly.taxableIncome)
 
         val monthly = result.monthly
         assertEquals(PayPeriod.MONTHLY, monthly.payPeriod)
@@ -1278,6 +1316,7 @@ internal class CalculatorTests {
         assertEquals(11.0, monthly.finalStudentLoanAmount)
         assertEquals(39.0, monthly.finalPostgraduateLoanAmount)
         assertEquals(50.0, monthly.otherAmount)
+        assertEquals(1352.5, monthly.taxableIncome)
 
         val yearly = result.yearly
         assertEquals(PayPeriod.YEARLY, yearly.payPeriod)
@@ -1295,6 +1334,7 @@ internal class CalculatorTests {
         assertEquals(135.0, yearly.finalStudentLoanAmount)
         assertEquals(468.0, yearly.finalPostgraduateLoanAmount)
         assertEquals(603.0, yearly.otherAmount)
+        assertEquals(16230.0, yearly.taxableIncome)
     }
 
     @Test

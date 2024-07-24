@@ -72,6 +72,7 @@ Returns an object of type `CalculatorResponse`. This class is broken up into `we
 - `finalStudentLoanAmount` of type `Double` (This will return 0.0 if no student loan plan)
 - `finalPostgraduateLoanAmount` of type `Double` (This will return 0.0 if no postgraduate loan plan)
 - `otherAmount` of type `Double` (This will return 0.0 if no other amount)
+- `taxableIncome` of type `Double`
 
 > For tax breakdown this is the amount of tax per tax band which has two members, `percentage: Double` and `amount: Double`.
 
