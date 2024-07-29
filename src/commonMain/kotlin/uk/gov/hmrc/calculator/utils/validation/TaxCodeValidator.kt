@@ -26,7 +26,7 @@ import uk.gov.hmrc.calculator.utils.taxcode.toTaxCode
 object TaxCodeValidator {
     fun isValidTaxCode(taxCode: String): TaxCodeValidationResponse {
         return try {
-            taxCode.toTaxCode()
+            taxCode.toTaxCode(false)
             TaxCodeValidationResponse(true)
         } catch (e: InvalidTaxCodeException) {
             taxCode.invalidTaxCodeErrorGeneration()
@@ -35,7 +35,7 @@ object TaxCodeValidator {
 
     fun validateTaxCodeMatchingRate(taxCode: String, isPayingScottishRate: Boolean): TaxCodeValidationResponse? {
         return try {
-            return when (taxCode.toTaxCode().getTaxCodeClarification(isPayingScottishRate)) {
+            return when (getTaxCodeClarification(taxCode, isPayingScottishRate)) {
                 Clarification.SCOTTISH_CODE_BUT_OTHER_RATE ->
                     TaxCodeValidationResponse(true, ValidationError.ScottishCodeButOtherRate)
                 Clarification.NON_SCOTTISH_CODE_BUT_SCOTTISH_RATE ->

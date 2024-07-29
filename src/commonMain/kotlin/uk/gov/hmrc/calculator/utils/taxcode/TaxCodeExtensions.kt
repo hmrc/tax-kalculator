@@ -25,17 +25,21 @@ import uk.gov.hmrc.calculator.utils.toCountry
 import kotlin.jvm.JvmSynthetic
 
 @JvmSynthetic
-internal fun String.toTaxCode(): TaxCode {
+internal fun String.toTaxCode(forceScottishTaxCode: Boolean = false): TaxCode {
     if (isBlank()) throw InvalidTaxCodeException("Tax code cannot be empty")
 
     val formattedTaxCode = this.replace("\\s".toRegex(), "").uppercase()
 
-    return when (formattedTaxCode.toCountry()) {
+    val taxCode = when (formattedTaxCode.toCountry()) {
         Country.SCOTLAND -> formattedTaxCode.matchScottishTaxCode()
         Country.WALES -> formattedTaxCode.matchWelshTaxCode()
         Country.ENGLAND -> formattedTaxCode.matchEnglishTaxCode()
         Country.NONE -> NTCode()
     }
+
+    return if (forceScottishTaxCode) {
+        formattedTaxCode.convertTaxCodeToScottishTaxCode().matchScottishTaxCode()
+    } else taxCode
 }
 
 @JvmSynthetic
@@ -56,10 +60,6 @@ internal fun String.convertTaxCodeToScottishTaxCode(): String {
     val removedPrefix = this
         .removePrefix("S")
         .removePrefix("C")
-        .removePrefix("K")
-        .removePrefix("BR")
-        .removePrefix("D")
-        .removePrefix("NT")
 
     return "S$removedPrefix"
 }
@@ -75,11 +75,12 @@ internal fun TaxCode.getTrueTaxFreeAmount(): Double {
 
 @Suppress("ComplexMethod")
 @JvmSynthetic
-internal fun TaxCode.getTaxCodeClarification(userPaysScottishTax: Boolean): Clarification? {
+internal fun getTaxCodeClarification(userEnteredTaxCode: String, userPaysScottishTax: Boolean): Clarification? {
+    val taxCodeType = userEnteredTaxCode.toTaxCode(false)
     val clarification = when {
-        (this is ScottishTaxCode) && userPaysScottishTax -> Clarification.SCOTTISH_INCOME_APPLIED
-        (this is ScottishTaxCode) && !userPaysScottishTax -> Clarification.SCOTTISH_CODE_BUT_OTHER_RATE
-        (this !is ScottishTaxCode) && userPaysScottishTax -> Clarification.NON_SCOTTISH_CODE_BUT_SCOTTISH_RATE
+        (taxCodeType is ScottishTaxCode) && userPaysScottishTax -> Clarification.SCOTTISH_INCOME_APPLIED
+        (taxCodeType is ScottishTaxCode) && !userPaysScottishTax -> Clarification.SCOTTISH_CODE_BUT_OTHER_RATE
+        (taxCodeType !is ScottishTaxCode) && userPaysScottishTax -> Clarification.NON_SCOTTISH_CODE_BUT_SCOTTISH_RATE
         else -> null
     }
 
