@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+- Updated internal calculation to force Scottish Rate if consumer set `userPaysScottishTax` to true. 
 
 ## [2.12.4] - 2024-07-24Z
 - Added `taxableIncome` to response.

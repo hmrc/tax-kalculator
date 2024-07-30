@@ -99,6 +99,8 @@ class Calculator @JvmOverloads constructor(
     )
 
     fun run(): CalculatorResponse {
+        getTaxCodeClarification(taxCode, userPaysScottishTax)?.let { listOfClarification.add(it) }
+
         if (!WageValidator.isAboveMinimumWages(wages) || !WageValidator.isBelowMaximumWages(wages)) {
             throw InvalidWagesException("Wages must be between 0 and 9999999.99")
         }
@@ -121,8 +123,6 @@ class Calculator @JvmOverloads constructor(
         val taxableIncome = amountToAddToWages?.let { kCodeAdjustedAmount ->
             (yearlyWageAfterPension - taxFreeAmount) + kCodeAdjustedAmount
         } ?: (yearlyWageAfterPension - taxFreeAmount)
-
-        taxCodeType.getTaxCodeClarification(userPaysScottishTax)?.let { listOfClarification.add(it) }
 
         return createResponse(
             taxCodeType,
@@ -399,7 +399,7 @@ class Calculator @JvmOverloads constructor(
     }
 
     private val taxCodeType: TaxCode by lazy {
-        this.taxCode.toTaxCode()
+        this.taxCode.toTaxCode(forceScottishTaxCode = this.userPaysScottishTax)
     }
 
     data class StudentLoanPlans(

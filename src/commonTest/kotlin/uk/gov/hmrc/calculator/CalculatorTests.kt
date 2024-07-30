@@ -1338,6 +1338,172 @@ internal class CalculatorTests {
     }
 
     @Test
+    fun `GIVEN english tax code AND userPaysScottishTax true WHEN calculate THEN calculates scottish rate`() {
+        val result = Calculator(
+            taxCode = "1257L",
+            userPaysScottishTax = true,
+            wages = 100000.0,
+            payPeriod = PayPeriod.YEARLY,
+            taxYear = TaxYear.TWENTY_TWENTY_FOUR,
+        ).run()
+        Logger.i(result.prettyPrintDataClass())
+
+        assertEquals(Country.SCOTLAND, result.country)
+        assertFalse(result.isKCode)
+
+        val weekly = result.weekly
+        assertEquals(PayPeriod.WEEKLY, weekly.payPeriod)
+        assertEquals(77.13, weekly.employeesNI)
+        assertEquals(241.23, weekly.employersNI)
+        assertEquals(1923.08, weekly.wages)
+        assertEquals(241.73, weekly.taxFree)
+        assertEquals(591.81, weekly.taxToPay)
+        assertEquals(1254.14, weekly.takeHome)
+        assertEquals(0.0, weekly.pensionContribution)
+        assertEquals(1923.08, weekly.wageAfterPensionDeduction)
+        assertEquals(0.0, weekly.taperingAmountDeduction)
+        assertNull(weekly.studentLoanBreakdown)
+        assertEquals(0.0, weekly.finalStudentLoanAmount)
+        assertEquals(0.0, weekly.finalPostgraduateLoanAmount)
+        assertEquals(0.0, weekly.otherAmount)
+        assertEquals(1681.35, weekly.taxableIncome)
+
+        val fourWeekly = result.fourWeekly
+        assertEquals(PayPeriod.FOUR_WEEKLY, fourWeekly.payPeriod)
+        assertEquals(308.51, fourWeekly.employeesNI)
+        assertEquals(964.94, fourWeekly.employersNI)
+        assertEquals(7692.31, fourWeekly.wages)
+        assertEquals(966.92, fourWeekly.taxFree)
+        assertEquals(2367.25, fourWeekly.taxToPay)
+        assertEquals(5016.55, fourWeekly.takeHome)
+        assertEquals(0.0, fourWeekly.pensionContribution)
+        assertEquals(7692.31, fourWeekly.wageAfterPensionDeduction)
+        assertEquals(0.0, fourWeekly.taperingAmountDeduction)
+        assertNull(fourWeekly.studentLoanBreakdown)
+        assertEquals(0.0, fourWeekly.finalStudentLoanAmount)
+        assertEquals(0.0, fourWeekly.finalPostgraduateLoanAmount)
+        assertEquals(0.0, fourWeekly.otherAmount)
+        assertEquals(6725.38, fourWeekly.taxableIncome)
+
+        val monthly = result.monthly
+        assertEquals(PayPeriod.MONTHLY, monthly.payPeriod)
+        assertEquals(334.22, monthly.employeesNI)
+        assertEquals(1045.35, monthly.employersNI)
+        assertEquals(8333.33, monthly.wages)
+        assertEquals(1047.50, monthly.taxFree)
+        assertEquals(2564.52, monthly.taxToPay)
+        assertEquals(5434.59, monthly.takeHome)
+        assertEquals(0.0, monthly.pensionContribution)
+        assertEquals(8333.33, monthly.wageAfterPensionDeduction)
+        assertEquals(0.0, monthly.taperingAmountDeduction)
+        assertNull(monthly.studentLoanBreakdown)
+        assertEquals(0.0, monthly.finalStudentLoanAmount)
+        assertEquals(0.0, monthly.finalPostgraduateLoanAmount)
+        assertEquals(0.0, monthly.otherAmount)
+        assertEquals(7285.83, monthly.taxableIncome)
+
+        val yearly = result.yearly
+        assertEquals(PayPeriod.YEARLY, yearly.payPeriod)
+        assertEquals(4010.6, yearly.employeesNI)
+        assertEquals(12544.2, yearly.employersNI)
+        assertEquals(100000.00, yearly.wages)
+        assertEquals(12570.0, yearly.taxFree)
+        assertEquals(30774.26, yearly.taxToPay)
+        assertEquals(65215.14, yearly.takeHome)
+        assertEquals(0.0, yearly.pensionContribution)
+        assertEquals(100000.0, yearly.wageAfterPensionDeduction)
+        assertEquals(0.0, yearly.taperingAmountDeduction)
+        assertNull(yearly.studentLoanBreakdown)
+        assertEquals(0.0, yearly.finalStudentLoanAmount)
+        assertEquals(0.0, yearly.finalPostgraduateLoanAmount)
+        assertEquals(0.0, yearly.otherAmount)
+        assertEquals(87430.0, yearly.taxableIncome)
+    }
+
+    @Test
+    fun `GIVEN welsh tax code AND userPaysScottishTax true WHEN calculate THEN calculates scottish rate`() {
+        val result = Calculator(
+            taxCode = "C1257L",
+            userPaysScottishTax = true,
+            wages = 100000.0,
+            payPeriod = PayPeriod.YEARLY,
+            taxYear = TaxYear.TWENTY_TWENTY_FOUR,
+        ).run()
+        Logger.i(result.prettyPrintDataClass())
+
+        assertEquals(Country.SCOTLAND, result.country)
+        assertFalse(result.isKCode)
+
+        val weekly = result.weekly
+        assertEquals(PayPeriod.WEEKLY, weekly.payPeriod)
+        assertEquals(77.13, weekly.employeesNI)
+        assertEquals(241.23, weekly.employersNI)
+        assertEquals(1923.08, weekly.wages)
+        assertEquals(241.73, weekly.taxFree)
+        assertEquals(591.81, weekly.taxToPay)
+        assertEquals(1254.14, weekly.takeHome)
+        assertEquals(0.0, weekly.pensionContribution)
+        assertEquals(1923.08, weekly.wageAfterPensionDeduction)
+        assertEquals(0.0, weekly.taperingAmountDeduction)
+        assertNull(weekly.studentLoanBreakdown)
+        assertEquals(0.0, weekly.finalStudentLoanAmount)
+        assertEquals(0.0, weekly.finalPostgraduateLoanAmount)
+        assertEquals(0.0, weekly.otherAmount)
+        assertEquals(1681.35, weekly.taxableIncome)
+
+        val fourWeekly = result.fourWeekly
+        assertEquals(PayPeriod.FOUR_WEEKLY, fourWeekly.payPeriod)
+        assertEquals(308.51, fourWeekly.employeesNI)
+        assertEquals(964.94, fourWeekly.employersNI)
+        assertEquals(7692.31, fourWeekly.wages)
+        assertEquals(966.92, fourWeekly.taxFree)
+        assertEquals(2367.25, fourWeekly.taxToPay)
+        assertEquals(5016.55, fourWeekly.takeHome)
+        assertEquals(0.0, fourWeekly.pensionContribution)
+        assertEquals(7692.31, fourWeekly.wageAfterPensionDeduction)
+        assertEquals(0.0, fourWeekly.taperingAmountDeduction)
+        assertNull(fourWeekly.studentLoanBreakdown)
+        assertEquals(0.0, fourWeekly.finalStudentLoanAmount)
+        assertEquals(0.0, fourWeekly.finalPostgraduateLoanAmount)
+        assertEquals(0.0, fourWeekly.otherAmount)
+        assertEquals(6725.38, fourWeekly.taxableIncome)
+
+        val monthly = result.monthly
+        assertEquals(PayPeriod.MONTHLY, monthly.payPeriod)
+        assertEquals(334.22, monthly.employeesNI)
+        assertEquals(1045.35, monthly.employersNI)
+        assertEquals(8333.33, monthly.wages)
+        assertEquals(1047.50, monthly.taxFree)
+        assertEquals(2564.52, monthly.taxToPay)
+        assertEquals(5434.59, monthly.takeHome)
+        assertEquals(0.0, monthly.pensionContribution)
+        assertEquals(8333.33, monthly.wageAfterPensionDeduction)
+        assertEquals(0.0, monthly.taperingAmountDeduction)
+        assertNull(monthly.studentLoanBreakdown)
+        assertEquals(0.0, monthly.finalStudentLoanAmount)
+        assertEquals(0.0, monthly.finalPostgraduateLoanAmount)
+        assertEquals(0.0, monthly.otherAmount)
+        assertEquals(7285.83, monthly.taxableIncome)
+
+        val yearly = result.yearly
+        assertEquals(PayPeriod.YEARLY, yearly.payPeriod)
+        assertEquals(4010.6, yearly.employeesNI)
+        assertEquals(12544.2, yearly.employersNI)
+        assertEquals(100000.00, yearly.wages)
+        assertEquals(12570.0, yearly.taxFree)
+        assertEquals(30774.26, yearly.taxToPay)
+        assertEquals(65215.14, yearly.takeHome)
+        assertEquals(0.0, yearly.pensionContribution)
+        assertEquals(100000.0, yearly.wageAfterPensionDeduction)
+        assertEquals(0.0, yearly.taperingAmountDeduction)
+        assertNull(yearly.studentLoanBreakdown)
+        assertEquals(0.0, yearly.finalStudentLoanAmount)
+        assertEquals(0.0, yearly.finalPostgraduateLoanAmount)
+        assertEquals(0.0, yearly.otherAmount)
+        assertEquals(87430.0, yearly.taxableIncome)
+    }
+
+    @Test
     fun `GIVEN hours is zero and pay period hour WHEN calculate THEN exception`() {
         assertFailsWith<InvalidHoursException> {
             Calculator(
