@@ -205,6 +205,16 @@ class PensionValidatorTests {
     }
 
     @Test
+    fun `GIVEN amount is ten million or more AND pension method is amount in pounds WHEN validateValidInputPensionInput THEN return AMOUNT_REACHED_TEN_MILLIONS`() {
+        val monthlyPension = 10000000.0
+        val pensionMethod = PensionMethod.MONTHLY_AMOUNT_IN_POUNDS
+
+        val listOfError = mutableListOf(PensionValidator.PensionError.AMOUNT_REACHED_TEN_MILLIONS)
+
+        assertEquals(listOfError, PensionValidator.validateValidInputPensionInput(monthlyPension, pensionMethod))
+    }
+
+    @Test
     fun `GIVEN amount is less then zero WHEN validateValidInputPensionInput THEN return BELOW_ZERO`() {
         val monthlyPension = -10.0
         val pensionMethod = PensionMethod.MONTHLY_AMOUNT_IN_POUNDS

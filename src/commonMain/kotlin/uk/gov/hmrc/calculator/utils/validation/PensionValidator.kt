@@ -23,6 +23,7 @@ import uk.gov.hmrc.calculator.utils.convertWageToYearly
 import uk.gov.hmrc.calculator.utils.validation.HoursDaysValidator.isTwoDecimalPlacesOrFewer
 import kotlin.jvm.JvmSynthetic
 
+@Suppress("TooManyFunctions")
 object PensionValidator {
 
     fun isValidMonthlyPension(
@@ -67,7 +68,11 @@ object PensionValidator {
         if (isPensionBelowZero(inputValue)) listOfError.add(PensionError.BELOW_ZERO)
         if (isPensionPercentageAboveHundred(inputValue, pensionMethod))
             listOfError.add(PensionError.ABOVE_HUNDRED_PERCENT)
-        validatePensionInputValidDecimal(monthlyPension, pensionMethod)?.let { listOfError.add(it) }
+        if (isTenMillionsOrAbove(monthlyPension)) {
+            listOfError.add(PensionError.AMOUNT_REACHED_TEN_MILLIONS)
+        } else {
+            validatePensionInputValidDecimal(monthlyPension, pensionMethod)?.let { listOfError.add(it) }
+        }
 
         listOfError.sortBy { it.priority }
         return listOfError
@@ -88,6 +93,10 @@ object PensionValidator {
 
     private fun isPensionValidFormat(yearlyPension: Double): Boolean {
         return "([0-9])+(\\.\\d{1,2})".toRegex().matches(yearlyPension.toString())
+    }
+
+    private fun isTenMillionsOrAbove(monthlyPension: Double): Boolean {
+        return monthlyPension >= 10000000.0
     }
 
     private fun isPensionBelowZero(yearlyPension: Double): Boolean {
@@ -117,11 +126,12 @@ object PensionValidator {
 
     enum class PensionError(val priority: Int) {
         INVALID_FORMAT(1),
-        INVALID_AMOUNT_DECIMAL(2),
-        INVALID_PERCENTAGE_DECIMAL(3),
-        BELOW_ZERO(4),
-        ABOVE_WAGE(5),
-        ABOVE_HUNDRED_PERCENT(6),
-        ABOVE_ANNUAL_ALLOWANCE(7),
+        AMOUNT_REACHED_TEN_MILLIONS(2),
+        INVALID_AMOUNT_DECIMAL(3),
+        INVALID_PERCENTAGE_DECIMAL(4),
+        BELOW_ZERO(5),
+        ABOVE_WAGE(6),
+        ABOVE_HUNDRED_PERCENT(7),
+        ABOVE_ANNUAL_ALLOWANCE(8),
     }
 }
