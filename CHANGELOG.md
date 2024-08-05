@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.13.1] - 2024-08-05Z
 - Added new validator to PensionValidator to check for amount lower than 10 millions.
 
 ## [2.13.0] - 2024-07-30Z
