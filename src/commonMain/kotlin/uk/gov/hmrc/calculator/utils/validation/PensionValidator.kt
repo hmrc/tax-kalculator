@@ -68,7 +68,7 @@ object PensionValidator {
         if (isPensionBelowZero(inputValue)) listOfError.add(PensionError.BELOW_ZERO)
         if (isPensionPercentageAboveHundred(inputValue, pensionMethod))
             listOfError.add(PensionError.ABOVE_HUNDRED_PERCENT)
-        if (isTenMillionsOrAbove(monthlyPension)) {
+        if (isTenMillionOrAbove(monthlyPension)) {
             listOfError.add(PensionError.AMOUNT_REACHED_TEN_MILLIONS)
         } else {
             validatePensionInputValidDecimal(monthlyPension, pensionMethod)?.let { listOfError.add(it) }
@@ -95,7 +95,7 @@ object PensionValidator {
         return "([0-9])+(\\.\\d{1,2})".toRegex().matches(yearlyPension.toString())
     }
 
-    private fun isTenMillionsOrAbove(monthlyPension: Double): Boolean {
+    private fun isTenMillionOrAbove(monthlyPension: Double): Boolean {
         return monthlyPension >= 10000000.0
     }
 
