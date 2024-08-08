@@ -108,4 +108,34 @@ class PayPeriodTestExtensions {
             50.0.convertWageToYearly(DAILY, null)
         }
     }
+
+    @Test
+    fun `Convert YEARLY to monthly`() {
+        assertEquals(1000.0, 12000.0.convertWageToMonthly(YEARLY))
+    }
+
+    @Test
+    fun `Convert MONTHLY to monthly`() {
+        assertEquals(1200.0, 1200.0.convertWageToMonthly(MONTHLY))
+    }
+
+    @Test
+    fun `Convert FOUR_WEEKLY to monthly`() {
+        assertEquals(1690.0, 1560.0.convertWageToMonthly(FOUR_WEEKLY))
+    }
+
+    @Test
+    fun `Convert WEEKLY to monthly`() {
+        assertEquals(1300.0, 300.0.convertWageToMonthly(WEEKLY))
+    }
+
+    @Test
+    fun `Convert DAILY to monthly`() {
+        assertEquals(1300.0, 100.0.convertWageToMonthly(DAILY, 3.0))
+    }
+
+    @Test
+    fun `Convert HOURLY to monthly`() {
+        assertEquals(1300.0, 30.0.convertWageToMonthly(HOURLY, 10.0))
+    }
 }

@@ -31,7 +31,7 @@ import kotlin.jvm.JvmSynthetic
 @JvmSynthetic
 internal fun Double.convertWageToYearly(
     payPeriod: PayPeriod,
-    hoursOrDaysWorkedForPayPeriod: Double? = null
+    hoursOrDaysWorkedForPayPeriod: Double? = null,
 ): Double {
     return when (payPeriod) {
         HOURLY -> hourlyToYearly(hoursOrDaysWorkedForPayPeriod)
@@ -45,7 +45,7 @@ internal fun Double.convertWageToYearly(
 
 @JvmSynthetic
 internal fun Double.convertAmountFromYearlyToPayPeriod(
-    payPeriod: PayPeriod
+    payPeriod: PayPeriod,
 ): Double {
     return when (payPeriod) {
         WEEKLY -> this / 52
@@ -53,6 +53,21 @@ internal fun Double.convertAmountFromYearlyToPayPeriod(
         MONTHLY -> this / 12
         YEARLY -> this
         else -> throw InvalidPayPeriodException("$payPeriod is not supported")
+    }
+}
+
+@JvmSynthetic
+internal fun Double.convertWageToMonthly(
+    payPeriod: PayPeriod,
+    hoursOrDaysWorkedForPayPeriod: Double? = null,
+): Double {
+    return when (payPeriod) {
+        HOURLY -> this.convertWageToYearly(HOURLY, hoursOrDaysWorkedForPayPeriod) / 12
+        DAILY -> this.convertWageToYearly(DAILY, hoursOrDaysWorkedForPayPeriod) / 12
+        WEEKLY -> this.convertWageToYearly(WEEKLY) / 12
+        FOUR_WEEKLY -> this.convertWageToYearly(FOUR_WEEKLY) / 12
+        MONTHLY -> this
+        YEARLY -> this / 12
     }
 }
 
