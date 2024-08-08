@@ -15,11 +15,14 @@
  */
 package uk.gov.hmrc.calculator.utils.validation
 
+import uk.gov.hmrc.calculator.Calculator
 import uk.gov.hmrc.calculator.model.PayPeriod
 import uk.gov.hmrc.calculator.model.TaxYear
 import uk.gov.hmrc.calculator.model.pension.PensionAllowances.getPensionAllowances
 import uk.gov.hmrc.calculator.model.pension.PensionMethod
+import uk.gov.hmrc.calculator.utils.convertWageToMonthly
 import uk.gov.hmrc.calculator.utils.convertWageToYearly
+import uk.gov.hmrc.calculator.utils.formatMoney
 import uk.gov.hmrc.calculator.utils.validation.HoursDaysValidator.isTwoDecimalPlacesOrFewer
 import kotlin.jvm.JvmSynthetic
 
@@ -78,10 +81,27 @@ object PensionValidator {
         return listOfError
     }
 
+    fun validatePensionBelowWage(
+        wage: Double,
+        payPeriod: PayPeriod,
+        hoursOrDaysWorkedForPayPeriod: Double? = null,
+        pensionContribution: Calculator.PensionContribution?,
+    ): PensionErrorWithAmount? {
+        if (pensionContribution == null || pensionContribution.method == PensionMethod.PERCENTAGE) {
+            return null
+        } else {
+            val monthlyWage = wage.convertWageToMonthly(payPeriod, hoursOrDaysWorkedForPayPeriod)
+
+            return if (pensionContribution.contributionAmount > monthlyWage) {
+                PensionErrorWithAmount(PensionError.ABOVE_WAGE, monthlyWage.formatMoney())
+            } else null
+        }
+    }
+
     private fun validatePensionWithinRange(
         yearlyPension: Double,
         yearlyWage: Double,
-        taxYear: TaxYear
+        taxYear: TaxYear,
     ): MutableList<PensionError> {
         val listOfError = mutableListOf<PensionError>()
         if (isPensionBelowZero(yearlyPension)) listOfError.add(PensionError.BELOW_ZERO)
@@ -134,4 +154,6 @@ object PensionValidator {
         ABOVE_HUNDRED_PERCENT(7),
         ABOVE_ANNUAL_ALLOWANCE(8),
     }
+
+    data class PensionErrorWithAmount(val error: PensionError, val amountToShow: Double)
 }

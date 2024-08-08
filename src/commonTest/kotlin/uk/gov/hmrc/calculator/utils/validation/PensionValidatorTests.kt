@@ -15,11 +15,14 @@
  */
 package uk.gov.hmrc.calculator.utils.validation
 
+import uk.gov.hmrc.calculator.Calculator
+import uk.gov.hmrc.calculator.model.PayPeriod
 import uk.gov.hmrc.calculator.model.TaxYear
 import uk.gov.hmrc.calculator.model.pension.PensionMethod
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class PensionValidatorTests {
@@ -252,5 +255,47 @@ class PensionValidatorTests {
         val listOfError = mutableListOf(PensionValidator.PensionError.INVALID_AMOUNT_DECIMAL)
 
         assertEquals(listOfError, PensionValidator.validateValidInputPensionInput(monthlyPension, pensionMethod))
+    }
+
+    @Test
+    fun `GIVEN pension contribution is null WHEN validatePensionBelowWage THEN return null`() {
+        assertNull(PensionValidator.validatePensionBelowWage(1000.0, PayPeriod.MONTHLY, null, null))
+    }
+
+    @Test
+    fun `GIVEN pension contribution method is percentage WHEN validatePensionBelowWage THEN return null`() {
+        assertNull(
+            PensionValidator.validatePensionBelowWage(
+                1000.0,
+                PayPeriod.MONTHLY,
+                null,
+                Calculator.PensionContribution(PensionMethod.PERCENTAGE, 10.0)
+            )
+        )
+    }
+
+    @Test
+    fun `GIVEN pension contribution amount is lower than monthly wage WHEN validatePensionBelowWage THEN return null`() {
+        assertNull(
+            PensionValidator.validatePensionBelowWage(
+                1000.0,
+                PayPeriod.MONTHLY,
+                null,
+                Calculator.PensionContribution(PensionMethod.MONTHLY_AMOUNT_IN_POUNDS, 100.0)
+            )
+        )
+    }
+
+    @Test
+    fun `GIVEN pension contribution amount is higher than monthly wage WHEN validatePensionBelowWage THEN return pension error with amount`() {
+        assertEquals(
+            PensionValidator.PensionErrorWithAmount(PensionValidator.PensionError.ABOVE_WAGE, 1000.0),
+            PensionValidator.validatePensionBelowWage(
+                1000.0,
+                PayPeriod.MONTHLY,
+                null,
+                Calculator.PensionContribution(PensionMethod.MONTHLY_AMOUNT_IN_POUNDS, 1001.0)
+            )
+        )
     }
 }
