@@ -15,8 +15,8 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "TaxKalculator",
-            url: "https://github.com/hmrc/tax-kalculator/releases/download/2.13.1/TaxKalculator.xcframework.zip",
-            checksum: "d58a6d23ebfa0289e37d06006027a2422101ff17f4b354e422de6178fd390d9b"
+            url: "https://github.com/hmrc/tax-kalculator/releases/download/2.13.2/TaxKalculator.xcframework.zip",
+            checksum: "dd6b4dfaf1c95317330d58540b66803fe38684a0a406ba824c20202a1d5561d4"
         ),
     ]
 )

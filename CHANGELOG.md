@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.13.2] - 2024-08-08Z
 - Added new validator to PensionValidator to validate if pension contribution amount is below wage.
 
 ## [2.13.1] - 2024-08-05Z
