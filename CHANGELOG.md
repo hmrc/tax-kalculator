@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+- Updated K_CODE Clarification to include SK and CK code Clarifications.
 
 ## [2.13.2] - 2024-08-08Z
 - Added new validator to PensionValidator to validate if pension contribution amount is below wage.

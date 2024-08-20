@@ -56,6 +56,7 @@ import uk.gov.hmrc.calculator.utils.tapering.deductTapering
 import uk.gov.hmrc.calculator.utils.tapering.getTaperingAmount
 import uk.gov.hmrc.calculator.utils.tapering.shouldApplyDefaultTaxCode
 import uk.gov.hmrc.calculator.utils.tapering.shouldApplyStandardTapering
+import uk.gov.hmrc.calculator.utils.taxcode.getKCodeClarification
 import uk.gov.hmrc.calculator.utils.taxcode.getTaxCodeClarification
 import uk.gov.hmrc.calculator.utils.taxcode.getTrueTaxFreeAmount
 import uk.gov.hmrc.calculator.utils.taxcode.toTaxCode
@@ -100,6 +101,7 @@ class Calculator @JvmOverloads constructor(
 
     fun run(): CalculatorResponse {
         getTaxCodeClarification(taxCode, userPaysScottishTax)?.let { listOfClarification.add(it) }
+        getKCodeClarification(taxCode, userPaysScottishTax)?.let { listOfClarification.add(it) }
 
         if (!WageValidator.isAboveMinimumWages(wages) || !WageValidator.isBelowMaximumWages(wages)) {
             throw InvalidWagesException("Wages must be between 0 and 9999999.99")
@@ -108,7 +110,6 @@ class Calculator @JvmOverloads constructor(
         val yearlyWages = wages.convertWageToYearly(payPeriod, howManyAWeek)
 
         val amountToAddToWages = if (taxCodeType is KTaxCode) {
-            listOfClarification.add(Clarification.K_CODE)
             (taxCodeType as KTaxCode).amountToAddToWages
         } else null
 

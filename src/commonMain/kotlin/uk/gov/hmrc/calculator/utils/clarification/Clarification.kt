@@ -28,18 +28,20 @@ enum class Clarification(val priority: Int, private val description: String) {
         "Applied Scottish Income Tax rates as you said you pay Scottish Income Tax."
     ),
     K_CODE(8, "Tax code started with K."),
-    PENSION_EXCEED_ANNUAL_ALLOWANCE(9, "Pension contribution amount is higher than annual allowance."),
-    PENSION_BELOW_ANNUAL_ALLOWANCE(10, "Pension contribution amount is below than annual allowance."),
+    SK_CODE(9, "Tax code started with SK."),
+    CK_CODE(10, "Tax code started with CK."),
+    PENSION_EXCEED_ANNUAL_ALLOWANCE(11, "Pension contribution amount is higher than annual allowance."),
+    PENSION_BELOW_ANNUAL_ALLOWANCE(12, "Pension contribution amount is below than annual allowance."),
     INCOME_BELOW_STUDENT_AND_POSTGRAD_LOAN(
-        11,
+        13,
         "Income is below the level needed to start repaying student/postgrad loan."
     ),
-    INCOME_BELOW_STUDENT_LOAN(12, "Income is below the level needed to start repaying student loan."),
-    INCOME_BELOW_POSTGRAD_LOAN(13, "Income is below the level needed to start repaying postgrad loan."),
+    INCOME_BELOW_STUDENT_LOAN(14, "Income is below the level needed to start repaying student loan."),
+    INCOME_BELOW_POSTGRAD_LOAN(15, "Income is below the level needed to start repaying postgrad loan."),
     INCOME_BELOW_STUDENT_BUT_ABOVE_POSTGRAD_LOAN(
-        14,
+        16,
         "Income is below the level needed to start repaying student loan, but high enough to repay postgrad loan"
     ),
-    INCOME_OVER_100K(15, "Income over £100k with user specified 1257L tax code, no tapering."),
-    PENSION_EXCEED_INCOME(16, "Pension contribution amount is higher than income."),
+    INCOME_OVER_100K(17, "Income over £100k with user specified 1257L tax code, no tapering."),
+    PENSION_EXCEED_INCOME(18, "Pension contribution amount is higher than income."),
 }
