@@ -17,7 +17,11 @@ package uk.gov.hmrc.calculator.utils.taxcode
 
 import uk.gov.hmrc.calculator.exception.InvalidTaxCodeException
 import uk.gov.hmrc.calculator.model.Country
+import uk.gov.hmrc.calculator.model.taxcodes.CKCode
+import uk.gov.hmrc.calculator.model.taxcodes.KCode
+import uk.gov.hmrc.calculator.model.taxcodes.KTaxCode
 import uk.gov.hmrc.calculator.model.taxcodes.NTCode
+import uk.gov.hmrc.calculator.model.taxcodes.SKCode
 import uk.gov.hmrc.calculator.model.taxcodes.ScottishTaxCode
 import uk.gov.hmrc.calculator.model.taxcodes.TaxCode
 import uk.gov.hmrc.calculator.utils.clarification.Clarification
@@ -77,12 +81,25 @@ internal fun TaxCode.getTrueTaxFreeAmount(): Double {
 @JvmSynthetic
 internal fun getTaxCodeClarification(userEnteredTaxCode: String, userPaysScottishTax: Boolean): Clarification? {
     val taxCodeType = userEnteredTaxCode.toTaxCode(false)
-    val clarification = when {
+    return when {
         (taxCodeType is ScottishTaxCode) && userPaysScottishTax -> Clarification.SCOTTISH_INCOME_APPLIED
         (taxCodeType is ScottishTaxCode) && !userPaysScottishTax -> Clarification.SCOTTISH_CODE_BUT_OTHER_RATE
         (taxCodeType !is ScottishTaxCode) && userPaysScottishTax -> Clarification.NON_SCOTTISH_CODE_BUT_SCOTTISH_RATE
         else -> null
     }
+}
 
-    return clarification
+@Suppress("ComplexMethod")
+@JvmSynthetic
+internal fun getKCodeClarification(userEnteredTaxCode: String, userPaysScottishTaxCode: Boolean): Clarification? {
+    val taxCodeType = userEnteredTaxCode.toTaxCode(false)
+
+    if (taxCodeType is KTaxCode && userPaysScottishTaxCode) return Clarification.SK_CODE
+
+    return when (taxCodeType) {
+        is KCode -> Clarification.K_CODE
+        is SKCode -> Clarification.SK_CODE
+        is CKCode -> Clarification.CK_CODE
+        else -> null
+    }
 }
