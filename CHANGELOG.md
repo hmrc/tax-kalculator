@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.14.0] - 2024-08-20Z
 - Updated K_CODE Clarification to include SK and CK code Clarifications.
 
 ## [2.13.2] - 2024-08-08Z
