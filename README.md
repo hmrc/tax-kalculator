@@ -74,7 +74,7 @@ Returns an object of type `CalculatorResponse`. This class is broken up into `we
 - `otherAmount` of type `Double` (This will return 0.0 if no other amount)
 - `taxableIncome` of type `Double`
 
-> If `userSuppliedTaxCode` is set to `true`, tapering will not apply in the calculation, and it will force the calculation to be in Scottish Tax Rate.
+> If `userSuppliedTaxCode` is set to `true`, tapering will not apply in the calculation, and it will force the calculation to be in Default Tax Rate.
 
 > For tax breakdown this is the amount of tax per tax band which has two members, `percentage: Double` and `amount: Double`.
 
