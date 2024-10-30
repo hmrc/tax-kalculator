@@ -50,6 +50,7 @@ private fun isStandardTaxCodeAndAboveHundredThousand(taxCodeType: TaxCode, yearl
     taxCodeType is StandardTaxCode && yearlyWageAfterPension.yearlyWageIsAboveHundredThousand()
 
 private fun isDefaultTaxCodeAndAboveHundredThousand(taxCode: String, yearlyWageAfterPension: Double) =
-    taxCode.equals(TaxCode.getDefaultTaxCode(), ignoreCase = true) && yearlyWageAfterPension.yearlyWageIsAboveHundredThousand()
+    taxCode.equals(TaxCode.getDefaultTaxCode(), ignoreCase = true) &&
+        yearlyWageAfterPension.yearlyWageIsAboveHundredThousand()
 
 private const val TAPERING_THRESHOLD = 100000.0
