@@ -151,7 +151,7 @@ class Calculator @JvmOverloads constructor(
                     yearlyWageAfterPension.getTaperingAmount(taxCodeType.taxFreeAmount)
                 )
             }
-            yearlyWageAfterPension.shouldApplyDefaultTaxCode(taxCodeType, userSuppliedTaxCode) -> {
+            yearlyWageAfterPension.shouldApplyDefaultTaxCode(taxCode = taxCode, userSuppliedTaxCode) -> {
                 listOfClarification.add(Clarification.INCOME_OVER_100K)
                 Pair(taxCodeType.getTrueTaxFreeAmount(), null)
             }
