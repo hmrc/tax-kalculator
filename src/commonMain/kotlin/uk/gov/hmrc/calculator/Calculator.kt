@@ -143,7 +143,7 @@ class Calculator @JvmOverloads constructor(
 
     private fun getTaxFreeAndTaperingAmount(yearlyWageAfterPension: Double): Pair<Double, Double?> {
         return when {
-            yearlyWageAfterPension.shouldApplyStandardTapering(taxCodeType, userSuppliedTaxCode) -> {
+            yearlyWageAfterPension.shouldApplyStandardTapering(taxCode = taxCode, userSuppliedTaxCode) -> {
                 listOfClarification.add(Clarification.INCOME_OVER_100K_WITH_TAPERING)
                 Pair(
                     taxCodeType.getTrueTaxFreeAmount().deductTapering(yearlyWageAfterPension),
