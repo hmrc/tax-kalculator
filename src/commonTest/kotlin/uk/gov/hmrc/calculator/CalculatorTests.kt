@@ -1695,9 +1695,23 @@ internal class CalculatorTests {
     }
 
     @Test
-    fun `GIVEN tapering not apply AND wage is over 100k AND correct tax code applied WHEN calculate THEN clarification does not contain 100K clarification`() {
+    fun `GIVEN tapering not apply AND wage is over 100k AND correct tax code non-standard applied WHEN calculate THEN clarification does not contain 100K clarification`() {
         val result = Calculator(
             taxCode = "0T",
+            userSuppliedTaxCode = true,
+            wages = 125140.0,
+            payPeriod = PayPeriod.YEARLY,
+            taxYear = TaxYear.TWENTY_TWENTY_THREE,
+        ).run()
+
+        assertFalse(result.listOfClarification.contains(Clarification.INCOME_OVER_100K))
+        assertFalse(result.listOfClarification.contains(Clarification.INCOME_OVER_100K_WITH_TAPERING))
+    }
+
+    @Test
+    fun `GIVEN tapering not apply AND wage is over 100k AND non-default standard tax code applied WHEN calculate THEN clarification does not contain 100K clarification`() {
+        val result = Calculator(
+            taxCode = "1100L",
             userSuppliedTaxCode = true,
             wages = 125140.0,
             payPeriod = PayPeriod.YEARLY,

@@ -15,7 +15,6 @@
  */
 package uk.gov.hmrc.calculator.utils.tapering
 
-import uk.gov.hmrc.calculator.model.taxcodes.StandardTaxCode
 import uk.gov.hmrc.calculator.model.taxcodes.TaxCode
 import kotlin.jvm.JvmSynthetic
 
@@ -39,14 +38,15 @@ internal fun Double.getTaperingAmount(maximumTaperingAmount: Double): Double {
 internal fun Double.yearlyWageIsAboveHundredThousand() = this > TAPERING_THRESHOLD
 
 @JvmSynthetic
-internal fun Double.shouldApplyStandardTapering(taxCodeType: TaxCode, userSuppliedTaxCode: Boolean) =
-    isStandardTaxCodeAndAboveHundredThousand(taxCodeType, this) && !userSuppliedTaxCode
+internal fun Double.shouldApplyStandardTapering(taxCode: String, userSuppliedTaxCode: Boolean) =
+    isDefaultTaxCodeAndAboveHundredThousand(taxCode, this) && !userSuppliedTaxCode
 
 @JvmSynthetic
-internal fun Double.shouldApplyDefaultTaxCode(taxCodeType: TaxCode, userSuppliedTaxCode: Boolean) =
-    isStandardTaxCodeAndAboveHundredThousand(taxCodeType, this) && userSuppliedTaxCode
+internal fun Double.shouldApplyDefaultTaxCode(taxCode: String, userSuppliedTaxCode: Boolean) =
+    isDefaultTaxCodeAndAboveHundredThousand(taxCode, this) && userSuppliedTaxCode
 
-private fun isStandardTaxCodeAndAboveHundredThousand(taxCodeType: TaxCode, yearlyWageAfterPension: Double) =
-    taxCodeType is StandardTaxCode && yearlyWageAfterPension.yearlyWageIsAboveHundredThousand()
+private fun isDefaultTaxCodeAndAboveHundredThousand(taxCode: String, yearlyWageAfterPension: Double) =
+    taxCode.endsWith(TaxCode.getDefaultTaxCode(), ignoreCase = true) &&
+        yearlyWageAfterPension.yearlyWageIsAboveHundredThousand()
 
 private const val TAPERING_THRESHOLD = 100000.0

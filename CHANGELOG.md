@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+- Fixed default tax code comparison when Tapering not applied and yearly income above 100k.
 
 ## [2.14.1] - 2024-10-15Z
 - Updated README to fix incorrect information.
