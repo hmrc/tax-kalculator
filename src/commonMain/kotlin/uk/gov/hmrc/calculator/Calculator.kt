@@ -121,9 +121,11 @@ class Calculator @JvmOverloads constructor(
         val studentLoan = StudentLoanCalculation(taxYear, yearlyWages, studentLoanPlans)
         studentLoan.studentLoanClarification?.let { listOfClarification.add(it) }
 
-        val taxableIncome = amountToAddToWages?.let { kCodeAdjustedAmount ->
-            (yearlyWageAfterPension - taxFreeAmount) + kCodeAdjustedAmount
-        } ?: (yearlyWageAfterPension - taxFreeAmount)
+        val taxableIncome = (
+            amountToAddToWages?.let { kCodeAdjustedAmount ->
+                (yearlyWageAfterPension - taxFreeAmount) + kCodeAdjustedAmount
+            } ?: (yearlyWageAfterPension - taxFreeAmount)
+            ).coerceAtLeast(ZERO)
 
         return createResponse(
             taxCodeType,
@@ -414,4 +416,8 @@ class Calculator @JvmOverloads constructor(
         val method: PensionMethod,
         val contributionAmount: Double,
     )
+
+    private companion object {
+        const val ZERO = 0.0
+    }
 }

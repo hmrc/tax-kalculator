@@ -37,6 +37,38 @@ import kotlin.test.assertTrue
 internal class CalculatorTests {
 
     @Test
+    fun `GIVEN TWENTY_TWENTY_FOUR WHEN wage is less than personal allowance THEN calculates response`() {
+        val result = Calculator(
+            taxCode = "1257L",
+            userSuppliedTaxCode = false,
+            wages = 7000.0,
+            payPeriod = PayPeriod.YEARLY,
+            taxYear = TaxYear.TWENTY_TWENTY_FOUR
+        ).run()
+        Logger.i(result.prettyPrintDataClass())
+
+        assertEquals(Country.ENGLAND, result.country)
+        assertFalse(result.isKCode)
+
+        val yearly = result.yearly
+        assertEquals(PayPeriod.YEARLY, yearly.payPeriod)
+        assertEquals(ZERO, yearly.employeesNI)
+        assertEquals(ZERO, yearly.employersNI)
+        assertEquals(7000.00, yearly.wages)
+        assertEquals(12570.0, yearly.taxFree)
+        assertEquals(ZERO, yearly.taxToPay)
+        assertEquals(7000.0, yearly.takeHome)
+        assertEquals(ZERO, yearly.pensionContribution)
+        assertEquals(7000.0, yearly.wageAfterPensionDeduction)
+        assertEquals(ZERO, yearly.taperingAmountDeduction)
+        assertNull(yearly.studentLoanBreakdown)
+        assertEquals(ZERO, yearly.finalStudentLoanAmount)
+        assertEquals(ZERO, yearly.finalPostgraduateLoanAmount)
+        assertEquals(ZERO, yearly.otherAmount)
+        assertEquals(ZERO, yearly.taxableIncome)
+    }
+
+    @Test
     fun `GIVEN TWENTY_TWENTY_ONE WHEN 40000 wage THEN calculates response`() {
         val result = Calculator(
             taxCode = "1257L",
@@ -1956,5 +1988,9 @@ internal class CalculatorTests {
         )
 
         assertEquals(listOfExpectedResult, result.listOfClarification)
+    }
+
+    private companion object {
+        const val ZERO = 0.0
     }
 }
