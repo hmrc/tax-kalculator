@@ -61,6 +61,13 @@ internal class StudentLoanRate(taxYear: TaxYear) {
         StudentLoanPlan.POST_GRADUATE_PLAN to StudentLoanRepayment(21000.0, 0.06),
     )
 
+    private fun studentLoanRepaymentRate2025() = mapOf(
+        StudentLoanPlan.PLAN_ONE to StudentLoanRepayment(26065.0, 0.09),
+        StudentLoanPlan.PLAN_TWO to StudentLoanRepayment(28470.0, 0.09),
+        StudentLoanPlan.PLAN_FOUR to StudentLoanRepayment(32745.0, 0.09),
+        StudentLoanPlan.POST_GRADUATE_PLAN to StudentLoanRepayment(21000.0, 0.06),
+    )
+
     @JvmSynthetic
     internal val rate: Map<StudentLoanPlan, StudentLoanRepayment> = when (taxYear) {
         TaxYear.TWENTY_TWENTY -> studentLoanRepaymentRate2020()
@@ -71,6 +78,7 @@ internal class StudentLoanRate(taxYear: TaxYear) {
         TaxYear.TWENTY_TWENTY_THREE -> studentLoanRepaymentRate2023()
         TaxYear.TWENTY_TWENTY_THREE_JANUARY_REVISED -> studentLoanRepaymentRate2023JanuaryRevised()
         TaxYear.TWENTY_TWENTY_FOUR -> studentLoanRepaymentRate2024()
+        TaxYear.TWENTY_TWENTY_FIVE -> studentLoanRepaymentRate2025()
     }
 
     internal data class StudentLoanRepayment(
