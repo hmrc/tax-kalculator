@@ -30,6 +30,7 @@ internal object PensionAllowances {
         TaxYear.TWENTY_TWENTY_THREE -> pensionAllowance2023()
         TaxYear.TWENTY_TWENTY_THREE_JANUARY_REVISED -> pensionAllowance2023JanuaryRevised()
         TaxYear.TWENTY_TWENTY_FOUR -> pensionAllowance2024()
+        TaxYear.TWENTY_TWENTY_FIVE -> pensionAllowance2025()
     }
 
     private fun pensionAllowance2020() = PensionAllowance(10000.0)
@@ -43,6 +44,8 @@ internal object PensionAllowances {
     private fun pensionAllowance2023JanuaryRevised() = PensionAllowance(10000.0)
 
     private fun pensionAllowance2024() = PensionAllowance(10000.0)
+
+    private fun pensionAllowance2025() = PensionAllowance(10000.0)
 
     internal data class PensionAllowance(val annualAllowance: Double)
 }

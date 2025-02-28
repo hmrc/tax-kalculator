@@ -62,4 +62,11 @@ class PensionAllowancesTest {
 
         assertEquals(10000.0, result.annualAllowance)
     }
+
+    @Test
+    fun `GIVEN year is 2025 WHEN getPensionAllowances THEN return populated object`() {
+        val result = PensionAllowances.getPensionAllowances(TaxYear.TWENTY_TWENTY_FIVE)
+
+        assertEquals(10000.0, result.annualAllowance)
+    }
 }

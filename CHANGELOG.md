@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+- Added 2025/26 rates.
 
 ## [2.14.2] - 2025-02-28Z
 - Fixed negative taxable income to default 0 when income is less than tax free amount.
