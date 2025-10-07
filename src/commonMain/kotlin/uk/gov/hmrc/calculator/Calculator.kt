@@ -409,6 +409,7 @@ class Calculator @JvmOverloads constructor(
         val hasPlanOne: Boolean = false,
         val hasPlanTwo: Boolean = false,
         val hasPlanFour: Boolean = false,
+        val hasPlanFive: Boolean = false,
         val hasPostgraduatePlan: Boolean = false,
     )
 

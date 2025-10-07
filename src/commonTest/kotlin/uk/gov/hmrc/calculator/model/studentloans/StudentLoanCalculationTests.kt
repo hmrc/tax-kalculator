@@ -32,7 +32,7 @@ class StudentLoanCalculationTests {
 
         val result = StudentLoanCalculation(TaxYear.TWENTY_TWENTY_FOUR, wage, studentLoanPlans).listOfBreakdownResult
 
-        assertEquals(expectedBreakdown(0.0, 0.0, 0.0, 0.0), result)
+        assertEquals(expectedBreakdown(0.0, 0.0, 0.0, 0.0,0.0), result)
     }
 
     @Test
@@ -68,7 +68,7 @@ class StudentLoanCalculationTests {
 
         val result = StudentLoanCalculation(TaxYear.TWENTY_TWENTY_FOUR, wage, studentLoanPlans).listOfBreakdownResult
 
-        assertEquals(expectedBreakdown(0.0, 0.0, 0.0, 0.0), result)
+        assertEquals(expectedBreakdown(0.0, 0.0, 0.0, 0.0,0.0), result)
     }
 
     @Test
@@ -104,7 +104,7 @@ class StudentLoanCalculationTests {
 
         val result = StudentLoanCalculation(TaxYear.TWENTY_TWENTY_FOUR, wage, studentLoanPlans).listOfBreakdownResult
 
-        assertEquals(expectedBreakdown(720.9, 0.0, 0.0, 0.0), result)
+        assertEquals(expectedBreakdown(720.9, 0.0, 0.0, 0.0,0.0), result)
     }
 
     @Test
@@ -140,7 +140,7 @@ class StudentLoanCalculationTests {
 
         val result = StudentLoanCalculation(TaxYear.TWENTY_TWENTY_FOUR, wage, studentLoanPlans).listOfBreakdownResult
 
-        assertEquals(expectedBreakdown(0.0, 0.0, 0.0, 0.0), result)
+        assertEquals(expectedBreakdown(0.0, 0.0, 0.0, 0.0,0.0), result)
     }
 
     @Test
@@ -166,7 +166,7 @@ class StudentLoanCalculationTests {
 
         val result = StudentLoanCalculation(TaxYear.TWENTY_TWENTY_FOUR, wage, studentLoanPlans).listOfBreakdownResult
 
-        assertEquals(expectedBreakdown(18.9, 0.0, 0.0, 0.0), result)
+        assertEquals(expectedBreakdown(18.9, 0.0, 0.0, 0.0,0.0), result)
     }
 
     @Test
@@ -190,7 +190,7 @@ class StudentLoanCalculationTests {
 
         val result = StudentLoanCalculation(TaxYear.TWENTY_TWENTY_FOUR, wage, studentLoanPlans).listOfBreakdownResult
 
-        assertEquals(expectedBreakdown(720.9, 0.0, 0.0, 0.0), result)
+        assertEquals(expectedBreakdown(720.9, 0.0, 0.0, 0.0,0.0), result)
     }
 
     @Test
@@ -214,7 +214,7 @@ class StudentLoanCalculationTests {
 
         val result = StudentLoanCalculation(TaxYear.TWENTY_TWENTY_FOUR, wage, studentLoanPlans).listOfBreakdownResult
 
-        assertEquals(expectedBreakdown(0.0, 0.0, 0.0, 180.0), result)
+        assertEquals(expectedBreakdown(0.0, 0.0, 0.0, 0.0,180.0), result)
     }
 
     @Test
@@ -240,7 +240,7 @@ class StudentLoanCalculationTests {
 
         val result = StudentLoanCalculation(TaxYear.TWENTY_TWENTY_FOUR, wage, studentLoanPlans).listOfBreakdownResult
 
-        assertEquals(expectedBreakdown(0.0, 135.45, 0.0, 468.0), result)
+        assertEquals(expectedBreakdown(0.0, 135.45, 0.0, 0.0,468.0), result)
     }
 
     @Test
@@ -266,7 +266,7 @@ class StudentLoanCalculationTests {
 
         val result = StudentLoanCalculation(TaxYear.TWENTY_TWENTY_FOUR, wage, studentLoanPlans).listOfBreakdownResult
 
-        assertEquals(expectedBreakdown(342.9, 0.0, 0.0, 468.0), result)
+        assertEquals(expectedBreakdown(342.9, 0.0, 0.0, 0.0,468.0), result)
     }
 
     @Test
@@ -288,11 +288,13 @@ class StudentLoanCalculationTests {
             planOne: Double,
             planTwo: Double,
             planFour: Double,
+            planFive:Double,
             postGradPlan: Double,
         ) = mutableListOf(
             StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.PLAN_ONE.value, planOne),
             StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.PLAN_TWO.value, planTwo),
             StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.PLAN_FOUR.value, planFour),
+            StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.PLAN_FIVE.value, planFive),
             StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.POST_GRADUATE_PLAN.value, postGradPlan),
         )
     }

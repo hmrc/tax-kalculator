@@ -113,6 +113,8 @@ class StudentLoanRateTest {
         assertEquals(0.09, result[StudentLoanRate.StudentLoanPlan.PLAN_TWO]!!.recoveryRatePercentage)
         assertEquals(32745.0, result[StudentLoanRate.StudentLoanPlan.PLAN_FOUR]!!.yearlyThreshold)
         assertEquals(0.09, result[StudentLoanRate.StudentLoanPlan.PLAN_FOUR]!!.recoveryRatePercentage)
+        assertEquals(25000.0, result[StudentLoanRate.StudentLoanPlan.PLAN_FIVE]!!.yearlyThreshold)
+        assertEquals(0.09, result[StudentLoanRate.StudentLoanPlan.PLAN_FIVE]!!.recoveryRatePercentage)
         assertEquals(21000.0, result[StudentLoanRate.StudentLoanPlan.POST_GRADUATE_PLAN]!!.yearlyThreshold)
         assertEquals(0.06, result[StudentLoanRate.StudentLoanPlan.POST_GRADUATE_PLAN]!!.recoveryRatePercentage)
     }

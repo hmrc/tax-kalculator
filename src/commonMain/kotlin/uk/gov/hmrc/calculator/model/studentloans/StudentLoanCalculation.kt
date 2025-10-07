@@ -35,6 +35,7 @@ internal class StudentLoanCalculation(
         StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.PLAN_ONE.value, 0.0),
         StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.PLAN_TWO.value, 0.0),
         StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.PLAN_FOUR.value, 0.0),
+        StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.PLAN_FIVE.value, 0.0),
         StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.POST_GRADUATE_PLAN.value, 0.0),
     )
 
@@ -45,13 +46,15 @@ internal class StudentLoanCalculation(
             mapOf(
                 StudentLoanRate.StudentLoanPlan.PLAN_ONE to studentLoanPlans.hasPlanOne,
                 StudentLoanRate.StudentLoanPlan.PLAN_TWO to studentLoanPlans.hasPlanTwo,
-                StudentLoanRate.StudentLoanPlan.PLAN_FOUR to studentLoanPlans.hasPlanFour
+                StudentLoanRate.StudentLoanPlan.PLAN_FOUR to studentLoanPlans.hasPlanFour,
+                StudentLoanRate.StudentLoanPlan.PLAN_FIVE to studentLoanPlans.hasPlanFive
             )
         } else {
             mapOf(
                 StudentLoanRate.StudentLoanPlan.PLAN_ONE to false,
                 StudentLoanRate.StudentLoanPlan.PLAN_TWO to false,
-                StudentLoanRate.StudentLoanPlan.PLAN_FOUR to false
+                StudentLoanRate.StudentLoanPlan.PLAN_FOUR to false,
+                StudentLoanRate.StudentLoanPlan.PLAN_FIVE to false
             )
         }
 
@@ -149,6 +152,7 @@ internal class StudentLoanCalculation(
             listOfUndergraduatePlan[StudentLoanRate.StudentLoanPlan.PLAN_ONE],
             listOfUndergraduatePlan[StudentLoanRate.StudentLoanPlan.PLAN_TWO],
             listOfUndergraduatePlan[StudentLoanRate.StudentLoanPlan.PLAN_FOUR],
+            listOfUndergraduatePlan[StudentLoanRate.StudentLoanPlan.PLAN_FIVE],
         ).any { it!! }
 
         val clarification = when {

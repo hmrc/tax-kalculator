@@ -65,6 +65,7 @@ internal class StudentLoanRate(taxYear: TaxYear) {
         StudentLoanPlan.PLAN_ONE to StudentLoanRepayment(26065.0, 0.09),
         StudentLoanPlan.PLAN_TWO to StudentLoanRepayment(28470.0, 0.09),
         StudentLoanPlan.PLAN_FOUR to StudentLoanRepayment(32745.0, 0.09),
+        StudentLoanPlan.PLAN_FIVE to StudentLoanRepayment(25000.0,0.09),
         StudentLoanPlan.POST_GRADUATE_PLAN to StudentLoanRepayment(21000.0, 0.06),
     )
 
@@ -90,6 +91,7 @@ internal class StudentLoanRate(taxYear: TaxYear) {
         PLAN_ONE("planOne"),
         PLAN_TWO("planTwo"),
         PLAN_FOUR("planFour"),
+        PLAN_FIVE("planFive"),
         POST_GRADUATE_PLAN("postGraduatePlan"),
     }
 }
