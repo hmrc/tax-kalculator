@@ -121,4 +121,54 @@ class StudentLoanParameterizedTests {
         assertEquals(expectedFourWeeklyPostgraduateLoan, fourWeekly.finalPostgraduateLoanAmount)
         assertEquals(expectedWeeklyPostgraduateLoan, weekly.finalPostgraduateLoanAmount)
     }
+
+    @ParameterizedTest(name = "wages={0}")
+    @CsvFileSource(resources = ["/studentloan/data2025_Oct_student_loan.csv"], numLinesToSkip = 1)
+    fun `Student Loan calculation OCT 2025`(
+        inputWage: Double,
+        inputHasPlanOne: Boolean,
+        inputHasPlanTwo: Boolean,
+        inputHasPlanFour: Boolean,
+        inputHasPlanFive: Boolean,
+        inputHasPostgraduatePlan: Boolean,
+        expectedYearlyStudentLoan: Double,
+        expectedMonthlyStudentLoan: Double,
+        expectedFourWeeklyStudentLoan: Double,
+        expectedWeeklyStudentLoan: Double,
+        expectedYearlyPostgraduateLoan: Double,
+        expectedMonthlyPostgraduateLoan: Double,
+        expectedFourWeeklyPostgraduateLoan: Double,
+        expectedWeeklyPostgraduateLoan: Double,
+    ) {
+        val response = Calculator(
+            taxCode = "1257L",
+            wages = inputWage,
+            payPeriod = PayPeriod.YEARLY,
+            taxYear = TaxYear.TWENTY_TWENTY_FIVE,
+            studentLoanPlans = Calculator.StudentLoanPlans(
+                inputHasPlanOne,
+                inputHasPlanTwo,
+                inputHasPlanFour,
+                inputHasPostgraduatePlan,
+                inputHasPlanFive,
+            )
+        ).run()
+
+        val yearlyPeriod = response.yearly
+        val monthly = response.monthly
+        val fourWeekly = response.fourWeekly
+        val weekly = response.weekly
+        println(yearlyPeriod.prettyPrintDataClass())
+        println(monthly.prettyPrintDataClass())
+        println(fourWeekly.prettyPrintDataClass())
+        println(weekly.prettyPrintDataClass())
+        assertEquals(expectedYearlyStudentLoan, yearlyPeriod.finalStudentLoanAmount)
+        assertEquals(expectedMonthlyStudentLoan, monthly.finalStudentLoanAmount)
+        assertEquals(expectedFourWeeklyStudentLoan, fourWeekly.finalStudentLoanAmount)
+        assertEquals(expectedWeeklyStudentLoan, weekly.finalStudentLoanAmount)
+        assertEquals(expectedYearlyPostgraduateLoan, yearlyPeriod.finalPostgraduateLoanAmount)
+        assertEquals(expectedMonthlyPostgraduateLoan, monthly.finalPostgraduateLoanAmount)
+        assertEquals(expectedFourWeeklyPostgraduateLoan, fourWeekly.finalPostgraduateLoanAmount)
+        assertEquals(expectedWeeklyPostgraduateLoan, weekly.finalPostgraduateLoanAmount)
+    }
 }
