@@ -1308,7 +1308,7 @@ internal class CalculatorTests {
         assertEquals(553.85, weekly.wageAfterPensionDeduction)
         assertEquals(0.0, weekly.taperingAmountDeduction)
         assertEquals(2.0, weekly.studentLoanBreakdown!![1].amount) // plan 2
-        assertEquals(9.0, weekly.studentLoanBreakdown!![3].amount) // postgraduate plan
+        assertEquals(0.0, weekly.studentLoanBreakdown!![3].amount) // postgraduate plan
         assertEquals(2.0, weekly.finalStudentLoanAmount)
         assertEquals(9.0, weekly.finalPostgraduateLoanAmount)
         assertEquals(11.0, weekly.otherAmount)
@@ -1326,7 +1326,7 @@ internal class CalculatorTests {
         assertEquals(2215.38, fourWeekly.wageAfterPensionDeduction)
         assertEquals(0.0, fourWeekly.taperingAmountDeduction)
         assertEquals(10.0, fourWeekly.studentLoanBreakdown!![1].amount) // plan 2
-        assertEquals(36.0, fourWeekly.studentLoanBreakdown!![3].amount) // postgraduate plan
+        assertEquals(0.0, fourWeekly.studentLoanBreakdown!![3].amount) // postgraduate plan
         assertEquals(10.0, fourWeekly.finalStudentLoanAmount)
         assertEquals(36.0, fourWeekly.finalPostgraduateLoanAmount)
         assertEquals(46.0, fourWeekly.otherAmount)
@@ -1344,7 +1344,7 @@ internal class CalculatorTests {
         assertEquals(2400.0, monthly.wageAfterPensionDeduction)
         assertEquals(0.0, monthly.taperingAmountDeduction)
         assertEquals(11.0, monthly.studentLoanBreakdown!![1].amount) // plan 2
-        assertEquals(39.0, monthly.studentLoanBreakdown!![3].amount) // postgraduate plan
+        assertEquals(0.0, monthly.studentLoanBreakdown!![3].amount) // postgraduate plan
         assertEquals(11.0, monthly.finalStudentLoanAmount)
         assertEquals(39.0, monthly.finalPostgraduateLoanAmount)
         assertEquals(50.0, monthly.otherAmount)
@@ -1362,7 +1362,7 @@ internal class CalculatorTests {
         assertEquals(28800.0, yearly.wageAfterPensionDeduction)
         assertEquals(0.0, yearly.taperingAmountDeduction)
         assertEquals(135.0, yearly.studentLoanBreakdown!![1].amount) // plan 2
-        assertEquals(468.0, yearly.studentLoanBreakdown!![3].amount) // postgraduate plan
+        assertEquals(0.0, yearly.studentLoanBreakdown!![3].amount) // postgraduate plan
         assertEquals(135.0, yearly.finalStudentLoanAmount)
         assertEquals(468.0, yearly.finalPostgraduateLoanAmount)
         assertEquals(603.0, yearly.otherAmount)

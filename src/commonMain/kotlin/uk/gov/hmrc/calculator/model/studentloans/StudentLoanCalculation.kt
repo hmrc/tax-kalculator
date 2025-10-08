@@ -92,12 +92,21 @@ internal class StudentLoanCalculation(
         studentLoanRate: Map<StudentLoanRate.StudentLoanPlan, StudentLoanRate.StudentLoanRepayment>,
     ) {
         listOfUndergraduatePlan.forEach { (plan, hasStudentLoan) ->
-            val rate = studentLoanRate[plan]!!
-            val loanAmount = calculateStudentLoan(yearlyWage, rate)
+            if (studentLoanRate.containsKey(plan)) {
+                val rate = studentLoanRate[plan]!!
+                val loanAmount = calculateStudentLoan(yearlyWage, rate)
 
-            // This will calculate and add all "true" student loan amount to the list.
-            listOfUndergraduateResult.add(StudentLoanPlanAmount(plan, loanAmount, rate.yearlyThreshold, hasStudentLoan))
-            addLowestUndergraduateLoanToBreakdown()
+                // This will calculate and add all "true" student loan amount to the list.
+                listOfUndergraduateResult.add(
+                    StudentLoanPlanAmount(
+                        plan,
+                        loanAmount,
+                        rate.yearlyThreshold,
+                        hasStudentLoan
+                    )
+                )
+                addLowestUndergraduateLoanToBreakdown()
+            }
         }
     }
 
