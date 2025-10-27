@@ -30,7 +30,7 @@ val calculator = Calculator(
     howManyAWeek = null,             // Optional (Default: null)
     taxYear = TaxYear.currentTaxYear, // Optional (Default: Current Tax Year)
     pensionContribution = PensionContribution(method = PERCENTAGE, contributionAmount = 10.0), // Optional (Default: null)
-    studentLoanPlans = StudentLoanPlans(hasPlanOne = false, hasPlanTwo = false, hasPlanFour = false, hasPostgraduatePlan = false) // Optional (Default: null)
+    studentLoanPlans = StudentLoanPlans(hasPlanOne = false, hasPlanTwo = false, hasPlanFour = false, hasPostgraduatePlan = false, hasPlanFive = false) // Optional (Default: null)
 )
 
 val response = calculator.run()
@@ -47,7 +47,7 @@ let calculator = Calculator(
     howManyAWeek: KotlinDouble(double: 35),
     taxYear: TaxYear.companion.currentTaxYear,
     pensionContribution: PensionContribution(method: PERCENTAGE, contributionAmount: 10.0), // Optional (Default: null)
-    studentLoanPlans: StudentLoanPlans(hasPlanOne: false, hasPlanTwo: false, hasPlanFour: false, hasPostgraduatePlan: false) // Optional (Default: null)
+    studentLoanPlans: StudentLoanPlans(hasPlanOne: false, hasPlanTwo: false, hasPlanFour: false, hasPostgraduatePlan: false, hasPlanFive = false) // Optional (Default: null)
 )
 
 let calculation = try calculator.run()
@@ -364,12 +364,13 @@ internal data class StudentLoanRepayment(
 In [`StudentLoanRate.kt`](https://github.com/hmrc/tax-kalculator/blob/main/src/commonMain/kotlin/uk/gov/hmrc/calculator/model.studentloans/StudentLoanRate.kt) update rate as specified by the business.
 
 ```kotlin
-private fun studentLoanRepaymentRate2023() = mapOf(
-        StudentLoanPlan.PLAN_ONE to StudentLoanRepayment(22015.0, 0.09),
-        StudentLoanPlan.PLAN_TWO to StudentLoanRepayment(27295.0, 0.09),
-        StudentLoanPlan.PLAN_FOUR to StudentLoanRepayment(27660.0, 0.09),
-        StudentLoanPlan.POST_GRADUATE_PLAN to StudentLoanRepayment(21000.0, 0.06),
-    )
+private fun studentLoanRepaymentRate2025() = mapOf(
+  StudentLoanPlan.PLAN_ONE to StudentLoanRepayment(26065.0, 0.09),
+  StudentLoanPlan.PLAN_TWO to StudentLoanRepayment(28470.0, 0.09),
+  StudentLoanPlan.PLAN_FOUR to StudentLoanRepayment(32745.0, 0.09),
+  StudentLoanPlan.PLAN_FIVE to StudentLoanRepayment(25000.0, 0.09),
+  StudentLoanPlan.POST_GRADUATE_PLAN to StudentLoanRepayment(21000.0, 0.06),
+)
 ```
 
 ## License
