@@ -718,6 +718,60 @@ internal class ParameterizedCalculatorTests {
             expectedYearlyKCodeAdjustment
         )
     }
+    @ParameterizedTest(name = "tax_code={0}, wages={1}, pay_period={2}, tax_year={3}, is_pension_age={4}")
+    @CsvFileSource(resources = ["/data2025_Oct_with_student_loan.csv"], numLinesToSkip = 1)
+    fun `Tax calculations OCT 2025 with student loan`(
+        inputTaxCode: String,
+        inputWages: Double,
+        @ConvertWith(PayPeriodConverter::class) inputPayPeriod: PayPeriod,
+        @ConvertWith(TaxYearConverter::class) inputTaxYear: TaxYear,
+        inputIsPensionAge: Boolean,
+        inputHasPlanOne: Boolean,
+        inputHasPlanTwo: Boolean,
+        inputHasPlanFour: Boolean,
+        inputHasPlanFive: Boolean,
+        inputHasPostgraduatePlan: Boolean,
+        @ConvertWith(CountryConverter::class) expectedCountry: Country,
+        expectedYearlyNiEmployee: Double,
+        expectedYearlyNiEmployer: Double,
+        expectedYearlyIncomeTax: Double,
+        expectedYearlyTotalDeduction: Double,
+        expectedYearlyTakeHome: Double,
+        expectedYearlyWages: Double,
+        expectedYearlyTaxFreeAmount: Double,
+        expectedYearlyKCodeAdjustment: Double?,
+        expectedIsKCode: Boolean
+    ) {
+        val response = Calculator(
+            taxCode = inputTaxCode,
+            wages = inputWages,
+            payPeriod = inputPayPeriod,
+            taxYear = inputTaxYear,
+            isPensionAge = inputIsPensionAge,
+            studentLoanPlans = Calculator.StudentLoanPlans(
+                inputHasPlanOne,
+                inputHasPlanTwo,
+                inputHasPlanFour,
+                inputHasPostgraduatePlan,
+                inputHasPlanFive
+            )
+        ).run()
+
+        checkResults(
+            expectedCountry,
+            response,
+            expectedIsKCode,
+            inputTaxCode,
+            expectedYearlyNiEmployer,
+            expectedYearlyNiEmployee,
+            expectedYearlyIncomeTax,
+            expectedYearlyTotalDeduction,
+            expectedYearlyTakeHome,
+            expectedYearlyWages,
+            expectedYearlyTaxFreeAmount,
+            expectedYearlyKCodeAdjustment
+        )
+    }
 
     private fun checkResults(
         expectedCountry: Country,
