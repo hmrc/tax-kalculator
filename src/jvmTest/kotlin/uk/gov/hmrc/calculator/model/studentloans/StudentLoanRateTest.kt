@@ -116,4 +116,20 @@ class StudentLoanRateTest {
         assertEquals(21000.0, result[StudentLoanRate.StudentLoanPlan.POST_GRADUATE_PLAN]!!.yearlyThreshold)
         assertEquals(0.06, result[StudentLoanRate.StudentLoanPlan.POST_GRADUATE_PLAN]!!.recoveryRatePercentage)
     }
+
+    @Test
+    fun `GIVEN year is 2026 WHEN get rate THEN return populated objects`() {
+        val result = StudentLoanRate(TaxYear.TWENTY_TWENTY_SIX).rate
+
+        assertEquals(26900.0, result[StudentLoanRate.StudentLoanPlan.PLAN_ONE]!!.yearlyThreshold)
+        assertEquals(0.09, result[StudentLoanRate.StudentLoanPlan.PLAN_ONE]!!.recoveryRatePercentage)
+        assertEquals(29385.0, result[StudentLoanRate.StudentLoanPlan.PLAN_TWO]!!.yearlyThreshold)
+        assertEquals(0.09, result[StudentLoanRate.StudentLoanPlan.PLAN_TWO]!!.recoveryRatePercentage)
+        assertEquals(33795.0, result[StudentLoanRate.StudentLoanPlan.PLAN_FOUR]!!.yearlyThreshold)
+        assertEquals(0.09, result[StudentLoanRate.StudentLoanPlan.PLAN_FOUR]!!.recoveryRatePercentage)
+        assertEquals(25000.0, result[StudentLoanRate.StudentLoanPlan.PLAN_FIVE]!!.yearlyThreshold)
+        assertEquals(0.09, result[StudentLoanRate.StudentLoanPlan.PLAN_FIVE]!!.recoveryRatePercentage)
+        assertEquals(21000.0, result[StudentLoanRate.StudentLoanPlan.POST_GRADUATE_PLAN]!!.yearlyThreshold)
+        assertEquals(0.06, result[StudentLoanRate.StudentLoanPlan.POST_GRADUATE_PLAN]!!.recoveryRatePercentage)
+    }
 }
