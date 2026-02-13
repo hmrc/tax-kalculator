@@ -70,7 +70,7 @@ internal class CalculatorUtilsTests {
         val result = CalculatorUtils.defaultTaxCode()
 
         assertEquals(
-            2026,
+            2025,
             result.year
         )
         assertEquals(
