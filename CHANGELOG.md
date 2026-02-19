@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+- Added 2026/27 rates.
 
 ## [2.15.1] - 2025-10-28Z
 - Added student loan plan 5
