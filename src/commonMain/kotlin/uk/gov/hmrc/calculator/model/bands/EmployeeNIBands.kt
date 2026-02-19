@@ -65,6 +65,11 @@ internal class EmployeeNIBands(taxYear: TaxYear) {
         EmployeeNIBand(50270.0, -1.0, 0.02)
     )
 
+    private val employeeNIBands2026: List<EmployeeNIBand> = listOf(
+        EmployeeNIBand(12570.0, 50270.00, 0.08),
+        EmployeeNIBand(50270.0, -1.0, 0.02)
+    )
+
     @JvmSynthetic
     internal val bands: List<EmployeeNIBand> = when (taxYear) {
         TaxYear.TWENTY_TWENTY -> employeeNIBands2020
@@ -76,5 +81,6 @@ internal class EmployeeNIBands(taxYear: TaxYear) {
         TaxYear.TWENTY_TWENTY_THREE_JANUARY_REVISED -> employeeNIBands2023JanuaryRevised
         TaxYear.TWENTY_TWENTY_FOUR -> employeeNIBands2024
         TaxYear.TWENTY_TWENTY_FIVE -> employeeNIBands2025
+        TaxYear.TWENTY_TWENTY_SIX -> employeeNIBands2026
     }
 }
