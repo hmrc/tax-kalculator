@@ -31,11 +31,11 @@ import kotlin.jvm.JvmSynthetic
 
 @JvmSynthetic
 internal fun String.matchWelshTaxCode(): WelshTaxCode {
-    return when (this.take(3)) {
-        "C0T" -> C0T()
-        "CBR" -> CBR()
-        "CD0" -> CD0()
-        "CD1" -> CD1()
+    return when {
+        this == "C0T" -> C0T()
+        this == "CBR" -> CBR()
+        this == "CD0" -> CD0()
+        this == "CD1" -> CD1()
         else -> this.matchOtherWelshTaxCode()
     }
 }

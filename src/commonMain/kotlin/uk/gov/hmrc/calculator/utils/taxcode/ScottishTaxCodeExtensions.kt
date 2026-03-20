@@ -33,13 +33,13 @@ import kotlin.jvm.JvmSynthetic
 
 @JvmSynthetic
 internal fun String.matchScottishTaxCode(): ScottishTaxCode {
-    return when (this.take(3)) {
-        "S0T" -> S0T()
-        "SBR" -> SBR()
-        "SD0" -> SD0()
-        "SD1" -> SD1()
-        "SD2" -> SD2()
-        "SD3" -> SD3()
+    return when {
+        this == "S0T" -> S0T()
+        this == "SBR" -> SBR()
+        this == "SD0" -> SD0()
+        this == "SD1" -> SD1()
+        this == "SD2" -> SD2()
+        this == "SD3" -> SD3()
         else -> this.matchOtherScottishTaxCode()
     }
 }

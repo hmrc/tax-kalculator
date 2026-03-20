@@ -31,11 +31,11 @@ import kotlin.jvm.JvmSynthetic
 
 @JvmSynthetic
 internal fun String.matchEnglishTaxCode(): EnglishTaxCode {
-    return when (this.take(2)) {
-        "0T" -> ZeroT()
-        "BR" -> BR()
-        "D0" -> D0()
-        "D1" -> D1()
+    return when {
+        this == "0T" -> ZeroT()
+        this == "BR" -> BR()
+        this == "D0" -> D0()
+        this == "D1" -> D1()
         else -> this.matchOtherEnglishTaxCode()
     }
 }
