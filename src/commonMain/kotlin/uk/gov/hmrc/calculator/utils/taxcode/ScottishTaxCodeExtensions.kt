@@ -15,6 +15,7 @@
  */
 package uk.gov.hmrc.calculator.utils.taxcode
 
+import uk.gov.hmrc.calculator.Calculator
 import uk.gov.hmrc.calculator.exception.InvalidTaxCodeException
 import uk.gov.hmrc.calculator.model.taxcodes.S0T
 import uk.gov.hmrc.calculator.model.taxcodes.SBR
@@ -33,13 +34,13 @@ import kotlin.jvm.JvmSynthetic
 
 @JvmSynthetic
 internal fun String.matchScottishTaxCode(): ScottishTaxCode {
-    return when (this.take(3)) {
-        "S0T" -> S0T()
-        "SBR" -> SBR()
-        "SD0" -> SD0()
-        "SD1" -> SD1()
-        "SD2" -> SD2()
-        "SD3" -> SD3()
+    return when (this) {
+        Calculator.CODE_S0T -> S0T()
+        Calculator.CODE_SBR -> SBR()
+        Calculator.CODE_SD0 -> SD0()
+        Calculator.CODE_SD1 -> SD1()
+        Calculator.CODE_SD2 -> SD2()
+        Calculator.CODE_SD3 -> SD3()
         else -> this.matchOtherScottishTaxCode()
     }
 }

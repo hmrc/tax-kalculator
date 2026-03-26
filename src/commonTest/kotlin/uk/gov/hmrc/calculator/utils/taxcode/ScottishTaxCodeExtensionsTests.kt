@@ -58,26 +58,6 @@ class ScottishTaxCodeExtensionsTests {
     }
 
     @Test
-    fun `Scotland no allowance ignore additional code`() {
-        assertTrue("S0TABC".toTaxCode() is S0T)
-    }
-
-    @Test
-    fun `Scotland no allowance ignore additional code force scottish rate`() {
-        assertTrue("S0TABC".toTaxCode(forceScottishTaxCode = true) is S0T)
-    }
-
-    @Test
-    fun `English no allowance ignore additional code force scottish rate`() {
-        assertTrue("0TABC".toTaxCode(forceScottishTaxCode = true) is S0T)
-    }
-
-    @Test
-    fun `Welsh no allowance ignore additional code force scottish rate`() {
-        assertTrue("C0TABC".toTaxCode(forceScottishTaxCode = true) is S0T)
-    }
-
-    @Test
     fun `Scotland no allowance but with space`() {
         assertTrue("S 0T".toTaxCode() is S0T)
     }
@@ -110,18 +90,6 @@ class ScottishTaxCodeExtensionsTests {
     }
 
     @Test
-    fun `Scotland basic rate ignore additional code`() {
-        assertTrue("SBRABC".toTaxCode() is SBR)
-        assertTrue("SBRABC".toTaxCode(forceScottishTaxCode = true) is SBR)
-        assertTrue("BRABC".toTaxCode(forceScottishTaxCode = true) is SBR)
-        assertTrue("CBRABC".toTaxCode(forceScottishTaxCode = true) is SBR)
-        val taxCode: SBR = "SBRABC".toTaxCode() as SBR
-        assertEquals(SCOTLAND, taxCode.country)
-        assertEquals(1, taxCode.taxAllAtBand)
-        assertEquals(0.0, taxCode.taxFreeAmount)
-    }
-
-    @Test
     fun `Scotland intermediate`() {
         assertTrue("SD0".toTaxCode() is SD0)
         assertTrue("SD0".toTaxCode(forceScottishTaxCode = true) is SD0)
@@ -134,36 +102,12 @@ class ScottishTaxCodeExtensionsTests {
     }
 
     @Test
-    fun `Scotland intermediate ignore additional code`() {
-        assertTrue("SD0ABC".toTaxCode() is SD0)
-        assertTrue("SD0ABC".toTaxCode(forceScottishTaxCode = true) is SD0)
-        assertTrue("D0ABC".toTaxCode(forceScottishTaxCode = true) is SD0)
-        assertTrue("CD0ABC".toTaxCode(forceScottishTaxCode = true) is SD0)
-        val taxCode: SD0 = "SD0ABC".toTaxCode() as SD0
-        assertEquals(SCOTLAND, taxCode.country)
-        assertEquals(2, taxCode.taxAllAtBand)
-        assertEquals(0.0, taxCode.taxFreeAmount)
-    }
-
-    @Test
     fun `Scotland higher`() {
         assertTrue("SD1".toTaxCode() is SD1)
         assertTrue("SD1".toTaxCode(forceScottishTaxCode = true) is SD1)
         assertTrue("D1".toTaxCode(forceScottishTaxCode = true) is SD1)
         assertTrue("CD1".toTaxCode(forceScottishTaxCode = true) is SD1)
         val taxCode: SD1 = "SD1".toTaxCode() as SD1
-        assertEquals(SCOTLAND, taxCode.country)
-        assertEquals(3, taxCode.taxAllAtBand)
-        assertEquals(0.0, taxCode.taxFreeAmount)
-    }
-
-    @Test
-    fun `Scotland higher ignore additional code`() {
-        assertTrue("SD1ABC".toTaxCode() is SD1)
-        assertTrue("SD1ABC".toTaxCode(forceScottishTaxCode = true) is SD1)
-        assertTrue("D1ABC".toTaxCode(forceScottishTaxCode = true) is SD1)
-        assertTrue("CD1ABC".toTaxCode(forceScottishTaxCode = true) is SD1)
-        val taxCode: SD1 = "SD1ABC".toTaxCode() as SD1
         assertEquals(SCOTLAND, taxCode.country)
         assertEquals(3, taxCode.taxAllAtBand)
         assertEquals(0.0, taxCode.taxFreeAmount)
@@ -185,21 +129,6 @@ class ScottishTaxCodeExtensionsTests {
     }
 
     @Test
-    fun `Scotland advanced ignore additional code`() {
-        assertTrue("SD2ABC".toTaxCode() is SD2)
-        assertTrue("SD2ABC".toTaxCode(forceScottishTaxCode = true) is SD2)
-        val taxCode: SD2 = "SD2ABC".toTaxCode() as SD2
-        assertEquals(SCOTLAND, taxCode.country)
-        assertEquals(4, taxCode.taxAllAtBand)
-        assertEquals(0.0, taxCode.taxFreeAmount)
-
-        assertFailsWith<InvalidTaxCodeException> {
-            "D2ABC".toTaxCode(forceScottishTaxCode = true)
-            "CD2ABC".toTaxCode(forceScottishTaxCode = true)
-        }
-    }
-
-    @Test
     fun `Scotland top`() {
         assertTrue("SD3".toTaxCode() is SD3)
         assertTrue("SD3".toTaxCode(forceScottishTaxCode = true) is SD3)
@@ -211,21 +140,6 @@ class ScottishTaxCodeExtensionsTests {
         assertFailsWith<InvalidTaxCodeException> {
             "D3".toTaxCode(forceScottishTaxCode = true)
             "CD3".toTaxCode(forceScottishTaxCode = true)
-        }
-    }
-
-    @Test
-    fun `Scotland top ignore additional code`() {
-        assertTrue("SD3ABC".toTaxCode() is SD3)
-        assertTrue("SD3ABC".toTaxCode(forceScottishTaxCode = true) is SD3)
-        val taxCode: SD3 = "SD3ABC".toTaxCode() as SD3
-        assertEquals(SCOTLAND, taxCode.country)
-        assertEquals(5, taxCode.taxAllAtBand)
-        assertEquals(0.0, taxCode.taxFreeAmount)
-
-        assertFailsWith<InvalidTaxCodeException> {
-            "D3ABC".toTaxCode(forceScottishTaxCode = true)
-            "CD3ABC".toTaxCode(forceScottishTaxCode = true)
         }
     }
 

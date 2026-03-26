@@ -418,7 +418,21 @@ class Calculator @JvmOverloads constructor(
         val contributionAmount: Double,
     )
 
-    private companion object {
+    companion object {
         const val ZERO = 0.0
+        const val CODE_0T = "0T"
+        const val CODE_BR = "BR"
+        const val CODE_D0 = "D0"
+        const val CODE_D1 = "D1"
+        const val CODE_C0T = "C0T"
+        const val CODE_CBR = "CBR"
+        const val CODE_CD0 = "CD0"
+        const val CODE_CD1 = "CD1"
+        const val CODE_S0T = "S0T"
+        const val CODE_SBR = "SBR"
+        const val CODE_SD0 = "SD0"
+        const val CODE_SD1 = "SD1"
+        const val CODE_SD2 = "SD2"
+        const val CODE_SD3 = "SD3"
     }
 }
