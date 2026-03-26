@@ -30,10 +30,9 @@ import uk.gov.hmrc.calculator.model.taxcodes.WelshNCode
 import uk.gov.hmrc.calculator.model.taxcodes.WelshTaxCode
 import kotlin.jvm.JvmSynthetic
 
-
 @JvmSynthetic
 internal fun String.matchWelshTaxCode(): WelshTaxCode {
-    return when (this){
+    return when (this) {
         Calculator.CODE_C0T -> C0T()
         Calculator.CODE_CBR -> CBR()
         Calculator.CODE_CD0 -> CD0()

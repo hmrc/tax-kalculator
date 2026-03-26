@@ -434,6 +434,5 @@ class Calculator @JvmOverloads constructor(
         const val CODE_SD1 = "SD1"
         const val CODE_SD2 = "SD2"
         const val CODE_SD3 = "SD3"
-
     }
 }

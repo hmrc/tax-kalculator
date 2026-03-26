@@ -34,7 +34,7 @@ import kotlin.jvm.JvmSynthetic
 
 @JvmSynthetic
 internal fun String.matchScottishTaxCode(): ScottishTaxCode {
-    return when (this){
+    return when (this) {
         Calculator.CODE_S0T -> S0T()
         Calculator.CODE_SBR -> SBR()
         Calculator.CODE_SD0 -> SD0()

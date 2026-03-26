@@ -32,7 +32,7 @@ import kotlin.jvm.JvmSynthetic
 
 @JvmSynthetic
 internal fun String.matchEnglishTaxCode(): EnglishTaxCode {
-    return when (this){
+    return when (this) {
         Calculator.CODE_0T -> ZeroT()
         Calculator.CODE_BR -> BR()
         Calculator.CODE_D0 -> D0()
