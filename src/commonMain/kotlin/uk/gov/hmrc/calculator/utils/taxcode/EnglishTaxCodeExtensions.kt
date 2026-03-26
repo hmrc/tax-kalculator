@@ -15,6 +15,7 @@
  */
 package uk.gov.hmrc.calculator.utils.taxcode
 
+import uk.gov.hmrc.calculator.Calculator
 import uk.gov.hmrc.calculator.exception.InvalidTaxCodeException
 import uk.gov.hmrc.calculator.model.taxcodes.BR
 import uk.gov.hmrc.calculator.model.taxcodes.D0
@@ -31,11 +32,11 @@ import kotlin.jvm.JvmSynthetic
 
 @JvmSynthetic
 internal fun String.matchEnglishTaxCode(): EnglishTaxCode {
-    return when {
-        this == "0T" -> ZeroT()
-        this == "BR" -> BR()
-        this == "D0" -> D0()
-        this == "D1" -> D1()
+    return when (this){
+        Calculator.CODE_0T -> ZeroT()
+        Calculator.CODE_BR -> BR()
+        Calculator.CODE_D0 -> D0()
+        Calculator.CODE_D1 -> D1()
         else -> this.matchOtherEnglishTaxCode()
     }
 }

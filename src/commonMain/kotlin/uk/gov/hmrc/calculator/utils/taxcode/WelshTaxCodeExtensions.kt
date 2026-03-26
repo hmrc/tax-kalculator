@@ -15,6 +15,7 @@
  */
 package uk.gov.hmrc.calculator.utils.taxcode
 
+import uk.gov.hmrc.calculator.Calculator
 import uk.gov.hmrc.calculator.exception.InvalidTaxCodeException
 import uk.gov.hmrc.calculator.model.taxcodes.C0T
 import uk.gov.hmrc.calculator.model.taxcodes.CBR
@@ -29,13 +30,14 @@ import uk.gov.hmrc.calculator.model.taxcodes.WelshNCode
 import uk.gov.hmrc.calculator.model.taxcodes.WelshTaxCode
 import kotlin.jvm.JvmSynthetic
 
+
 @JvmSynthetic
 internal fun String.matchWelshTaxCode(): WelshTaxCode {
-    return when {
-        this == "C0T" -> C0T()
-        this == "CBR" -> CBR()
-        this == "CD0" -> CD0()
-        this == "CD1" -> CD1()
+    return when (this){
+        Calculator.CODE_C0T -> C0T()
+        Calculator.CODE_CBR -> CBR()
+        Calculator.CODE_CD0 -> CD0()
+        Calculator.CODE_CD1 -> CD1()
         else -> this.matchOtherWelshTaxCode()
     }
 }
