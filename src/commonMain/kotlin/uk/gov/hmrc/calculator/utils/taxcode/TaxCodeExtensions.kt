@@ -34,14 +34,16 @@ internal fun String.toTaxCode(forceScottishTaxCode: Boolean = false): TaxCode {
 
     val formattedTaxCode = this.replace("\\s".toRegex(), "").uppercase()
 
-    val taxCode = when (formattedTaxCode.toCountry()) {
+    val country = formattedTaxCode.toCountry()
+
+    val taxCode = when (country) {
         Country.SCOTLAND -> formattedTaxCode.matchScottishTaxCode()
         Country.WALES -> formattedTaxCode.matchWelshTaxCode()
         Country.ENGLAND -> formattedTaxCode.matchEnglishTaxCode()
         Country.NONE -> NTCode()
     }
 
-    return if (forceScottishTaxCode) {
+    return if (forceScottishTaxCode && country != Country.NONE) {
         formattedTaxCode.convertTaxCodeToScottishTaxCode().matchScottishTaxCode()
     } else taxCode
 }
