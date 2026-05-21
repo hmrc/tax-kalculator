@@ -16,6 +16,7 @@
 package uk.gov.hmrc.calculator.model.studentloans
 
 import uk.gov.hmrc.calculator.Calculator
+import uk.gov.hmrc.calculator.model.PayPeriod
 import uk.gov.hmrc.calculator.model.StudentLoanAmountBreakdown
 import uk.gov.hmrc.calculator.model.TaxYear
 import uk.gov.hmrc.calculator.utils.clarification.Clarification
@@ -31,12 +32,19 @@ internal class StudentLoanCalculation(
     private val listOfPostgraduateResult = mutableListOf<StudentLoanPlanAmount>()
 
     var studentLoanClarification: Clarification? = null
+
+    val defaultAmountMap = mapOf(
+        PayPeriod.WEEKLY to 0.0,
+        PayPeriod.FOUR_WEEKLY to 0.0,
+        PayPeriod.MONTHLY to 0.0,
+        PayPeriod.YEARLY to 0.0,
+    )
     val listOfBreakdownResult = mutableListOf(
-        StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.PLAN_ONE.value, 0.0),
-        StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.PLAN_TWO.value, 0.0),
-        StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.PLAN_FOUR.value, 0.0),
-        StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.POST_GRADUATE_PLAN.value, 0.0),
-        StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.PLAN_FIVE.value, 0.0),
+        StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.PLAN_ONE.value, defaultAmountMap),
+        StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.PLAN_TWO.value, defaultAmountMap),
+        StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.PLAN_FOUR.value, defaultAmountMap),
+        StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.POST_GRADUATE_PLAN.value, defaultAmountMap),
+        StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.PLAN_FIVE.value, defaultAmountMap),
     )
 
     init {
@@ -78,12 +86,58 @@ internal class StudentLoanCalculation(
     private fun calculateStudentLoan(
         yearlyWage: Double,
         studentLoanRepayment: StudentLoanRate.StudentLoanRepayment,
-    ): Double {
-        return if (yearlyWage > studentLoanRepayment.yearlyThreshold) {
-            val amountToCalculateLoan = yearlyWage - studentLoanRepayment.yearlyThreshold
-            val yearlyLoanAmount = amountToCalculateLoan * studentLoanRepayment.recoveryRatePercentage
-            if (yearlyLoanAmount >= MINIMUM_YEARLY_STUDENT_LOAN_AMOUNT) yearlyLoanAmount else 0.0
-        } else 0.0
+    ): Map<PayPeriod, Double> {
+
+        fun calculateLoan(
+            wage: Double,
+            threshold: Double,
+            minimumLoanAmount: Double,
+        ): Double {
+            return if (wage > threshold) {
+                val amountToCalculateLoan = wage - threshold
+                val loanAmount =
+                    amountToCalculateLoan * studentLoanRepayment.recoveryRatePercentage
+
+                if (loanAmount >= minimumLoanAmount) {
+                    loanAmount
+                } else {
+                    0.0
+                }
+            } else {
+                0.0
+            }
+        }
+
+        val weeklyLoan = calculateLoan(
+            wage = yearlyWage / 52,
+            threshold = studentLoanRepayment.weeklyThreshold,
+            MINIMUM_STUDENT_LOAN_AMOUNT
+        )
+
+        val fourWeeklyLoan = calculateLoan(
+            wage = yearlyWage / 13,
+            threshold = studentLoanRepayment.fourWeeklyThreshold,
+            MINIMUM_STUDENT_LOAN_AMOUNT
+        )
+
+        val monthlyLoan = calculateLoan(
+            wage = yearlyWage / 12,
+            threshold = studentLoanRepayment.monthlyThreshold,
+            MINIMUM_STUDENT_LOAN_AMOUNT
+        )
+
+        val yearlyLoan = calculateLoan(
+            wage = yearlyWage,
+            threshold = studentLoanRepayment.yearlyThreshold,
+            MINIMUM_YEARLY_STUDENT_LOAN_AMOUNT
+        )
+
+        return mapOf(
+            PayPeriod.WEEKLY to weeklyLoan,
+            PayPeriod.FOUR_WEEKLY to fourWeeklyLoan,
+            PayPeriod.MONTHLY to monthlyLoan,
+            PayPeriod.YEARLY to yearlyLoan,
+        )
     }
 
     private fun calculateUndergraduateWithPlan(
@@ -92,6 +146,10 @@ internal class StudentLoanCalculation(
         studentLoanRate: Map<StudentLoanRate.StudentLoanPlan, StudentLoanRate.StudentLoanRepayment>,
     ) {
         listOfUndergraduatePlan.forEach { (plan, hasStudentLoan) ->
+
+            //If student loan plan is not enabled, then skipping it
+            if (!hasStudentLoan) return@forEach
+
             if (studentLoanRate.containsKey(plan)) {
                 val rate = studentLoanRate[plan]!!
                 val loanAmount = calculateStudentLoan(yearlyWage, rate)
@@ -102,6 +160,9 @@ internal class StudentLoanCalculation(
                         plan,
                         loanAmount,
                         rate.yearlyThreshold,
+                        rate.monthlyThreshold,
+                        rate.fourWeeklyThreshold,
+                        rate.weeklyThreshold,
                         hasStudentLoan
                     )
                 )
@@ -123,6 +184,9 @@ internal class StudentLoanCalculation(
                 StudentLoanRate.StudentLoanPlan.POST_GRADUATE_PLAN,
                 loanAmount,
                 rate.yearlyThreshold,
+                rate.monthlyThreshold,
+                rate.fourWeeklyThreshold,
+                rate.weeklyThreshold,
                 hasPostgraduatePlan,
             )
         )
@@ -135,7 +199,7 @@ internal class StudentLoanCalculation(
     private fun addLowestUndergraduateLoanToBreakdown() {
         val filteredLoan = listOfUndergraduateResult.filter { it.hasPlan }
 
-        val lowestThresholdLoan = filteredLoan.minByOrNull { it.planThreshold }
+        val lowestThresholdLoan = filteredLoan.minByOrNull { it.planYearlyThreshold }
 
         lowestThresholdLoan?.let { loan ->
             listOfBreakdownResult.find { it.plan == loan.plan.value }?.let {
@@ -168,10 +232,10 @@ internal class StudentLoanCalculation(
             hasStudentLoanPlan && hasPostgraduatePlan -> {
                 clarificationForBothLoans()
             }
-            hasStudentLoanPlan && getStudentLoanDeduction() == 0.0 -> {
+            hasStudentLoanPlan && getStudentLoanDeduction()[PayPeriod.YEARLY] == 0.0 -> {
                 Clarification.INCOME_BELOW_STUDENT_LOAN
             }
-            hasPostgraduatePlan && getPostgraduateLoanDeduction() == 0.0 -> {
+            hasPostgraduatePlan && getPostgraduateLoanDeduction()[PayPeriod.YEARLY] == 0.0 -> {
                 Clarification.INCOME_BELOW_POSTGRAD_LOAN
             }
             else -> null
@@ -181,27 +245,27 @@ internal class StudentLoanCalculation(
     }
 
     private fun clarificationForBothLoans(): Clarification? {
-        return if (getStudentLoanDeduction() == 0.0) {
-            if (getPostgraduateLoanDeduction() > 0.0) {
+        return if (getStudentLoanDeduction()[PayPeriod.YEARLY] == 0.0) {
+            if ((getPostgraduateLoanDeduction()[PayPeriod.YEARLY] ?: 0.0) > 0.0) {
                 Clarification.INCOME_BELOW_STUDENT_BUT_ABOVE_POSTGRAD_LOAN
             } else Clarification.INCOME_BELOW_STUDENT_AND_POSTGRAD_LOAN
         } else null
     }
 
     @JvmSynthetic
-    internal fun getStudentLoanDeduction(): Double {
+    internal fun getStudentLoanDeduction(): Map<PayPeriod, Double> {
         val listOfStudentLoan = listOfBreakdownResult.filter {
             it.plan != StudentLoanRate.StudentLoanPlan.POST_GRADUATE_PLAN.value
         }
         val studentLoanWithAmount = listOfStudentLoan.filter {
-            it.amount != 0.0
+            it.amount.get(PayPeriod.YEARLY) != 0.0
         }
 
-        return if (studentLoanWithAmount.isNotEmpty()) studentLoanWithAmount.first().amount else 0.0
+        return if (studentLoanWithAmount.isNotEmpty()) studentLoanWithAmount.first().amount else defaultAmountMap
     }
 
     @JvmSynthetic
-    internal fun getPostgraduateLoanDeduction(): Double {
+    internal fun getPostgraduateLoanDeduction(): Map<PayPeriod, Double> {
         return listOfBreakdownResult.first {
             it.plan == StudentLoanRate.StudentLoanPlan.POST_GRADUATE_PLAN.value
         }.amount
@@ -209,12 +273,16 @@ internal class StudentLoanCalculation(
 
     internal data class StudentLoanPlanAmount(
         val plan: StudentLoanRate.StudentLoanPlan,
-        val amount: Double,
-        val planThreshold: Double,
+        val amount: Map<PayPeriod, Double>,
+        val planYearlyThreshold: Double,
+        val planMonthlyThreshold: Double,
+        val planFourWeeklyThreshold: Double,
+        val planWeeklyThreshold: Double,
         val hasPlan: Boolean,
     )
 
     companion object {
         private const val MINIMUM_YEARLY_STUDENT_LOAN_AMOUNT = 12.0
+        private const val MINIMUM_STUDENT_LOAN_AMOUNT = 1.0
     }
 }

@@ -69,12 +69,13 @@ internal class StudentLoanRate(taxYear: TaxYear) {
         StudentLoanPlan.POST_GRADUATE_PLAN to StudentLoanRepayment(21000.0, 0.06),
     )
 
+    //Student Loan rates updated for all payPeriods
     private fun studentLoanRepaymentRate2026() = mapOf(
-        StudentLoanPlan.PLAN_ONE to StudentLoanRepayment(26900.0, 0.09),
-        StudentLoanPlan.PLAN_TWO to StudentLoanRepayment(29385.0, 0.09),
-        StudentLoanPlan.PLAN_FOUR to StudentLoanRepayment(33795.0, 0.09),
-        StudentLoanPlan.PLAN_FIVE to StudentLoanRepayment(25000.0, 0.09),
-        StudentLoanPlan.POST_GRADUATE_PLAN to StudentLoanRepayment(21000.0, 0.06),
+        StudentLoanPlan.PLAN_ONE to StudentLoanRepayment(26900.0, 0.09,2241.66,2069.23,517.30),
+        StudentLoanPlan.PLAN_TWO to StudentLoanRepayment(29385.0, 0.09,2448.75,2260.38,565.09),
+        StudentLoanPlan.PLAN_FOUR to StudentLoanRepayment(33795.0, 0.09,2816.25,2599.61,649.90),
+        StudentLoanPlan.PLAN_FIVE to StudentLoanRepayment(25000.0, 0.09,2083.33,1923.07,480.76),
+        StudentLoanPlan.POST_GRADUATE_PLAN to StudentLoanRepayment(21000.0, 0.06,1750.00,1615.38,403.84),
     )
 
     @JvmSynthetic
@@ -94,6 +95,9 @@ internal class StudentLoanRate(taxYear: TaxYear) {
     internal data class StudentLoanRepayment(
         val yearlyThreshold: Double,
         val recoveryRatePercentage: Double,
+        val monthlyThreshold: Double = 0.0,
+        val fourWeeklyThreshold: Double = 0.0,
+        val weeklyThreshold: Double = 0.0
     )
 
     internal enum class StudentLoanPlan(val value: String) {

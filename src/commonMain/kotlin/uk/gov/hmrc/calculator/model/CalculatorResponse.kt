@@ -26,6 +26,11 @@ data class BandBreakdown(
 
 data class StudentLoanAmountBreakdown(
     val plan: String,
+    var amount: Map<PayPeriod, Double>,
+)
+
+data class StudentLoanAmountBreakdownDisplay(
+    val plan: String,
     var amount: Double,
 )
 
@@ -42,7 +47,7 @@ class CalculatorResponsePayPeriod(
     private val pensionContributionRaw: Double? = null,
     private var wageAfterPensionDeductionRaw: Double,
     private var taperingAmountRaw: Double? = null,
-    val studentLoanBreakdownList: List<StudentLoanAmountBreakdown>,
+    val studentLoanBreakdownList: List<StudentLoanAmountBreakdownDisplay>,
     finalStudentLoanAmountRaw: Double,
     finalPostgraduateLoanAmountRaw: Double,
     taxableIncomeRaw: Double,

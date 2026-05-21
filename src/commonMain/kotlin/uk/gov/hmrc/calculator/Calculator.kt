@@ -185,8 +185,8 @@ class Calculator @JvmOverloads constructor(
         yearlyWageAfterPensionDeduction: Double,
         taperingAmountDeduction: Double?,
         studentLoanBreakdown: MutableList<StudentLoanAmountBreakdown>,
-        finalStudentLoanAmount: Double,
-        finalPostgraduateLoanAmount: Double,
+        finalStudentLoanAmount: Map<PayPeriod, Double>,
+        finalPostgraduateLoanAmount: Map<PayPeriod, Double>,
         listOfClarification: MutableList<Clarification>,
         taxableIncome: Double,
     ): CalculatorResponse {
@@ -221,8 +221,8 @@ class Calculator @JvmOverloads constructor(
                 yearlyWageAfterPensionDeduction.convertAmountFromYearlyToPayPeriod(WEEKLY),
                 taperingAmountRaw = taperingAmountDeduction?.convertAmountFromYearlyToPayPeriod(WEEKLY),
                 studentLoanBreakdownList = studentLoanBreakdown.convertBreakdownForPayPeriod(WEEKLY),
-                finalStudentLoanAmountRaw = finalStudentLoanAmount.convertAmountFromYearlyToPayPeriod(WEEKLY),
-                finalPostgraduateLoanAmountRaw = finalPostgraduateLoanAmount.convertAmountFromYearlyToPayPeriod(WEEKLY),
+                finalStudentLoanAmountRaw = (finalStudentLoanAmount.get(WEEKLY) ?: 0.0),
+                finalPostgraduateLoanAmountRaw = (finalPostgraduateLoanAmount.get(WEEKLY) ?: 0.0),
                 taxableIncomeRaw = taxableIncome.convertAmountFromYearlyToPayPeriod(WEEKLY),
             ),
             fourWeekly = CalculatorResponsePayPeriod(
@@ -239,10 +239,8 @@ class Calculator @JvmOverloads constructor(
                 yearlyWageAfterPensionDeduction.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
                 taperingAmountRaw = taperingAmountDeduction?.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
                 studentLoanBreakdownList = studentLoanBreakdown.convertBreakdownForPayPeriod(FOUR_WEEKLY),
-                finalStudentLoanAmountRaw = finalStudentLoanAmount.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
-                finalPostgraduateLoanAmountRaw = finalPostgraduateLoanAmount.convertAmountFromYearlyToPayPeriod(
-                    FOUR_WEEKLY
-                ),
+                finalStudentLoanAmountRaw = (finalStudentLoanAmount.get(FOUR_WEEKLY) ?: 0.0),
+                finalPostgraduateLoanAmountRaw = (finalPostgraduateLoanAmount.get(FOUR_WEEKLY) ?: 0.0),
                 taxableIncomeRaw = taxableIncome.convertAmountFromYearlyToPayPeriod(FOUR_WEEKLY),
             ),
             monthly = CalculatorResponsePayPeriod(
@@ -259,9 +257,8 @@ class Calculator @JvmOverloads constructor(
                 yearlyWageAfterPensionDeduction.convertAmountFromYearlyToPayPeriod(MONTHLY),
                 taperingAmountRaw = taperingAmountDeduction?.convertAmountFromYearlyToPayPeriod(MONTHLY),
                 studentLoanBreakdownList = studentLoanBreakdown.convertBreakdownForPayPeriod(MONTHLY),
-                finalStudentLoanAmountRaw = finalStudentLoanAmount.convertAmountFromYearlyToPayPeriod(MONTHLY),
-                finalPostgraduateLoanAmountRaw = finalPostgraduateLoanAmount
-                    .convertAmountFromYearlyToPayPeriod(MONTHLY),
+                finalStudentLoanAmountRaw = (finalStudentLoanAmount.get(MONTHLY) ?: 0.0),
+                finalPostgraduateLoanAmountRaw = (finalPostgraduateLoanAmount.get(MONTHLY) ?: 0.0),
                 taxableIncomeRaw = taxableIncome.convertAmountFromYearlyToPayPeriod(MONTHLY),
             ),
             yearly = CalculatorResponsePayPeriod(
@@ -278,8 +275,8 @@ class Calculator @JvmOverloads constructor(
                 yearlyWageAfterPensionDeduction.convertAmountFromYearlyToPayPeriod(YEARLY),
                 taperingAmountRaw = taperingAmountDeduction?.convertAmountFromYearlyToPayPeriod(YEARLY),
                 studentLoanBreakdownList = studentLoanBreakdown.convertBreakdownForPayPeriod(YEARLY),
-                finalStudentLoanAmountRaw = finalStudentLoanAmount.convertAmountFromYearlyToPayPeriod(YEARLY),
-                finalPostgraduateLoanAmountRaw = finalPostgraduateLoanAmount.convertAmountFromYearlyToPayPeriod(YEARLY),
+                finalStudentLoanAmountRaw = (finalStudentLoanAmount.get(YEARLY) ?: 0.0),
+                finalPostgraduateLoanAmountRaw = (finalPostgraduateLoanAmount.get(YEARLY) ?: 0.0),
                 taxableIncomeRaw = taxableIncome.convertAmountFromYearlyToPayPeriod(YEARLY),
             ),
             listOfClarification = listOfClarification

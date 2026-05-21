@@ -17,7 +17,7 @@ package uk.gov.hmrc.calculator.utils.studentloan
 
 import uk.gov.hmrc.calculator.model.PayPeriod
 import uk.gov.hmrc.calculator.model.StudentLoanAmountBreakdown
-import uk.gov.hmrc.calculator.utils.convertAmountFromYearlyToPayPeriod
+import uk.gov.hmrc.calculator.model.StudentLoanAmountBreakdownDisplay
 import uk.gov.hmrc.calculator.utils.formatMoney
 import uk.gov.hmrc.calculator.utils.roundDownToWholeNumber
 import kotlin.jvm.JvmSynthetic
@@ -25,12 +25,11 @@ import kotlin.jvm.JvmSynthetic
 @JvmSynthetic
 internal fun List<StudentLoanAmountBreakdown>.convertBreakdownForPayPeriod(
     payPeriod: PayPeriod,
-): List<StudentLoanAmountBreakdown> =
+): List<StudentLoanAmountBreakdownDisplay> =
     this.map { breakdown ->
-        StudentLoanAmountBreakdown(
+        StudentLoanAmountBreakdownDisplay(
             plan = breakdown.plan,
-            amount = breakdown.amount
-                .convertAmountFromYearlyToPayPeriod(payPeriod)
+            amount = (breakdown.amount[payPeriod] ?: 0.0)
                 .formatMoney()
                 .roundDownToWholeNumber()
         )
