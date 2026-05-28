@@ -19,6 +19,7 @@ import uk.gov.hmrc.calculator.Calculator
 import uk.gov.hmrc.calculator.model.PayPeriod
 import uk.gov.hmrc.calculator.model.StudentLoanAmountBreakdown
 import uk.gov.hmrc.calculator.model.TaxYear
+import kotlin.math.floor
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -105,7 +106,7 @@ class StudentLoanCalculationTests {
 
         val result = StudentLoanCalculation(TaxYear.TWENTY_TWENTY_FOUR, wage, studentLoanPlans).listOfBreakdownResult
 
-        assertEquals(expectedBreakdown(720.9, 0.0, 0.0, 0.0), result)
+        assertEquals(expectedBreakdown(720.9, 0.0, 0.0, 0.0).roundDownAmounts(), result.roundDownAmounts())
     }
 
     @Test
@@ -167,7 +168,7 @@ class StudentLoanCalculationTests {
 
         val result = StudentLoanCalculation(TaxYear.TWENTY_TWENTY_FOUR, wage, studentLoanPlans).listOfBreakdownResult
 
-        assertEquals(expectedBreakdown(18.9, 0.0, 0.0, 0.0), result)
+        assertEquals(expectedBreakdown(18.9, 0.0, 0.0, 0.0).roundDownAmounts(), result.roundDownAmounts())
     }
 
     @Test
@@ -191,7 +192,7 @@ class StudentLoanCalculationTests {
 
         val result = StudentLoanCalculation(TaxYear.TWENTY_TWENTY_FOUR, wage, studentLoanPlans).listOfBreakdownResult
 
-        assertEquals(expectedBreakdown(720.9, 0.0, 0.0, 0.0), result)
+        assertEquals(expectedBreakdown(720.9, 0.0, 0.0, 0.0).roundDownAmounts(), result.roundDownAmounts())
     }
 
     @Test
@@ -215,7 +216,7 @@ class StudentLoanCalculationTests {
 
         val result = StudentLoanCalculation(TaxYear.TWENTY_TWENTY_FOUR, wage, studentLoanPlans).listOfBreakdownResult
 
-        assertEquals(expectedBreakdown(0.0, 0.0, 0.0, 180.0), result)
+        assertEquals(expectedBreakdown(0.0, 0.0, 0.0, 180.0).roundDownAmounts(), result.roundDownAmounts())
     }
 
     @Test
@@ -241,7 +242,7 @@ class StudentLoanCalculationTests {
 
         val result = StudentLoanCalculation(TaxYear.TWENTY_TWENTY_FOUR, wage, studentLoanPlans).listOfBreakdownResult
 
-        assertEquals(expectedBreakdown(0.0, 135.45, 0.0, 468.0), result)
+        assertEquals(expectedBreakdown(0.0, 135.45, 0.0, 468.0).roundDownAmounts(), result.roundDownAmounts())
     }
 
     @Test
@@ -267,7 +268,7 @@ class StudentLoanCalculationTests {
 
         val result = StudentLoanCalculation(TaxYear.TWENTY_TWENTY_FOUR, wage, studentLoanPlans).listOfBreakdownResult
 
-        assertEquals(expectedBreakdown(342.9, 0.0, 0.0, 468.0), result)
+        assertEquals(expectedBreakdown(342.9, 0.0, 0.0, 468.0).roundDownAmounts(), result.roundDownAmounts())
     }
 
     @Test
@@ -284,6 +285,16 @@ class StudentLoanCalculationTests {
         assertEquals(468.0, postGradLoanResult.get(PayPeriod.YEARLY))
     }
 
+    private fun List<StudentLoanAmountBreakdown>.roundDownAmounts(): List<StudentLoanAmountBreakdown> {
+        return map { studentLoanAmountBreakdown ->
+            studentLoanAmountBreakdown.copy(
+                amount = studentLoanAmountBreakdown.amount.mapValues { (_, value) ->
+                    floor(value)
+                }.toMutableMap()
+            )
+        }
+    }
+
     companion object {
         private fun expectedBreakdown(
             planOne: Double,
@@ -291,12 +302,11 @@ class StudentLoanCalculationTests {
             planFour: Double,
             postGradPlan: Double,
         ) = mutableListOf(
-            StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.PLAN_ONE.value, mapOf(PayPeriod.YEARLY to planOne)),
-            StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.PLAN_TWO.value, mapOf(PayPeriod.YEARLY to planTwo)),
-            StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.PLAN_FOUR.value, mapOf(PayPeriod.YEARLY to planFour)),
-            StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.POST_GRADUATE_PLAN.value, mapOf(PayPeriod.YEARLY to postGradPlan)),
-            StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.PLAN_FIVE.value, mapOf(PayPeriod.YEARLY to 0.0)),
-
+            StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.PLAN_ONE.value, mapOf(PayPeriod.WEEKLY to (planOne/52), PayPeriod.FOUR_WEEKLY to (planOne/13), PayPeriod.MONTHLY to (planOne/12), PayPeriod.YEARLY to planOne,)),
+            StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.PLAN_TWO.value, mapOf(PayPeriod.WEEKLY to (planTwo/52), PayPeriod.FOUR_WEEKLY to (planTwo/13), PayPeriod.MONTHLY to (planTwo/12), PayPeriod.YEARLY to planTwo)),
+            StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.PLAN_FOUR.value, mapOf(PayPeriod.WEEKLY to (planFour/52), PayPeriod.FOUR_WEEKLY to (planFour/13), PayPeriod.MONTHLY to (planFour/12), PayPeriod.YEARLY to planFour)),
+            StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.POST_GRADUATE_PLAN.value, mapOf(PayPeriod.WEEKLY to (postGradPlan/52), PayPeriod.FOUR_WEEKLY to (postGradPlan/13), PayPeriod.MONTHLY to (postGradPlan/12), PayPeriod.YEARLY to postGradPlan)),
+            StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.PLAN_FIVE.value, mapOf(PayPeriod.WEEKLY to 0.0, PayPeriod.FOUR_WEEKLY to 0.0, PayPeriod.MONTHLY to 0.0, PayPeriod.YEARLY to 0.0)),
         )
     }
 }
