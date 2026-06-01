@@ -302,10 +302,10 @@ class StudentLoanCalculationTests {
             planFour: Double,
             postGradPlan: Double,
         ) = mutableListOf(
-            StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.PLAN_ONE.value, mapOf(PayPeriod.WEEKLY to (planOne/52), PayPeriod.FOUR_WEEKLY to (planOne/13), PayPeriod.MONTHLY to (planOne/12), PayPeriod.YEARLY to planOne,)),
-            StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.PLAN_TWO.value, mapOf(PayPeriod.WEEKLY to (planTwo/52), PayPeriod.FOUR_WEEKLY to (planTwo/13), PayPeriod.MONTHLY to (planTwo/12), PayPeriod.YEARLY to planTwo)),
-            StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.PLAN_FOUR.value, mapOf(PayPeriod.WEEKLY to (planFour/52), PayPeriod.FOUR_WEEKLY to (planFour/13), PayPeriod.MONTHLY to (planFour/12), PayPeriod.YEARLY to planFour)),
-            StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.POST_GRADUATE_PLAN.value, mapOf(PayPeriod.WEEKLY to (postGradPlan/52), PayPeriod.FOUR_WEEKLY to (postGradPlan/13), PayPeriod.MONTHLY to (postGradPlan/12), PayPeriod.YEARLY to postGradPlan)),
+            StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.PLAN_ONE.value, mapOf(PayPeriod.WEEKLY to (planOne / 52), PayPeriod.FOUR_WEEKLY to (planOne / 13), PayPeriod.MONTHLY to (planOne / 12), PayPeriod.YEARLY to planOne,)),
+            StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.PLAN_TWO.value, mapOf(PayPeriod.WEEKLY to (planTwo / 52), PayPeriod.FOUR_WEEKLY to (planTwo / 13), PayPeriod.MONTHLY to (planTwo / 12), PayPeriod.YEARLY to planTwo)),
+            StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.PLAN_FOUR.value, mapOf(PayPeriod.WEEKLY to (planFour / 52), PayPeriod.FOUR_WEEKLY to (planFour / 13), PayPeriod.MONTHLY to (planFour / 12), PayPeriod.YEARLY to planFour)),
+            StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.POST_GRADUATE_PLAN.value, mapOf(PayPeriod.WEEKLY to (postGradPlan / 52), PayPeriod.FOUR_WEEKLY to (postGradPlan / 13), PayPeriod.MONTHLY to (postGradPlan / 12), PayPeriod.YEARLY to postGradPlan)),
             StudentLoanAmountBreakdown(StudentLoanRate.StudentLoanPlan.PLAN_FIVE.value, mapOf(PayPeriod.WEEKLY to 0.0, PayPeriod.FOUR_WEEKLY to 0.0, PayPeriod.MONTHLY to 0.0, PayPeriod.YEARLY to 0.0)),
         )
     }
