@@ -41,40 +41,41 @@ internal class StudentLoanRate(taxYear: TaxYear) {
     )
 
     private fun studentLoanRepaymentRate2023() = mapOf(
-        StudentLoanPlan.PLAN_ONE to StudentLoanRepayment(22015.0, 0.09),
-        StudentLoanPlan.PLAN_TWO to StudentLoanRepayment(27295.0, 0.09),
-        StudentLoanPlan.PLAN_FOUR to StudentLoanRepayment(27660.0, 0.09),
-        StudentLoanPlan.POST_GRADUATE_PLAN to StudentLoanRepayment(21000.0, 0.06),
+        StudentLoanPlan.PLAN_ONE to StudentLoanRepayment(22015.0, 0.09, 1834.58, 1693.46, 423.36),
+        StudentLoanPlan.PLAN_TWO to StudentLoanRepayment(27295.0, 0.09, 2274.58, 2099.61, 524.90),
+        StudentLoanPlan.PLAN_FOUR to StudentLoanRepayment(27660.0, 0.09, 2305.00, 2127.69, 531.92),
+        StudentLoanPlan.POST_GRADUATE_PLAN to StudentLoanRepayment(21000.0, 0.06, 1750.00, 1615.38, 403.84),
     )
 
     private fun studentLoanRepaymentRate2023JanuaryRevised() = mapOf(
-        StudentLoanPlan.PLAN_ONE to StudentLoanRepayment(22015.0, 0.09),
-        StudentLoanPlan.PLAN_TWO to StudentLoanRepayment(27295.0, 0.09),
-        StudentLoanPlan.PLAN_FOUR to StudentLoanRepayment(27660.0, 0.09),
-        StudentLoanPlan.POST_GRADUATE_PLAN to StudentLoanRepayment(21000.0, 0.06),
+        StudentLoanPlan.PLAN_ONE to StudentLoanRepayment(22015.0, 0.09, 1834.58, 1693.46, 423.36),
+        StudentLoanPlan.PLAN_TWO to StudentLoanRepayment(27295.0, 0.09, 2274.58, 2099.61, 524.90),
+        StudentLoanPlan.PLAN_FOUR to StudentLoanRepayment(27660.0, 0.09, 2305.00, 2127.69, 531.92),
+        StudentLoanPlan.POST_GRADUATE_PLAN to StudentLoanRepayment(21000.0, 0.06, 1750.00, 1615.38, 403.84),
     )
 
     private fun studentLoanRepaymentRate2024() = mapOf(
-        StudentLoanPlan.PLAN_ONE to StudentLoanRepayment(24990.0, 0.09),
-        StudentLoanPlan.PLAN_TWO to StudentLoanRepayment(27295.0, 0.09),
-        StudentLoanPlan.PLAN_FOUR to StudentLoanRepayment(31395.0, 0.09),
-        StudentLoanPlan.POST_GRADUATE_PLAN to StudentLoanRepayment(21000.0, 0.06),
+        StudentLoanPlan.PLAN_ONE to StudentLoanRepayment(24990.0, 0.09, 2082.5, 1922.30, 480.57),
+        StudentLoanPlan.PLAN_TWO to StudentLoanRepayment(27295.0, 0.09, 2274.58, 2099.61, 524.90),
+        StudentLoanPlan.PLAN_FOUR to StudentLoanRepayment(31395.0, 0.09, 2616.25, 2415.00, 603.75),
+        StudentLoanPlan.POST_GRADUATE_PLAN to StudentLoanRepayment(21000.0, 0.06, 1750.00, 1615.38, 403.84),
     )
 
     private fun studentLoanRepaymentRate2025() = mapOf(
-        StudentLoanPlan.PLAN_ONE to StudentLoanRepayment(26065.0, 0.09),
-        StudentLoanPlan.PLAN_TWO to StudentLoanRepayment(28470.0, 0.09),
-        StudentLoanPlan.PLAN_FOUR to StudentLoanRepayment(32745.0, 0.09),
-        StudentLoanPlan.PLAN_FIVE to StudentLoanRepayment(25000.0, 0.09),
-        StudentLoanPlan.POST_GRADUATE_PLAN to StudentLoanRepayment(21000.0, 0.06),
+        StudentLoanPlan.PLAN_ONE to StudentLoanRepayment(26065.0, 0.09, 2172.08, 2005.00, 501.25),
+        StudentLoanPlan.PLAN_TWO to StudentLoanRepayment(28470.0, 0.09, 2372.5, 2190.00, 547.5),
+        StudentLoanPlan.PLAN_FOUR to StudentLoanRepayment(32745.0, 0.09, 2728.75, 2518.84, 629.71),
+        StudentLoanPlan.PLAN_FIVE to StudentLoanRepayment(25000.0, 0.09, 2083.33, 1923.07, 480.76),
+        StudentLoanPlan.POST_GRADUATE_PLAN to StudentLoanRepayment(21000.0, 0.06, 1750.00, 1615.38, 403.84),
     )
 
+    // Student Loan rates updated for all payPeriods
     private fun studentLoanRepaymentRate2026() = mapOf(
-        StudentLoanPlan.PLAN_ONE to StudentLoanRepayment(26900.0, 0.09),
-        StudentLoanPlan.PLAN_TWO to StudentLoanRepayment(29385.0, 0.09),
-        StudentLoanPlan.PLAN_FOUR to StudentLoanRepayment(33795.0, 0.09),
-        StudentLoanPlan.PLAN_FIVE to StudentLoanRepayment(25000.0, 0.09),
-        StudentLoanPlan.POST_GRADUATE_PLAN to StudentLoanRepayment(21000.0, 0.06),
+        StudentLoanPlan.PLAN_ONE to StudentLoanRepayment(26900.0, 0.09, 2241.66, 2069.23, 517.30),
+        StudentLoanPlan.PLAN_TWO to StudentLoanRepayment(29385.0, 0.09, 2448.75, 2260.38, 565.09),
+        StudentLoanPlan.PLAN_FOUR to StudentLoanRepayment(33795.0, 0.09, 2816.25, 2599.61, 649.90),
+        StudentLoanPlan.PLAN_FIVE to StudentLoanRepayment(25000.0, 0.09, 2083.33, 1923.07, 480.76),
+        StudentLoanPlan.POST_GRADUATE_PLAN to StudentLoanRepayment(21000.0, 0.06, 1750.00, 1615.38, 403.84),
     )
 
     @JvmSynthetic
@@ -94,6 +95,9 @@ internal class StudentLoanRate(taxYear: TaxYear) {
     internal data class StudentLoanRepayment(
         val yearlyThreshold: Double,
         val recoveryRatePercentage: Double,
+        val monthlyThreshold: Double = 0.0,
+        val fourWeeklyThreshold: Double = 0.0,
+        val weeklyThreshold: Double = 0.0
     )
 
     internal enum class StudentLoanPlan(val value: String) {
