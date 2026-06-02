@@ -147,7 +147,7 @@ internal class StudentLoanCalculation(
     ) {
         listOfUndergraduatePlan.forEach { (plan, hasStudentLoan) ->
 
-            //If student loan plan is not enabled, then skipping it
+            // If student loan plan is not enabled, then skipping it
             if (!hasStudentLoan) return@forEach
 
             if (studentLoanRate.containsKey(plan)) {
