@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.16.1] - 2026-06-04Z
+- Fixed the standalone tax code suffix validation
+- Fixed App crash issue on user selecting tax code NT and Scottish income Tax to yes
+- Refactor Student and PG loans calculations to use period-based logic
+- Added unit test cases for student loan period based calculations
+- Added new test cases and CSV files with student loan test data for pay-periods validation
+
 ## [2.16.0] - 2026-02-19Z
 - Added 2026/27 rates.
 
