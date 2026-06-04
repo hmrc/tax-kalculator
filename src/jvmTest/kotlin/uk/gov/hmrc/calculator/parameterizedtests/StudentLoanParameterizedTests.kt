@@ -221,4 +221,76 @@ class StudentLoanParameterizedTests {
         assertEquals(expectedFourWeeklyPostgraduateLoan, fourWeekly.finalPostgraduateLoanAmount)
         assertEquals(expectedWeeklyPostgraduateLoan, weekly.finalPostgraduateLoanAmount)
     }
+
+    @ParameterizedTest(name = "wages={0}")
+    @CsvFileSource(resources = ["/studentloan/data2026_UG_student_loan_payperiod.csv"], numLinesToSkip = 1)
+    fun `Student UG Loan payperiod calculation 2026`(
+        inputWage: Double,
+        inputHasPlanOne: Boolean,
+        inputHasPlanTwo: Boolean,
+        inputHasPlanFour: Boolean,
+        inputHasPlanFive: Boolean,
+        inputIsWeekly: Boolean,
+        inputIsFourWeekly: Boolean,
+        expectedWeeklyStudentLoan: Double,
+        expectedFourWeeklyStudentLoan: Double,
+        expectedMonthlyStudentLoan: Double
+    ) {
+        val payPeriod = when {
+            inputIsWeekly -> PayPeriod.WEEKLY
+            inputIsFourWeekly -> PayPeriod.FOUR_WEEKLY
+            else -> PayPeriod.MONTHLY
+        }
+
+        val response = Calculator(
+            taxCode = "1257L",
+            wages = inputWage,
+            payPeriod = payPeriod,
+            taxYear = TaxYear.TWENTY_TWENTY_SIX,
+            studentLoanPlans = Calculator.StudentLoanPlans(inputHasPlanOne, inputHasPlanTwo, inputHasPlanFour, false, inputHasPlanFive)
+        ).run()
+
+        val monthly = response.monthly
+        val fourWeekly = response.fourWeekly
+        val weekly = response.weekly
+        when {
+            inputIsWeekly -> assertEquals(expectedWeeklyStudentLoan, weekly.finalStudentLoanAmount)
+            inputIsFourWeekly -> assertEquals(expectedFourWeeklyStudentLoan, fourWeekly.finalStudentLoanAmount)
+            else -> assertEquals(expectedMonthlyStudentLoan, monthly.finalStudentLoanAmount)
+        }
+    }
+
+    @ParameterizedTest(name = "wages={0}")
+    @CsvFileSource(resources = ["/studentloan/data2026_PG_student_loan_payperiod.csv"], numLinesToSkip = 1)
+    fun `Student PG Loan payperiod calculation 2026`(
+        inputWage: Double,
+        inputIsWeekly: Boolean,
+        inputIsFourWeekly: Boolean,
+        expectedWeeklyStudentPgLoan: Double,
+        expectedFourWeeklyStudentPgLoan: Double,
+        expectedMonthlyStudentPgLoan: Double
+    ) {
+        val payPeriod = when {
+            inputIsWeekly -> PayPeriod.WEEKLY
+            inputIsFourWeekly -> PayPeriod.FOUR_WEEKLY
+            else -> PayPeriod.MONTHLY
+        }
+
+        val response = Calculator(
+            taxCode = "1257L",
+            wages = inputWage,
+            payPeriod = payPeriod,
+            taxYear = TaxYear.TWENTY_TWENTY_SIX,
+            studentLoanPlans = Calculator.StudentLoanPlans(false, false, false, true, false)
+        ).run()
+
+        val monthly = response.monthly
+        val fourWeekly = response.fourWeekly
+        val weekly = response.weekly
+        when {
+            inputIsWeekly -> assertEquals(expectedWeeklyStudentPgLoan, weekly.finalPostgraduateLoanAmount)
+            inputIsFourWeekly -> assertEquals(expectedFourWeeklyStudentPgLoan, fourWeekly.finalPostgraduateLoanAmount)
+            else -> assertEquals(expectedMonthlyStudentPgLoan, monthly.finalPostgraduateLoanAmount)
+        }
+    }
 }
