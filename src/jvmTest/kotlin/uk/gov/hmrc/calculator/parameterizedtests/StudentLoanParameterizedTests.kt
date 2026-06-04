@@ -232,7 +232,6 @@ class StudentLoanParameterizedTests {
         inputHasPlanFive: Boolean,
         inputIsWeekly: Boolean,
         inputIsFourWeekly: Boolean,
-        inputIsMonthly: Boolean,
         expectedWeeklyStudentLoan: Double,
         expectedFourWeeklyStudentLoan: Double,
         expectedMonthlyStudentLoan: Double
@@ -254,9 +253,6 @@ class StudentLoanParameterizedTests {
         val monthly = response.monthly
         val fourWeekly = response.fourWeekly
         val weekly = response.weekly
-        println(monthly.prettyPrintDataClass())
-        println(fourWeekly.prettyPrintDataClass())
-        println(weekly.prettyPrintDataClass())
         when {
             inputIsWeekly -> assertEquals(expectedWeeklyStudentLoan, weekly.finalStudentLoanAmount)
             inputIsFourWeekly -> assertEquals(expectedFourWeeklyStudentLoan, fourWeekly.finalStudentLoanAmount)
@@ -270,7 +266,6 @@ class StudentLoanParameterizedTests {
         inputWage: Double,
         inputIsWeekly: Boolean,
         inputIsFourWeekly: Boolean,
-        inputIsMonthly: Boolean,
         expectedWeeklyStudentPgLoan: Double,
         expectedFourWeeklyStudentPgLoan: Double,
         expectedMonthlyStudentPgLoan: Double
@@ -292,9 +287,6 @@ class StudentLoanParameterizedTests {
         val monthly = response.monthly
         val fourWeekly = response.fourWeekly
         val weekly = response.weekly
-        println(monthly.prettyPrintDataClass())
-        println(fourWeekly.prettyPrintDataClass())
-        println(weekly.prettyPrintDataClass())
         when {
             inputIsWeekly -> assertEquals(expectedWeeklyStudentPgLoan, weekly.finalPostgraduateLoanAmount)
             inputIsFourWeekly -> assertEquals(expectedFourWeeklyStudentPgLoan, fourWeekly.finalPostgraduateLoanAmount)
