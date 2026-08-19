@@ -262,7 +262,7 @@ bundle exec fastlane tag_release
 * Ensure `main` branch
 * Through the interactive shell, select the tag version using semantic versioning.
 * Locally executes `build_xcframework.sh`:
-  * Creates an XCFramework
+  * Creates an XCFramework for iOS
   * Computes and updates the checksum in the Swift Package declaration.
 * Stamps the changelog
 * Commit and push the updated `Package.swift` and `CHANGELOG.md`
